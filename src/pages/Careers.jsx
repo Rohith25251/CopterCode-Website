@@ -1,0 +1,451 @@
+import { useState, useEffect } from "react";
+import { client } from "../lib/sanity";
+import PageHeader from "../components/PageHeader";
+import SEO from "../components/SEO";
+import {
+  Briefcase,
+  Heart,
+  Globe,
+  Award,
+  Zap,
+  ArrowRight,
+  Shield,
+  Users,
+  Target,
+  Lightbulb,
+  Star
+} from "lucide-react";
+import { motion } from "framer-motion";
+
+
+// Icon Map helper
+const iconMap = {
+  zap: Zap,
+  award: Award,
+  globe: Globe,
+  heart: Heart,
+  briefcase: Briefcase,
+  shield: Shield,
+  users: Users,
+  target: Target,
+  lightbulb: Lightbulb,
+  star: Star
+};
+
+const Careers = () => {
+  const [sanityData, setSanityData] = useState(null);
+
+  useEffect(() => {
+    const query = `*[_type == "careersPage"][0]{
+      ...,
+      trusted {
+        heading,
+        logos[] { asset->{ url } }
+      }
+    }`;
+
+    client.fetch(query).then((data) => {
+      if (data) {
+        // Flatten the structure to match what the component expects
+        setSanityData({
+          seo: data.seo,
+          heroTitle: data.hero?.title,
+          heroSubtitle: data.hero?.subtitle,
+          benefitsHeading: data.benefits?.heading,
+          benefitsDescription: data.benefits?.description,
+          benefitsList: data.benefits?.list, // The icon string matches our map keys
+          trustedHeading: data.trusted?.heading,
+          trustedLogos: data.trusted?.logos?.map(l => l.asset.url), // Extract URLs
+          rolesLabel: data.positions?.label,
+          rolesHeading: data.positions?.heading,
+          rolesDescription: data.positions?.description,
+          openRoles: data.positions?.list,
+          ctaHeading: data.cta?.heading,
+          ctaDescription: data.cta?.description,
+          ctaButtonText: data.cta?.buttonText,
+          ctaButtonLink: data.cta?.buttonLink
+        });
+      }
+    }).catch(console.error);
+  }, []);
+
+  // Fallbacks
+  const seoTitle = sanityData?.seo?.metaTitle || "Careers";
+  const seoDesc = sanityData?.seo?.metaDescription || "Join the CopterCode team.";
+  const heroTitle = sanityData?.heroTitle || "Careers";
+  const heroSubtitle = sanityData?.heroSubtitle || "Join us to build the future together.";
+
+  const benefitsHeading = sanityData?.benefitsHeading || "Why Work With Us?";
+  const benefitsDescription = sanityData?.benefitsDescription || "We believe our people are our most valuable asset. At CopterCode, employees work in a progressive, inclusive, and empowering environment.";
+
+  const rawBenefits = sanityData?.benefitsList || [
+    {
+      icon: "zap",
+      title: "Culture of Learning",
+      description: "Continuous innovation and learning opportunities.",
+    },
+    {
+      icon: "award",
+      title: "Merit-based Growth",
+      description: "Recognizing and rewarding talent and hard work.",
+    },
+    {
+      icon: "globe",
+      title: "Global Exposure",
+      description: "Work on international projects across India and USA.",
+    },
+    {
+      icon: "heart",
+      title: "Inclusive Workplace",
+      description: "Diverse and inclusive environment for all.",
+    },
+    {
+      icon: "briefcase",
+      title: "Employee Well-being",
+      description: "Focus on health, balance, and prosperity.",
+    },
+  ];
+
+  // Map string icons to components
+  const benefits = rawBenefits.map(b => ({
+    ...b,
+    IconComponent: iconMap[b.icon] || Star // Default to Star if not found
+  }));
+
+
+  const trustedHeading = sanityData?.trustedHeading || "Trusted by Leading Innovators";
+  const trustedLogos = sanityData?.trustedLogos || [];
+  // If sanity logos exist, use them. Else fallback to hardcoded loop (which relies on local files). 
+  // Actually, simpler to just use sanity if available, else nothing or fallback. 
+  // To keep existing look, let's keep the fallback generated array IF sanity is empty.
+  const hasSanityLogos = trustedLogos.length > 0;
+
+
+  const rolesLabel = sanityData?.rolesLabel || "Opportunities";
+  const rolesHeading = sanityData?.rolesHeading || "Open Roles";
+  const rolesDescription = sanityData?.rolesDescription || "Find your next challenge.";
+
+  const openRoles = sanityData?.openRoles || [
+    {
+      title: "Senior Drone Engineer",
+      badges: ["Hardware", "Chennai", "Full-Time"],
+      applyLink: "mailto:hr@coptercode.co.in"
+    },
+    {
+      title: "Full Stack Developer",
+      badges: ["Software", "Remote/Hybrid", "Full-Time"],
+      applyLink: "mailto:hr@coptercode.co.in"
+    },
+    {
+      title: "AI/ML Researcher",
+      badges: ["R&D", "Bangalore", "Contract"],
+      applyLink: "mailto:hr@coptercode.co.in"
+    },
+    {
+      title: "Sales Executive",
+      badges: ["Sales", "Mumbai", "Full-Time"],
+      applyLink: "mailto:hr@coptercode.co.in"
+    },
+    {
+      title: "Cybersecurity Analyst",
+      badges: ["Security", "Delhi", "Full-Time"],
+      applyLink: "mailto:hr@coptercode.co.in"
+    },
+    {
+      title: "Product Designer",
+      badges: ["Design", "Remote", "Full-Time"],
+      applyLink: "mailto:hr@coptercode.co.in"
+    },
+  ];
+
+
+  const ctaHeading = sanityData?.ctaHeading || "Ready to make an impact?";
+  const ctaDescription = sanityData?.ctaDescription || "Explore opportunities to work on cutting-edge drone technology, AI, and digital solutions.";
+  const ctaButtonText = sanityData?.ctaButtonText || "Send Your Resume";
+  const ctaButtonLink = sanityData?.ctaButtonLink || "mailto:hr@coptercode.co.in";
+
+
+  return (
+    <div className="bg-background min-h-screen text-primary selection:bg-primary selection:text-background overflow-x-hidden">
+      <SEO title={seoTitle} description={seoDesc} />
+      <PageHeader
+        title={heroTitle}
+        subtitle={heroSubtitle}
+      />
+
+      <section className="pt-10 pb-24 relative overflow-hidden">
+        {/* Background Decor - Animated */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"
+        />
+
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl font-display font-bold text-primary mb-6">
+              {benefitsHeading}
+            </h2>
+            <div className="w-24 h-1.5 bg-primary/20 mx-auto mb-8 rounded-full"></div>
+            <p className="text-xl text-secondary max-w-3xl mx-auto leading-relaxed">
+              {benefitsDescription}
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1,
+                },
+              },
+            }}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 justify-center"
+          >
+            {benefits.map((item, idx) => (
+              <motion.div
+                key={idx}
+                variants={{
+                  hidden: { opacity: 0, y: 50 },
+                  show: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { type: "spring", stiffness: 50, damping: 20 },
+                  },
+                }}
+                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                className={`group p-10 rounded-3xl border border-border bg-surface hover:bg-surface-highlight hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 text-center flex flex-col items-center ${idx >= 3 ? "lg:col-span-1 lg:last:col-start-auto" : ""}`}
+              >
+                <div className="w-16 h-16 rounded-2xl bg-background flex items-center justify-center mb-8 border border-border group-hover:scale-110 group-hover:border-accent/40 transition-transform duration-500">
+                  <item.IconComponent size={32} className="text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-primary mb-4">
+                  {item.title}
+                </h3>
+                <p className="text-secondary leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Logo Marquee Section */}
+          <div className="mb-24 overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mb-10"
+            >
+              <h3 className="text-xl font-bold text-secondary uppercase tracking-widest mb-4">
+                {trustedHeading}
+              </h3>
+              <div className="w-16 h-1 bg-accent/30 mx-auto rounded-full"></div>
+            </motion.div>
+
+            <div className="relative flex w-full overflow-hidden mask-image-gradient">
+              {/* Gradient Masks for smooth fade at edges */}
+              <div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-background to-transparent z-10"></div>
+              <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-background to-transparent z-10"></div>
+
+              <motion.div
+                className="flex gap-12 items-center whitespace-nowrap"
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{
+                  repeat: Infinity,
+                  ease: "linear",
+                  duration: 30, // Adjust speed as needed
+                }}
+              >
+                {/* We duplicate the logos to create a seamless loop */}
+                {[...Array(2)].map((_, sectionIdx) => (
+                  <div key={sectionIdx} className="flex gap-12 items-center">
+                    {hasSanityLogos ? (
+                      trustedLogos.map((url, idx) => (
+                        <div
+                          key={`sanity-logo-${sectionIdx}-${idx}`}
+                          className="w-32 h-20 flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
+                        >
+                          <img
+                            src={url}
+                            alt={`Partner Logo ${idx}`}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      // Fallback to local logos
+                      [
+                        "logo_10-B1ui9v8s.png",
+                        "logo_11-BY520sZB.png",
+                        "logo_14-Cbz0hTK_.png",
+                        "logo_15-Mg_xjVLq.png",
+                        "logo_16-DoJBwjRa.png",
+                        "logo_17-DETRtLQJ.png",
+                        "logo_18-Df0xAPZI.png",
+                        "logo_20-CLRY9cVi.png",
+                        "logo_21-DrKx_bUL.png",
+                        "logo_3-BmbGohv9.png",
+                        "logo_4-_cYceE0U.png",
+                        "logo_5-Dtr7gMTv.png",
+                        "logo_7-DYBwtAG0.png",
+                        "logo_9-c4jamjnV.png",
+                      ].map((logoName) => (
+                        <div
+                          key={`logo-${sectionIdx}-${logoName}`}
+                          className="w-32 h-20 flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
+                        >
+                          <img
+                            src={`/mediafiles/logos/${logoName}`}
+                            alt={`Partner Logo ${logoName}`}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
+                      ))
+                    )}
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Open Roles Section */}
+          <div className="mb-24">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-left mb-12"
+            >
+              <span className="text-sm font-bold tracking-widest text-accent uppercase mb-2 block">
+                {rolesLabel}
+              </span>
+              <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-4">
+                {rolesHeading}
+              </h2>
+              <p className="text-secondary text-lg">
+                {rolesDescription}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={{
+                hidden: { opacity: 0 },
+                show: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1,
+                  },
+                },
+              }}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-50px" }}
+              className="space-y-6"
+            >
+              {openRoles.map((job, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={{
+                    hidden: { opacity: 0, x: -30 },
+                    show: {
+                      opacity: 1,
+                      x: 0,
+                      transition: {
+                        type: "spring",
+                        stiffness: 50,
+                        damping: 20,
+                      },
+                    },
+                  }}
+                  whileHover={{ scale: 1.02, x: 10 }}
+                  className="bg-surface p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-lg transition-all duration-300 group border border-border border-l-4 border-l-transparent hover:border-accent/40"
+                >
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
+                      {job.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
+                      {job.badges.map((badge, bIdx) => (
+                        <span
+                          key={bIdx}
+                          className={`px-3 py-1 rounded-md text-sm font-medium ${bIdx === 0
+                            ? "bg-gray-100 text-gray-700"
+                            : bIdx === 1
+                              ? "bg-blue-50 text-blue-600"
+                              : "bg-green-50 text-green-600"
+                            }`}
+                        >
+                          {badge}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <a
+                    href={job.applyLink || "mailto:hr@coptercode.co.in"}
+                    className="w-full md:w-auto px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-accent hover:text-primary transition-all duration-300 flex items-center justify-center whitespace-nowrap shadow-md"
+                  >
+                    Apply Now <ArrowRight size={18} className="ml-2" />
+                  </a>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* CTA Section - Updates to Glassy as per request */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            whileHover={{ scale: 1.02 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, type: "spring" }}
+            className="bg-surface/80 backdrop-blur-md border border-border text-primary rounded-[2.5rem] p-12 md:p-20 text-center shadow-2xl relative overflow-hidden group"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+              className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-[80px] -mr-40 -mt-40 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+            />
+
+            <div className="relative z-10 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-display font-bold mb-8 tracking-tight text-primary">
+                {ctaHeading}
+              </h2>
+              <p className="text-lg md:text-xl text-secondary mb-10 leading-relaxed font-medium">
+                {ctaDescription}
+              </p>
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                href={ctaButtonLink}
+                className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:shadow-accent/20"
+              >
+                {ctaButtonText} <ArrowRight className="ml-3" />
+              </motion.a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Careers;

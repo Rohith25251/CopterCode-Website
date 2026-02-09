@@ -1,0 +1,170 @@
+import { useState, useEffect } from "react";
+import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
+import { GraduationCap, Briefcase } from "lucide-react";
+import { client, urlFor } from "../lib/sanity";
+
+// Fallback hardcoded data to ensure the slider is never empty while populating CMS
+const fallbackInterns = [
+  {
+    name: "A Devendhiran",
+    college: "Shree Sathyam College of Engineering And Technology",
+    role: "Full Stack Developer",
+    image: "/mediafiles/Intern/A Devendhiran   -   Shree Sathyam College of Engineering And Technology   -  Fresher  -   Full Stack Developer.jpg",
+  },
+  {
+    name: "A Senthurapandi",
+    college: "Shree Sathyam college of Engineering And Technology",
+    role: "IOT Data Analysts",
+    image: "/mediafiles/Intern/A Senthurapandi  -    Shree Sathyam college of Engineering And Technology    -   Fresher   -   IOT Data Analysts.jpg",
+  },
+  {
+    name: "A kathir",
+    college: "Shree Sathyam college of Engineering And Technology",
+    role: "Cybersecurity Analyst",
+    image: "/mediafiles/Intern/A kathir   -  Shree Sathyam college of Engineering And Technology   -  Fresher  -   Cybersecurity Analyst.jpg",
+  },
+  {
+    name: "Aathi Lakshmi",
+    college: "Mepco Schlenk Engineering College",
+    role: "Drone Development Designer",
+    image: "/mediafiles/Intern/Aathi Lakshmi -  Mepco Schlenk Engineering College  -   Fresher  -   Drone Development Designer.jpg",
+  },
+  {
+    name: "Abinaya K",
+    college: "KPR Institute of Engineering and Technology",
+    role: "Fresher Cloud Architect",
+    image: "/mediafiles/Intern/Abinaya K  - KPR Institute of Engineering and Technology  -  Fresher Cloud Architect.jpg",
+  },
+  {
+    name: "Abinesh M",
+    college: "Shree Sathyam college of Engineering And Technology",
+    role: "Full Stack Web Developer",
+    image: "/mediafiles/Intern/Abinesh M  -  Shree Sathyam college of Engineering And Technology  -  Fresher  -   Full Stack Web Developer.jpg",
+  },
+  {
+    name: "Abishek kandan K S",
+    college: "SSN College of Engineering",
+    role: "Cloud Architect",
+    image: "/mediafiles/Intern/Abishek kandan K S   -  SSN College of Engineering  -   Fresher  -   Cloud Architect.jpg",
+  }
+];
+
+const InternsCarousel = ({ data }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const x = useMotionValue(0);
+
+  const heading = data?.heading || "Journey of Our Interns";
+  const subheading = data?.subheading || "Empowering the next generation of tech leaders.";
+
+  // Transform Sanity interns if they exist
+  const sanityInterns = data?.interns?.map(intern => ({
+    name: intern.name,
+    college: intern.college,
+    role: intern.role,
+    image: intern.image ? urlFor(intern.image).url() : null
+  })) || [];
+
+  const interns = sanityInterns.length > 0 ? sanityInterns : fallbackInterns;
+
+  const cardWidth = 400;
+  const gap = 32;
+  const totalItemWidth = cardWidth + gap;
+
+  // Create a seamless loop array. 
+  const seamlessInterns = interns.length < 5
+    ? [...interns, ...interns, ...interns, ...interns, ...interns]
+    : [...interns, ...interns];
+
+  const totalWidth = interns.length * totalItemWidth;
+
+  useAnimationFrame((time, delta) => {
+    if (!isHovered && interns.length > 0) {
+      const safeDelta = Math.min(delta, 100);
+      const speed = 50;
+      const moveBy = (speed * safeDelta) / 1000;
+      let newX = x.get() - moveBy;
+
+      if (newX <= -totalWidth) {
+        newX = 0;
+      }
+      x.set(newX);
+    }
+  });
+
+  return (
+    <div
+      className="relative group overflow-hidden py-12"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="px-6 mb-12 text-center">
+        <h3 className="text-4xl font-display font-medium mb-4 text-primary">
+          {heading}
+        </h3>
+        <p className="text-secondary text-lg">
+          {subheading}
+        </p>
+      </div>
+
+      <div className="flex overflow-hidden relative w-full items-center">
+        <motion.div className="flex gap-8 pl-6" style={{ x, width: "max-content" }}>
+          {seamlessInterns.map((intern, index) => (
+            <div
+              key={index}
+              className="w-[400px] bg-surface rounded-3xl overflow-hidden shadow-xl border border-border flex-shrink-0 flex flex-col group/card hover:-translate-y-2 transition-transform duration-300"
+            >
+              <div className="aspect-[4/5] overflow-hidden relative h-[500px]">
+                {intern.image ? (
+                  <img
+                    src={intern.image}
+                    alt={intern.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-surface-highlight flex items-center justify-center text-secondary">
+                    <div className="text-center p-4">
+                      <span className="block text-4xl mb-2">🎓</span>
+                      No Image
+                    </div>
+                  </div>
+                )}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/25 to-transparent opacity-90" />
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <div className="bg-primary/40 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 inline-block mb-3 rounded-full">
+                    Fresher
+                  </div>
+                  <h4 className="text-2xl font-bold leading-tight">
+                    {intern.name}
+                  </h4>
+                </div>
+              </div>
+
+              <div className="p-8 space-y-5 flex-1 flex flex-col justify-center bg-surface">
+                <div className="flex items-start space-x-4">
+                  <div className="p-2 bg-background rounded-lg shrink-0 border border-border">
+                    <GraduationCap className="text-accent" size={20} />
+                  </div>
+                  <p className="text-sm font-medium text-secondary leading-snug line-clamp-2 pt-1">
+                    {intern.college}
+                  </p>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-2 bg-background rounded-lg shrink-0 border border-border">
+                    <Briefcase className="text-accent" size={20} />
+                  </div>
+                  <p className="text-base font-bold text-primary pt-1">
+                    {intern.role}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default InternsCarousel;
