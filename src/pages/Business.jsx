@@ -362,8 +362,12 @@ const Business = () => {
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-background">
       <SEO
-        title={seoTitle}
-        description={seoDesc}
+        title={sanityData?.seo?.metaTitle || "Business Solutions | CopterCode - Future Ready Systems"}
+        description={sanityData?.seo?.metaDescription || "Discover CopterCode's advanced business solutions. We deliver cutting-edge drone technology, enterprise AI, and custom software to drive growth and operational excellence."}
+        ogTitle="Transform Your Business with CopterCode"
+        ogDescription="Explore our comprehensive suite of services including Industrial Drones, Digital Services, New Energy, and ERP Solutions designed for modern enterprises."
+        twitterTitle="CopterCode Business Solutions"
+        twitterDescription="Elevate your operations with our premium engineering and AI solutions. innovative technology for forward-thinking businesses."
       />
       {/* Parallax Hero Header */}
       <div className="relative pt-28 pb-12 lg:pt-36 lg:pb-20 overflow-hidden">

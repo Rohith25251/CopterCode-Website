@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { client, urlFor } from "../lib/sanity";
 import locationIndia from "../assets/location_india.png";
-import locationUsa from "../assets/location_usa.jpg";
+import locationUsa from "../assets/location_usa.png";
 
 const LocationCard = ({ loc, index }) => {
   // Current time logic for each location
@@ -73,13 +73,7 @@ const LocationCard = ({ loc, index }) => {
           />
 
           {/* Floating Icon */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-background/70 backdrop-blur-md rounded-full border border-border flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(45,55,72,0.15)]">
-            <Globe
-              size={32}
-              className="text-primary group-hover:text-accent transition-colors duration-300"
-              strokeWidth={1.5}
-            />
-          </div>
+
 
           {/* Country Badge */}
           <div className="absolute top-6 left-6">
@@ -211,7 +205,7 @@ const Locations = () => {
       title: "Headquarters",
       description:
         "Our central command center driving global strategy, extensive R&D facilities, and core manufacturing operations.",
-      address: "CopterCode Technologies, Bangalore & Chennai, India",
+      address: "CopterCode Technologies, Chennai, Tamil Nadu, India",
       phone: "+91 80721 93600",
       phoneDisplay: "+91 8072 193 600",
       email: "coptercode@gmail.com",
@@ -219,14 +213,14 @@ const Locations = () => {
       timezone: "Asia/Kolkata",
       image: locationIndia,
       mapsLink:
-        "https://www.google.com/maps/search/?api=1&query=CopterCode+Technologies+Chennai",
+        "https://www.google.com/maps/place/Chennai,+Tamil+Nadu/@13.0474733,80.0438597,11z/data=!3m1!4b1!4m6!3m5!1s0x3a5265ea4f7d3361:0x6e61a70b6863d433!8m2!3d13.0843007!4d80.2704622!16zL20vMGM4dGs?entry=ttu&g_ep=EgoyMDI2MDIwOS4wIKXMDSoASAFQAw%3D%3D",
     },
     {
       country: "USA",
       title: "USA Office",
       description:
         "Spearheading our North American partnerships, focusing on advanced AI software integration and client relations.",
-      address: "CopterCode Inc, San Francisco & Ann Arbor, MI, USA",
+      address: "CopterCode Inc, Ann Arbor, MI, USA",
       phone: "+17347639721",
       phoneDisplay: "+1 (734) 763 9721",
       email: "hr@coptercode.co.in",
@@ -234,7 +228,7 @@ const Locations = () => {
       timezone: "America/Detroit",
       image: locationUsa,
       mapsLink:
-        "https://www.google.com/maps/search/?api=1&query=Ann+Arbor+Michigan",
+        "https://www.google.com/maps/place/Ann+Arbor,+MI,+USA/@42.2732178,-83.8935777,12z/data=!3m1!4b1!4m6!3m5!1s0x883cb00dd4431f33:0xdb09f94686c8b5e2!8m2!3d42.2808256!4d-83.7430378!16zL20vMHdoMw?entry=ttu&g_ep=EgoyMDI2MDIwOS4wIKXMDSoASAFQAw%3D%3D",
     },
   ];
 

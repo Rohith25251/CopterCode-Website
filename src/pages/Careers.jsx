@@ -167,7 +167,14 @@ const Careers = () => {
 
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-primary selection:text-background overflow-x-hidden">
-      <SEO title={seoTitle} description={seoDesc} />
+      <SEO
+        title={sanityData?.seo?.metaTitle || "Careers at CopterCode | Join Our Innovative Team"}
+        description={sanityData?.seo?.metaDescription || "Build the future with CopterCode. Explore exciting job opportunities in drone tech, AI, and software engineering. Grow your career in a dynamic environment."}
+        ogTitle="Join CopterCode - Engineering The Unknown"
+        ogDescription="We are looking for passionate innovators. Check out our open positions and discover why CopterCode is the perfect place to advance your career."
+        twitterTitle="We're Hiring! Join CopterCode"
+        twitterDescription="Ready to make an impact? explore career opportunities at CopterCode and be part of the next generation of technology."
+      />
       <PageHeader
         title={heroTitle}
         subtitle={heroSubtitle}

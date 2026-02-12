@@ -62,7 +62,14 @@ const Administration = () => {
 
   return (
     <div className="bg-background min-h-screen text-primary">
-      <SEO title={seoTitle} description={seoDesc} />
+      <SEO
+        title={sanityData?.seo?.metaTitle || "Administration & Leadership | CopterCode"}
+        description={sanityData?.seo?.metaDescription || "Meet the leadership team behind CopterCode. Committed to operational excellence, stronger governance, and driving technological innovation across all sectors."}
+        ogTitle="CopterCode Administration - Leading with Vision"
+        ogDescription="Our administration is dedicated to integrity and sustainable growth. Learn about our governance structure and the team steering CopterCode towards the future."
+        twitterTitle="Leadership at CopterCode"
+        twitterDescription="Discover the minds guiding CopterCode's mission to engineer the unknown. Committed to excellence and innovation."
+      />
       <PageHeader title={heroTitle} subtitle={heroSubtitle} />
 
       <section className="pt-10 pb-24">

@@ -110,8 +110,12 @@ const Internship = () => {
   return (
     <div className="bg-background min-h-screen text-primary overflow-x-hidden">
       <SEO
-        title={seoTitle}
-        description={seoDesc}
+        title={sanityData?.seo?.metaTitle || "Internship Program | CopterCode - Launch Your Career"}
+        description={sanityData?.seo?.metaDescription || "Kickstart your career with CopterCode's internship program. Gain hands-on experience, mentorship, and training in cutting-edge technologies."}
+        ogTitle="CopterCode Internship - Learn from the Best"
+        ogDescription="Join our internship program to work on real-world projects. Experience growth, learning, and mentorship in the fields of AI and drone technology."
+        twitterTitle="Intern at CopterCode"
+        twitterDescription="Start your journey with us. Apply for the CopterCode internship program and gain invaluable industry experience."
       />
       <PageHeader
         title={heroTitle}

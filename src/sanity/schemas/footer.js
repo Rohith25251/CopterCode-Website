@@ -105,27 +105,21 @@ export const footer = {
             type: 'object',
             fields: [
                 {
-                    name: 'india',
-                    title: 'Headquarters (India)',
-                    type: 'object',
-                    fields: [
-                        { name: 'title', type: 'string', title: 'Section Title', initialValue: 'Headquarters (India)' },
-                        { name: 'companyName', type: 'string', title: 'Company Name' },
-                        { name: 'address', type: 'text', title: 'Address', rows: 2 },
-                        { name: 'phones', type: 'array', title: 'Phone Numbers', of: [{ type: 'string' }] },
-                        { name: 'email', type: 'string', title: 'Email Address' }
-                    ]
-                },
-                {
-                    name: 'usa',
-                    title: 'USA Office',
-                    type: 'object',
-                    fields: [
-                        { name: 'title', type: 'string', title: 'Section Title', initialValue: 'USA Office' },
-                        { name: 'companyName', type: 'string', title: 'Company Name' },
-                        { name: 'address', type: 'text', title: 'Address', rows: 2 },
-                        { name: 'phones', type: 'array', title: 'Phone Numbers', of: [{ type: 'string' }] },
-                        { name: 'email', type: 'string', title: 'Email Address' }
+                    name: 'locations',
+                    title: 'Office Locations',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            title: 'Location',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Location Title (e.g. Headquarters)' },
+                                { name: 'companyName', type: 'string', title: 'Company Name' },
+                                { name: 'address', type: 'text', title: 'Address', rows: 2 },
+                                { name: 'phones', type: 'array', title: 'Phone Numbers', of: [{ type: 'string' }] },
+                                { name: 'email', type: 'string', title: 'Email Address' }
+                            ]
+                        }
                     ]
                 }
             ]

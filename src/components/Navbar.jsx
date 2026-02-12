@@ -97,13 +97,20 @@ const Navbar = () => {
           className="flex items-center space-x-3 group min-w-fit"
           onClick={() => handleSamePageClick("/")}
         >
-          <div className="relative h-16 w-auto overflow-hidden transition-all duration-300">
+          <motion.div
+            className="relative h-16 w-16 overflow-hidden rounded-2xl bg-black shadow-2xl flex items-center justify-center z-20 p-1 border-none outline-none"
+            whileHover={{}}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
             <img
               src={logoSrc}
               alt={companyTitle}
-              className="h-full w-auto object-contain"
+              className="h-full w-full object-contain border-none outline-none"
             />
-          </div>
+          </motion.div>
           <span className="text-xl font-display font-bold tracking-wide text-primary group-hover:text-accent transition-colors block">
             {companyTitle}
           </span>

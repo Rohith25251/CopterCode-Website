@@ -67,7 +67,7 @@ const Contact = () => {
   // HQ
   const hqTitle = sanityData?.hqTitle || "Headquarters (India)";
   const hqName = sanityData?.hqName || "CopterCode Technologies";
-  const hqAddress = sanityData?.hqAddress || "Bangalore & Chennai, India";
+  const hqAddress = sanityData?.hqAddress || "Chennai, Tamil Nadu, India";
   const hqPhone1 = sanityData?.hqPhone1 || "+91 8072 193 600";
   const hqPhone2 = sanityData?.hqPhone2 || "+91 96554 51382";
   const hqLandline = sanityData?.hqLandline || "044 6132 9380";
@@ -76,7 +76,7 @@ const Contact = () => {
   // USA
   const usaTitle = sanityData?.usaTitle || "USA Office";
   const usaName = sanityData?.usaName || "CopterCode Inc";
-  const usaAddress = sanityData?.usaAddress || "San Francisco & Ann Arbor, USA";
+  const usaAddress = sanityData?.usaAddress || "Ann Arbor, MI, USA";
   const usaPhone = sanityData?.usaPhone || "+1 (734) 763 9721";
   const usaEmail = sanityData?.usaEmail || "hr@coptercode.co.in";
 
@@ -123,7 +123,14 @@ const Contact = () => {
 
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary overflow-hidden relative">
-      <SEO title={seoTitle} description={seoDesc} />
+      <SEO
+        title={sanityData?.seo?.metaTitle || "Contact Us | CopterCode - Get in Touch"}
+        description={sanityData?.seo?.metaDescription || "Have a project in mind or need support? Contact CopterCode today. We are here to answer your inquiries and discuss partnership opportunities."}
+        ogTitle="Connect with CopterCode"
+        ogDescription="Reach out to our team for inquiries, support, or collaborations. Let's discuss how we can help you achieve your goals with our advanced solutions."
+        twitterTitle="Get in Touch with CopterCode"
+        twitterDescription="We'd love to hear from you. Contact us for any questions about our services or to start a new project."
+      />
 
       {/* Background Decoration */}
       <div className="absolute inset-0 pointer-events-none">

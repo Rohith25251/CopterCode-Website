@@ -30,8 +30,7 @@ const Footer = () => {
           col2Links: data.column2?.links, // Now capable of being dynamic
           col3Title: data.column3?.title,
           col3Links: data.column3?.links,
-          indiaOffice: data.contact?.india,
-          usaOffice: data.contact?.usa,
+          locations: data.contact?.locations,
           copyrightText: data.copyrightText,
           contactTitle: "Contact Us", // Default or add to schema if needed, strictly not asked but good to have
           socialLinks: data.socialLinks
@@ -89,19 +88,24 @@ const Footer = () => {
   const col2 = { title: footerData?.col2Title || defaultCol2.title, links: footerData?.col2Links || defaultCol2.links };
   const col3 = { title: footerData?.col3Title || defaultCol3.title, links: footerData?.col3Links || defaultCol3.links };
 
-  const india = footerData?.indiaOffice || {
-    companyName: settings?.companyName || "CopterCode Technologies",
-    address: "Bangalore & Chennai, India",
-    phones: ["+91 8072 193 600", "+91 96554 51382"],
-    email: "coptercode@gmail.com"
-  };
+  const defaultLocations = [
+    {
+      title: "Headquarters (India)",
+      companyName: settings?.companyName || "CopterCode Technologies",
+      address: "Chennai, Tamil Nadu, India",
+      phones: ["+91 8072 193 600", "+91 96554 51382"],
+      email: "coptercode@gmail.com"
+    },
+    {
+      title: "USA Office",
+      companyName: settings?.companyName ? `${settings.companyName} Inc` : "CopterCode Inc",
+      address: "Ann Arbor, MI, USA",
+      phones: ["+1 (734) 763 9721"],
+      email: "hr@coptercode.co.in"
+    }
+  ];
 
-  const usa = footerData?.usaOffice || {
-    companyName: settings?.companyName ? `${settings.companyName} Inc` : "CopterCode Inc",
-    address: "San Francisco & Ann Arbor, USA",
-    phones: ["+1 (734) 763 9721"],
-    email: "hr@coptercode.co.in"
-  };
+  const locations = (footerData?.locations && footerData.locations.length > 0) ? footerData.locations : defaultLocations;
 
   const copyrightText = footerData?.copyrightText
     ? footerData.copyrightText.replace('{year}', new Date().getFullYear())
@@ -229,77 +233,42 @@ const Footer = () => {
               {footerData?.contactTitle || "Contact Us"}
             </h4>
             <ul className="space-y-6 text-secondary font-medium">
-              {/* Headquarters India */}
-              <li className="space-y-3">
-                <div className="flex items-center gap-2 text-accent">
-                  <MapPin size={16} />
-                  <span className="text-xs font-bold uppercase tracking-widest">
-                    {india.title || "Headquarters (India)"}
-                  </span>
-                </div>
-                <div className="pl-6 space-y-2">
-                  <div>
-                    <p className="font-bold text-primary">
-                      {india.companyName}
-                    </p>
-                    <p className="text-xs text-secondary/70">
-                      {india.address}
-                    </p>
+              {locations.map((location, index) => (
+                <li key={index} className={`space-y-3 ${index > 0 ? "border-t border-border pt-4" : ""}`}>
+                  <div className="flex items-center gap-2 text-accent">
+                    {index === 0 ? <MapPin size={16} /> : <Globe size={16} />}
+                    <span className="text-xs font-bold uppercase tracking-widest">
+                      {location.title}
+                    </span>
                   </div>
-                  <div className="space-y-1">
-                    {india.phones?.map((phone, i) => (
-                      <a key={i} href={`tel:${phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 hover:text-primary transition-colors text-xs">
-                        <Phone size={14} className="text-accent" /> {phone}
+                  <div className="pl-6 space-y-2">
+                    <div>
+                      <p className="font-bold text-primary">
+                        {location.companyName}
+                      </p>
+                      <p className="text-xs text-secondary/70">
+                        {location.address}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      {location.phones?.map((phone, i) => (
+                        <a key={i} href={`tel:${phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 hover:text-primary transition-colors text-xs">
+                          <Phone size={14} className="text-accent" /> {phone}
+                        </a>
+                      ))}
+                    </div>
+                    <div className="space-y-1 pt-1">
+                      <a
+                        href={`mailto:${location.email}`}
+                        className="flex items-center gap-2 hover:text-accent transition-colors text-xs break-all"
+                      >
+                        <Mail size={14} className="text-accent" />{" "}
+                        {location.email}
                       </a>
-                    ))}
+                    </div>
                   </div>
-                  <div className="space-y-1 pt-1">
-                    <a
-                      href={`mailto:${india.email}`}
-                      className="flex items-center gap-2 hover:text-accent transition-colors text-xs break-all"
-                    >
-                      <Mail size={14} className="text-accent" />{" "}
-                      {india.email}
-                    </a>
-                  </div>
-                </div>
-              </li>
-
-              {/* USA Office */}
-              <li className="space-y-3 border-t border-border pt-4">
-                <div className="flex items-center gap-2 text-accent">
-                  <Globe size={16} />
-                  <span className="text-xs font-bold uppercase tracking-widest">
-                    {usa.title || "USA Office"}
-                  </span>
-                </div>
-                <div className="pl-6 space-y-2">
-                  <div>
-                    <p className="font-bold text-primary">
-                      {usa.companyName}
-                    </p>
-                    <p className="text-xs text-secondary/70">
-                      {usa.address}
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    {usa.phones?.map((phone, i) => (
-                      <a key={i} href={`tel:${phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 hover:text-primary transition-colors text-xs">
-                        <Phone size={14} className="text-accent" /> {phone}
-                      </a>
-                    ))}
-                  </div>
-                  <div className="space-y-1 pt-1">
-                    <a
-                      href={`mailto:${usa.email}`}
-                      className="flex items-center gap-2 hover:text-accent transition-colors text-xs break-all"
-                    >
-                      <Mail size={14} className="text-accent" />{" "}
-                      {usa.email}
-                    </a>
-                  </div>
-                </div>
-              </li>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

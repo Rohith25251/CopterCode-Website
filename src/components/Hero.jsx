@@ -9,11 +9,11 @@ import { Link } from "react-router-dom";
 const Hero = ({ data }) => {
   // Static defaults
   const defaultImages = [
-    "/mediafiles/news and media/IMG_3330.jpg",
-    "/mediafiles/news and media/IMG_1699.jpg",
-    "/mediafiles/news and media/IMG_3322.jpg",
-    "/mediafiles/news and media/IMG_3979.jpg",
-    "/mediafiles/news and media/IMG_3570.jpg",
+    "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
+    "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
+    "/mediafiles/Home/IMG_1851.jpg",
+    "/mediafiles/Home/IMG_3322.jpg",
+    "/mediafiles/Home/IMG_3854.jpg",
   ];
 
   // Map new schema fields to component variables
@@ -65,7 +65,7 @@ const Hero = ({ data }) => {
 
 
   return (
-    <section className="relative bg-background text-primary overflow-hidden flex items-start justify-center min-h-[100svh] pt-32 md:pt-40 group">
+    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-10 md:pt-16 group">
       {/* Premium Background Layers */}
       <div className="absolute inset-0 bg-background z-0" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/5 via-transparent to-transparent opacity-30 pointer-events-none z-0" />
@@ -127,7 +127,7 @@ const Hero = ({ data }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Content (Text) */}
           <motion.div
-            className="lg:col-span-6 flex flex-col justify-center"
+            className="lg:col-span-5 flex flex-col justify-center relative z-20"
             initial="hidden"
             animate="visible"
             variants={{
@@ -153,7 +153,7 @@ const Hero = ({ data }) => {
             </motion.div>
 
             {/* Main Headline - Animated Letters */}
-            <h1 className="font-display font-black tracking-tighter text-primary mb-8 leading-[0.9] text-6xl sm:text-7xl md:text-8xl lg:text-[7.5rem] drop-shadow-2xl">
+            <h1 className="font-display font-black tracking-tighter text-primary mb-8 leading-[0.9] text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl 2xl:text-[7.5rem] drop-shadow-2xl">
               {(() => {
                 // Split headline into words for animation
                 const words = headline.split(" ");
@@ -280,32 +280,37 @@ const Hero = ({ data }) => {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Single Large Image Slideshow with 3D Tilt */}
+          {/* Right Content - Slideshow with Grid Background */}
           <motion.div
-            className="lg:col-span-6 relative mt-16 lg:mt-0 h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center lg:justify-end"
-            initial={{ opacity: 0, x: 50, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
+            className="lg:col-span-7 relative mt-16 lg:mt-0 h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center z-10"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            {/* Premium Backlight Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/20 blur-[100px] rounded-full pointer-events-none z-0" />
+            {/* Architectural Grid Background */}
+            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+              <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:60px_60px]" />
+              <div className="absolute inset-0 bg-gradient-to-l from-background via-transparent to-transparent" />
+            </div>
 
-            <motion.div className="relative w-full max-w-4xl h-full z-10">
-              <AnimatePresence mode="popLayout">
+            {/* Premium Backlight Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-accent/10 blur-[80px] rounded-full pointer-events-none z-0" />
+
+            {/* Image Container */}
+            <div className="relative w-full h-full z-10 flex items-center justify-center p-0">
+              <AnimatePresence mode="wait">
                 <motion.img
                   key={currentIndex}
                   src={images[currentIndex]}
-                  alt="CopterCode Highlight"
-                  initial={{ opacity: 0, scale: 1.2 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 2, ease: "easeInOut" }}
-                  className="absolute inset-0 w-full h-full object-contain drop-shadow-2xl"
+                  alt="CopterCode Feature"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="w-full h-full object-contain drop-shadow-2xl scale-[1.5] lg:scale-[1.8]"
                 />
               </AnimatePresence>
-
-              {/* Cinematic Vignette - Removed as it creates a box effect on contain */}
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>

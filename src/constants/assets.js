@@ -3,7 +3,7 @@
 // For now, these are placeholders. After you use the upload utility, replace these strings with the actual URLs.
 
 export const ASSETS = {
-    LOGO: "/mediafiles/Coptercode Logo.jpeg", // Replace with Firebase URL: e.g., https://firebasestorage.googleapis.com/.../media%2Fimages%2Flogo.jpeg
+    LOGO: "/mediafiles/Coptercode_Logo.svg", // Replace with Firebase URL: e.g., https://firebasestorage.googleapis.com/.../media%2Fimages%2Flogo.jpeg
 
     VIDEOS: {
         DRONES: "/mediafiles/videos/industrial-drones-uav.mp4",
