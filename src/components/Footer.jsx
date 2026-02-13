@@ -91,16 +91,16 @@ const Footer = () => {
   const defaultLocations = [
     {
       title: "Headquarters (India)",
-      companyName: settings?.companyName || "CopterCode Technologies",
+      companyName: settings?.companyName || "CopterCode",
       address: "Chennai, Tamil Nadu, India",
       phones: ["+91 8072 193 600", "+91 96554 51382"],
       email: "coptercode@gmail.com"
     },
     {
       title: "USA Office",
-      companyName: settings?.companyName ? `${settings.companyName} Inc` : "CopterCode Inc",
+      companyName: settings?.companyName ? `${settings.companyName} Inc` : "CopterCode",
       address: "Ann Arbor, MI, USA",
-      phones: ["+1 (734) 763 9721"],
+      phones: ["+1 (734) 678 6093"],
       email: "hr@coptercode.co.in"
     }
   ];

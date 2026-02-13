@@ -41,6 +41,23 @@ export const technologiesPage = {
                     fields: [
                         { name: 'category', type: 'string', title: 'Category' },
                         {
+                            name: 'icon',
+                            type: 'string',
+                            title: 'Icon (Lucide)',
+                            options: {
+                                list: [
+                                    { title: 'Globe (Frontend)', value: 'globe' },
+                                    { title: 'Server (Backend)', value: 'server' },
+                                    { title: 'Database', value: 'database' },
+                                    { title: 'Cloud', value: 'cloud' },
+                                    { title: 'CPU (AI/ML)', value: 'cpu' },
+                                    { title: 'Smartphone (Mobile)', value: 'smartphone' },
+                                    { title: 'Layers (General)', value: 'layers' }
+                                ]
+                            }
+                        },
+                        { name: 'description', type: 'text', title: 'Description' },
+                        {
                             name: 'items',
                             title: 'Items',
                             type: 'array',
@@ -51,24 +68,40 @@ export const technologiesPage = {
             ],
             initialValue: [
                 {
-                    category: "Frontend",
-                    items: ["React", "Next.js", "Vue.js", "Tailwind CSS", "TypeScript", "Redux"]
+                    category: "Frontend Experience",
+                    icon: "globe",
+                    description: "Crafting responsive, high-performance user interfaces.",
+                    items: ["React", "Next.js", "Vue.js", "Tailwind CSS", "TypeScript", "Redux", "Framer Motion", "Three.js"]
                 },
                 {
-                    category: "Backend",
-                    items: ["Node.js", "Python", "Go", "Java", "Express", "Django"]
+                    category: "Backend Architecture",
+                    icon: "server",
+                    description: "Building robust, scalable server-side solutions.",
+                    items: ["Node.js", "Python", "Go", "Java", "Express", "Django", "FastAPI", "GraphQL"]
                 },
                 {
-                    category: "Database",
-                    items: ["PostgreSQL", "MongoDB", "Redis", "MySQL", "DynamoDB"]
+                    category: "Database Solutions",
+                    icon: "database",
+                    description: "Secure and efficient data management systems.",
+                    items: ["PostgreSQL", "MongoDB", "Redis", "MySQL", "DynamoDB", "Firebase", "Supabase"]
                 },
                 {
                     category: "Cloud & DevOps",
-                    items: ["AWS", "Google Cloud", "Azure", "Docker", "Kubernetes", "Terraform", "CI/CD"]
+                    icon: "cloud",
+                    description: "Automated deployment and scalable infrastructure.",
+                    items: ["AWS", "Google Cloud", "Azure", "Docker", "Kubernetes", "Terraform", "CI/CD", "Vercel"]
                 },
                 {
-                    category: "AI & ML",
-                    items: ["Python", "TensorFlow", "PyTorch", "OpenCV", "LangChain", "OpenAI API"]
+                    category: "AI & Machine Learning",
+                    icon: "cpu",
+                    description: "Intelligent algorithms driving automation and insights.",
+                    items: ["Python", "TensorFlow", "PyTorch", "OpenCV", "LangChain", "OpenAI API", "Hugging Face", "Keras"]
+                },
+                {
+                    category: "Mobile & Embedded",
+                    icon: "smartphone",
+                    description: "Cross-platform apps and hardware integration.",
+                    items: ["React Native", "Flutter", "Arduino", "Raspberry Pi", "ROS", "PX4"]
                 }
             ]
         }

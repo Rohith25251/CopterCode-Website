@@ -66,7 +66,7 @@ const Contact = () => {
 
   // HQ
   const hqTitle = sanityData?.hqTitle || "Headquarters (India)";
-  const hqName = sanityData?.hqName || "CopterCode Technologies";
+  const hqName = sanityData?.hqName || "CopterCode";
   const hqAddress = sanityData?.hqAddress || "Chennai, Tamil Nadu, India";
   const hqPhone1 = sanityData?.hqPhone1 || "+91 8072 193 600";
   const hqPhone2 = sanityData?.hqPhone2 || "+91 96554 51382";
@@ -75,9 +75,9 @@ const Contact = () => {
 
   // USA
   const usaTitle = sanityData?.usaTitle || "USA Office";
-  const usaName = sanityData?.usaName || "CopterCode Inc";
+  const usaName = sanityData?.usaName || "CopterCode";
   const usaAddress = sanityData?.usaAddress || "Ann Arbor, MI, USA";
-  const usaPhone = sanityData?.usaPhone || "+1 (734) 763 9721";
+  const usaPhone = sanityData?.usaPhone || "+1 (734) 678 6093";
   const usaEmail = sanityData?.usaEmail || "hr@coptercode.co.in";
 
 

@@ -205,7 +205,7 @@ const Locations = () => {
       title: "Headquarters",
       description:
         "Our central command center driving global strategy, extensive R&D facilities, and core manufacturing operations.",
-      address: "CopterCode Technologies, Chennai, Tamil Nadu, India",
+      address: "CopterCode, Chennai, Tamil Nadu, India",
       phone: "+91 80721 93600",
       phoneDisplay: "+91 8072 193 600",
       email: "coptercode@gmail.com",
@@ -220,9 +220,9 @@ const Locations = () => {
       title: "USA Office",
       description:
         "Spearheading our North American partnerships, focusing on advanced AI software integration and client relations.",
-      address: "CopterCode Inc, Ann Arbor, MI, USA",
-      phone: "+17347639721",
-      phoneDisplay: "+1 (734) 763 9721",
+      address: "CopterCode, Ann Arbor, MI, USA",
+      phone: "+17346786093",
+      phoneDisplay: "+1 (734) 678 6093",
       email: "hr@coptercode.co.in",
       gradient: "from-blue-600 to-indigo-600",
       timezone: "America/Detroit",

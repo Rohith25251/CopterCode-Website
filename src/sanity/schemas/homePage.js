@@ -61,6 +61,12 @@ export const homePage = {
                 }
             ]
         },
+        // --- SCROLLING ANNOUNCEMENT BAR ---
+        {
+            name: 'scrollingAnnouncementBar',
+            title: 'Scrolling Announcement Bar',
+            type: 'scrollingAnnouncementBar'
+        },
         // --- BUSINESSES SECTION ---
         {
             name: 'businessesSection',
@@ -114,7 +120,7 @@ export const homePage = {
         // --- ANNOUNCEMENTS SECTION ---
         {
             name: 'announcementsSection',
-            title: 'Announcements',
+            title: 'Latest Insights',
             type: 'array',
             of: [
                 {
@@ -247,6 +253,132 @@ export const homePage = {
                         }
                     ]
                 }
+            ]
+        },
+        // --- UPCOMING EVENTS SECTION ---
+        {
+            name: 'upcomingEventsSection',
+            title: 'Upcoming Events Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Section Heading', initialValue: 'Upcoming Events' },
+                {
+                    name: 'events',
+                    title: 'Events List',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Event Title' },
+                                { name: 'date', type: 'string', title: 'Date' },
+                                { name: 'location', type: 'string', title: 'Location' },
+                                { name: 'category', type: 'string', title: 'Category (e.g. Exhibition, Hackathon)' },
+                                { name: 'image', type: 'image', title: 'Event Image', options: { hotspot: true } }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        // --- CAREERS SECTION ---
+        {
+            name: 'careersSection',
+            title: 'Careers Section',
+            type: 'object',
+            fields: [
+                { name: 'tagline', type: 'string', title: 'Tagline', initialValue: 'Join Our Elite Team' },
+                { name: 'heading', type: 'string', title: 'Main Heading', initialValue: 'Build The Future With Us' },
+                { name: 'description', type: 'text', title: 'Description' },
+                {
+                    name: 'benefits',
+                    title: 'Benefits / Highlights',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Title' },
+                                { name: 'description', type: 'text', title: 'Description' },
+                                {
+                                    name: 'icon',
+                                    title: 'Icon',
+                                    type: 'string',
+                                    options: {
+                                        list: [
+                                            { title: 'Zap (Learning)', value: 'zap' },
+                                            { title: 'Globe (Global)', value: 'globe' },
+                                            { title: 'Heart (Inclusive)', value: 'heart' }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        // --- INTERNSHIP SECTION ---
+        {
+            name: 'internshipSection',
+            title: 'Internship Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Internship Programme' },
+                { name: 'description', type: 'text', title: 'Description' },
+                {
+                    name: 'stats',
+                    title: 'Statistics',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'value', type: 'string', title: 'Value (e.g. 40+)' },
+                                { name: 'label', type: 'string', title: 'Label (e.g. Partner Colleges)' }
+                            ]
+                        }
+                    ]
+                },
+                { name: 'applyLink', type: 'url', title: 'Apply Now Link' },
+                { name: 'image', type: 'image', title: 'Main Image', options: { hotspot: true } }
+            ]
+        },
+        // --- SUSTAINABILITY SECTION ---
+        {
+            name: 'sustainabilitySection',
+            title: 'Sustainability Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Sustainability & CSR' },
+                { name: 'description', type: 'text', title: 'Description' },
+                {
+                    name: 'impactItems',
+                    title: 'Impact Items',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'text', type: 'string', title: 'Text' },
+                                {
+                                    name: 'icon',
+                                    title: 'Icon',
+                                    type: 'string',
+                                    options: {
+                                        list: [
+                                            { title: 'Users', value: 'users' },
+                                            { title: 'Globe', value: 'globe' },
+                                            { title: 'Leaf', value: 'leaf' },
+                                            { title: 'Code', value: 'code' }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                { name: 'bannerImage', type: 'image', title: 'Banner Image', options: { hotspot: true } }
             ]
         }
     ]
