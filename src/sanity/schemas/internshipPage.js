@@ -27,7 +27,28 @@ export const internshipPage = {
             type: 'object',
             fields: [
                 { name: 'title', type: 'string', title: 'Title', initialValue: 'Internship Programme' },
-                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Empowering the next generation of innovators with real-world exposure to emerging technologies.' }
+                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Empowering the next generation of innovators with real-world exposure to emerging technologies.' },
+                {
+                    name: 'backgroundImage',
+                    title: 'Background Image (Single)',
+                    type: 'image',
+                    options: { hotspot: true },
+                    description: 'Fallback image if no carousel images are provided.'
+                },
+                {
+                    name: 'backgroundImages',
+                    title: 'Background Images (Carousel)',
+                    type: 'array',
+                    of: [{ type: 'image', options: { hotspot: true } }],
+                    description: 'Upload multiple images to create a background slideshow.'
+                },
+                {
+                    name: 'scrollButtonText',
+                    title: 'Hero Scroll Button Text',
+                    type: 'string',
+                    initialValue: 'Ready to Launch? Apply Now',
+                    description: 'Text for the button that scrolls to the application section.'
+                }
             ]
         },
         // --- INTRODUCTION ---
@@ -134,9 +155,9 @@ export const internshipPage = {
                         }
                     ],
                     initialValue: [
-                        { stepNumber: '01', title: 'Online Application', description: 'Submit your details and resume through the official CopterCode Internship Application Form.' },
-                        { stepNumber: '02', title: 'Screening & Selection', description: 'Shortlisted candidates will be contacted for a brief interview or assessment.' },
-                        { stepNumber: '03', title: 'Confirmation', description: 'Selected candidates receive an Offer Letter with instructions to begin.' }
+                        { stepNumber: '01', title: 'Drop the Mic (and Resume)', description: 'Fill out the form in minutes. It’s the easiest thing you’ll do all day.' },
+                        { stepNumber: '02', title: 'Vibe Check', description: 'We’ll reach out for a casual chat. Let’s see how our goals align!' },
+                        { stepNumber: '03', title: 'Secure the Bag', description: 'Offer letter incoming! It’s time to make it official and start something great.' }
                     ]
                 }
             ]
@@ -191,7 +212,8 @@ export const internshipPage = {
                 { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Join CopterCode' },
                 { name: 'subheading', type: 'text', title: 'Subheading', initialValue: 'Where innovation meets opportunity. Apply now and start building the future with us.' },
                 { name: 'buttonText', type: 'string', title: 'Button Text', initialValue: 'Apply for Internship' },
-                { name: 'link', type: 'string', title: 'Link', initialValue: 'https://forms.gle/bPkBxkdAHwDDrFJm6' }
+                { name: 'link', type: 'string', title: 'Link', initialValue: 'https://forms.gle/bPkBxkdAHwDDrFJm6' },
+                { name: 'backgroundImage', type: 'image', title: 'Background Image', options: { hotspot: true } }
             ]
         }
     ]

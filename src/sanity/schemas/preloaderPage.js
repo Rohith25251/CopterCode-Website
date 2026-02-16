@@ -11,12 +11,11 @@ export const preloaderPage = {
             initialValue: 'Preloader Page'
         },
         {
-            name: 'backgroundImages',
-            title: 'Background Images',
-            type: 'array',
-            description: 'Upload exactly 3 images for the split-screen background (Left, Center, Right)',
-            of: [{ type: 'image', options: { hotspot: true } }],
-            validation: Rule => Rule.length(3).error('You must have exactly 3 images for the preloader background.')
+            name: 'backgroundImage',
+            title: 'Background Image',
+            type: 'image',
+            description: 'High-quality background image for the loading screen (1920x1080 recommended).',
+            options: { hotspot: true }
         },
         {
             name: 'logo',

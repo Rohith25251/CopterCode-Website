@@ -4,11 +4,20 @@ import InternsCarousel from "../components/InternsCarousel";
 import PartnerLogos from "../components/PartnerLogos";
 import { ArrowRight, Star, Play, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import OptimizedImage from "../components/OptimizedImage";
 
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
 import { useState, useEffect } from "react";
-import { client } from "../lib/sanity";
+import { client, urlFor } from "../lib/sanity";
+
+const HEADER_IMAGES = [
+  "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
+  "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
+  "/mediafiles/Home/IMG_1851.jpg",
+  "/mediafiles/Home/IMG_3322.jpg",
+  "/mediafiles/Home/IMG_3854.jpg"
+];
 
 const Internship = () => {
   useScrollToTop(); // Force scroll to top on mount
@@ -22,6 +31,9 @@ const Internship = () => {
           seo: data.seo,
           heroTitle: data.hero?.title,
           heroSubtitle: data.hero?.subtitle,
+          heroBackgroundImage: data.hero?.backgroundImage,
+          heroBackgroundImages: data.hero?.backgroundImages,
+          heroScrollButtonText: data.hero?.scrollButtonText,
           introText1: data.introduction?.text1,
           introText2: data.introduction?.text2,
           purposeTitle: data.purpose?.title,
@@ -38,6 +50,7 @@ const Internship = () => {
           ctaSubheading: data.cta?.subheading,
           ctaButtonText: data.cta?.buttonText,
           ctaLink: data.cta?.link,
+          ctaBackgroundImage: data.cta?.backgroundImage,
           internsSection: data.internsSection,
           partnersSection: data.partnersSection,
         });
@@ -47,6 +60,17 @@ const Internship = () => {
 
   const seoTitle = sanityData?.seo?.metaTitle || "Internship Programme";
   const seoDesc = sanityData?.seo?.metaDescription || "CopterCode Internship Programme - Empowering Future Innovators.";
+
+  const sanityHeroImage = sanityData?.heroBackgroundImage ? urlFor(sanityData.heroBackgroundImage).url() : null;
+  const sanityCarouselImages = sanityData?.heroBackgroundImages?.length > 0
+    ? sanityData.heroBackgroundImages.map(img => urlFor(img).url())
+    : [];
+
+  const headerImages = sanityCarouselImages.length > 0
+    ? sanityCarouselImages
+    : (sanityHeroImage ? [sanityHeroImage] : HEADER_IMAGES);
+
+  const ctaBgImage = sanityData?.ctaBackgroundImage ? urlFor(sanityData.ctaBackgroundImage).url() : headerImages[0];
 
   const heroTitle = sanityData?.heroTitle || "Internship Programme";
   const heroSubtitle = sanityData?.heroSubtitle || "Empowering the next generation of innovators with real-world exposure to emerging technologies.";
@@ -86,18 +110,18 @@ const Internship = () => {
   const processSteps = (sanityData?.processSteps?.length > 0) ? sanityData.processSteps : [
     {
       stepNumber: "01",
-      title: "Online Application",
-      description: "Submit your details and resume through the official CopterCode Internship Application Form.",
+      title: "Show Us Your Spark!",
+      description: "Fill out the quick form, and let your brilliance shine. No stress, just the basics!",
     },
     {
       stepNumber: "02",
-      title: "Screening & Selection",
-      description: "Shortlisted candidates will be contacted for a brief interview or assessment.",
+      title: "Let’s Connect & Chat!",
+      description: "Think of this as a relaxed coffee chat. We can't wait to hear your story and learn about your unique talents.",
     },
     {
       stepNumber: "03",
-      title: "Confirmation",
-      description: "Selected candidates receive an Offer Letter with instructions to begin.",
+      title: "Welcome to the Team!",
+      description: "Hooray! Grab your offer letter and get ready to kickstart an amazing internship journey with us.",
     },
   ];
 
@@ -120,7 +144,19 @@ const Internship = () => {
       <PageHeader
         title={heroTitle}
         subtitle={heroSubtitle}
-      />
+        image={sanityHeroImage}
+        images={headerImages}
+      >
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => document.getElementById('apply-section')?.scrollIntoView({ behavior: 'smooth' })}
+          className="hidden md:flex bg-accent hover:bg-accent/90 text-white font-bold py-4 px-8 rounded-full shadow-lg items-center gap-3 text-lg transition-all transform hover:shadow-accent/50 hover:shadow-2xl border-2 border-white/20 backdrop-blur-sm group"
+        >
+          <span className="drop-shadow-md">{sanityData?.heroScrollButtonText || "Ready to Launch? Apply Now"}</span>
+          <span className="text-2xl group-hover:rotate-12 transition-transform">🚀</span>
+        </motion.button>
+      </PageHeader>
 
       {/* Introduction Section */}
       <section className="py-24 relative overflow-hidden">
@@ -276,8 +312,8 @@ const Internship = () => {
               viewport={{ once: true, margin: "-50px" }}
               className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
             >
-              {/* Connector Line */}
-              <div className="hidden md:block absolute top-8 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-accent/0 via-accent/50 to-accent/0 z-0"></div>
+              {/* Connector Line - Positioned to pass through the circles */}
+              <div className="hidden md:block absolute top-[60px] left-[16%] right-[16%] h-[2px] bg-gray-200 z-0"></div>
 
               {processSteps.map((item, i) => (
                 <motion.div
@@ -291,15 +327,15 @@ const Internship = () => {
                     },
                   }}
                   whileHover={{ y: -10 }}
-                  className="bg-surface p-8 rounded-xl border border-border relative z-10 text-center hover:shadow-xl transition-all group"
+                  className="bg-[#F3F7FA] p-10 rounded-2xl border border-transparent hover:border-blue-100 relative z-10 text-center hover:shadow-xl transition-all group"
                 >
-                  <div className="w-16 h-16 rounded-full bg-background border-2 border-border flex items-center justify-center text-primary text-xl font-bold mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:border-accent/40">
-                    {item.stepNumber || i + 1}
+                  <div className="w-20 h-20 rounded-full bg-white border border-gray-100 flex items-center justify-center text-primary text-2xl font-bold mx-auto mb-8 shadow-sm relative z-10 group-hover:scale-110 transition-transform duration-300 group-hover:border-blue-200">
+                    {item.stepNumber || String(i + 1).padStart(2, '0')}
                   </div>
-                  <h4 className="text-xl font-bold text-primary mb-3">
+                  <h4 className="text-xl font-bold text-primary mb-4">
                     {item.title}
                   </h4>
-                  <p className="text-sm text-secondary">{item.description}</p>
+                  <p className="text-secondary leading-relaxed">{item.description}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -320,18 +356,26 @@ const Internship = () => {
       <PartnerLogos data={sanityData?.partnersSection} />
 
       {/* CTA Section */}
-      <section className="py-24 bg-surface backdrop-blur-md relative overflow-hidden text-center border-t border-border group">
-        <div className="absolute inset-0 bg-background/30 opacity-50" />
+      <section id="apply-section" className="py-24 relative overflow-hidden text-center border-t border-border group text-white">
+        <div className="absolute inset-0 z-0">
+          <OptimizedImage
+            src={ctaBgImage}
+            alt="Apply CTA Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        </div>
+        <div className="absolute inset-0 bg-background/30 opacity-50 pointer-events-none" />
         <motion.div
           animate={{ scale: [1, 1.1, 1], rotate: [0, 90, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
           className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px] pointer-events-none mix-blend-overlay"
         />
         <div className="container mx-auto px-6 relative z-10">
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-primary">
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-white">
             {ctaHeading}
           </h2>
-          <p className="text-xl text-secondary mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
             {ctaSubheading}
           </p>
 
@@ -341,7 +385,7 @@ const Internship = () => {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-10 py-5 bg-primary text-white font-bold rounded-full text-lg hover:bg-accent hover:text-primary transition-all shadow-xl hover:shadow-2xl hover:shadow-accent/20"
+            className="inline-flex items-center px-10 py-5 bg-white text-primary font-bold rounded-full text-lg hover:bg-accent hover:text-primary transition-all shadow-xl hover:shadow-2xl hover:shadow-accent/20"
           >
             {ctaButtonText} <ArrowRight className="ml-2" />
           </motion.a>

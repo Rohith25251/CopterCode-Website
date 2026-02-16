@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import OptimizedImage from "./OptimizedImage";
 import { client } from "../lib/sanity";
 
 const defaultContent = {
-    images: [
-        "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg", // Left
-        "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg", // Center
-        "/mediafiles/Home/IMG_1851.jpg", // Right
-    ],
+    image: "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
     logo: "/mediafiles/Coptercode_Logo.svg",
     titlePrefix: "WELCOME TO",
     highlightedTitle: "COPTERCODE",
@@ -26,16 +22,14 @@ const Preloader = ({ setLoading }) => {
                     highlightedTitle,
                     tagline,
                     "logo": logo.asset->url,
-                    "backgroundImages": backgroundImages[].asset->url
+                    "backgroundImage": backgroundImage.asset->url
                 }`;
 
                 const data = await client.fetch(query);
 
                 if (data) {
                     setContent({
-                        images: data.backgroundImages && data.backgroundImages.length === 3
-                            ? data.backgroundImages
-                            : defaultContent.images,
+                        image: data.backgroundImage || defaultContent.image,
                         logo: data.logo || defaultContent.logo,
                         titlePrefix: data.titlePrefix || defaultContent.titlePrefix,
                         highlightedTitle: data.highlightedTitle || defaultContent.highlightedTitle,
@@ -52,100 +46,93 @@ const Preloader = ({ setLoading }) => {
         // Total duration before triggering exit
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 2500);
+        }, 3000); // Slightly longer for "professional" feel
 
         return () => clearTimeout(timer);
     }, [setLoading]);
 
-    const panelVariants = {
-        initial: { height: "100%" },
-        exit: {
-            height: 0,
-            transition: { duration: 1.5, ease: [0.76, 0, 0.24, 1] }
-        },
-    };
-
-    const textVariants = {
-        initial: { opacity: 0, y: 20 },
-        animate: { opacity: 1, y: 0, transition: { delay: 0.5, duration: 0.8 } },
-        exit: { opacity: 0, y: -20, transition: { duration: 0.5 } },
-    };
-
     return (
         <motion.div
-            className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+            className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-black"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { delay: 1.2, duration: 1.0 } }} /* Fades out slightly before panels are fully gone to smooth edges */
+            exit={{
+                y: "-100%",
+                transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
+            }}
         >
-            {/* Three Columns Background */}
-            <div className="absolute inset-0 flex w-full h-full pointer-events-none z-10">
-                {content.images.map((img, index) => (
-                    <motion.div
-                        key={index}
-                        className="relative w-1/3 h-full border-r border-white/10 last:border-r-0 bg-zinc-900"
-                        variants={panelVariants}
-                        initial="initial"
-                        exit="exit"
-                    >
-                        <div className="absolute inset-0 bg-black/60 z-10" />
-                        <OptimizedImage
-                            src={img}
-                            alt={`Loading ${index}`}
-                            className="w-full h-full object-cover opacity-50 grayscale"
-                        />
-                    </motion.div>
-                ))}
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0">
+                <OptimizedImage
+                    src={content.image}
+                    alt="Loading Background"
+                    className="w-full h-full object-cover opacity-40 grayscale scale-105 animate-pulse-slow"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
             </div>
 
-            {/* Center Content Overlay */}
-            <motion.div
-                className="relative z-20 flex flex-col items-center justify-center text-center px-4"
-                initial="initial"
-                animate="animate"
-                exit="exit"
-            >
+            {/* Center Content */}
+            <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+                {/* Logo Section */}
                 <motion.div
-                    className="mb-8 w-32 md:w-48 h-32 md:h-48 relative"
-                    variants={{
-                        initial: { scale: 0.8, opacity: 0 },
-                        animate: {
-                            scale: 1,
-                            opacity: 1,
-                            transition: { duration: 1, ease: "easeOut" }
-                        },
-                        exit: { scale: 1.5, opacity: 0, transition: { duration: 0.5 } }
-                    }}
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="mb-8 w-32 md:w-40 relative"
                 >
-                    {/* Logo Container with Glow */}
-                    <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full" />
                     <OptimizedImage
                         src={content.logo}
                         alt="CopterCode Logo"
-                        className="w-full h-full object-contain relative z-10 drop-shadow-2xl"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
                     />
                 </motion.div>
 
-                <motion.h1
-                    className="text-4xl md:text-6xl font-display font-bold text-white mb-2 tracking-tighter"
-                    variants={textVariants}
-                >
-                    {content.titlePrefix} <br className="md:hidden" /> <span className="text-accent">{content.highlightedTitle}</span>
-                </motion.h1>
+                {/* Text Section */}
+                <div className="overflow-hidden mb-2">
+                    <motion.h2
+                        initial={{ y: "100%" }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.3, ease: [0.33, 1, 0.68, 1] }}
+                        className="text-sm md:text-base tracking-[0.4em] font-light text-white/80 uppercase mb-2"
+                    >
+                        {content.titlePrefix}
+                    </motion.h2>
+                </div>
 
-                <motion.div
-                    className="w-24 h-1 bg-accent mb-4 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: 96, transition: { delay: 1, duration: 0.8 } }}
-                    exit={{ width: 0, transition: { duration: 0.3 } }}
-                />
+                <div className="overflow-hidden mb-8">
+                    <motion.h1
+                        initial={{ y: "100%" }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
+                        className="text-5xl md:text-7xl font-display font-bold text-white tracking-tight"
+                    >
+                        <span className="text-white">{content.highlightedTitle}</span>
+                    </motion.h1>
+                </div>
 
+                {/* Tagline */}
                 <motion.p
-                    className="text-white/70 text-sm md:text-base tracking-[0.3em] font-light uppercase"
-                    variants={textVariants}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.8 }}
+                    className="text-white/60 text-xs md:text-sm tracking-[0.2em] font-light uppercase mb-12"
                 >
                     {content.tagline}
                 </motion.p>
-            </motion.div>
+
+                {/* Elegant Progress Line */}
+                <div className="w-64 h-[1px] bg-white/10 relative overflow-hidden rounded-full">
+                    <motion.div
+                        className="absolute inset-0 bg-white"
+                        initial={{ x: "-100%" }}
+                        animate={{ x: "100%" }}
+                        transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    />
+                </div>
+            </div>
         </motion.div>
     );
 };

@@ -35,36 +35,7 @@ export const administrationPage = {
             initialValue: 'Guided by vision, integrity, and a commitment to excellence.'
         },
 
-        // --- GOVERNANCE CARDS (New) ---
-        {
-            name: 'governanceCards',
-            title: 'Governance Cards',
-            type: 'array',
-            of: [
-                {
-                    type: 'object',
-                    title: 'Card',
-                    fields: [
-                        { name: 'title', type: 'string', title: 'Title' },
-                        { name: 'subtitle', type: 'string', title: 'Subtitle (Green Text)' },
-                        { name: 'description', type: 'text', title: 'Description' },
-                        {
-                            name: 'icon',
-                            type: 'string',
-                            title: 'Icon',
-                            options: {
-                                list: [
-                                    { title: 'Users (Leadership)', value: 'users' },
-                                    { title: 'Building (Board)', value: 'building' },
-                                    { title: 'Target (Advisory)', value: 'target' },
-                                    { title: 'Badge (Management)', value: 'badge' }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
+
 
         // --- PHILOSOPHY SECTION (New) ---
         {
@@ -124,6 +95,53 @@ export const administrationPage = {
                 {
                     type: 'object',
                     title: 'Board Member',
+                    fields: [
+                        { name: 'name', type: 'string', title: 'Name' },
+                        { name: 'role', type: 'string', title: 'Role' },
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
+                    ]
+                }
+            ]
+        },
+
+        // --- ADVISORY BOARD (New) ---
+        {
+            name: 'advisoryHeading',
+            title: 'Advisory Board Heading',
+            type: 'string',
+            initialValue: 'Advisory Board'
+        },
+        {
+            name: 'advisoryBoard',
+            title: 'Advisory Board Members',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    title: 'Advisor',
+                    fields: [
+                        { name: 'name', type: 'string', title: 'Name' },
+                        { name: 'role', type: 'string', title: 'Role' },
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
+                    ]
+                }
+            ]
+        },
+        // --- MANAGEMENT TEAM (New) ---
+        {
+            name: 'managementHeading',
+            title: 'Management Team Heading',
+            type: 'string',
+            initialValue: 'Management Team'
+        },
+        {
+            name: 'managementTeam',
+            title: 'Management Team Members',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    title: 'Manager',
                     fields: [
                         { name: 'name', type: 'string', title: 'Name' },
                         { name: 'role', type: 'string', title: 'Role' },
