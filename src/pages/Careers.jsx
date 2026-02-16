@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
+import OptimizedImage from "../components/OptimizedImage";
 import SEO from "../components/SEO";
 import {
   Briefcase,
@@ -288,12 +289,13 @@ const Careers = () => {
                       trustedLogos.map((url, idx) => (
                         <div
                           key={`sanity-logo-${sectionIdx}-${idx}`}
-                          className="w-32 h-20 flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
+                          className="w-80 h-48 flex-shrink-0 flex items-center justify-center transition-all duration-300 hover:scale-110"
                         >
-                          <img
+                          <OptimizedImage
                             src={url}
                             alt={`Partner Logo ${idx}`}
                             className="max-w-full max-h-full object-contain"
+                            sizes="(min-width: 1024px) 320px, 200px"
                           />
                         </div>
                       ))
@@ -317,12 +319,13 @@ const Careers = () => {
                       ].map((logoName) => (
                         <div
                           key={`logo-${sectionIdx}-${logoName}`}
-                          className="w-32 h-20 flex-shrink-0 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
+                          className="w-64 h-40 flex-shrink-0 flex items-center justify-center transition-all duration-300 hover:scale-110"
                         >
-                          <img
+                          <OptimizedImage
                             src={`/mediafiles/logos/${logoName}`}
                             alt={`Partner Logo ${logoName}`}
                             className="max-w-full max-h-full object-contain"
+                            sizes="256px"
                           />
                         </div>
                       ))

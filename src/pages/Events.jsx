@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader';
 import SEO from '../components/SEO';
 import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import OptimizedImage from '../components/OptimizedImage';
 import { Link } from 'react-router-dom';
 
 
@@ -161,10 +162,13 @@ const Events = () => {
                                         <div className="lg:w-2/5 relative h-64 lg:h-auto overflow-hidden">
                                             <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-20 transition-opacity z-10 duration-500" />
                                             {event.image && (
-                                                <img
+                                                <OptimizedImage
                                                     src={event.image}
                                                     alt={event.title}
+                                                    loading="lazy"
+                                                    decoding="async"
                                                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0"
+                                                    sizes="(min-width:1024px) 40vw, 100vw"
                                                 />
                                             )}
                                             {/* Date Badge (Desktop) */}

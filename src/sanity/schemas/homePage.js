@@ -9,6 +9,18 @@ export const homePage = {
             type: 'string',
             description: 'Internal title for this page (e.g. "Home Page")',
         },
+        // --- SEO SECTION ---
+        {
+            name: 'seo',
+            title: 'SEO Settings',
+            type: 'object',
+            fields: [
+                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description' },
+                { name: 'keywords', type: 'string', title: 'Keywords (comma separated)' },
+                { name: 'metaImage', type: 'image', title: 'Meta Share Image', options: { hotspot: true } }
+            ]
+        },
         // --- HERO SECTION ---
         {
             name: 'heroSection',
@@ -30,9 +42,35 @@ export const homePage = {
                 {
                     name: 'subtitle',
                     title: 'Subtitle',
-                    type: 'text',
-                    rows: 3,
-                    initialValue: "We don't just build software. We engineer intelligent ecosystems where Drone Tech meets Enterprise AI."
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'block',
+                            styles: [{ title: 'Normal', value: 'normal' }],
+                            marks: {
+                                decorators: [{ title: 'Strong', value: 'strong' }, { title: 'Emphasis', value: 'em' }],
+                                annotations: [
+                                    {
+                                        name: 'link',
+                                        type: 'object',
+                                        title: 'Link',
+                                        fields: [
+                                            {
+                                                name: 'href',
+                                                type: 'url',
+                                                title: 'URL',
+                                                validation: Rule => Rule.uri({
+                                                    allowRelative: true,
+                                                    scheme: ['http', 'https', 'mailto', 'tel']
+                                                })
+                                            }
+                                        ]
+                                    },
+
+                                ]
+                            }
+                        }
+                    ]
                 },
                 {
                     name: 'heroImages',
@@ -61,11 +99,142 @@ export const homePage = {
                 }
             ]
         },
+        // --- ABOUT SUMMARY SECTION ---
+        {
+            name: 'aboutSummarySection',
+            title: 'About Summary Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Who We Are' },
+                { name: 'subheading', type: 'string', title: 'Subheading', initialValue: 'Pioneering the Future of Aerial Tech' },
+                { name: 'description', type: 'text', title: 'Description' },
+                { name: 'image', type: 'image', title: 'Feature Image', options: { hotspot: true } },
+                {
+                    name: 'stats',
+                    title: 'Key Stats',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'value', type: 'string', title: 'Value' },
+                                { name: 'label', type: 'string', title: 'Label' }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        // --- INVESTOR SUMMARY SECTION ---
+        {
+            name: 'investorSummarySection',
+            title: 'Investor Summary Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Investor Relations' },
+                { name: 'description', type: 'text', title: 'Description' },
+                {
+                    name: 'highlights',
+                    title: 'Highlights',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Title' },
+                                { name: 'description', type: 'string', title: 'Description' },
+                                {
+                                    name: 'icon',
+                                    type: 'string',
+                                    options: {
+                                        list: [
+                                            { title: 'Chart', value: 'chart' },
+                                            { title: 'Shield', value: 'shield' },
+                                            { title: 'File', value: 'file' },
+                                            { title: 'Pie Chart', value: 'piechart' }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'investors',
+                    title: 'Our Investors List',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'name', type: 'string', title: 'Investor Name' },
+                                { name: 'description', type: 'text', title: 'Description' },
+                                { name: 'logo', type: 'image', title: 'Logo', options: { hotspot: true } }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         // --- SCROLLING ANNOUNCEMENT BAR ---
         {
             name: 'scrollingAnnouncementBar',
             title: 'Scrolling Announcement Bar',
-            type: 'scrollingAnnouncementBar'
+            type: 'object',
+            fields: [
+                {
+                    name: 'isEnabled',
+                    title: 'Enable Announcement Bar',
+                    type: 'boolean',
+                    initialValue: true
+                },
+                {
+                    name: 'announcements',
+                    title: 'Announcements',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'text', type: 'string', title: 'Announcement Text' },
+                                { name: 'link', type: 'string', title: 'Link (Optional)' },
+                                { name: 'isHighlight', type: 'boolean', title: 'Highlight Text?', initialValue: false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'scrollSpeed',
+                    title: 'Scroll Speed (Duration in seconds)',
+                    description: 'Lower is faster. Default: 30',
+                    type: 'number',
+                    initialValue: 30
+                },
+                {
+                    name: 'direction',
+                    title: 'Direction',
+                    type: 'string',
+                    options: {
+                        list: [
+                            { title: 'Left', value: 'left' },
+                            { title: 'Right', value: 'right' }
+                        ]
+                    },
+                    initialValue: 'left'
+                },
+                {
+                    name: 'backgroundColor', // Optional override
+                    title: 'Background Color (Hex)',
+                    type: 'string',
+                    description: 'e.g. #000000. Leave empty for default premium dark theme.',
+                },
+                {
+                    name: 'textColor',
+                    title: 'Text Color (Hex)',
+                    type: 'string',
+                    description: 'e.g. #FFFFFF. Leave empty for default.',
+                }
+            ]
         },
         // --- BUSINESSES SECTION ---
         {
@@ -141,7 +310,7 @@ export const homePage = {
             type: 'object',
             fields: [
                 { name: 'statsValue', type: 'string', title: 'Statistic Value (e.g. 99)', initialValue: '99' },
-                { name: 'statsUnit', type: 'string', title: 'Statistic Unit', initialValue: '' },
+                { name: 'statsUnit', type: 'string', title: 'Statistic Unit', initialValue: '%' },
                 { name: 'statsLabel', type: 'string', title: 'Statistic Label', initialValue: 'Operational Efficiency' },
                 { name: 'heading', type: 'string', title: 'Main Heading', initialValue: 'Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems' },
                 {
@@ -341,7 +510,13 @@ export const homePage = {
                     ]
                 },
                 { name: 'applyLink', type: 'url', title: 'Apply Now Link' },
-                { name: 'image', type: 'image', title: 'Main Image', options: { hotspot: true } }
+                { name: 'image', type: 'image', title: 'Main Image (Fallback)', options: { hotspot: true } },
+                {
+                    name: 'images',
+                    title: 'Slideshow Images',
+                    type: 'array',
+                    of: [{ type: 'image', options: { hotspot: true } }]
+                }
             ]
         },
         // --- SUSTAINABILITY SECTION ---
@@ -379,6 +554,105 @@ export const homePage = {
                     ]
                 },
                 { name: 'bannerImage', type: 'image', title: 'Banner Image', options: { hotspot: true } }
+            ]
+        },
+        // --- ENGINEERING COMMAND CENTER SECTION ---
+        {
+            name: 'engineeringCommandCenterSection',
+            title: 'Engineering Command Center',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'ENGINEERING COMMAND CENTER.' },
+                { name: 'subtext', type: 'text', title: 'Subtext', initialValue: 'Where industrial automation meets enterprise software intelligence.' },
+                {
+                    name: 'focusAreas',
+                    title: 'Strategic Focus Areas',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Title' },
+                                { name: 'description', type: 'string', title: 'Description' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'coreCapabilities',
+                    title: 'Core Capabilities',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Title' },
+                                { name: 'description', type: 'string', title: 'Description' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'infoCard',
+                    title: 'Right Side Info Card',
+                    type: 'object',
+                    fields: [
+                        { name: 'engineersCount', type: 'string', title: 'Engineers Count' },
+                        { name: 'status', type: 'string', title: 'Lab Status' }
+                    ]
+                }
+            ]
+        },
+        // --- WHY CHOOSE SECTION ---
+        {
+            name: 'whyChooseSection',
+            title: 'Why Choose Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Main Heading', initialValue: 'Why Choose CopterCode?' },
+                { name: 'description', type: 'text', title: 'Description' },
+                {
+                    name: 'features',
+                    title: 'Features List',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Feature Title' },
+                                { name: 'description', type: 'string', title: 'Feature Description' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'caseStudies',
+                    title: 'Case Studies',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Case Study Title' },
+                                { name: 'subtitle', type: 'string', title: 'Subtitle' },
+                                {
+                                    name: 'stats',
+                                    title: 'Key Stats',
+                                    type: 'array',
+                                    of: [
+                                        {
+                                            type: 'object',
+                                            fields: [
+                                                { name: 'value', type: 'string', title: 'Value' },
+                                                { name: 'label', type: 'string', title: 'Label' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
         }
     ]

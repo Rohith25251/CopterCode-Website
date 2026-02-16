@@ -4,6 +4,7 @@ import SEO from "../components/SEO";
 import { Calendar, Clock, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { client, urlFor } from "../lib/sanity";
+import OptimizedImage from "../components/OptimizedImage";
 
 
 // --- FALLBACK DATA (RESTORED) ---
@@ -568,11 +569,12 @@ const News = () => {
                           key={i}
                           className="min-w-[300px] md:min-w-[400px] aspect-[4/3] rounded-2xl overflow-hidden relative border border-border bg-surface shadow-lg transition-all duration-500"
                         >
-                          <img
+                          <OptimizedImage
                             src={imgUrl}
                             alt={`Gallery ${year} ${i}`}
                             className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700"
                             loading="lazy"
+                            sizes="(min-width:1024px) 33vw, 300px"
                           />
                           <div className="absolute inset-0 bg-primary/10 hover:bg-transparent transition-colors duration-300" />
                         </div>

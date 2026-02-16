@@ -1,27 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import OptimizedImage from './OptimizedImage';
 import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { PortableText } from "@portabletext/react";
 
 
 
+
+
+const defaultImages = [
+  "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
+  "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
+  "/mediafiles/Home/IMG_1851.jpg",
+  "/mediafiles/Home/IMG_3322.jpg",
+  "/mediafiles/Home/IMG_3854.jpg",
+];
 
 const Hero = ({ data }) => {
-  // Static defaults
-  const defaultImages = [
-    "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
-    "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
-    "/mediafiles/Home/IMG_1851.jpg",
-    "/mediafiles/Home/IMG_3322.jpg",
-    "/mediafiles/Home/IMG_3854.jpg",
-  ];
-
   // Map new schema fields to component variables
   // Schema: { tagline, title, subtitle, heroImages, primaryCTA, secondaryCTA }
-  const images = data?.heroImages?.length > 0 ? data.heroImages : defaultImages;
 
-  const headline = data?.title || "Future Ready Systems.";
-  const subheadline = data?.subtitle || "We don't just build software. We engineer intelligent ecosystems where Drone Tech meets Enterprise AI.";
+  // Use useMemo to ensure 'images' reference is stable unless data changes
+  const images = useMemo(() => {
+    return data?.heroImages?.length > 0 ? data.heroImages : defaultImages;
+  }, [data?.heroImages]);
+
+  const headline = data?.title || "Industrial Automation & Enterprise AI";
+  const subheadline = data?.subtitle;
   const label = data?.tagline || "Engineering The Unknown";
 
   const ctaText = data?.primaryCTA?.text || "View Our Work";
@@ -65,13 +71,13 @@ const Hero = ({ data }) => {
 
 
   return (
-    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-10 md:pt-16 group">
+    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-10 md:pt-16 pb-20 md:pb-32 group">
       {/* Premium Background Layers */}
       <div className="absolute inset-0 bg-background z-0" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/5 via-transparent to-transparent opacity-30 pointer-events-none z-0" />
 
-      {/* Floating Particles */}
-      {[...Array(5)].map((_, i) => (
+      {/* Floating Particles: render only on wide screens and when reduced-motion is not requested */}
+      {typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(min-width:1024px) and (prefers-reduced-motion: no-preference)').matches && [...Array(5)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute bg-accent/30 rounded-full blur-sm z-0 pointer-events-none"
@@ -127,11 +133,11 @@ const Hero = ({ data }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Content (Text) */}
           <motion.div
-            className="lg:col-span-5 flex flex-col justify-center relative z-20"
+            className="lg:col-span-6 flex flex-col justify-center relative z-20"
             initial="hidden"
             animate="visible"
             variants={{
-              hidden: { opacity: 0 },
+              hidden: { opacity: 1 },
               visible: {
                 opacity: 1,
                 transition: { staggerChildren: 0.15 },
@@ -153,40 +159,26 @@ const Hero = ({ data }) => {
             </motion.div>
 
             {/* Main Headline - Animated Letters */}
-            <h1 className="font-display font-black tracking-tighter text-primary mb-8 leading-[0.9] text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl 2xl:text-[7.5rem] drop-shadow-2xl">
-              {(() => {
-                // Split headline into words for animation
-                const words = headline.split(" ");
-                const firstWord = words[0] || "";
-                const secondWord = words[1] || "";
-                const restWords = words.slice(2).join(" ");
+            <h1 className="font-display font-black tracking-tighter text-primary mb-8 leading-none text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl drop-shadow-2xl">
+              <span className="sr-only">{headline}</span>
+              <span aria-hidden="true" className="block">
+                {(() => {
+                  // Split headline into words for animation
+                  const words = headline.split(" ");
+                  const firstWord = words[0] || "";
+                  const secondWord = words[1] || "";
+                  const restWords = words.slice(2).join(" ");
 
-                return (
-                  <>
-                    <div className="flex flex-wrap gap-x-3 gap-y-0 mb-2">
-                      <motion.div
-                        variants={letterContainer}
-                        className="whitespace-nowrap inline-block"
-                      >
-                        {firstWord.split("").map((char, index) => (
-                          <motion.span
-                            key={`w1-${index}`}
-                            variants={letterChild}
-                            className="inline-block"
-                          >
-                            {char}
-                          </motion.span>
-                        ))}
-                      </motion.div>
-
-                      {secondWord && (
+                  return (
+                    <>
+                      <div className="flex flex-wrap gap-x-3 gap-y-0 mb-2">
                         <motion.div
                           variants={letterContainer}
                           className="whitespace-nowrap inline-block"
                         >
-                          {secondWord.split("").map((char, index) => (
+                          {firstWord.split("").map((char, index) => (
                             <motion.span
-                              key={`w2-${index}`}
+                              key={`w1-${index}`}
                               variants={letterChild}
                               className="inline-block"
                             >
@@ -194,50 +186,102 @@ const Hero = ({ data }) => {
                             </motion.span>
                           ))}
                         </motion.div>
-                      )}
-                    </div>
 
-                    {restWords && (
-                      <motion.span
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{
-                          opacity: 1,
-                          x: 0,
-                          backgroundPosition: ["0% center", "300% center"],
-                        }}
-                        className="block text-transparent bg-clip-text pb-2 filter drop-shadow-[0_0_15px_rgba(160,174,192,0.3)]"
-                        style={{
-                          backgroundImage:
-                            "linear-gradient(to right, #2D3748, #4A5568, #718096, #2D3748)",
-                          backgroundSize: "300% auto",
-                        }}
-                        transition={{
-                          opacity: { duration: 1, delay: 0.5 },
-                          x: { duration: 1, delay: 0.5 },
-                          backgroundPosition: {
-                            duration: 4,
-                            repeat: Infinity,
-                            ease: "linear",
-                          },
-                        }}
-                      >
-                        {restWords}
-                      </motion.span>
-                    )}
-                  </>
-                );
-              })()}
+                        {secondWord && (
+                          <motion.div
+                            variants={letterContainer}
+                            className="whitespace-nowrap inline-block"
+                          >
+                            {secondWord.split("").map((char, index) => (
+                              <motion.span
+                                key={`w2-${index}`}
+                                variants={letterChild}
+                                className="inline-block"
+                              >
+                                {char}
+                              </motion.span>
+                            ))}
+                          </motion.div>
+                        )}
+                      </div>
+
+                      {restWords && (
+                        <motion.span
+                          initial={{ opacity: 0, x: -50 }}
+                          animate={{
+                            opacity: 1,
+                            x: 0,
+                            backgroundPosition: ["0% center", "300% center"],
+                          }}
+                          className="block text-transparent bg-clip-text pb-2 filter drop-shadow-[0_0_15px_rgba(160,174,192,0.3)]"
+                          style={{
+                            backgroundImage:
+                              "linear-gradient(to right, #2D3748, #4A5568, #718096, #2D3748)",
+                            backgroundSize: "300% auto",
+                          }}
+                          transition={{
+                            opacity: { duration: 1, delay: 0.5 },
+                            x: { duration: 1, delay: 0.5 },
+                            backgroundPosition: {
+                              duration: 4,
+                              repeat: Infinity,
+                              ease: "linear",
+                            },
+                          }}
+                        >
+                          {restWords}
+                        </motion.span>
+                      )}
+                    </>
+                  );
+                })()}
+              </span>
             </h1>
 
-            <motion.p
+            <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0 },
               }}
               className="text-lg md:text-xl text-secondary/80 mb-10 max-w-lg leading-relaxed font-light tracking-wide border-l-2 border-accent/20 pl-6"
             >
-              {subheadline}
-            </motion.p>
+              {subheadline ? (
+                Array.isArray(subheadline) ? (
+                  <PortableText
+                    value={subheadline}
+                    components={{
+                      marks: {
+                        link: ({ value, children }) => {
+                          const target = (value?.href || '').startsWith('http') ? '_blank' : undefined;
+                          return (
+                            <a
+                              href={value?.href}
+                              target={target}
+                              rel={target === '_blank' ? 'noindex nofollow' : undefined}
+                              className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent"
+                            >
+                              {children}
+                            </a>
+                          )
+                        },
+                        internalLink: ({ value, children }) => {
+                          return <span className="text-primary font-medium">{children}</span>
+                        },
+                        strong: ({ children }) => <strong className="font-bold text-primary">{children}</strong>,
+                        em: ({ children }) => <em className="italic text-accent">{children}</em>
+                      }
+                    }}
+                  />
+                ) : (
+                  <p>{subheadline}</p>
+                )
+              ) : (
+                <p>
+                  We don't just build software. We engineer intelligent ecosystems where <Link to="/industrial-drones" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent">Drone Tech</Link> meets <Link to="/business" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent">Enterprise AI</Link>.
+                  Explore our innovations in <a href="https://en.wikipedia.org/wiki/Automation" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent relative inline-block">Industrial Automation</a>.
+                </p>
+              )}
+            </motion.div>
 
             <motion.div
               variants={{
@@ -282,7 +326,7 @@ const Hero = ({ data }) => {
 
           {/* Right Content - Slideshow with Grid Background */}
           <motion.div
-            className="lg:col-span-7 relative mt-16 lg:mt-0 h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center z-10"
+            className="lg:col-span-6 relative mt-16 lg:mt-0 h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center z-10"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
@@ -299,16 +343,23 @@ const Hero = ({ data }) => {
             {/* Image Container */}
             <div className="relative w-full h-full z-10 flex items-center justify-center p-0">
               <AnimatePresence mode="wait">
-                <motion.img
+                <motion.div
                   key={currentIndex}
-                  src={images[currentIndex]}
-                  alt="CopterCode Feature"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="w-full h-full object-contain drop-shadow-2xl scale-[1.5] lg:scale-[1.8]"
-                />
+                  className="w-full h-full"
+                >
+                  <OptimizedImage
+                    src={images[currentIndex]}
+                    alt="CopterCode Feature"
+                    loading={currentIndex === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    className="w-full h-full object-contain drop-shadow-2xl scale-[1.05] lg:scale-[1.1]"
+                    sizes="(min-width:1024px) 50vw, 100vw"
+                  />
+                </motion.div>
               </AnimatePresence>
             </div>
           </motion.div>

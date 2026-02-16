@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import OptimizedImage from '../../components/OptimizedImage';
 
 // Mock Data
 const FALLBACK_ANNOUNCEMENTS = [
@@ -55,7 +56,7 @@ const Announcements = ({ data }) => {
                                 className="group cursor-pointer bg-white p-4 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300 border border-border"
                             >
                                 <div className="aspect-video bg-surface mb-6 overflow-hidden relative rounded-xl">
-                                    <img
+                                    <OptimizedImage
                                         src={image}
                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                                         alt={title}

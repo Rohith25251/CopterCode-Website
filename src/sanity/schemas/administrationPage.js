@@ -34,7 +34,56 @@ export const administrationPage = {
             rows: 2,
             initialValue: 'Guided by vision, integrity, and a commitment to excellence.'
         },
-        // --- CMD SECTION ---
+
+        // --- GOVERNANCE CARDS (New) ---
+        {
+            name: 'governanceCards',
+            title: 'Governance Cards',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    title: 'Card',
+                    fields: [
+                        { name: 'title', type: 'string', title: 'Title' },
+                        { name: 'subtitle', type: 'string', title: 'Subtitle (Green Text)' },
+                        { name: 'description', type: 'text', title: 'Description' },
+                        {
+                            name: 'icon',
+                            type: 'string',
+                            title: 'Icon',
+                            options: {
+                                list: [
+                                    { title: 'Users (Leadership)', value: 'users' },
+                                    { title: 'Building (Board)', value: 'building' },
+                                    { title: 'Target (Advisory)', value: 'target' },
+                                    { title: 'Badge (Management)', value: 'badge' }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        // --- PHILOSOPHY SECTION (New) ---
+        {
+            name: 'philosophy',
+            title: 'Leadership Philosophy',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Our Leadership Philosophy' },
+                { name: 'description', type: 'text', title: 'Description', rows: 4 }
+            ]
+        },
+
+        // --- CMD SECTION (Existing) ---
+        {
+            name: 'cmdHeading',
+            title: 'CMD Section Heading',
+            type: 'string',
+            initialValue: 'Executive Leadership'
+        },
         {
             name: 'cmdName',
             title: 'CMD Name',
@@ -60,12 +109,12 @@ export const administrationPage = {
             type: 'image',
             options: { hotspot: true }
         },
-        // --- BOARD MEMBERS ---
+        // --- BOARD MEMBERS (Existing) ---
         {
             name: 'boardHeading',
             title: 'Board Section Heading',
             type: 'string',
-            initialValue: 'Board Committee Members'
+            initialValue: 'Board of Directors'
         },
         {
             name: 'boardMembers',

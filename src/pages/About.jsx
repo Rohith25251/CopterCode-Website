@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from "react";
+import OptimizedImage from '../components/OptimizedImage';
 import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { motion } from "framer-motion";
 import {
-  Target,
-  Lightbulb,
+  Rocket,
+  TrendingUp,
+  Globe,
   Users,
   Award,
+  Building2,
+  CheckCircle2,
+  Lightbulb,
   Shield,
-  Briefcase,
   Zap,
-  Globe,
 } from "lucide-react";
-
-
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
 // Icon Map helper
 const iconMap = {
+  rocket: Rocket,
+  chart: TrendingUp,
+  globe: Globe,
+  users: Users,
+  award: Award,
+  building: Building2,
   lightbulb: Lightbulb,
   shield: Shield,
-  globe: Globe,
-  target: Target,
-  users: Users,
-  briefcase: Briefcase,
   zap: Zap,
-  award: Award
 };
 
 const About = () => {
@@ -34,226 +36,245 @@ const About = () => {
   const [sanityData, setSanityData] = useState(null);
 
   useEffect(() => {
-    const query = `*[_type == "aboutPage"][0]`;
-    client.fetch(query).then(data => {
+    // Updated query to match new schema structure
+    const query = `*[_type == "aboutPage"][0]{
+      ...,
+      journey[]{
+        ...,
+        "imageUrl": image.asset->url
+      },
+      milestones[]
+    }`;
+    client.fetch(query).then((data) => {
       if (data) {
         setSanityData(data);
       }
     }).catch(console.error);
   }, []);
 
-  // Consolidate data access
   const hero = sanityData?.hero;
-  // If 'origin' field is missing in Sanity document but 'hero' exists, we should be careful. 
-  // However, the schema defines these objects. 
-  // We can use optional chaining and logical ORs in the JSX or simplify here.
-
   const origin = sanityData?.origin;
-  const story = sanityData?.story;
   const leadership = sanityData?.leadership;
-  const milestones = sanityData?.milestones;
   const seo = sanityData?.seo;
+  const milestones = sanityData?.milestones;
 
-  // Fallback Story Data
-  const FALLBACK_STORY = [
+  // Fallback Journey Data (Matches Screenshot Content)
+  const FALLBACK_JOURNEY = [
     {
-      year: "The Inception (2019)",
-      heading: "The Inception (2019)",
+      year: "2019",
+      title: "The Inception",
       description: "Founded in 2019 by the visionary Late Sundharesan Duraiswamy, CopterCode began with a dream to revolutionize industries using drones and technology. Starting with the sales and service of industrial drones, the company quickly grew under his intelligent strategies and tireless work ethic.",
-      icon: "lightbulb"
+      imageUrl: "/mediafiles/news and media/IMG_1851.jpg",
+      icon: "lightbulb",
     },
     {
-      year: "Diversification & Growth (2020-2022)",
-      heading: "Diversification & Growth (2020-2022)",
+      year: "2020-2022",
+      title: "Diversification & Growth",
       description: "Expanding beyond drones, CopterCode ventured into cybersecurity for IT firms in 2020. In 2021, we pioneered Drone Labs and Science Space Labs in educational institutions to nurture young innovators. By 2022, driven by sustainability, we established textile manufacturing and solar panel solutions for corporate clients.",
-      icon: "shield"
+      imageUrl: "/mediafiles/news and media/IMG_3327.jpg",
+      icon: "shield",
     },
     {
-      year: "Global Footprint (2023-Present)",
-      heading: "Global Footprint (2023-Present)",
+      year: "2023-Present",
+      title: "Global Footprint",
       description: "From collaborating with global food chains like Shree Archana Sweets to venturing into construction (2023) and partnering with Shree Murugappa Food Corp (2024), we have diversified vastly. In 2025, we launched our advanced ERP, LMS software solutions, and infra-security services, solidifying our status as a diversified conglomerate.",
-      icon: "globe"
-    }
+      imageUrl: "/mediafiles/news and media/IMG_3356.jpg",
+      icon: "globe",
+    },
   ];
 
-  const storyItems = story || FALLBACK_STORY;
+  const journeyData = sanityData?.journey || FALLBACK_JOURNEY;
 
-  // Fallback Milestones
+  // Fallback Milestones Data
   const FALLBACK_MILESTONES = [
-    { year: "2019", title: "Foundation", desc: "Established by Late Sundharesan Duraiswamy." },
-    { year: "2020", title: "Cybersecurity", desc: "Expansion into IT security services." },
-    { year: "2021", title: "Education", desc: "Launch of Drone Labs & Science Space." },
-    { year: "2022", title: "Sustainability", desc: "Textile Mfg & Solar Solutions." },
-    { year: "2023", title: "Infrastructure", desc: "Construction & Real Estate Ventures." },
-    { year: "2024", title: "Strategic Partnerships", desc: "Collab with Shree Murugappa Food Corp." },
-    { year: "2025", title: "Digital Transformation", desc: "ERP, LMS & Infra Security Launch." },
-    { year: "Future", title: "Global 2.0", desc: "Continued innovation & global expansion." },
+    { year: "2019", title: "Foundation", description: "Established by Late Sundharesan Duraiswamy." },
+    { year: "2020", title: "Cybersecurity", description: "Expansion into IT security services." },
+    { year: "2021", title: "Education", description: "Launch of Drone Labs & Science Space." },
+    { year: "2022", title: "Sustainability", description: "Textile Mfg & Solar Solutions." },
+    { year: "2023", title: "Infrastructure", description: "Construction & Real Estate Ventures." },
+    { year: "2024", title: "Strategic Partnerships", description: "Collab with Shree Murugappa Food Corp." },
+    { year: "2025", title: "Digital Transformation", description: "ERP, LMS & Infra Security Launch." },
+    { year: "Future", title: "Global 2.0", description: "Continued innovation & global expansion." },
   ];
 
-  const milestonesList = milestones ? milestones.map(m => ({ year: m.year, title: m.title, desc: m.description })) : FALLBACK_MILESTONES;
-
+  const milestonesData = milestones || FALLBACK_MILESTONES;
 
   return (
-    <div className="bg-background min-h-screen text-primary">
+    <div className="bg-[#FAF9F5] min-h-screen text-primary selection:bg-accent selection:text-white">
       <SEO
-        title={seo?.metaTitle || "About Us"}
-        description={seo?.metaDescription || "CopterCode - History, Legacy, and Vision"}
-      />
-      <PageHeader
-        title={hero?.title || "About Us"}
-        subtitle={hero?.subtitle || "Revolutionizing industries with drones, technology, and sustainable innovation."}
+        title={seo?.metaTitle || "About Us | CopterCode"}
+        description={seo?.metaDescription || "From vision to reality - the CopterCode story."}
       />
 
-      <section className="py-24 relative overflow-hidden">
-        {/* Background Decor */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+      {/* Header */}
+      <div className="pt-32 pb-12 text-center bg-[#FAF9F5]">
+        <h1 className="text-5xl md:text-7xl font-display font-bold text-primary mb-6 tracking-tight">
+          {hero?.title || "About Us"}
+        </h1>
+        <p className="text-xl md:text-2xl text-secondary max-w-2xl mx-auto font-light leading-relaxed">
+          {hero?.subtitle || "Revolutionizing industries with drones, technology, and sustainable innovation."}
+        </p>
+      </div>
 
+      {/* Origin Section (Premium) */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
-          {/* The Story & Legacy Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32 items-start">
-            <div className="lg:col-span-4">
-              <div className="sticky top-24">
-                <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center">
-                  <span className="w-8 h-[2px] bg-accent mr-3"></span> {origin?.label || "Our Origin"}
-                </span>
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6 leading-tight">
-                  {origin?.heading || "From Vision to Reality"}
-                </h2>
-                <p className="text-secondary text-lg leading-relaxed mb-8">
+          <div className="flex flex-col md:flex-row gap-16 items-center">
+            <div className="w-full md:w-1/2">
+              <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center">
+                <span className="w-8 h-[2px] bg-accent mr-3"></span> Our Origin
+              </span>
+              <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6 leading-tight">
+                {origin?.heading || "From Vision to Reality"}
+              </h2>
+              <div className="prose prose-lg text-secondary">
+                <p className="leading-relaxed">
                   {origin?.description || "A journey of relentless innovation, guided by a legacy of excellence and a commitment to transforming the future."}
                 </p>
-                <div className="p-6 bg-surface border border-border border-l-4 border-l-accent rounded-r-lg">
-                  <p className="italic text-secondary font-medium">
-                    "{origin?.quote || "Driven by sustainability, impacting People, Planet, and Prosperity."}"
-                  </p>
-                </div>
               </div>
             </div>
+            <div className="w-full md:w-1/2">
+              <div className="bg-[#FAF9F5] p-10 rounded-3xl border border-gray-100 relative">
+                <div className="absolute -top-4 -left-4 text-accent text-6xl opacity-20 font-serif">"</div>
+                <p className="italic text-xl text-primary font-medium relative z-10">
+                  {origin?.quote || "Driven by sustainability, impacting People, Planet, and Prosperity."}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="lg:col-span-8">
-              <div className="grid gap-12">
-                {/* Dynamic Story Blocks */}
-                {storyItems.map((item, index) => {
-                  const IconComponent = iconMap[item.icon] || Lightbulb;
-                  return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-surface relative p-10 rounded-2xl border border-border text-primary shadow-lg hover:border-accent/30 transition-colors"
-                    >
-                      {index === 0 && (
-                        <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-transparent rounded-2xl blur opacity-20 pointer-events-none" />
-                      )}
-                      <div className="flex items-center mb-6">
-                        <div className="w-12 h-12 bg-background rounded-full flex items-center justify-center mr-4 border border-border">
-                          <IconComponent className="text-secondary" size={24} />
-                        </div>
-                        <h3 className="text-2xl font-bold text-primary">
-                          {item.heading || item.year}
-                        </h3>
-                      </div>
-                      <p className="text-secondary leading-relaxed text-lg">
+      {/* Journey Timeline */}
+      <section className="py-24 relative overflow-hidden bg-[#FAF9F5]">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] opacity-30 pointer-events-none" />
+
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <div className="relative">
+            {/* Vertical Line */}
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent/30 to-transparent border-l border-dashed border-accent/30" />
+
+            <div className="space-y-24 md:space-y-0">
+              {journeyData.map((item, index) => {
+                const isEven = index % 2 === 0;
+                const Icon = iconMap[item.icon] || Lightbulb;
+
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    className={`flex flex-col md:flex-row items-center justify-between md:mb-32 relative ${isEven ? "md:flex-row" : "md:flex-row-reverse"
+                      }`}
+                  >
+                    {/* Content */}
+                    <div className={`w-full md:w-5/12 ${isEven ? "md:text-left md:pr-16" : "md:text-left md:pl-16"} mb-12 md:mb-0`}>
+                      <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold text-white mb-6 uppercase tracking-wider ${['bg-accent', 'bg-blue-600', 'bg-emerald-600'][index % 3]
+                        }`}>
+                        {item.year}
+                      </span>
+                      <h3 className="text-3xl font-display font-bold text-primary mb-4">
+                        {item.title}
+                      </h3>
+                      <p className="text-lg text-secondary leading-relaxed">
                         {item.description}
                       </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                    </div>
+
+                    {/* Desktop Center Icon */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center justify-center w-20 h-20 bg-white rounded-full border-4 border-[#FAF9F5] shadow-xl z-20">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-accent bg-accent/5">
+                        <Icon size={24} className="stroke-[2px]" />
+                      </div>
+                    </div>
+
+                    {/* Image */}
+                    <div className="w-full md:w-5/12">
+                      <div className="relative group rounded-3xl overflow-hidden shadow-2xl border-[4px] border-white transform transition-transform duration-500 hover:scale-[1.01]">
+                        <div className="aspect-[16/10] bg-gray-200 relative overflow-hidden">
+                          {item.imageUrl && (
+                            <OptimizedImage
+                              src={item.imageUrl}
+                              alt={item.title}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              sizes="(min-width:1024px) 40vw, 100vw"
+                            />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Leadership Section */}
-          <div className="mb-32">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-primary mb-6">
-                {leadership?.heading || "Administration & Vision"}
-              </h2>
-              <div className="w-24 h-1 bg-accent mx-auto rounded-full" />
-            </div>
-
-            <div className="bg-surface border border-border rounded-3xl p-12 relative overflow-hidden text-center">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
-
-              <div className="max-w-4xl mx-auto">
-                <p className="text-lg text-secondary mb-8">
-                  Currently, CopterCode is led by its Chairman & Managing Director:
-                </p>
-                <h3 className="text-4xl font-bold text-primary mb-2">
-                  {leadership?.chairmanName || "Mr. Karthikeyan Sundharesan"}
-                </h3>
-                <p className="text-accent font-bold tracking-widest uppercase text-sm mb-12">
-                  {leadership?.chairmanRole || "Chairman & Managing Director"}
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 border-t border-border">
-                  {leadership?.boardMembers?.length > 0 ? (
-                    leadership.boardMembers.map((member, idx) => (
-                      <div key={idx}>
-                        <h4 className="text-primary font-bold text-lg mb-1">
-                          {member.name}
-                        </h4>
-                        <p className="text-xs text-secondary uppercase tracking-widest">
-                          {member.role}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <>
-                      <div>
-                        <h4 className="text-primary font-bold text-lg mb-1">
-                          Mrs. Shanthi Sundharesan
-                        </h4>
-                        <p className="text-xs text-secondary uppercase tracking-widest">
-                          Board Member
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="text-primary font-bold text-lg mb-1">
-                          Ms. Karthika Sundharesan
-                        </h4>
-                        <p className="text-xs text-secondary uppercase tracking-widest">
-                          Board Member
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="text-primary font-bold text-lg mb-1">
-                          Mr. Venkatesh Janakiraman
-                        </h4>
-                        <p className="text-xs text-secondary uppercase tracking-widest">
-                          Board Member
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Timeline Grid */}
-          <div>
-            <h2 className="text-2xl font-bold text-primary mb-10 border-l-4 border-accent pl-4">
-              Milestones at a Glance
+      {/* Leadership Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-4">
+              {leadership?.heading || "Administration & Vision"}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {milestonesList.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="group bg-surface p-6 rounded-xl border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                >
-                  <span className="text-4xl font-black text-primary/10 group-hover:text-primary/20 transition-colors mb-4 block transform group-hover:scale-110 origin-left duration-500">
-                    {item.year}
-                  </span>
-                  <h4 className="text-primary font-bold mb-2">{item.title}</h4>
-                  <p className="text-sm text-secondary leading-snug">
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
+            <div className="w-20 h-1.5 bg-accent mx-auto rounded-full" />
+          </div>
+
+          <div className="max-w-4xl mx-auto bg-[#EFF6FF] rounded-[2.5rem] p-12 lg:p-16 text-center shadow-sm border border-blue-50">
+            <p className="text-secondary text-lg mb-8">Currently, CopterCode is led by its Chairman & Managing Director:</p>
+            <h3 className="text-4xl font-bold text-primary mb-2">
+              {leadership?.chairmanName || "Mr. Karthikeyan Sundharesan"}
+            </h3>
+            <p className="text-accent font-bold tracking-widest uppercase text-sm mb-12">
+              {leadership?.chairmanRole || "Chairman & Managing Director"}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 border-t border-blue-100">
+              {leadership?.boardMembers?.length > 0 ? (
+                leadership.boardMembers.map((member, idx) => (
+                  <div key={idx}>
+                    <h4 className="text-primary font-bold text-lg">{member.name}</h4>
+                    <p className="text-xs text-secondary uppercase tracking-widest mt-1">{member.role}</p>
+                  </div>
+                ))
+              ) : (
+                ['Mrs. Shanthi Sundharesan', 'Ms. Karthika Sundharesan', 'Mr. Venkatesh Janakiraman'].map((name, idx) => (
+                  <div key={idx}>
+                    <h4 className="text-primary font-bold text-lg">{name}</h4>
+                    <p className="text-xs text-secondary uppercase tracking-widest mt-1">Board Member</p>
+                  </div>
+                ))
+              )}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Milestones Grid */}
+      <section className="py-24 bg-[#FAF9F5]">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-bold text-primary mb-12 border-l-8 border-accent pl-6">
+            Milestones at a Glance
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {milestonesData.map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <span className="text-5xl font-black text-gray-100 mb-4 block">
+                  {item.year.replace(/[^0-9]/g, '').substring(0, 4)}
+                </span>
+                <h4 className="text-primary font-bold text-lg mb-2">{item.title}</h4>
+                <p className="text-sm text-secondary leading-snug">
+                  {item.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

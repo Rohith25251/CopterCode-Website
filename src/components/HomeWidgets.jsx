@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import OptimizedImage from './OptimizedImage';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Play, Calendar, User, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -41,7 +42,7 @@ export const CinematicShowcase = ({ items }) => {
                         {item.videoUrl || item.videoFile ? (
                             <video src={item.videoUrl || item.videoFile} className="w-full h-full object-cover" muted loop autoPlay playsInline />
                         ) : (
-                            <img src={item.imageUrl || ""} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={item.label} />
+                            <OptimizedImage src={item.imageUrl || ""} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={item.label} />
                         )}
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
@@ -81,7 +82,7 @@ export const AnnouncementsSection = ({ items }) => {
                         <div key={idx} className="bg-background border border-border rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-300 flex flex-col h-full">
                             <div className="h-48 overflow-hidden relative bg-surface-highlight">
                                 {item.mainImage ? (
-                                    <img src={item.mainImage} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={item.title} />
+                                    <OptimizedImage src={item.mainImage} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={item.title} />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-secondary text-xs uppercase font-bold">No Image</div>
                                 )}
@@ -224,8 +225,8 @@ export const FootprintSection = ({ imageUrl }) => {
                 <h2 className="text-3xl md:text-4xl font-display font-medium text-primary mb-16">Global Footprint of Our Talent</h2>
 
                 <div className="bg-white p-8 md:p-16 rounded-3xl shadow-sm border border-border mx-auto max-w-5xl">
-                    {imageUrl ? (
-                        <img src={imageUrl} alt="Global Footprint - Clients" className="w-full h-auto opacity-90 hover:opacity-100 transition-opacity" />
+                        {imageUrl ? (
+                        <OptimizedImage src={imageUrl} alt="Global Footprint - Clients" className="w-full h-auto opacity-90 hover:opacity-100 transition-opacity" />
                     ) : (
                         <div className="p-20 text-center text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">
                             Client Logos / Footprint Image Map

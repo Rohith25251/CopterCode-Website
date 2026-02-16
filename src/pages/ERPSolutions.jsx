@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import BackButton from "../components/ui/BackButton";
+import OptimizedImage from "../components/OptimizedImage";
+import LazyVideo from "../components/LazyVideo";
 
 import { ASSETS } from "../constants/assets";
 import { useScrollToTop } from "../hooks/useScrollToTop";
@@ -189,9 +191,9 @@ const ERPSolutions = () => {
                     <div className="relative rounded-3xl overflow-hidden border border-border shadow-2xl min-h-[400px] bg-surface flex items-center justify-center">
                         {data.introMedia ? (
                             data.introMediaIsImage ? (
-                                <img src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" />
+                                <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" />
                             ) : (
-                                <video src={data.introMedia} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80" />
+                                <LazyVideo src={data.introMedia} className="w-full h-full object-cover opacity-80" />
                             )
                         ) : (
                             <div className="text-center p-8">

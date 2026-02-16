@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
+import OptimizedImage from './OptimizedImage';
 import { GraduationCap, Briefcase } from "lucide-react";
 import { client, urlFor } from "../lib/sanity";
 
@@ -115,11 +116,13 @@ const InternsCarousel = ({ data }) => {
             >
               <div className="aspect-[4/5] overflow-hidden relative h-[500px]">
                 {intern.image ? (
-                  <img
+                  <OptimizedImage
                     src={intern.image}
                     alt={intern.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
                     loading="lazy"
+                    decoding="async"
+                    sizes="300px"
                   />
                 ) : (
                   <div className="w-full h-full bg-surface-highlight flex items-center justify-center text-secondary">

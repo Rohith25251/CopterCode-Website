@@ -93,7 +93,7 @@ const ImpactTabs = ({ data }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === tab.id
+              className={`px-4 md:px-8 py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === tab.id
                 ? "bg-accent text-white shadow-[0_0_20px_rgba(160,174,192,0.4)] scale-105"
                 : "text-primary/60 hover:text-primary hover:bg-primary/5"
                 }`}
@@ -153,7 +153,7 @@ const ImpactTabs = ({ data }) => {
                     </div>
 
                     {/* Visual Content (Light Card Style) */}
-                    <div className="order-1 lg:order-2 h-[400px] lg:h-[600px] relative perspective-1000 group">
+                    <div className="order-1 lg:order-2 h-[250px] md:h-[400px] lg:h-[600px] relative perspective-1000 group">
                       {/* Card Container */}
                       <div className="relative w-full h-full transform transition-transform duration-700 hover:rotate-y-12 preserve-3d">
                         {/* Main Image Base */}

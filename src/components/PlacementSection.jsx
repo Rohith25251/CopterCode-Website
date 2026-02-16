@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import OptimizedImage from "./OptimizedImage";
 
 const PlacementSection = ({ data }) => {
     const title = data?.title || "Global Footprint of Our Talent";
@@ -28,7 +29,7 @@ const PlacementSection = ({ data }) => {
                         transition={{ duration: 0.7 }}
                         className="relative rounded-3xl overflow-hidden shadow-2xl border border-border mx-auto max-w-5xl group"
                     >
-                        <img
+                        <OptimizedImage
                             src={image}
                             alt={title}
                             className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"

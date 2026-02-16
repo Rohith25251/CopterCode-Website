@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
 import BackButton from './ui/BackButton';
+import OptimizedImage from './OptimizedImage';
 
 const PageHeader = ({ title, subtitle, image }) => {
     return (
         <section className="relative pt-28 pb-6 bg-surface overflow-hidden">
             {image && (
                 <div className="absolute inset-0 z-0">
-                    <img src={image} alt={title} className="w-full h-full object-cover opacity-20" />
+                    <OptimizedImage src={image} alt={title} className="w-full h-full object-cover opacity-20" />
                     <div className="absolute inset-0 bg-surface/80" />
                 </div>
             )}

@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import Hero from '../components/Hero';
 import ImpactTabs from '../components/ImpactTabs';
-import { ArrowRight, ChevronLeft, ChevronRight, Calendar, MapPin, Clock, Users, Zap, Globe, Heart, GraduationCap, Briefcase, Leaf, Shield, Code, Sun, Star } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Calendar, MapPin, Clock, Users, Zap, Globe, Heart, GraduationCap, Briefcase, Leaf, Shield, Code, Sun, Star, BarChart, FileText, PieChart, CheckCircle, Cpu, Server, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import SEO from '../components/SEO';
+import OptimizedImage from '../components/OptimizedImage';
+import LazyVideo from '../components/LazyVideo';
 import { ASSETS } from '../constants/assets';
 import { useScrollToTop } from '../hooks/useScrollToTop';
 import { client, urlFor } from '../lib/sanity';
@@ -100,11 +102,11 @@ const FALLBACK_TESTIMONIALS = [
 ];
 
 const FALLBACK_CINEMATIC = [
-    { url: "/mediafiles/videos/industrial-drones-uav.mp4", label: "Industrial Drones" },
+    { url: "/mediafiles/videos/industrial-drones-uav.mp4", label: "Industrial Drones & UAV" },
     { url: "/mediafiles/videos/digital-services.mp4", label: "Digital Services" },
-    { url: "/mediafiles/videos/new-energy-materials.mp4", label: "New Energy" },
-    { url: "/mediafiles/videos/erp-software-solutions.mp4", label: "ERP Solutions" },
-    { url: "/mediafiles/videos/retail-food-collaborations.mp4", label: "Retail & Food" },
+    { url: "/mediafiles/videos/new-energy-materials.mp4", label: "New Energy & Materials" },
+    { url: "/mediafiles/videos/erp-software-solutions.mp4", label: "ERP Software Solutions" },
+    { url: "/mediafiles/videos/retail-food-collaborations.mp4", label: "Retail & Food Collaborations" },
     { url: "/mediafiles/videos/infra-security.mp4", label: "Infra Security" },
 ];
 
@@ -163,19 +165,17 @@ const INTERNSHIP_STATS = [
     { label: "Live Projects", value: "25+" }
 ];
 
-
-
 const FALLBACK_SCROLLING_BAR = {
     isEnabled: true,
     announcements: [
         { text: "🚁 ENGINEERING THE FUTURE OF DRONE TECHNOLOGY", isHighlight: true, link: "/industrial-drones" },
         { text: "💼 NOW HIRING: SENIOR AI ENGINEERS", link: "/careers", isHighlight: false },
         { text: "🏭 EXPLORE OUR NEW INDUSTRIAL SOLUTIONS", link: "/business", isHighlight: false },
-        { text: "📢 LATEST ACHIEVEMENTS, PARTNERSHIPS & INNOVATIONS", isHighlight: true, link: "/events" }, // Assuming industries page or similar, defaulting to business if not
+        { text: "📢 LATEST ACHIEVEMENTS, PARTNERSHIPS & INNOVATIONS", isHighlight: true, link: "/events" },
         { text: "🎓 JOIN OUR INTERNSHIP PROGRAM 2026", link: "/internship", isHighlight: false },
         { text: "🤝 GET IN TOUCH FOR CUSTOM ENTERPRISE SOLUTIONS", link: "/get-in-touch", isHighlight: false }
     ],
-    scrollSpeed: 60, // Slower for premium feel
+    scrollSpeed: 60,
     direction: 'left',
     backgroundColor: '#050505',
     textColor: '#ffffff'
@@ -185,18 +185,52 @@ const Home = () => {
     useScrollToTop(); // Force scroll to top on mount
 
     const [currentTestimonial, setCurrentTestimonial] = useState(0);
+    const [currentInternshipSlide, setCurrentInternshipSlide] = useState(0);
     const [activeBusiness, setActiveBusiness] = useState(0);
     const [homeData, setHomeData] = useState(null);
     const actionScrollRef = useRef(null);
+    const businessContentRef = useRef(null); // Ref for business details
+
+    // Mobile Business Click Handler
+    const handleBusinessClick = (index) => {
+        setActiveBusiness(index);
+        if (window.innerWidth < 1024 && businessContentRef.current) {
+            // Slight offset for sticky nav
+            const navHeight = 80;
+            const elementPosition = businessContentRef.current.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
+    };
 
     // Fetch Sanity Data
+
     useEffect(() => {
         // Expand videoFile references and Image assets to get the actual URL
         const query = `*[_type == "homePage"][0]{
             ...,
+            seo {
+                ...,
+                "metaImage": metaImage.asset->url
+            },
             heroSection {
                 ...,
                 "heroImages": heroImages[].asset->url
+            },
+            aboutSummarySection {
+                ...,
+                "image": image.asset->url
+            },
+            investorSummarySection {
+                ...,
+                investors[]{
+                    ...,
+                    "logo": logo.asset->url
+                }
             },
             businessesSection[]{
                 ...,
@@ -224,7 +258,8 @@ const Home = () => {
             careersSection,
             internshipSection {
                 ...,
-                "image": image.asset->url
+                "image": image.asset->url,
+                "images": images[].asset->url
             },
             sustainabilitySection {
                 ...,
@@ -294,7 +329,7 @@ const Home = () => {
 
     // Dynamic Advanced Tech
     const advTechStat = homeData?.advancedTechSection?.statsValue || "99";
-    const advTechUnit = homeData?.advancedTechSection?.statsUnit || "";
+    const advTechUnit = homeData?.advancedTechSection?.statsUnit || "%";
     const advTechLabel = homeData?.advancedTechSection?.statsLabel || "Operational Efficiency";
     const advTechHeading = homeData?.advancedTechSection?.heading || "Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems";
     const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home Advanced Technology.mp4";
@@ -307,7 +342,45 @@ const Home = () => {
     // --- NEW SECTIONS DATA ---
     const iconMap = {
         users: Users, globe: Globe, leaf: Leaf, code: Code,
-        zap: Zap, heart: Heart, sun: Sun, shield: Shield, star: Star
+        zap: Zap, heart: Heart, sun: Sun, shield: Shield, star: Star,
+        chart: BarChart, file: FileText, piechart: PieChart
+    };
+
+    // About Summary Fallback
+    const aboutSummary = homeData?.aboutSummarySection || {
+        heading: "Who We Are",
+        subheading: "Pioneering the Future of Aerial Tech",
+        description: "From humble generic beginnings to industry leadership, CopterCode has been at the forefront of drone innovation. We combine legacy excellence with futuristic vision.",
+        image: "/mediafiles/news and media/IMG_1851.jpg",
+        stats: [
+            { value: "500+", label: "Projects Delivered" },
+            { value: "50+", label: "Team Members" },
+            { value: "3", label: "Global Offices" }
+        ]
+    };
+    const aboutImage = homeData?.aboutSummarySection?.image ? urlFor(homeData.aboutSummarySection.image).url() : aboutSummary.image;
+
+    // Investor Summary Fallback
+    const investorSummary = homeData?.investorSummarySection || {
+        heading: "Investor Relations",
+        description: "Our commitment to sustainable growth and transparent governance ensures long-term value for our stakeholders. Join us on our journey of innovation.",
+        highlights: [
+            { title: "Financial Growth", description: "Consistent year-over-year revenue growth.", icon: "chart" },
+            { title: "Governance", description: "Strong leadership and ethical practices.", icon: "shield" },
+            { title: "Shareholder Info", description: "Stock information, dividend history, and shareholder services.", icon: "piechart" }
+        ],
+        investors: [
+            {
+                name: "MurgDur",
+                logo: "/mediafiles/logos/MurgDur-logo-CNKz8pTh.jpg",
+                description: "A leading venture capital firm focused on early-stage technology startups with high growth potential, supporting our vision since inception."
+            },
+            {
+                name: "Karvensen",
+                logo: "/mediafiles/logos/KarVenSen-logo-9ePXpcco.jpg",
+                description: "A global investment group specializing in sustainable infrastructure and innovative industrial solutions, partnering for long-term strategic growth."
+            }
+        ]
     };
 
     const upcomingEvents = homeData?.upcomingEventsSection?.events || PREVIEW_EVENTS;
@@ -334,11 +407,84 @@ const Home = () => {
     const internshipHeading = homeData?.internshipSection?.heading || "Internship Programme";
     const internshipDesc = homeData?.internshipSection?.description || "Empowering the next generation of innovators. Gain hands-on experience in Drone Tech, AI, and IoT with our intensive 3-month training program.";
     const internshipLink = homeData?.internshipSection?.applyLink || "https://forms.gle/bPkBxkdAHwDDrFJm6";
-    const internshipImage = homeData?.internshipSection?.image ? urlFor(homeData.internshipSection.image).url() : "/mediafiles/news and media/IMG_1851.jpg";
+    const internshipMainImage = homeData?.internshipSection?.image ? urlFor(homeData.internshipSection.image).url() : "/mediafiles/news and media/IMG_1851.jpg";
+    const FALLBACK_INTERNSHIP_IMAGES = [
+        "/mediafiles/Intern/A Devendhiran   -   Shree Sathyam College of Engineering And Technology   -  Fresher  -   Full Stack Developer.jpg",
+        "/mediafiles/Intern/Aathi Lakshmi -  Mepco Schlenk Engineering College  -   Fresher  -   Drone Development Designer.jpg",
+        "/mediafiles/Intern/Abinaya K  - KPR Institute of Engineering and Technology  -  Fresher Cloud Architect.jpg",
+        "/mediafiles/Intern/Abinesh M  -  Shree Sathyam college of Engineering And Technology  -  Fresher  -   Full Stack Web Developer.jpg"
+    ];
+    const internshipImages = homeData?.internshipSection?.images?.length > 0
+        ? homeData.internshipSection.images
+        : FALLBACK_INTERNSHIP_IMAGES;
+
+    // Auto-slide internship images
+    useEffect(() => {
+        if (internshipImages.length <= 1) return;
+        const interval = setInterval(() => {
+            setCurrentInternshipSlide(prev => (prev + 1) % internshipImages.length);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, [internshipImages]);
 
     const sustainabilityHeading = homeData?.sustainabilitySection?.heading || "Sustainability & CSR";
     const sustainabilityDesc = homeData?.sustainabilitySection?.description || "We are committed to building societal and business value together. Driving sustainable growth across all operations while empowering communities through innovation and care.";
     const sustainabilityBanner = homeData?.sustainabilitySection?.bannerImage ? urlFor(homeData.sustainabilitySection.bannerImage).url() : "/mediafiles/news and media/IMG_3979.jpg";
+
+    // --- NEW SECTIONS DATA (Manual / Static Fallback) ---
+    const WHY_CHOOSE_DATA = homeData?.whyChooseSection || {
+        heading: "Why Choose CopterCode?",
+        description: "At CopterCode, we specialize in Deep-Tech Innovation. We bridge the gap between hardware and software by integrating Autonomous Industrial Drones with Defense-Grade Cybersecurity. From custom ERP Software Solutions to cutting-edge Digital Services, our ecosystem is built for high-stakes precision and scalability.",
+        features: [
+            { title: "Industrial Aerial Intelligence", description: "Autonomous UAV systems designed for heavy-duty surveillance and logistics." },
+            { title: "Defense-Grade Cybersecurity", description: "Next-gen threat detection and digital asset protection standards." },
+            { title: "Integrated ERP Ecosystems", description: "Seamless business process management for enterprise efficiency." },
+            { title: "Infrastructure & Physical Security", description: "Convergence of physical and digital security for critical infrastructure." },
+            { title: "Sustainable Energy Innovation", description: "Net-zero vision driving energy-efficient and material innovations." },
+            { title: "Strategic R&D Partnerships", description: "Collaborations with top research hubs (IIT Madras Research Park) for rapid prototyping." }
+        ],
+        caseStudies: [
+            {
+                title: "Smart Agriculture Deployment",
+                subtitle: "Autonomous UAVs for precision farming and large-scale surveys.",
+                stats: [
+                    { value: "500+", label: "Farms Covered" },
+                    { value: "30%", label: "Yield Efficiency" },
+                    { value: "100%", label: "Auto-Piloted" }
+                ]
+            },
+            {
+                title: "Leonix Industrial IoT Transformation",
+                subtitle: "Digital overhaul for a leading industrial automation provider.",
+                stats: [
+                    { value: "47%", label: "Organic Traffic Growth" },
+                    { value: "45%", label: "Higher Engagement" },
+                    { value: "Real-time", label: "Data Sync" }
+                ]
+            }
+        ]
+    };
+
+    const COMMAND_CENTER_DATA = homeData?.engineeringCommandCenterSection || {
+        heading: "ENGINEERING COMMAND CENTER.",
+        subtext: "Where industrial automation meets enterprise software intelligence. We architect scalable drone ecosystems, enterprise-grade ERP platforms, and intelligent digital infrastructures engineered for real-world impact.",
+        focusAreas: [
+            { title: "Industrial Drone Systems", description: "Autonomous UAV solutions for surveillance, mapping, inspection & defense applications." },
+            { title: "Enterprise Software Engineering", description: "Custom ERP platforms, business automation systems & scalable SaaS architectures." },
+            { title: "AI & Intelligent Automation", description: "Predictive analytics, machine learning integration & process intelligence." },
+            { title: "Infrastructure & Security Systems", description: "Smart monitoring, industrial safety frameworks & secured digital environments." }
+        ],
+        coreCapabilities: [
+            { title: "Autonomous Systems Engineering", description: "UAV architecture, flight intelligence & real-time control systems." },
+            { title: "Enterprise ERP Development", description: "Scalable, secure & modular ERP ecosystems for industrial operations." },
+            { title: "AI & Data Intelligence", description: "Predictive modeling, operational analytics & intelligent automation." },
+            { title: "Digital Infrastructure Engineering", description: "Secure cloud deployments, performance optimization & resilient architectures." }
+        ],
+        infoCard: {
+            engineersCount: "50+",
+            status: "INNOVATION LAB ACTIVE"
+        }
+    };
 
 
     const nextTestimonial = () => {
@@ -353,13 +499,107 @@ const Home = () => {
 
     return (
         <div className="bg-background text-primary selection:bg-accent selection:text-white">
-            <SEO title={"Home"} description={"CopterCode - Premium Engineering & AI Solutions"} />
+            <SEO
+                title={homeData?.seo?.metaTitle}
+                description={homeData?.seo?.metaDescription}
+                keywords={homeData?.seo?.keywords}
+                ogImage={homeData?.seo?.metaImage || homeData?.heroSection?.heroImages?.[0] || "/mediafiles/Home/IMG_1851.jpg"}
+            />
 
             {/* Note: Hero will use its internal default if data prop fields are missing */}
             <Hero data={homeData?.heroSection || null} />
 
             {/* Scrolling Announcement Bar */}
             <ScrollingAnnouncementBar data={homeData?.scrollingAnnouncementBar || FALLBACK_SCROLLING_BAR} />
+
+            {/* --- WHO WE ARE (Redesigned) --- */}
+            <section className="py-24 lg:py-32 bg-surface text-primary relative overflow-hidden">
+                {/* Decorative Background Elements */}
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-accent/5 -skew-x-12 transform origin-top-right z-0 pointer-events-none"></div>
+
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                        {/* Text Content */}
+                        <div className="w-full lg:w-1/2">
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8 }}
+                            >
+                                {/* Badge/Label */}
+                                <div className="inline-flex items-center space-x-3 mb-8">
+                                    <span className="w-12 h-[2px] bg-accent"></span>
+                                    <span className="text-secondary font-bold tracking-[0.2em] uppercase text-xs">
+                                        {aboutSummary.heading}
+                                    </span>
+                                </div>
+
+                                <h2 className="text-4xl md:text-6xl font-display font-medium text-primary mb-8 leading-[1.1]">
+                                    {aboutSummary.subheading}
+                                </h2>
+
+                                <p className="text-xl text-secondary leading-relaxed font-light mb-12 border-l-4 border-accent pl-6">
+                                    {aboutSummary.description}
+                                </p>
+
+                                {/* Modern Stats Grid */}
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-12">
+                                    {aboutSummary.stats && aboutSummary.stats.map((stat, idx) => (
+                                        <div key={idx} className="group cursor-default">
+                                            <h4 className="text-4xl md:text-5xl font-display font-bold text-primary mb-2 group-hover:text-accent transition-colors duration-300">
+                                                {stat.value}
+                                            </h4>
+                                            <p className="text-xs uppercase tracking-wider text-secondary font-semibold group-hover:tracking-widest transition-all duration-300">
+                                                {stat.label}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <Link to="/about" className="group inline-flex items-center px-10 py-5 bg-primary text-white rounded-full hover:bg-accent transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                                    <span className="font-bold tracking-wide">Read Our Story</span>
+                                    <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" size={20} />
+                                </Link>
+                            </motion.div>
+                        </div>
+
+                        {/* Image Content */}
+                        <div className="w-full lg:w-1/2 relative">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95, rotate: 2 }}
+                                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                                className="relative z-10"
+                            >
+                                <div className="rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] relative">
+                                    {aboutImage ? (
+                                        <OptimizedImage src={aboutImage} alt="About CopterCode" className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" />
+                                    ) : (
+                                        <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">Image not available</div>
+                                    )}
+
+                                    {/* Glassmorphic Overlay Card */}
+                                    <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/40 hidden md:flex items-center justify-between">
+                                        <div>
+                                            <p className="text-primary font-bold text-lg mb-1">Innovation First</p>
+                                            <p className="text-xs text-secondary font-medium uppercase tracking-wider">Leading the drone revolution since 2018</p>
+                                        </div>
+                                        <div className="w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center shadow-md">
+                                            <Zap size={24} fill="currentColor" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Decorative Elements behind image */}
+                                <div className="absolute top-8 -right-8 w-full h-full bg-accent/5 rounded-[2.5rem] -z-10 rotate-3 border border-accent/10"></div>
+                                <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-accent/20 rounded-full blur-3xl -z-10 mix-blend-multiply"></div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* Our Businesses Section */}
             <motion.section
@@ -369,21 +609,21 @@ const Home = () => {
                 transition={{ duration: 0.8 }}
                 className="py-0 relative"
             >
-                <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[800px]">
-                    <div className="bg-white border-r border-border p-12 lg:p-24 flex flex-col justify-center relative overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[500px] lg:min-h-[800px]">
+                    <div ref={businessContentRef} className="bg-white border-r border-border p-6 lg:p-12 xl:p-24 flex flex-col justify-center relative overflow-hidden">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeBusiness}
                                 initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
                                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                                 exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-                                transition={{ duration: 1.2, ease: "circOut" }}
+                                transition={{ duration: 0.5, ease: "circOut" }}
                                 className="relative z-10 flex flex-col items-start"
                             >
                                 <motion.span
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+                                    transition={{ delay: 0, duration: 0.4, ease: "easeOut" }}
                                     className="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-6 block flex items-center"
                                 >
                                     <span className="w-2 h-2 bg-accent mr-2 rotate-45"></span>
@@ -392,8 +632,8 @@ const Home = () => {
                                 <motion.h2
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-                                    className="text-5xl md:text-7xl font-display font-bold leading-tight mb-8 text-primary"
+                                    transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}
+                                    className="text-4xl md:text-5xl lg:text-7xl font-display font-bold leading-tight mb-8 text-primary"
                                 >
                                     {currentBusiness.title.split('&')[0]} <br />
                                     <span className="text-primary/70">
@@ -403,15 +643,15 @@ const Home = () => {
                                 <motion.p
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
-                                    className="text-lg text-secondary leading-relaxed mb-12 max-w-xl"
+                                    transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
+                                    className="text-base md:text-lg text-secondary leading-relaxed mb-12 w-full md:max-w-xl"
                                 >
                                     {currentBusiness.description}
                                 </motion.p>
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.9, duration: 0.8, ease: "easeOut" }}
+                                    transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
                                 >
                                     <Link to={currentBusiness.link || "/business"} className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-full hover:bg-primary/90 transition-all duration-300 font-semibold tracking-wide shadow-xl hover:-translate-y-1">
                                         read more <ArrowRight className="ml-2" />
@@ -462,18 +702,14 @@ const Home = () => {
                                         );
                                     } else {
                                         return (
-                                            <motion.video
+                                            <LazyVideo
                                                 key={videoSrc}
                                                 src={videoSrc}
-                                                initial={{ opacity: 0, scale: 1.1 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                transition={{ duration: 1.2, ease: "circOut" }}
                                                 className="w-full h-full object-cover"
-                                                autoPlay
-                                                loop
-                                                muted
-                                                playsInline
+                                                autoPlay={true}
+                                                loop={true}
+                                                muted={true}
+                                                playsInline={true}
                                             />
                                         );
                                     }
@@ -486,7 +722,7 @@ const Home = () => {
                                 {businesses.map((item, index) => (
                                     <div
                                         key={index}
-                                        onClick={() => setActiveBusiness(index)}
+                                        onClick={() => handleBusinessClick(index)}
                                         className="group border-b border-primary/10 py-8 pl-8 transition-all duration-300 hover:bg-white/50 cursor-pointer relative overflow-hidden"
                                     >
                                         <div className={`absolute left-0 top-0 bottom-0 w-1 bg-accent transition-transform duration-300 ${index === activeBusiness ? 'scale-y-100' : 'scale-y-0 group-hover:scale-y-100'}`} />
@@ -504,7 +740,7 @@ const Home = () => {
             {/* UPCOMING EVENTS SECTION (New) */}
             <section className="py-24 bg-background border-t border-border relative overflow-hidden">
                 <div className="container mx-auto px-6 relative z-10">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16">
                         <div>
                             <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                                 Connect With Us
@@ -531,10 +767,11 @@ const Home = () => {
                             >
                                 <div className="h-48 overflow-hidden relative">
                                     <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
-                                    <img
+                                    <OptimizedImage
                                         src={event.image}
                                         alt={event.title}
                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                        sizes="(min-width:1024px) 33vw, 100vw"
                                     />
                                     <div className="absolute top-4 left-4 z-20">
                                         <span className="bg-background/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full border border-border">
@@ -575,7 +812,7 @@ const Home = () => {
             >
                 <div className="container mx-auto px-6 mb-8 flex justify-between items-center">
                     <div>
-                        <h2 className="text-3xl font-display font-medium mb-2 text-primary">CopterCode in Action</h2>
+                        <h2 className="text-3xl font-display font-medium mb-2 text-primary">CopterCode In Action</h2>
                         <div className="w-12 h-1 bg-accent rounded-full"></div>
                     </div>
                     <div className="flex space-x-4">
@@ -609,7 +846,7 @@ const Home = () => {
                                 whileHover={{ y: -5 }}
                                 onMouseEnter={(e) => !isYoutube && e.currentTarget.querySelector('video')?.play()}
                                 onMouseLeave={(e) => !isYoutube && e.currentTarget.querySelector('video')?.pause()}
-                                className="min-w-[350px] md:min-w-[450px] aspect-[16/9] bg-surface-highlight rounded-3xl overflow-hidden relative group snap-center border border-border shadow-md hover:shadow-xl transition-all duration-300"
+                                className="min-w-[85vw] md:min-w-[450px] aspect-[16/9] bg-surface-highlight rounded-3xl overflow-hidden relative group snap-center border border-border shadow-md hover:shadow-xl transition-all duration-300"
                             >
                                 {isYoutube ? (
                                     <div className="w-full h-full pointer-events-none">
@@ -710,12 +947,12 @@ const Home = () => {
                 className="py-24 bg-background text-primary relative border-t border-border"
             >
                 <div className="container mx-auto px-6">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16">
                         <div>
                             <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                                 Stay Updated
                             </span>
-                            <h2 className="text-4xl md:text-5xl font-display font-medium text-primary">Latest Insights</h2>
+                            <h2 className="text-4xl md:text-5xl font-display font-medium text-primary">Automation & Bio-Medical Insights</h2>
                         </div>
                         <Link to="/news" className="hidden md:flex items-center text-primary font-bold hover:text-accent transition-colors mt-6 md:mt-0">
                             Read More News <ArrowRight className="ml-2" size={20} />
@@ -730,7 +967,7 @@ const Home = () => {
                                 className="group cursor-pointer bg-white p-4 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300 border border-border"
                             >
                                 <div className="aspect-video bg-surface mb-6 overflow-hidden relative rounded-xl">
-                                    <img src={item.img} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" alt={item.title} />
+                                    <OptimizedImage src={item.img} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" alt={item.title} sizes="(min-width:1024px) 33vw, 100vw" />
                                 </div>
                                 <div className="border-l-2 border-accent pl-6 py-1 mb-6">
                                     <h3 className="text-xl font-bold leading-snug text-primary group-hover:text-accent transition-colors">
@@ -748,6 +985,75 @@ const Home = () => {
                 </div>
             </motion.section>
 
+            {/* --- INVESTOR SUMMARY (New) --- */}
+            <section className="py-24 bg-[#FAF9F5] relative overflow-hidden border-t border-border">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                            Corporate Governance
+                        </span>
+                        <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">
+                            {investorSummary.heading}
+                        </h2>
+                        <p className="text-xl text-secondary leading-relaxed font-light">
+                            {investorSummary.description}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                        {investorSummary.highlights && investorSummary.highlights.map((item, idx) => {
+                            const Icon = iconMap[item.icon] || BarChart;
+                            return (
+                                <motion.div
+                                    key={idx}
+                                    whileHover={{ y: -5 }}
+                                    className="bg-white p-8 rounded-2xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 transition-all duration-300"
+                                >
+                                    <div className="w-12 h-12 bg-accent/5 rounded-full flex items-center justify-center text-accent mb-6">
+                                        <Icon size={24} />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-primary mb-3">{item.title}</h3>
+                                    <p className="text-secondary text-sm leading-relaxed">{item.description}</p>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Our Investors Subsection */}
+                    {investorSummary.investors && investorSummary.investors.length > 0 && (
+                        <div className="mb-16">
+                            <div className="text-center mb-10">
+                                <h3 className="text-3xl font-display font-medium text-primary inline-block relative pb-4">
+                                    Our Investors
+                                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-gray-300 rounded-full"></span>
+                                </h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                                {investorSummary.investors.map((investor, idx) => (
+                                    <motion.div
+                                        key={idx}
+                                        whileHover={{ y: -5 }}
+                                        className="bg-white p-8 rounded-3xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 transition-all duration-300 text-center flex flex-col items-center h-full"
+                                    >
+                                        <div className="w-24 h-24 bg-[#1a1a1a] rounded-2xl flex items-center justify-center mb-6 shadow-md overflow-hidden p-4">
+                                            <OptimizedImage src={investor.logo} alt={investor.name} className="w-full h-full object-contain" sizes="120px" />
+                                        </div>
+                                        <h4 className="text-xl font-bold text-primary mb-4">{investor.name}</h4>
+                                        <p className="text-secondary text-sm leading-relaxed max-w-sm">{investor.description}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="text-center">
+                        <Link to="/investors" className="inline-flex items-center text-primary font-bold border-b-2 border-accent pb-1 hover:text-accent transition-colors">
+                            Visit Investor Relations <ArrowRight className="ml-2" size={18} />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
             {/* Advanced Technology Section */}
             <section className="py-24 bg-white relative overflow-hidden">
                 <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -762,8 +1068,8 @@ const Home = () => {
 
                         <div className="mb-12">
                             <div className="flex items-end mb-2">
-                                <span className="text-6xl font-bold text-primary">{advTechStat}</span>
-                                <span className="text-3xl font-bold text-primary mb-2">{advTechUnit}</span>
+                                <span className="text-4xl md:text-6xl font-bold text-primary">{advTechStat}</span>
+                                <span className="text-2xl md:text-3xl font-bold text-primary mb-2">{advTechUnit}</span>
                             </div>
                             <h4 className="text-2xl text-secondary font-medium mb-1">{advTechLabel}</h4>
                         </div>
@@ -812,11 +1118,86 @@ const Home = () => {
                 </div>
             </section>
 
+            {/* ENGINEERING COMMAND CENTER (New) */}
+            {/* ENGINEERING COMMAND CENTER (Refined) */}
+            <section className="py-24 bg-primary text-white relative overflow-hidden">
+                {/* Clean Dark Background - No Grids */}
+                <div className="absolute inset-0 bg-primary" />
+
+                {/* Subtle Ambient Glow (Optional, very faint) */}
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex flex-col lg:flex-row gap-16 mb-20">
+                        <div className="lg:w-2/3">
+                            <div className="w-16 h-1 bg-white mb-6" />
+                            <span className="text-gray-400 font-bold tracking-[0.2em] uppercase text-sm mb-4 block">
+                                PRODUCT
+                            </span>
+                            <h2 className="text-5xl md:text-7xl font-display font-black text-white mb-8 leading-none tracking-tight">
+                                {COMMAND_CENTER_DATA.heading}
+                            </h2>
+                            <p className="text-xl text-gray-400 leading-relaxed font-light max-w-2xl">
+                                {COMMAND_CENTER_DATA.subtext}
+                            </p>
+                        </div>
+                        <div className="lg:w-1/3 flex justify-end">
+                            {/* Right Side Info Card - Glassmorphism */}
+                            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl relative overflow-hidden max-w-sm w-full shadow-2xl">
+                                <div className="absolute top-0 right-0 p-4 opacity-10">
+                                    <Cpu size={80} className="text-white" />
+                                </div>
+                                <h3 className="text-6xl font-bold text-white mb-2">{COMMAND_CENTER_DATA.infoCard?.engineersCount || "50+"}</h3>
+                                <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-8">Core Engineers</p>
+
+                                <div className="flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-emerald-400 border-t border-white/10 pt-6">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                    </span>
+                                    <span>{COMMAND_CENTER_DATA.infoCard?.status || "Status: Innovation Lab Active"}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                        {COMMAND_CENTER_DATA.focusAreas?.map((item, idx) => (
+                            <div key={idx} className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors group">
+                                <h4 className="text-lg font-bold text-white mb-3 group-hover:text-gray-200 transition-colors">{item.title}</h4>
+                                <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="border-t border-white/10 pt-16">
+                        <h3 className="text-2xl font-bold text-white mb-8">Core Capabilities</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                            {COMMAND_CENTER_DATA.coreCapabilities?.map((item, idx) => (
+                                <div key={idx} className="flex items-start space-x-4">
+                                    <div className="w-1.5 h-1.5 bg-white rounded-full mt-2.5 flex-shrink-0" />
+                                    <div>
+                                        <h4 className="text-base font-bold text-white mb-1 uppercase tracking-wide">{item.title}</h4>
+                                        <p className="text-sm text-gray-400">{item.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-16">
+                        <Link to="/technologies" className="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-100 text-primary font-bold rounded-full transition-all shadow-lg hover:shadow-xl">
+                            Explore Solutions <ArrowRight className="ml-2" />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
             {/* INTERNSHIP SECTION (New) */}
             <section className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0">
-                    <img
-                        src={internshipImage}
+                    <OptimizedImage
+                        src={internshipImages[0]}
                         alt="Internship Background"
                         className="w-full h-full object-cover opacity-20 grayscale"
                     />
@@ -836,7 +1217,7 @@ const Home = () => {
                                 {internshipDesc}
                             </p>
 
-                            <div className="grid grid-cols-3 gap-6 mb-10 border-y border-border py-8">
+                            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-6 mb-10 border-y border-border py-8">
                                 {internshipStats.map((stat, idx) => (
                                     <div key={idx}>
                                         <div className="text-3xl font-bold text-primary mb-1">{stat.value || stat.metricValue}</div>
@@ -857,11 +1238,18 @@ const Home = () => {
 
                         <div className="relative">
                             <div className="aspect-square rounded-3xl overflow-hidden border border-border relative bg-surface shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
-                                <img
-                                    src="/mediafiles/news and media/IMG_1851.jpg"
-                                    alt="Internship at CopterCode"
-                                    className="w-full h-full object-cover"
-                                />
+                                <AnimatePresence mode="wait">
+                                    <motion.img
+                                        key={currentInternshipSlide}
+                                        src={internshipImages[currentInternshipSlide]}
+                                        alt={`Internship ${currentInternshipSlide + 1}`}
+                                        initial={{ opacity: 0, scale: 1.1 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 1 }}
+                                        className="w-full h-full object-cover absolute inset-0"
+                                    />
+                                </AnimatePresence>
                                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
                                 <div className="absolute bottom-8 left-8 right-8 text-white">
                                     <h4 className="text-2xl font-bold mb-2">Real-World Projects</h4>
@@ -910,7 +1298,7 @@ const Home = () => {
                     </div>
 
                     <div className="relative rounded-3xl overflow-hidden h-[400px] group">
-                        <img
+                        <OptimizedImage
                             src={sustainabilityBanner}
                             alt="Sustainability Initiative"
                             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
@@ -1013,11 +1401,84 @@ const Home = () => {
                 <div className="container mx-auto px-6">
                     <h2 className="text-4xl font-display font-bold mb-12 text-primary">{"Global Footprint of Our Talent"}</h2>
                     <div className="max-w-5xl mx-auto border border-border shadow-2xl rounded-3xl overflow-hidden p-6 bg-white">
-                        <img
+                        <OptimizedImage
                             src={globalFootprintSrc}
                             alt={"Global Footprint"}
                             className="w-full h-auto mix-blend-normal"
                         />
+                    </div>
+                </div>
+            </section>
+
+            {/* WHY CHOOSE SECTION (Refreshed - Light Mode) */}
+            <section className="py-24 bg-white relative overflow-hidden">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                        {/* Left Column: Intro & Features */}
+                        <div>
+                            <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-8 leading-tight">
+                                Why Enterprises Choose <br />
+                                <span className="text-accent">CopterCode</span>
+                            </h2>
+                            <p className="text-lg text-secondary leading-relaxed mb-12 border-l-4 border-accent pl-6">
+                                {WHY_CHOOSE_DATA.heading === "Why Choose CopterCode?" ? WHY_CHOOSE_DATA.description : WHY_CHOOSE_DATA.description}
+                            </p>
+
+                            <div className="space-y-6">
+                                {WHY_CHOOSE_DATA.features?.map((feature, idx) => (
+                                    <div key={idx} className="flex items-start group">
+                                        <div className="mt-1 mr-4 flex-shrink-0 w-6 h-6 rounded-full bg-surface-highlight flex items-center justify-center text-primary border border-border group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                            <CheckCircle size={14} strokeWidth={3} />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg font-bold text-primary mb-1">{feature.title}</h4>
+                                            <p className="text-sm text-secondary">{feature.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Right Column: Case Studies */}
+                        <div>
+                            <h3 className="text-2xl font-bold text-primary mb-8 flex items-center">
+                                Case Study Snapshots
+                                <Activity className="ml-3 text-accent" size={24} />
+                            </h3>
+                            <div className="space-y-6">
+                                {WHY_CHOOSE_DATA.caseStudies?.map((study, idx) => (
+                                    <div key={idx} className="bg-surface border border-border rounded-3xl p-8 hover:shadow-lg hover:border-accent/20 transition-all duration-300 group">
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div>
+                                                <h4 className="text-xl font-bold text-primary mb-2 group-hover:text-accent transition-colors">{study.title}</h4>
+                                                <p className="text-xs font-bold uppercase tracking-wider text-secondary/70">{study.subtitle}</p>
+                                            </div>
+                                            <div className="bg-white p-2 rounded-lg text-primary shadow-sm">
+                                                <BarChart size={20} />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-3 gap-4 border-t border-border pt-6">
+                                            {study.stats?.map((stat, sIdx) => (
+                                                <div key={sIdx} className="text-center">
+                                                    <div className="text-2xl md:text-3xl font-black text-primary mb-1">{stat.value}</div>
+                                                    <div className="text-[10px] uppercase font-bold text-secondary tracking-wider">{stat.label}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Decorative Quote-like Box - Dark Contrast */}
+                            <div className="mt-8 bg-primary rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
+                                <div className="relative z-10">
+                                    <h4 className="text-2xl font-black text-white italic mb-2">"Zero Latency."</h4>
+                                    <p className="text-gray-400 text-sm font-medium">Our commitment to real-time performance in both drone telemetry and digital infrastructure.</p>
+                                </div>
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

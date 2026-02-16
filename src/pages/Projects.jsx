@@ -14,6 +14,7 @@ import {
   Code
 } from "lucide-react";
 import SEO from "../components/SEO";
+import OptimizedImage from '../components/OptimizedImage';
 import { motion } from "framer-motion";
 
 
@@ -227,10 +228,11 @@ const Projects = () => {
                   className="w-32 h-16 relative group"
                 >
                   <div className="absolute inset-0 bg-accent/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <img
+                  <OptimizedImage
                     src={logo}
                     alt={`Client ${index + 1}`}
                     className="relative w-full h-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110"
+                    sizes="120px"
                   />
                 </motion.div>
               ))}

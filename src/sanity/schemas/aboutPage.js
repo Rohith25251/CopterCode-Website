@@ -30,53 +30,57 @@ export const aboutPage = {
                 { name: 'subtitle', type: 'text', title: 'Hero Subtitle', initialValue: 'Revolutionizing industries with drones, technology, and sustainable innovation.' }
             ]
         },
+
+
         // --- ORIGIN SECTION ---
         {
             name: 'origin',
             title: 'Origin Section',
             type: 'object',
             fields: [
-                { name: 'label', type: 'string', title: 'Label', initialValue: 'Our Origin' },
                 { name: 'heading', type: 'string', title: 'Heading', initialValue: 'From Vision to Reality' },
                 { name: 'description', type: 'text', title: 'Description', rows: 4, initialValue: 'A journey of relentless innovation, guided by a legacy of excellence and a commitment to transforming the future.' },
-                { name: 'quote', type: 'text', title: 'Quote', rows: 2, initialValue: 'Driven by sustainability, impacting People, Planet, and Prosperity.' }
+                { name: 'quote', type: 'text', title: 'Quote (Mission)', rows: 2, initialValue: 'Driven by sustainability, impacting People, Planet, and Prosperity.' }
             ]
         },
-        // --- STORY SECTION ---
+
+        // --- JOURNEY SECTION ---
         {
-            name: 'story',
-            title: 'Our Story',
+            name: 'journey',
+            title: 'Our Journey Timeline',
             type: 'array',
             of: [
                 {
                     type: 'object',
-                    title: 'Story Block',
+                    title: 'Journey Milestone',
                     fields: [
-                        { name: 'year', type: 'string', title: 'Year / Title' },
-                        { name: 'heading', type: 'string', title: 'Heading' },
+                        { name: 'year', type: 'string', title: 'Year / Period' },
+                        { name: 'title', type: 'string', title: 'Title' },
                         { name: 'description', type: 'text', title: 'Description' },
+                        { name: 'image', type: 'image', title: 'Milestone Image', options: { hotspot: true } },
                         {
                             name: 'icon',
-                            title: 'Icon',
                             type: 'string',
+                            title: 'Icon Type',
                             options: {
                                 list: [
                                     { title: 'Lightbulb', value: 'lightbulb' },
                                     { title: 'Shield', value: 'shield' },
                                     { title: 'Globe', value: 'globe' },
-                                    { title: 'Target', value: 'target' },
+                                    { title: 'Rocket', value: 'rocket' },
+                                    { title: 'Chart', value: 'chart' },
                                     { title: 'Users', value: 'users' },
-                                    { title: 'Briefcase', value: 'briefcase' },
-                                    { title: 'Zap', value: 'zap' },
-                                    { title: 'Award', value: 'award' }
+                                    { title: 'Award', value: 'award' },
+                                    { title: 'Building', value: 'building' }
                                 ]
                             },
-                            initialValue: 'lightbulb'
+                            initialValue: 'rocket'
                         }
                     ]
                 }
             ]
         },
+
         // --- LEADERSHIP SECTION ---
         {
             name: 'leadership',
@@ -103,10 +107,11 @@ export const aboutPage = {
                 }
             ]
         },
-        // --- MILESTONES SECTION ---
+
+        // --- MILESTONES GRID ---
         {
             name: 'milestones',
-            title: 'Milestones',
+            title: 'Milestones at a Glance',
             type: 'array',
             of: [
                 {
@@ -115,7 +120,7 @@ export const aboutPage = {
                     fields: [
                         { name: 'year', type: 'string', title: 'Year' },
                         { name: 'title', type: 'string', title: 'Title' },
-                        { name: 'description', type: 'text', title: 'Description' }
+                        { name: 'description', type: 'string', title: 'Short Description' }
                     ]
                 }
             ]

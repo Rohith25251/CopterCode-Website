@@ -1,83 +1,104 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+const Preloader = lazy(() => import('./components/Preloader'));
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import About from './pages/About';
-import Business from './pages/Business';
-import Administration from './pages/Administration';
-import Sustainability from './pages/Sustainability';
-import News from './pages/News';
-import Services from './pages/Services';
-import Technologies from './pages/Technologies';
-import Projects from './pages/Projects';
-import Careers from './pages/Careers';
-import Internship from './pages/Internship';
-import Investors from './pages/Investors';
-import Events from './pages/Events';
-import GetInTouch from './pages/GetInTouch';
-import Contact from './pages/Contact';
-import IndustrialDrones from './pages/IndustrialDrones';
-import DigitalServices from './pages/DigitalServices';
-import NewEnergy from './pages/NewEnergy';
-import ERPSolutions from './pages/ERPSolutions';
-import RetailFood from './pages/RetailFood';
-import InfraSecurity from './pages/InfraSecurity';
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Business = lazy(() => import('./pages/Business'));
+const Administration = lazy(() => import('./pages/Administration'));
+const Sustainability = lazy(() => import('./pages/Sustainability'));
+const News = lazy(() => import('./pages/News'));
+const Services = lazy(() => import('./pages/Services'));
+const Technologies = lazy(() => import('./pages/Technologies'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Careers = lazy(() => import('./pages/Careers'));
+const Internship = lazy(() => import('./pages/Internship'));
+const Investors = lazy(() => import('./pages/Investors'));
+const Events = lazy(() => import('./pages/Events'));
+const GetInTouch = lazy(() => import('./pages/GetInTouch'));
+const Contact = lazy(() => import('./pages/Contact'));
+const IndustrialDrones = lazy(() => import('./pages/IndustrialDrones'));
+const DigitalServices = lazy(() => import('./pages/DigitalServices'));
+const NewEnergy = lazy(() => import('./pages/NewEnergy'));
+const ERPSolutions = lazy(() => import('./pages/ERPSolutions'));
+const RetailFood = lazy(() => import('./pages/RetailFood'));
+const InfraSecurity = lazy(() => import('./pages/InfraSecurity'));
 
-import Locations from './pages/Locations';
+const Locations = lazy(() => import('./pages/Locations'));
 
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsAndConditions from './pages/TermsAndConditions';
-import BusinessTemplate from './pages/BusinessTemplate';
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
+const BusinessTemplate = lazy(() => import('./pages/BusinessTemplate'));
 
-import CustomCursor from './components/CustomCursor';
 import ScrollToTop from './components/ScrollToTop';
 
-import StudioPage from './pages/StudioPage';
+const StudioPage = lazy(() => import('./pages/StudioPage'));
 
-function App() {
+function AppContent() {
+    const location = useLocation();
+
     return (
-        <Router>
-            <ScrollToTop />
-            <Routes>
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
                 {/* Sanity Studio Route - Outside Layout */}
-                <Route path="/studio/*" element={<StudioPage />} />
+                <Route path="/studio/*" element={<Suspense fallback={<div className="min-h-screen"/>}><StudioPage /></Suspense>} />
 
                 {/* Main Application Routes - Inside Layout */}
                 <Route path="*" element={
                     <Layout>
                         <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/about" element={<About />} />
-                            <Route path="/business" element={<Business />} />
-                            <Route path="/administration" element={<Administration />} />
-                            <Route path="/sustainability" element={<Sustainability />} />
-                            <Route path="/news" element={<News />} />
-                            <Route path="/events" element={<Events />} />
-                            <Route path="/services" element={<Services />} />
-                            <Route path="/technologies" element={<Technologies />} />
-                            <Route path="/projects" element={<Projects />} />
-                            <Route path="/careers" element={<Careers />} />
-                            <Route path="/internship" element={<Internship />} />
-                            <Route path="/investors" element={<Investors />} />
-                            <Route path="/get-in-touch" element={<GetInTouch />} />
-                            <Route path="/contact" element={<Contact />} />
-                            <Route path="/locations" element={<Locations />} />
-                            <Route path="/industrial-drones" element={<IndustrialDrones />} />
-                            <Route path="/digital-services" element={<DigitalServices />} />
-                            <Route path="/new-energy" element={<NewEnergy />} />
-                            <Route path="/erp-solutions" element={<ERPSolutions />} />
-                            <Route path="/retail-food" element={<RetailFood />} />
-                            <Route path="/infra-security" element={<InfraSecurity />} />
-                            <Route path="/privacy" element={<PrivacyPolicy />} />
-                            <Route path="/terms" element={<TermsAndConditions />} />
+                            <Route path="/" element={<Suspense fallback={<div className="min-h-screen"/>}><Home /></Suspense>} />
+                            <Route path="/about" element={<Suspense fallback={<div/>}><About /></Suspense>} />
+                            <Route path="/business" element={<Suspense fallback={<div/>}><Business /></Suspense>} />
+                            <Route path="/administration" element={<Suspense fallback={<div/>}><Administration /></Suspense>} />
+                            <Route path="/sustainability" element={<Suspense fallback={<div/>}><Sustainability /></Suspense>} />
+                            <Route path="/news" element={<Suspense fallback={<div/>}><News /></Suspense>} />
+                            <Route path="/events" element={<Suspense fallback={<div/>}><Events /></Suspense>} />
+                            <Route path="/services" element={<Suspense fallback={<div/>}><Services /></Suspense>} />
+                            <Route path="/technologies" element={<Suspense fallback={<div/>}><Technologies /></Suspense>} />
+                            <Route path="/projects" element={<Suspense fallback={<div/>}><Projects /></Suspense>} />
+                            <Route path="/careers" element={<Suspense fallback={<div/>}><Careers /></Suspense>} />
+                            <Route path="/internship" element={<Suspense fallback={<div/>}><Internship /></Suspense>} />
+                            <Route path="/investors" element={<Suspense fallback={<div/>}><Investors /></Suspense>} />
+                            <Route path="/get-in-touch" element={<Suspense fallback={<div/>}><GetInTouch /></Suspense>} />
+                            <Route path="/contact" element={<Suspense fallback={<div/>}><Contact /></Suspense>} />
+                            <Route path="/locations" element={<Suspense fallback={<div/>}><Locations /></Suspense>} />
+                            <Route path="/industrial-drones" element={<Suspense fallback={<div/>}><IndustrialDrones /></Suspense>} />
+                            <Route path="/digital-services" element={<Suspense fallback={<div/>}><DigitalServices /></Suspense>} />
+                            <Route path="/new-energy" element={<Suspense fallback={<div/>}><NewEnergy /></Suspense>} />
+                            <Route path="/erp-solutions" element={<Suspense fallback={<div/>}><ERPSolutions /></Suspense>} />
+                            <Route path="/retail-food" element={<Suspense fallback={<div/>}><RetailFood /></Suspense>} />
+                            <Route path="/infra-security" element={<Suspense fallback={<div/>}><InfraSecurity /></Suspense>} />
+                            <Route path="/privacy" element={<Suspense fallback={<div/>}><PrivacyPolicy /></Suspense>} />
+                            <Route path="/terms" element={<Suspense fallback={<div/>}><TermsAndConditions /></Suspense>} />
 
                             {/* Dynamic Route for New Businesses */}
-                            <Route path="/:slug" element={<BusinessTemplate />} />
+                            <Route path="/:slug" element={<Suspense fallback={<div/>}><BusinessTemplate /></Suspense>} />
                         </Routes>
                     </Layout>
                 } />
             </Routes>
-        </Router>
+        </AnimatePresence>
     );
 }
 
+function App() {
+    const [loading, setLoading] = useState(true);
+
+    return (
+        <Router>
+                <ScrollToTop />
+                <AnimatePresence mode="wait">
+                    {loading && (
+                        <Suspense fallback={<div className="min-h-screen"/>}>
+                            <Preloader setLoading={setLoading} />
+                        </Suspense>
+                    )}
+                </AnimatePresence>
+                {!loading && <AppContent />}
+                {/* Custom cursor removed */}
+            </Router>
+    );
+}
 export default App;

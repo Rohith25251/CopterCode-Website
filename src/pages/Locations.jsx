@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { client, urlFor } from "../lib/sanity";
 import locationIndia from "../assets/location_india.png";
 import locationUsa from "../assets/location_usa.png";
+import OptimizedImage from '../components/OptimizedImage';
 
 const LocationCard = ({ loc, index }) => {
   // Current time logic for each location
@@ -49,11 +50,12 @@ const LocationCard = ({ loc, index }) => {
         {/* Visual Header */}
         <div className="relative h-64 overflow-hidden">
           {/* Background Image & Overlays */}
-          <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
-            <img
+            <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+            <OptimizedImage
               src={loc.image}
               alt={loc.title}
               className="w-full h-full object-cover"
+              sizes="(min-width:1024px) 50vw, 100vw"
             />
             <div className="absolute inset-0 bg-primary/30 group-hover:bg-primary/15 transition-colors duration-500" />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-70" />

@@ -3,6 +3,7 @@ import { client, urlFor } from "../lib/sanity";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import OptimizedImage from "./OptimizedImage";
 
 import { ASSETS } from "../constants/assets";
 
@@ -88,7 +89,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm" : "bg-transparent"}`}
+      className={`fixed w-full z-[1000] transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm" : "bg-transparent"}`}
       style={{ height: "var(--nav-height)" }}
     >
       <div className="container mx-auto px-6 h-full flex justify-between items-center">
@@ -97,18 +98,19 @@ const Navbar = () => {
           className="flex items-center space-x-3 group min-w-fit"
           onClick={() => handleSamePageClick("/")}
         >
-          <motion.div
-            className="relative h-16 w-16 overflow-hidden rounded-2xl bg-black shadow-2xl flex items-center justify-center z-20 p-1 border-none outline-none"
+            <motion.div
+            className="relative h-16 w-16 overflow-hidden rounded-2xl bg-black shadow-2xl flex items-center justify-center z-20 border-none outline-none"
             whileHover={{}}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            <img
+            >
+            <OptimizedImage
               src={logoSrc}
               alt={companyTitle}
-              className="h-full w-full object-contain border-none outline-none"
+              className="h-full w-full object-cover border-none outline-none"
+              sizes="64px"
             />
           </motion.div>
           <span className="text-xl font-display font-bold tracking-wide text-primary group-hover:text-accent transition-colors block">
@@ -171,7 +173,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[90]"
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1001]"
             />
 
             {/* Drawer */}
@@ -180,7 +182,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 h-[100dvh] w-full sm:w-[400px] bg-[#F4F6F8] z-[100] shadow-2xl flex flex-col"
+              className="fixed top-0 right-0 h-[100dvh] w-full sm:w-[400px] bg-[#F4F6F8] z-[1002] shadow-2xl flex flex-col"
             >
               {/* Drawer Header */}
               <div className="p-6 flex justify-between items-center border-b border-gray-200/50">

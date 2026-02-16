@@ -1,4 +1,5 @@
 import React from "react";
+import OptimizedImage from './OptimizedImage';
 import { motion } from "framer-motion";
 import { urlFor } from "../lib/sanity";
 
@@ -46,11 +47,14 @@ const PartnerLogos = ({ data }) => {
                     <div className="relative flex overflow-hidden w-full">
                         <div className="flex animate-marquee w-max py-8">
                             {marqueeLogos.map((logo, index) => (
-                                <div key={index} className="mx-12 w-32 h-24 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 transform hover:scale-110">
-                                    <img
+                                <div key={index} className="mx-12 w-80 h-48 flex items-center justify-center grayscale-0 opacity-100 hover:scale-110 transition-transform duration-300">
+                                    <OptimizedImage
                                         src={logo}
                                         alt={`Partner Logo ${index}`}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="max-w-full max-h-full object-contain"
+                                        sizes="(min-width: 1024px) 320px, 200px"
                                     />
                                 </div>
                             ))}
