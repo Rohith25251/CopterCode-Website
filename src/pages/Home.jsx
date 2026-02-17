@@ -372,12 +372,12 @@ const Home = () => {
         investors: [
             {
                 name: "MurgDur",
-                logo: "/mediafiles/logos/MurgDur-logo-CNKz8pTh.jpg",
+                logo: "/_optimized/mediafiles/logos/MurgDur-logo-CNKz8pTh.webp",
                 description: "A leading venture capital firm focused on early-stage technology startups with high growth potential, supporting our vision since inception."
             },
             {
                 name: "Karvensen",
-                logo: "/mediafiles/logos/KarVenSen-logo-9ePXpcco.jpg",
+                logo: "/_optimized/mediafiles/logos/KarVenSen-logo-9ePXpcco (1).webp",
                 description: "A global investment group specializing in sustainable infrastructure and innovative industrial solutions, partnering for long-term strategic growth."
             }
         ]
@@ -1036,7 +1036,7 @@ const Home = () => {
                                         className="bg-white p-8 rounded-3xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 transition-all duration-300 text-center flex flex-col items-center h-full"
                                     >
                                         <div className="w-24 h-24 bg-[#1a1a1a] rounded-2xl flex items-center justify-center mb-6 shadow-md overflow-hidden p-4">
-                                            <OptimizedImage src={investor.logo} alt={investor.name} className="w-full h-full object-contain" sizes="120px" />
+                                            <img src={investor.logo} alt={investor.name} className="w-full h-full object-contain" />
                                         </div>
                                         <h4 className="text-xl font-bold text-primary mb-4">{investor.name}</h4>
                                         <p className="text-secondary text-sm leading-relaxed max-w-sm">{investor.description}</p>

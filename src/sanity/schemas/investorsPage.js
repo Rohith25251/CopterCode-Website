@@ -83,6 +83,7 @@ export const investorsPage = {
                     fields: [
                         { name: 'name', type: 'string', title: 'Investor Name' },
                         { name: 'logo', type: 'image', title: 'Logo', options: { hotspot: true } },
+                        { name: 'url', type: 'url', title: 'Website URL', description: 'The investor\'s website or company URL' },
                         { name: 'description', type: 'text', title: 'Description' }
                     ]
                 }

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
-import OptimizedImage from "../components/OptimizedImage";
 import SEO from "../components/SEO";
 import { ArrowRight, FileText, TrendingUp, PieChart, ShieldCheck, BarChart, Briefcase, Star } from "lucide-react";
 import { motion } from "framer-motion";
@@ -11,12 +10,14 @@ import { motion } from "framer-motion";
 const INVESTOR_LOGOS = [
     {
         name: "MurgDur",
-        logo: "/mediafiles/logos/MurgDur-logo-CNKz8pTh.jpg",
+        logo: "/_optimized/mediafiles/logos/MurgDur-logo-CNKz8pTh.webp",
+        url: "https://murgdur2.vercel.app/",
         description: "A leading venture capital firm focused on early-stage technology startups with high growth potential, supporting our vision since inception."
     },
     {
         name: "Karvensen",
-        logo: "/mediafiles/logos/KarVenSen-logo-9ePXpcco.jpg",
+        logo: "/_optimized/mediafiles/logos/KarVenSen-logo-9ePXpcco (1).webp",
+        url: "https://karvensen.com/",
         description: "A global investment group specializing in sustainable infrastructure and innovative industrial solutions, partnering for long-term strategic growth."
     }
 ];
@@ -37,6 +38,7 @@ const Investors = () => {
                     investors: data.investors?.map(inv => ({
                         name: inv.name,
                         logo: inv.logo?.asset?.url,
+                        url: inv.url,
                         description: inv.description
                     })) || [],
                     inquiryButtonLink: data.inquiries?.buttonLink
@@ -113,13 +115,13 @@ const Investors = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
                         {investors.map((investor, idx) => (
-                            <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }} className="bg-white rounded-3xl p-12 text-center border border-border hover:border-accent/40 shadow-lg transition-all duration-300">
+                            <motion.a key={idx} href={investor.url || "#"} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }} className="bg-white rounded-3xl p-12 text-center border border-border hover:border-accent/40 shadow-lg transition-all duration-300 cursor-pointer block">
                                 <motion.div whileHover={{ scale: 1.1 }} className="w-24 h-24 mx-auto mb-8 bg-gray-900 rounded-lg flex items-center justify-center">
-                                    <OptimizedImage src={investor.logo} alt={investor.name} className="w-20 h-20 object-contain" sizes="120px" />
+                                    <img src={investor.logo} alt={investor.name} className="w-20 h-20 object-contain" loading="lazy" decoding="async" />
                                 </motion.div>
                                 <h3 className="text-2xl font-bold text-primary mb-4">{investor.name}</h3>
                                 <p className="text-secondary leading-relaxed">{investor.description}</p>
-                            </motion.div>
+                            </motion.a>
                         ))}
                     </div>
                 </div>

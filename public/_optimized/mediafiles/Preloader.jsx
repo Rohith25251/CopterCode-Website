@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import OptimizedImage from "./OptimizedImage";
 import { client } from "../lib/sanity";
 
 const defaultContent = {
-    image: "/mediafiles/IIT.jpg",
-    logo: "/mediafiles/Preloder logo.png",
+    image: "public\mediafiles\IIT.jpg",
+    logo: "public\mediafiles\Preloder logo.png",
     titlePrefix: "WELCOME TO",
     highlightedTitle: "COPTERCODE",
     tagline: "Engineering The Unknown"
@@ -61,14 +62,12 @@ const Preloader = ({ setLoading }) => {
         >
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
-                <img
+                <OptimizedImage
                     src={content.image}
                     alt="Loading Background"
-                    className="w-full h-full object-cover opacity-100 scale-105 animate-pulse-slow"
-                    loading="eager"
-                    decoding="async"
+                    className="w-full h-full object-cover opacity-40 grayscale scale-105 animate-pulse-slow"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
             </div>
 
             {/* Center Content */}
@@ -80,12 +79,10 @@ const Preloader = ({ setLoading }) => {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="mb-8 w-32 md:w-40 relative"
                 >
-                    <img
+                    <OptimizedImage
                         src={content.logo}
                         alt="CopterCode Logo"
                         className="w-full h-auto object-contain drop-shadow-2xl"
-                        loading="eager"
-                        decoding="async"
                     />
                 </motion.div>
 

@@ -289,43 +289,41 @@ const Careers = () => {
                       trustedLogos.map((url, idx) => (
                         <div
                           key={`sanity-logo-${sectionIdx}-${idx}`}
-                          className="w-80 h-48 flex-shrink-0 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                          className="w-32 h-24 sm:w-48 sm:h-32 md:w-64 md:h-40 lg:w-80 lg:h-48 flex-shrink-0 flex items-center justify-center transition-all duration-300 hover:scale-110"
                         >
                           <OptimizedImage
                             src={url}
                             alt={`Partner Logo ${idx}`}
                             className="max-w-full max-h-full object-contain"
-                            sizes="(min-width: 1024px) 320px, 200px"
+                            sizes="(min-width: 1024px) 320px, (min-width: 768px) 256px, (min-width: 640px) 192px, 128px"
                           />
                         </div>
                       ))
                     ) : (
                       // Fallback to local logos
                       [
-                        "logo_10-B1ui9v8s.png",
-                        "logo_11-BY520sZB.png",
-                        "logo_14-Cbz0hTK_.png",
-                        "logo_15-Mg_xjVLq.png",
-                        "logo_16-DoJBwjRa.png",
-                        "logo_17-DETRtLQJ.png",
-                        "logo_18-Df0xAPZI.png",
-                        "logo_20-CLRY9cVi.png",
-                        "logo_21-DrKx_bUL.png",
-                        "logo_3-BmbGohv9.png",
-                        "logo_4-_cYceE0U.png",
-                        "logo_5-Dtr7gMTv.png",
-                        "logo_7-DYBwtAG0.png",
-                        "logo_9-c4jamjnV.png",
+                        "Gemini_Generated_Image_1898qy1898qy1898.webp",
+                        "Gemini_Generated_Image_clfbv4clfbv4clfb.webp",
+                        "Gemini_Generated_Image_l2e7mvl2e7mvl2e7.webp",
+                        "Gemini_Generated_Image_l4utmml4utmml4ut.webp",
+                        "Gemini_Generated_Image_z3rzx8z3rzx8z3rz.webp",
+                        "Untitled design (1).webp",
+                        "Untitled design (2).webp",
+                        "Untitled design (3).webp",
+                        "Untitled design (4).webp",
+                        "Untitled design (5).webp",
+                        "Untitled design (6).webp",
+                        "Untitled design (7).webp",
+                        "Untitled design.webp"
                       ].map((logoName) => (
                         <div
                           key={`logo-${sectionIdx}-${logoName}`}
-                          className="w-64 h-40 flex-shrink-0 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                          className="w-32 h-24 sm:w-48 sm:h-32 md:w-64 md:h-40 lg:w-80 lg:h-48 flex-shrink-0 flex items-center justify-center transition-all duration-300 hover:scale-110"
                         >
-                          <OptimizedImage
-                            src={`/mediafiles/logos/${logoName}`}
+                          <img
+                            src={`/_optimized/mediafiles/logos/${logoName}`}
                             alt={`Partner Logo ${logoName}`}
                             className="max-w-full max-h-full object-contain"
-                            sizes="256px"
                           />
                         </div>
                       ))

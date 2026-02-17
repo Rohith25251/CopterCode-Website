@@ -1,24 +1,22 @@
 import React from "react";
-import OptimizedImage from './OptimizedImage';
 import { motion } from "framer-motion";
 import { urlFor } from "../lib/sanity";
 
-// Logos from /public/mediafiles/logos/
+// Logos from /public/_optimized/mediafiles/logos/ (excluding MurgDur and KarVenSen)
 const LOGOS = [
-    "/mediafiles/logos/logo_10-B1ui9v8s.png",
-    "/mediafiles/logos/logo_11-BY520sZB.png",
-    "/mediafiles/logos/logo_14-Cbz0hTK_.png",
-    "/mediafiles/logos/logo_15-Mg_xjVLq.png",
-    "/mediafiles/logos/logo_16-DoJBwjRa.png",
-    "/mediafiles/logos/logo_17-DETRtLQJ.png",
-    "/mediafiles/logos/logo_18-Df0xAPZI.png",
-    "/mediafiles/logos/logo_20-CLRY9cVi.png",
-    "/mediafiles/logos/logo_21-DrKx_bUL.png",
-    "/mediafiles/logos/logo_3-BmbGohv9.png",
-    "/mediafiles/logos/logo_4-_cYceE0U.png",
-    "/mediafiles/logos/logo_5-Dtr7gMTv.png",
-    "/mediafiles/logos/logo_7-DYBwtAG0.png",
-    "/mediafiles/logos/logo_9-c4jamjnV.png",
+    "/_optimized/mediafiles/logos/Gemini_Generated_Image_1898qy1898qy1898.webp",
+    "/_optimized/mediafiles/logos/Gemini_Generated_Image_clfbv4clfbv4clfb.webp",
+    "/_optimized/mediafiles/logos/Gemini_Generated_Image_l2e7mvl2e7mvl2e7.webp",
+    "/_optimized/mediafiles/logos/Gemini_Generated_Image_l4utmml4utmml4ut.webp",
+    "/_optimized/mediafiles/logos/Gemini_Generated_Image_z3rzx8z3rzx8z3rz.webp",
+    "/_optimized/mediafiles/logos/Untitled design.webp",
+    "/_optimized/mediafiles/logos/Untitled design (1).webp",
+    "/_optimized/mediafiles/logos/Untitled design (2).webp",
+    "/_optimized/mediafiles/logos/Untitled design (3).webp",
+    "/_optimized/mediafiles/logos/Untitled design (4).webp",
+    "/_optimized/mediafiles/logos/Untitled design (5).webp",
+    "/_optimized/mediafiles/logos/Untitled design (6).webp",
+    "/_optimized/mediafiles/logos/Untitled design (7).webp",
 ];
 
 const PartnerLogos = ({ data }) => {
@@ -47,14 +45,13 @@ const PartnerLogos = ({ data }) => {
                     <div className="relative flex overflow-hidden w-full">
                         <div className="flex animate-marquee w-max py-8">
                             {marqueeLogos.map((logo, index) => (
-                                <div key={index} className="mx-12 w-80 h-48 flex items-center justify-center grayscale-0 opacity-100 hover:scale-110 transition-transform duration-300">
-                                    <OptimizedImage
+                                <div key={index} className="mx-6 sm:mx-8 md:mx-12 w-32 h-24 sm:w-48 sm:h-32 md:w-64 md:h-40 lg:w-80 lg:h-48 flex items-center justify-center grayscale-0 opacity-100 hover:scale-110 transition-transform duration-300">
+                                    <img
                                         src={logo}
                                         alt={`Partner Logo ${index}`}
                                         loading="lazy"
                                         decoding="async"
                                         className="max-w-full max-h-full object-contain"
-                                        sizes="(min-width: 1024px) 320px, 200px"
                                     />
                                 </div>
                             ))}
