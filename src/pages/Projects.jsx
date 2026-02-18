@@ -14,7 +14,6 @@ import {
   Code
 } from "lucide-react";
 import SEO from "../components/SEO";
-import OptimizedImage from '../components/OptimizedImage';
 import { motion } from "framer-motion";
 
 
@@ -91,20 +90,19 @@ const Projects = () => {
     ],
     clientsTitle: "Trusted by Industry Leaders",
     clientLogos: [
-      "/mediafiles/logos/logo_10-B1ui9v8s.png",
-      "/mediafiles/logos/logo_11-BY520sZB.png",
-      "/mediafiles/logos/logo_14-Cbz0hTK_.png",
-      "/mediafiles/logos/logo_15-Mg_xjVLq.png",
-      "/mediafiles/logos/logo_16-DoJBwjRa.png",
-      "/mediafiles/logos/logo_17-DETRtLQJ.png",
-      "/mediafiles/logos/logo_18-Df0xAPZI.png",
-      "/mediafiles/logos/logo_20-CLRY9cVi.png",
-      "/mediafiles/logos/logo_21-DrKx_bUL.png",
-      "/mediafiles/logos/logo_3-BmbGohv9.png",
-      "/mediafiles/logos/logo_4-_cYceE0U.png",
-      "/mediafiles/logos/logo_5-Dtr7gMTv.png",
-      "/mediafiles/logos/logo_7-DYBwtAG0.png",
-      "/mediafiles/logos/logo_9-c4jamjnV.png",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_1898qy1898qy1898.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_clfbv4clfbv4clfb.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_l2e7mvl2e7mvl2e7.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_l4utmml4utmml4ut.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_z3rzx8z3rzx8z3rz.webp",
+      "/_optimized/mediafiles/logos/Untitled design.webp",
+      "/_optimized/mediafiles/logos/Untitled design (1).webp",
+      "/_optimized/mediafiles/logos/Untitled design (2).webp",
+      "/_optimized/mediafiles/logos/Untitled design (3).webp",
+      "/_optimized/mediafiles/logos/Untitled design (4).webp",
+      "/_optimized/mediafiles/logos/Untitled design (5).webp",
+      "/_optimized/mediafiles/logos/Untitled design (6).webp",
+      "/_optimized/mediafiles/logos/Untitled design (7).webp"
     ]
   };
 
@@ -228,11 +226,11 @@ const Projects = () => {
                   className="w-32 h-16 relative group"
                 >
                   <div className="absolute inset-0 bg-accent/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <OptimizedImage
+                  <img
                     src={logo}
                     alt={`Client ${index + 1}`}
                     className="relative w-full h-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110"
-                    sizes="120px"
+                    loading="lazy"
                   />
                 </motion.div>
               ))}

@@ -22,6 +22,15 @@ export default function LazyVideo({ src, poster, className = '', autoPlay = true
     return () => obs.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (isVisible && ref.current) {
+      const videoEl = ref.current.querySelector('video');
+      if (videoEl) {
+        videoEl.play().catch(err => console.log('Autoplay prevented:', err));
+      }
+    }
+  }, [isVisible]);
+
   return (
     <div ref={ref} className={className}>
       <video
@@ -32,6 +41,7 @@ export default function LazyVideo({ src, poster, className = '', autoPlay = true
         loop={loop}
         muted={muted}
         playsInline={playsInline}
+        webkit-playsinline="true"
         preload="none"
       />
     </div>

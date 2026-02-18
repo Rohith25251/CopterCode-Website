@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const BusinessesSection = ({ businessData }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [prevIndex, setPrevIndex] = useState(0);
+    const videoRef = useRef(null);
     // Track direction for potentially more complex transitions, though vertical stack is requested
     const direction = activeIndex > prevIndex ? 1 : -1;
 
@@ -16,6 +17,15 @@ const BusinessesSection = ({ businessData }) => {
     };
 
     const currentBusiness = businessData[activeIndex];
+
+    // Ensure video plays on load and when business changes
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.play().catch(error => {
+                console.log('Autoplay prevented or playback failed:', error);
+            });
+        }
+    }, [activeIndex]);
 
     // Animation Variants
     const textReveal = {
@@ -161,12 +171,15 @@ const BusinessesSection = ({ businessData }) => {
                             <div className="absolute inset-0 bg-black/40 z-10" />
 
                             <video
+                                ref={videoRef}
                                 src={currentBusiness.video}
                                 className="w-full h-full object-cover"
                                 autoPlay
                                 loop
                                 muted
                                 playsInline
+                                webkit-playsinline="true"
+                                preload="metadata"
                             />
                         </motion.div>
                     </AnimatePresence>

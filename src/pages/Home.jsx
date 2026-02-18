@@ -876,6 +876,7 @@ const Home = () => {
                                         loop
                                         muted
                                         playsInline
+                                        webkit-playsinline="true"
                                     />
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />

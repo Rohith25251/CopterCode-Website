@@ -151,7 +151,7 @@ const Internship = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => document.getElementById('apply-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="hidden md:flex bg-accent hover:bg-accent/90 text-white font-bold py-4 px-8 rounded-full shadow-lg items-center gap-3 text-lg transition-all transform hover:shadow-accent/50 hover:shadow-2xl border-2 border-white/20 backdrop-blur-sm group"
+          className="hidden md:flex bg-black hover:bg-accent/90 text-white font-bold py-4 px-8 rounded-full shadow-lg items-center gap-3 text-lg transition-all transform hover:shadow-accent/50 hover:shadow-2xl border-2 border-white/20 backdrop-blur-sm group"
         >
           <span className="drop-shadow-md">{sanityData?.heroScrollButtonText || "Ready to Launch? Apply Now"}</span>
           <span className="text-2xl group-hover:rotate-12 transition-transform">🚀</span>

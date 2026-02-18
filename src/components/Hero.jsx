@@ -278,7 +278,7 @@ const Hero = ({ data }) => {
               ) : (
                 <p>
                   We don't just build software. We engineer intelligent ecosystems where <Link to="/industrial-drones" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent">Drone Tech</Link> meets <Link to="/business" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent">Enterprise AI</Link>.
-                  Explore our innovations in <a href="/business" rel="noopener noreferrer" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent relative inline-block">Industrial Automation</a>.
+                  Explore our innovations in <a href="/projects" rel="noopener noreferrer" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent relative inline-block">Industrial Automation</a>.
                 </p>
               )}
             </motion.div>
