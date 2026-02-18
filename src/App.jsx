@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 const Preloader = lazy(() => import('./components/Preloader'));
+import PageTransitionLoader from './components/PageTransitionLoader';
 import Layout from './components/Layout';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -35,11 +36,28 @@ import ScrollToTop from './components/ScrollToTop';
 
 const StudioPage = lazy(() => import('./pages/StudioPage'));
 
+// Placeholder component to prevent layout shift while loading
+const PagePlaceholder = () => <div className="min-h-screen" />;
+
 function AppContent() {
     const location = useLocation();
+    const [isPageTransition, setIsPageTransition] = useState(false);
+
+    useEffect(() => {
+        // Start loader when route changes
+        setIsPageTransition(true);
+        
+        // End loader after a brief moment to show smooth transition
+        const timer = setTimeout(() => {
+            setIsPageTransition(false);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
 
     return (
         <AnimatePresence mode="wait">
+            {isPageTransition && <PageTransitionLoader key="loader" />}
             <Routes location={location} key={location.pathname}>
                 {/* Sanity Studio Route - Outside Layout */}
                 <Route path="/studio/*" element={<Suspense fallback={<div className="min-h-screen"/>}><StudioPage /></Suspense>} />
@@ -49,32 +67,32 @@ function AppContent() {
                     <Layout>
                         <Routes>
                             <Route path="/" element={<Suspense fallback={<div className="min-h-screen"/>}><Home /></Suspense>} />
-                            <Route path="/about" element={<Suspense fallback={<div/>}><About /></Suspense>} />
-                            <Route path="/business" element={<Suspense fallback={<div/>}><Business /></Suspense>} />
-                            <Route path="/administration" element={<Suspense fallback={<div/>}><Administration /></Suspense>} />
-                            <Route path="/sustainability" element={<Suspense fallback={<div/>}><Sustainability /></Suspense>} />
-                            <Route path="/news" element={<Suspense fallback={<div/>}><News /></Suspense>} />
-                            <Route path="/events" element={<Suspense fallback={<div/>}><Events /></Suspense>} />
-                            <Route path="/services" element={<Suspense fallback={<div/>}><Services /></Suspense>} />
-                            <Route path="/technologies" element={<Suspense fallback={<div/>}><Technologies /></Suspense>} />
-                            <Route path="/projects" element={<Suspense fallback={<div/>}><Projects /></Suspense>} />
-                            <Route path="/careers" element={<Suspense fallback={<div/>}><Careers /></Suspense>} />
-                            <Route path="/internship" element={<Suspense fallback={<div/>}><Internship /></Suspense>} />
-                            <Route path="/investors" element={<Suspense fallback={<div/>}><Investors /></Suspense>} />
-                            <Route path="/get-in-touch" element={<Suspense fallback={<div/>}><GetInTouch /></Suspense>} />
-                            <Route path="/contact" element={<Suspense fallback={<div/>}><Contact /></Suspense>} />
-                            <Route path="/locations" element={<Suspense fallback={<div/>}><Locations /></Suspense>} />
-                            <Route path="/industrial-drones" element={<Suspense fallback={<div/>}><IndustrialDrones /></Suspense>} />
-                            <Route path="/digital-services" element={<Suspense fallback={<div/>}><DigitalServices /></Suspense>} />
-                            <Route path="/new-energy" element={<Suspense fallback={<div/>}><NewEnergy /></Suspense>} />
-                            <Route path="/erp-solutions" element={<Suspense fallback={<div/>}><ERPSolutions /></Suspense>} />
-                            <Route path="/retail-food" element={<Suspense fallback={<div/>}><RetailFood /></Suspense>} />
-                            <Route path="/infra-security" element={<Suspense fallback={<div/>}><InfraSecurity /></Suspense>} />
-                            <Route path="/privacy" element={<Suspense fallback={<div/>}><PrivacyPolicy /></Suspense>} />
-                            <Route path="/terms" element={<Suspense fallback={<div/>}><TermsAndConditions /></Suspense>} />
+                            <Route path="/about" element={<Suspense fallback={<PagePlaceholder />}><About /></Suspense>} />
+                            <Route path="/business" element={<Suspense fallback={<PagePlaceholder />}><Business /></Suspense>} />
+                            <Route path="/administration" element={<Suspense fallback={<PagePlaceholder />}><Administration /></Suspense>} />
+                            <Route path="/sustainability" element={<Suspense fallback={<PagePlaceholder />}><Sustainability /></Suspense>} />
+                            <Route path="/news" element={<Suspense fallback={<PagePlaceholder />}><News /></Suspense>} />
+                            <Route path="/events" element={<Suspense fallback={<PagePlaceholder />}><Events /></Suspense>} />
+                            <Route path="/services" element={<Suspense fallback={<PagePlaceholder />}><Services /></Suspense>} />
+                            <Route path="/technologies" element={<Suspense fallback={<PagePlaceholder />}><Technologies /></Suspense>} />
+                            <Route path="/projects" element={<Suspense fallback={<PagePlaceholder />}><Projects /></Suspense>} />
+                            <Route path="/careers" element={<Suspense fallback={<PagePlaceholder />}><Careers /></Suspense>} />
+                            <Route path="/internship" element={<Suspense fallback={<PagePlaceholder />}><Internship /></Suspense>} />
+                            <Route path="/investors" element={<Suspense fallback={<PagePlaceholder />}><Investors /></Suspense>} />
+                            <Route path="/get-in-touch" element={<Suspense fallback={<PagePlaceholder />}><GetInTouch /></Suspense>} />
+                            <Route path="/contact" element={<Suspense fallback={<PagePlaceholder />}><Contact /></Suspense>} />
+                            <Route path="/locations" element={<Suspense fallback={<PagePlaceholder />}><Locations /></Suspense>} />
+                            <Route path="/industrial-drones" element={<Suspense fallback={<PagePlaceholder />}><IndustrialDrones /></Suspense>} />
+                            <Route path="/digital-services" element={<Suspense fallback={<PagePlaceholder />}><DigitalServices /></Suspense>} />
+                            <Route path="/new-energy" element={<Suspense fallback={<PagePlaceholder />}><NewEnergy /></Suspense>} />
+                            <Route path="/erp-solutions" element={<Suspense fallback={<PagePlaceholder />}><ERPSolutions /></Suspense>} />
+                            <Route path="/retail-food" element={<Suspense fallback={<PagePlaceholder />}><RetailFood /></Suspense>} />
+                            <Route path="/infra-security" element={<Suspense fallback={<PagePlaceholder />}><InfraSecurity /></Suspense>} />
+                            <Route path="/privacy" element={<Suspense fallback={<PagePlaceholder />}><PrivacyPolicy /></Suspense>} />
+                            <Route path="/terms" element={<Suspense fallback={<PagePlaceholder />}><TermsAndConditions /></Suspense>} />
 
                             {/* Dynamic Route for New Businesses */}
-                            <Route path="/:slug" element={<Suspense fallback={<div/>}><BusinessTemplate /></Suspense>} />
+                            <Route path="/:slug" element={<Suspense fallback={<PagePlaceholder />}><BusinessTemplate /></Suspense>} />
                         </Routes>
                     </Layout>
                 } />

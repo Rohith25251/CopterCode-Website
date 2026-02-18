@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const technologiesPage = {
     name: 'technologiesPage',
     title: 'Technologies Page',
@@ -45,15 +47,10 @@ export const technologiesPage = {
                             type: 'string',
                             title: 'Icon (Lucide)',
                             options: {
-                                list: [
-                                    { title: 'Globe (Frontend)', value: 'globe' },
-                                    { title: 'Server (Backend)', value: 'server' },
-                                    { title: 'Database', value: 'database' },
-                                    { title: 'Cloud', value: 'cloud' },
-                                    { title: 'CPU (AI/ML)', value: 'cpu' },
-                                    { title: 'Smartphone (Mobile)', value: 'smartphone' },
-                                    { title: 'Layers (General)', value: 'layers' }
-                                ]
+                                list: iconsList.map(icon => ({
+                                    title: icon.title,
+                                    value: icon.value
+                                }))
                             }
                         },
                         { name: 'description', type: 'text', title: 'Description' },

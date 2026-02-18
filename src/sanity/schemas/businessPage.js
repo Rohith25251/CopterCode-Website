@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const businessPage = {
     name: 'businessPage',
     title: 'Business Page',
@@ -49,16 +51,12 @@ export const businessPage = {
                             title: 'Icon Type',
                             type: 'string',
                             options: {
-                                list: [
-                                    { title: 'Plane (Drones)', value: 'Plane' },
-                                    { title: 'Code (Digital)', value: 'Code' },
-                                    { title: 'Sun (Energy)', value: 'Sun' },
-                                    { title: 'Database (ERP)', value: 'Database' },
-                                    { title: 'Coffee (Retail/Food)', value: 'Coffee' },
-                                    { title: 'Shield (Security)', value: 'Shield' }
-                                ]
+                                list: iconsList.map(icon => ({
+                                    title: icon.title,
+                                    value: icon.value
+                                }))
                             },
-                            initialValue: 'Plane'
+                            initialValue: 'briefcase'
                         },
                         { name: 'description', type: 'text', title: 'Description' },
 

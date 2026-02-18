@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const careersPage = {
     name: 'careersPage',
     title: 'Careers Page',
@@ -52,18 +54,10 @@ export const careersPage = {
                                     title: 'Icon',
                                     type: 'string',
                                     options: {
-                                        list: [
-                                            { title: 'Zap', value: 'zap' },
-                                            { title: 'Award', value: 'award' },
-                                            { title: 'Globe', value: 'globe' },
-                                            { title: 'Heart', value: 'heart' },
-                                            { title: 'Briefcase', value: 'briefcase' },
-                                            { title: 'Shield', value: 'shield' },
-                                            { title: 'Users', value: 'users' },
-                                            { title: 'Target', value: 'target' },
-                                            { title: 'Lightbulb', value: 'lightbulb' },
-                                            { title: 'Star', value: 'star' }
-                                        ]
+                                        list: iconsList.map(icon => ({
+                                            title: icon.title,
+                                            value: icon.value
+                                        }))
                                     },
                                     initialValue: 'star'
                                 },

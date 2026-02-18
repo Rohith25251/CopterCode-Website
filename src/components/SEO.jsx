@@ -11,7 +11,8 @@ const SEO = ({
     twitterTitle,
     twitterDescription,
     twitterImage,
-    keywords
+    keywords,
+    canonicalUrl
 }) => {
     const location = useLocation();
 
@@ -39,7 +40,7 @@ const SEO = ({
         setMetaTag('name', 'description', finalDescription);
         setMetaTag('name', 'keywords', keywords || "Drone Tech, Enterprise AI, Industrial Automation, UAV, CopterCode, Software Solutions");
 
-        // 3. Canonical Tag - Force non-www https://coptercode.com
+        // 3. Canonical Tag - Using explicit canonicalUrl or auto-generating from pathname
         let linkCanonical = document.querySelector("link[rel='canonical']");
         if (!linkCanonical) {
             linkCanonical = document.createElement('link');
@@ -47,11 +48,17 @@ const SEO = ({
             document.head.appendChild(linkCanonical);
         }
 
-        // Remove trailing slash if present (except for root) to avoid duplicates like /about/ vs /about
-        const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/$/, "");
-        const canonicalUrl = `https://coptercode.com${pathname}`;
+        // Use explicit canonicalUrl if provided, otherwise generate from pathname
+        let canonicalHref;
+        if (canonicalUrl) {
+            canonicalHref = canonicalUrl;
+        } else {
+            // Auto-generate: Remove trailing slash if present (except for root) to avoid duplicates like /about/ vs /about
+            const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/$/, "");
+            canonicalHref = `https://coptercode.com${pathname}`;
+        }
 
-        linkCanonical.setAttribute('href', canonicalUrl);
+        linkCanonical.setAttribute('href', canonicalHref);
 
         // 4. Open Graph
         setMetaTag('property', 'og:title', ogTitle || finalTitle);
@@ -90,7 +97,7 @@ const SEO = ({
         }
         scriptSchema.text = JSON.stringify(schemaData);
 
-    }, [title, description, ogTitle, ogDescription, ogUrl, ogImage, twitterTitle, twitterDescription, twitterImage, location]);
+    }, [title, description, ogTitle, ogDescription, ogUrl, ogImage, twitterTitle, twitterDescription, twitterImage, keywords, canonicalUrl, location]);
 
     return null;
 };

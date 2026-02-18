@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { client, urlFor } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
@@ -11,6 +12,7 @@ import OptimizedImage from "../components/OptimizedImage";
 
 const Administration = () => {
   const [sanityData, setSanityData] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const query = `*[_type == "administrationPage"][0]{
@@ -51,6 +53,19 @@ const Administration = () => {
       }
     }).catch(console.error);
   }, []);
+
+  // Handle hash-based scroll navigation
+  useEffect(() => {
+    if (location.hash) {
+      const elementId = location.hash.substring(1); // Remove # from hash
+      setTimeout(() => {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [location.hash]);
 
   const heroTitle = sanityData?.heroTitle || "Administration";
   const heroSubtitle = sanityData?.heroSubtitle || "Guided by vision, integrity, and a commitment to excellence.";
@@ -195,7 +210,7 @@ const Administration = () => {
       </section>
 
       {/* Detailed Leadership (CMD & Board & Others) */}
-      <section className="py-32 bg-[#FAF9F5]">
+      <section id="executive-leadership" className="py-32 bg-[#FAF9F5]">
         <div className="container mx-auto px-6 max-w-7xl">
 
           {/* CMD Highlight - Executive Leadership */}

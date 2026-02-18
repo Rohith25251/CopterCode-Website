@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const homePage = {
     name: 'homePage',
     title: 'Home Page',
@@ -147,12 +149,10 @@ export const homePage = {
                                     name: 'icon',
                                     type: 'string',
                                     options: {
-                                        list: [
-                                            { title: 'Chart', value: 'chart' },
-                                            { title: 'Shield', value: 'shield' },
-                                            { title: 'File', value: 'file' },
-                                            { title: 'Pie Chart', value: 'piechart' }
-                                        ]
+                                        list: iconsList.map(icon => ({
+                                            title: icon.title,
+                                            value: icon.value
+                                        }))
                                     }
                                 }
                             ]
@@ -396,11 +396,10 @@ export const homePage = {
                                     title: 'Icon Type',
                                     type: 'string',
                                     options: {
-                                        list: [
-                                            { title: 'Sustainability (Leaf)', value: 'sustainability' },
-                                            { title: 'Innovation (Lightbulb)', value: 'innovation' },
-                                            { title: 'Impact (Chart)', value: 'impact' }
-                                        ]
+                                        list: iconsList.map(icon => ({
+                                            title: icon.title,
+                                            value: icon.value
+                                        }))
                                     },
                                     initialValue: 'sustainability'
                                 },
@@ -474,11 +473,10 @@ export const homePage = {
                                     title: 'Icon',
                                     type: 'string',
                                     options: {
-                                        list: [
-                                            { title: 'Zap (Learning)', value: 'zap' },
-                                            { title: 'Globe (Global)', value: 'globe' },
-                                            { title: 'Heart (Inclusive)', value: 'heart' }
-                                        ]
+                                        list: iconsList.map(icon => ({
+                                            title: icon.title,
+                                            value: icon.value
+                                        }))
                                     }
                                 }
                             ]
@@ -541,12 +539,10 @@ export const homePage = {
                                     title: 'Icon',
                                     type: 'string',
                                     options: {
-                                        list: [
-                                            { title: 'Users', value: 'users' },
-                                            { title: 'Globe', value: 'globe' },
-                                            { title: 'Leaf', value: 'leaf' },
-                                            { title: 'Code', value: 'code' }
-                                        ]
+                                        list: iconsList.map(icon => ({
+                                            title: icon.title,
+                                            value: icon.value
+                                        }))
                                     }
                                 }
                             ]

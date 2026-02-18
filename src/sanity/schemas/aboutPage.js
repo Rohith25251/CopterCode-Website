@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const aboutPage = {
     name: 'aboutPage',
     title: 'About Page',
@@ -48,33 +50,39 @@ export const aboutPage = {
         {
             name: 'journey',
             title: 'Our Journey Timeline',
+            description: 'Create one entry per year: 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026-Present',
             type: 'array',
             of: [
                 {
                     type: 'object',
                     title: 'Journey Milestone',
                     fields: [
-                        { name: 'year', type: 'string', title: 'Year / Period' },
+                        { 
+                            name: 'year', 
+                            type: 'string', 
+                            title: 'Year / Period',
+                            description: 'e.g., "2019", "2020", "2021", etc.'
+                        },
                         { name: 'title', type: 'string', title: 'Title' },
-                        { name: 'description', type: 'text', title: 'Description' },
+                        { 
+                            name: 'description', 
+                            type: 'text', 
+                            title: 'Description',
+                            rows: 5,
+                            description: 'Detailed description of what happened this year'
+                        },
                         { name: 'image', type: 'image', title: 'Milestone Image', options: { hotspot: true } },
                         {
                             name: 'icon',
                             type: 'string',
                             title: 'Icon Type',
                             options: {
-                                list: [
-                                    { title: 'Lightbulb', value: 'lightbulb' },
-                                    { title: 'Shield', value: 'shield' },
-                                    { title: 'Globe', value: 'globe' },
-                                    { title: 'Rocket', value: 'rocket' },
-                                    { title: 'Chart', value: 'chart' },
-                                    { title: 'Users', value: 'users' },
-                                    { title: 'Award', value: 'award' },
-                                    { title: 'Building', value: 'building' }
-                                ]
+                                list: iconsList.map(icon => ({
+                                    title: icon.title,
+                                    value: icon.value
+                                }))
                             },
-                            initialValue: 'rocket'
+                            initialValue: 'lightbulb'
                         }
                     ]
                 }
@@ -118,11 +126,26 @@ export const aboutPage = {
                     type: 'object',
                     title: 'Milestone',
                     fields: [
-                        { name: 'year', type: 'string', title: 'Year' },
+                        { 
+                            name: 'year', 
+                            type: 'string', 
+                            title: 'Year',
+                            description: 'e.g., "2019", "2020", "2021", "2022", "2023", "2024", "2025", "Future"'
+                        },
                         { name: 'title', type: 'string', title: 'Title' },
                         { name: 'description', type: 'string', title: 'Short Description' }
                     ]
                 }
+            ],
+            initialValue: [
+                { year: "2019", title: "Foundation", description: "Established by Late Sundharesan Duraiswamy." },
+                { year: "2020", title: "Cybersecurity", description: "Expansion into IT security services." },
+                { year: "2021", title: "Education", description: "Launch of Drone Labs & Science Space." },
+                { year: "2022", title: "Sustainability", description: "Textile Mfg & Solar Solutions." },
+                { year: "2023", title: "Infrastructure", description: "Construction & Real Estate Ventures." },
+                { year: "2024", title: "Strategic Partnerships", description: "Collab with Shree Murugappa Food Corp." },
+                { year: "2025", title: "Digital Transformation", description: "ERP, LMS & Infra Security Launch." },
+                { year: "2026", title: "Global 2.0", description: "Continued innovation & global expansion." }
             ]
         }
     ]

@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const sustainabilityPage = {
     name: 'sustainabilityPage',
     title: 'Sustainability Page',
@@ -55,17 +57,10 @@ export const sustainabilityPage = {
                             title: 'Icon',
                             type: 'string',
                             options: {
-                                list: [
-                                    { title: 'Users', value: 'users' },
-                                    { title: 'Briefcase', value: 'briefcase' },
-                                    { title: 'Globe', value: 'globe' },
-                                    { title: 'Leaf', value: 'leaf' },
-                                    { title: 'Zap', value: 'zap' },
-                                    { title: 'Shield', value: 'shield' },
-                                    { title: 'Code', value: 'code' },
-                                    { title: 'Sun', value: 'sun' },
-                                    { title: 'Star', value: 'star' }
-                                ]
+                                list: iconsList.map(icon => ({
+                                    title: icon.title,
+                                    value: icon.value
+                                }))
                             },
                             initialValue: 'star'
                         },

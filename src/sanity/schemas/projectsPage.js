@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const projectsPage = {
     name: 'projectsPage',
     title: 'Projects Page',
@@ -52,18 +54,12 @@ export const projectsPage = {
                             title: 'Icon Type',
                             type: 'string',
                             options: {
-                                list: [
-                                    { title: 'Cpu (AI/Embedded)', value: 'Cpu' },
-                                    { title: 'Cloud (Web/Cloud)', value: 'Cloud' },
-                                    { title: 'Database (IoT/Big Data)', value: 'Database' },
-                                    { title: 'Layout (SaaS/Portal)', value: 'Layout' },
-                                    { title: 'Code', value: 'Code' },
-                                    { title: 'Globe', value: 'Globe' },
-                                    { title: 'Shield', value: 'Shield' },
-                                    { title: 'Zap', value: 'Zap' }
-                                ]
+                                list: iconsList.map(icon => ({
+                                    title: icon.title,
+                                    value: icon.value
+                                }))
                             },
-                            initialValue: 'Cpu'
+                            initialValue: 'cpu'
                         },
                         { name: 'link', type: 'url', title: 'Project Link (Optional)' }
                     ]

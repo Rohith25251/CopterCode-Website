@@ -1,3 +1,5 @@
+import { iconsList } from './icons';
+
 export const investorsPage = {
     name: 'investorsPage',
     title: 'Investors Page',
@@ -52,14 +54,10 @@ export const investorsPage = {
                             title: 'Icon',
                             type: 'string',
                             options: {
-                                list: [
-                                    { title: 'Trending Up', value: 'trendingUp' },
-                                    { title: 'File Text', value: 'fileText' },
-                                    { title: 'Pie Chart', value: 'pieChart' },
-                                    { title: 'Shield Check', value: 'shieldCheck' },
-                                    { title: 'Bar Chart', value: 'barChart' },
-                                    { title: 'Briefcase', value: 'briefcase' }
-                                ]
+                                list: iconsList.map(icon => ({
+                                    title: icon.title,
+                                    value: icon.value
+                                }))
                             },
                             initialValue: 'trendingUp'
                         },

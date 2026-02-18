@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import OptimizedImage from '../components/OptimizedImage';
 import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
@@ -33,6 +34,7 @@ const iconMap = {
 
 const About = () => {
   useScrollToTop(); // Force scroll to top on mount
+  const location = useLocation();
   const [sanityData, setSanityData] = useState(null);
 
   useEffect(() => {
@@ -52,32 +54,80 @@ const About = () => {
     }).catch(console.error);
   }, []);
 
+  // Handle hash-based scroll navigation
+  useEffect(() => {
+    if (location.hash) {
+      const elementId = location.hash.substring(1); // Remove # from hash
+      setTimeout(() => {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [location.hash]);
+
   const hero = sanityData?.hero;
   const origin = sanityData?.origin;
   const leadership = sanityData?.leadership;
   const seo = sanityData?.seo;
   const milestones = sanityData?.milestones;
 
-  // Fallback Journey Data (Matches Screenshot Content)
+  // Fallback Journey Data (Expanded Year-by-Year)
   const FALLBACK_JOURNEY = [
     {
       year: "2019",
       title: "The Inception",
-      description: "Founded in 2019 by the visionary Late Sundharesan Duraiswamy, CopterCode began with a dream to revolutionize industries using drones and technology. Starting with the sales and service of industrial drones, the company quickly grew under his intelligent strategies and tireless work ethic.",
+      description: "Founded in 2019 by the visionary Late Sundharesan Duraiswamy, CopterCode began with a bold dream to revolutionize industries using drones and cutting-edge technology. Starting with the sales and service of industrial drones, the company quickly gained traction and grew rapidly under his intelligent strategies, innovative mindset, and tireless work ethic. This year laid the foundation for what would become a diversified technology conglomerate.",
       imageUrl: "/mediafiles/news and media/IMG_1851.jpg",
-      icon: "lightbulb",
+      icon: "rocket",
     },
     {
-      year: "2020-2022",
-      title: "Diversification & Growth",
-      description: "Expanding beyond drones, CopterCode ventured into cybersecurity for IT firms in 2020. In 2021, we pioneered Drone Labs and Science Space Labs in educational institutions to nurture young innovators. By 2022, driven by sustainability, we established textile manufacturing and solar panel solutions for corporate clients.",
+      year: "2020",
+      title: "Cybersecurity Expansion",
+      description: "Building on initial success, CopterCode expanded beyond drones to venture into cybersecurity for IT firms in 2020. This strategic diversification marked our entry into the IT services sector, enabling us to serve corporate clients with comprehensive security solutions. The team grew significantly, attracting talented professionals to deliver enterprise-grade cybersecurity services to a growing client base across India.",
       imageUrl: "/mediafiles/news and media/IMG_3327.jpg",
       icon: "shield",
     },
     {
-      year: "2023-Present",
+      year: "2021",
+      title: "Education & Innovation",
+      description: "In 2021, CopterCode pioneered a revolutionary concept by establishing Drone Labs and Science Space Labs in premier educational institutions. This initiative was designed to nurture the next generation of young innovators and tech enthusiasts. By bringing cutting-edge drone technology and scientific experimentation directly to schools and colleges, we created unique learning environments that sparked curiosity and fostered technological innovation in students.",
+      imageUrl: "/mediafiles/news and media/IMG_3356.jpg",
+      icon: "lightbulb",
+    },
+    {
+      year: "2022",
+      title: "Sustainability & Manufacturing",
+      description: "Driven by a strong commitment to environmental sustainability, 2022 was a pivotal year as CopterCode established textile manufacturing units and launched solar panel solutions tailored for corporate clients. These ventures aligned with our vision to create businesses that are not just profitable but also environmentally responsible. We partnered with various industries to integrate sustainable practices into their operations while maintaining competitive pricing and quality standards.",
+      imageUrl: "/mediafiles/news and media/IMG_3327.jpg",
+      icon: "zap",
+    },
+    {
+      year: "2023",
+      title: "Infrastructure & Construction",
+      description: "In 2023, CopterCode made a strategic entry into the construction and infrastructure sector, expanding our portfolio beyond technology and manufacturing. This venture allowed us to leverage our drone technology and project management expertise in the construction industry. We took on various infrastructure projects while maintaining our commitment to quality, safety, and timely delivery, establishing ourselves as a reliable partner in India's growing infrastructure development.",
+      imageUrl: "/mediafiles/news and media/IMG_3327.jpg",
+      icon: "building2",
+    },
+    {
+      year: "2024",
+      title: "Strategic Partnerships",
+      description: "2024 marked a year of significant collaborations and partnerships. CopterCode forged strategic alliances with renowned entities like Shree Murugappa Food Corp, enabling us to extend our reach into the food and beverage sector. These partnerships allowed us to apply our technological expertise to solve industry-specific challenges while creating synergies that benefited all stakeholders. Our reputation as a trusted, innovative partner continued to grow.",
+      imageUrl: "/mediafiles/news and media/IMG_1851.jpg",
+      icon: "users",
+    },
+    {
+      year: "2025",
+      title: "Digital Transformation",
+      description: "In 2025, CopterCode launched its advanced ERP (Enterprise Resource Planning) and LMS (Learning Management System) software solutions alongside comprehensive infra-security services. These offerings solidified our position as a technology-driven conglomerate capable of providing end-to-end digital solutions. Our software solutions have been adopted by various enterprises, positioning CopterCode as a serious player in the enterprise software and cybersecurity space.",
+      imageUrl: "/mediafiles/news and media/IMG_3356.jpg",
+      icon: "chart",
+    },
+    {
+      year: "2026-Present",
       title: "Global Footprint",
-      description: "From collaborating with global food chains like Shree Archana Sweets to venturing into construction (2023) and partnering with Shree Murugappa Food Corp (2024), we have diversified vastly. In 2025, we launched our advanced ERP, LMS software solutions, and infra-security services, solidifying our status as a diversified conglomerate.",
+      description: "From collaborating with international food chains like Shree Archana Sweets to expanding our global presence, CopterCode has diversified vastly and become a truly global conglomerate. Our operations now span multiple continents, serving clients in various sectors including technology, manufacturing, agriculture, and infrastructure. With a vision to continue innovation and expand our global footprint, we remain committed to creating sustainable value for all stakeholders while driving technological advancement across industries.",
       imageUrl: "/mediafiles/news and media/IMG_3356.jpg",
       icon: "globe",
     },
@@ -258,7 +308,7 @@ const About = () => {
       </section>
 
       {/* Milestones Grid */}
-      <section className="py-24 bg-[#FAF9F5]">
+      <section id="milestones-at-a-glance" className="py-24 bg-[#FAF9F5]">
         <div className="container mx-auto px-6 max-w-6xl">
           <h2 className="text-3xl font-bold text-primary mb-12 border-l-8 border-accent pl-6">
             Milestones at a Glance

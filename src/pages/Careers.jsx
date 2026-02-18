@@ -169,15 +169,17 @@ const Careers = () => {
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-primary selection:text-background overflow-x-hidden">
       <SEO
-        title={sanityData?.seo?.metaTitle || "Careers at CopterCode | Join Our Innovative Team"}
-        description={sanityData?.seo?.metaDescription || "Build the future with CopterCode. Explore exciting job opportunities in drone tech, AI, and software engineering. Grow your career in a dynamic environment."}
-        ogTitle="Join CopterCode - Engineering The Unknown"
-        ogDescription="We are looking for passionate innovators. Check out our open positions and discover why CopterCode is the perfect place to advance your career."
-        twitterTitle="We're Hiring! Join CopterCode"
-        twitterDescription="Ready to make an impact? explore career opportunities at CopterCode and be part of the next generation of technology."
+        title={sanityData?.seo?.metaTitle || "Careers at CopterCode | Drone Tech & AI Engineering Jobs"}
+        description={sanityData?.seo?.metaDescription || "Join CopterCode careers. Explore job opportunities in drone technology, AI/ML, software engineering, and industrial automation. Competitive benefits, remote options, and growth potential in a dynamic tech environment."}
+        keywords="drone technology jobs, AI engineer hiring, software engineering careers, industrial automation, UAV careers, machine learning jobs, CopterCode careers, tech jobs remote"
+        canonicalUrl="https://coptercode.co.in/careers"
+        ogTitle="Careers at CopterCode | Drone Tech & AI Engineering Opportunities"
+        ogDescription="Build the future with CopterCode. Explore exciting job opportunities in drone tech, AI, industrial automation, and software engineering with competitive benefits."
+        twitterTitle="CopterCode Is Hiring | Drone Tech & AI Jobs"
+        twitterDescription="Ready to make an impact? Explore career opportunities at CopterCode in drone technology, AI/ML, and enterprise software. Grow with a innovative tech company."
       />
       <PageHeader
-        title={heroTitle}
+        title={heroTitle === "Careers" ? "Careers in Drone Technology & AI Engineering" : heroTitle}
         subtitle={heroSubtitle}
       />
 
@@ -208,6 +210,7 @@ const Careers = () => {
             <h2 className="text-4xl font-display font-bold text-primary mb-6">
               {benefitsHeading}
             </h2>
+            <p className="text-sm text-secondary mb-6">What makes CopterCode a great place to build your career</p>
             <div className="w-24 h-1.5 bg-primary/20 mx-auto mb-8 rounded-full"></div>
             <p className="text-xl text-secondary max-w-3xl mx-auto leading-relaxed">
               {benefitsDescription}
@@ -262,6 +265,7 @@ const Careers = () => {
               viewport={{ once: true }}
               className="text-center mb-10"
             >
+              <h2 className="text-2xl font-bold text-primary mb-6">Our Network & Trusted Partners</h2>
               <h3 className="text-xl font-bold text-secondary uppercase tracking-widest mb-4">
                 {trustedHeading}
               </h3>
@@ -352,7 +356,15 @@ const Careers = () => {
               <p className="text-secondary text-lg">
                 {rolesDescription}
               </p>
+              <p className="text-secondary text-base mt-4">
+                We are hiring talented engineers, designers, and specialists across <a href="/locations" className="text-accent hover:underline font-semibold">multiple locations</a> and remote positions. Check out our <a href="/about" className="text-accent hover:underline font-semibold">company culture</a> to see if you would be a great fit.
+              </p>
             </motion.div>
+
+            <div className="mb-12 p-6 bg-surface/50 rounded-xl border border-border">
+              <h3 className="text-lg font-bold text-primary mb-2">About Our Positions</h3>
+              <p className="text-secondary">We offer competitive salaries, <a href="/contact" className="text-accent hover:underline font-semibold">flexible work arrangements</a>, professional development opportunities, and a collaborative environment where innovation thrives. Learn more about our <a href="/technologies" className="text-accent hover:underline font-semibold">technology stack</a> and technical focus areas.</p>
+            </div>
 
             <motion.div
               variants={{
@@ -435,19 +447,30 @@ const Careers = () => {
 
             <div className="relative z-10 max-w-3xl mx-auto">
               <h2 className="text-4xl md:text-5xl font-display font-bold mb-8 tracking-tight text-primary">
-                {ctaHeading}
+                Ready to Join Our Team?
               </h2>
               <p className="text-lg md:text-xl text-secondary mb-10 leading-relaxed font-medium">
                 {ctaDescription}
               </p>
-              <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href={ctaButtonLink}
-                className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:shadow-accent/20"
-              >
-                {ctaButtonText} <ArrowRight className="ml-3" />
-              </motion.a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <motion.a
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  href={ctaButtonLink}
+                  className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:shadow-accent/20"
+                >
+                  {ctaButtonText} <ArrowRight className="ml-3" />
+                </motion.a>
+                <motion.a
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  href="/internship"
+                  className="inline-flex items-center border-2 border-primary text-primary px-10 py-5 rounded-full font-bold text-lg hover:bg-primary hover:text-white transition-all duration-300"
+                >
+                  Explore Internships <ArrowRight className="ml-3" />
+                </motion.a>
+              </div>
+              <p className="text-sm text-secondary mt-6 max-w-2xl mx-auto">Cannot find the right role? <a href="/contact" className="text-accent hover:underline font-semibold">Contact our HR team</a> to discuss potential opportunities in drone technology, AI, industrial automation, and enterprise software.</p>
             </div>
           </motion.div>
         </div>

@@ -50,10 +50,10 @@ const Footer = () => {
     links: [
       { label: "About Us", url: "/about" },
       { label: "Administration", url: "/administration" },
-      { label: "Founder", url: "/about" },
+      { label: "Founder", url: "/administration#executive-leadership" },
       { label: "Vision & Mission", url: "/about" },
       { label: "Innovation & R&D", url: "/technologies" },
-      { label: "Certifications & Awards", url: "/about" },
+      { label: "Certifications & Awards", url: "/about#milestones-at-a-glance" },
       { label: "Sustainability", url: "/sustainability" },
       { label: "CSR Initiatives", url: "/sustainability" },
       { label: "Operating Locations", url: "/locations" },
