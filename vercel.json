@@ -2,29 +2,16 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "devCommand": "vite",
-  "env": {
-    "VITE_SANITY_PROJECT_ID": "@vite_sanity_project_id",
-    "VITE_SANITY_DATASET": "@vite_sanity_dataset"
-  },
-  "routes": [
-    {
-      "src": "/(?:.*)\\.(js|css|svg|png|jpg|jpeg|gif|ico|woff|woff2|eot|ttf|otf|webp)$",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "continue": true
-    },
-    {
-      "src": "^/studio/(.*)",
-      "dest": "/studio/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html",
-      "status": 200
-    }
-  ],
   "headers": [
+    {
+      "source": "/(?:.*)\\.(?:js|css|svg|png|jpg|jpeg|gif|ico|woff|woff2|eot|ttf|otf|webp)$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -45,6 +32,16 @@
           "value": "strict-origin-when-cross-origin"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/studio/(.*)",
+      "destination": "/studio/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
