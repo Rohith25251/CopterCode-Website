@@ -44,5 +44,4 @@ coverage/
 # Temporary files
 allfiles.txt
 design_materials/
-public/mediafiles/
 *.log
