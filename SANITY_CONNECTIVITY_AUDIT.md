@@ -313,7 +313,7 @@ export const servicesPage = {
 
 **Current Status:** Using fallback values if env vars missing
 ```javascript
-projectId: import.meta.env.VITE_SANITY_PROJECT_ID || '6oo1bo33'
+projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'wsuk3wqx '
 dataset: import.meta.env.VITE_SANITY_DATASET || 'production'
 ```
 

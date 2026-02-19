@@ -4,7 +4,7 @@
 
 ### .env (Development)
 ```
-VITE_SANITY_PROJECT_ID=6oo1bo33
+VITE_SANITY_PROJECT_ID=wsuk3wqx 
 VITE_SANITY_DATASET=production
 VITE_APP_NAME=CopterCode
 VITE_APP_URL=https://coptercode.com
@@ -47,7 +47,7 @@ Created for other developers to know what variables are needed.
 Add these environment variables:
 
 ```
-VITE_SANITY_PROJECT_ID = 6oo1bo33
+VITE_SANITY_PROJECT_ID = wsuk3wqx 
 VITE_SANITY_DATASET = production
 VITE_APP_NAME = CopterCode
 VITE_APP_URL = https://your-vercel-url.vercel.app
@@ -210,7 +210,7 @@ After deployment, to add custom domain:
 ### Development (.env)
 ```
 # Used locally during npm run dev
-VITE_SANITY_PROJECT_ID=6oo1bo33
+VITE_SANITY_PROJECT_ID=wsuk3wqx 
 VITE_SANITY_DATASET=production
 ```
 
@@ -218,7 +218,7 @@ VITE_SANITY_DATASET=production
 ```
 # Set in Vercel → Settings → Environment Variables
 # Same values as .env, can be different for testing
-VITE_SANITY_PROJECT_ID=6oo1bo33
+VITE_SANITY_PROJECT_ID=wsuk3wqx 
 VITE_SANITY_DATASET=production
 ```
 
