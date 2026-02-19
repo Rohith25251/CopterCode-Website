@@ -28,8 +28,8 @@ export default defineConfig({
     name: 'default',
     title: 'CopterCode Studio',
 
-    projectId: 'wsuk3wqx',
-    dataset: 'production',
+    projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
+    dataset: import.meta.env.VITE_SANITY_DATASET,
 
     basePath: '/studio',
 

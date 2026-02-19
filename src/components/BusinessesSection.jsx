@@ -199,7 +199,7 @@ const BusinessesSection = ({ businessData }) => {
                                 <button
                                     key={item.id}
                                     onClick={() => handleCategoryClick(index)}
-                                    className={`group flex items-center py-5 lg:py-6 pl-6 lg:pl-8 text-left transition-all duration-500 relative outline-none focus:outline-none ${isActive ? 'opacity-100' : 'opacity-40 hover:opacity-70'
+                                    className={`group flex items-center py-5 lg:py-6 px-6 lg:px-8 text-left transition-all duration-500 relative outline-none focus:outline-none rounded-lg ${isActive ? 'opacity-100 bg-black/60 backdrop-blur-sm border border-accent/40' : 'opacity-40 hover:opacity-70 bg-black/30 backdrop-blur-xs border border-transparent hover:border-accent/20'
                                         }`}
                                 >
                                     {/* Vertical Indicator Line */}

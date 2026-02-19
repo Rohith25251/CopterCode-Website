@@ -45,7 +45,7 @@ const PartnerLogos = ({ data }) => {
                     <div className="relative flex overflow-hidden w-full">
                         <div className="flex animate-marquee w-max py-8">
                             {marqueeLogos.map((logo, index) => (
-                                <div key={index} className="mx-6 sm:mx-8 md:mx-12 w-32 h-24 sm:w-48 sm:h-32 md:w-64 md:h-40 lg:w-80 lg:h-48 flex items-center justify-center grayscale-0 opacity-100 hover:scale-110 transition-transform duration-300">
+                                <div key={index} className="mx-1.5 sm:mx-2 md:mx-3 w-32 h-24 sm:w-48 sm:h-32 md:w-64 md:h-40 lg:w-80 lg:h-48 flex items-center justify-center grayscale-0 opacity-100 hover:scale-110 transition-transform duration-300">
                                     <img
                                         src={logo}
                                         alt={`Partner Logo ${index}`}

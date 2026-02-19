@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { client } from "../lib/sanity";
-import { Link } from "react-router-dom";
 import {
   Linkedin,
   Instagram,
@@ -16,6 +16,88 @@ import {
 
 const Footer = () => {
   const [footerData, setFooterData] = useState(null);
+  const [subscriptionEmail, setSubscriptionEmail] = useState("");
+  const [subscriptionStatus, setSubscriptionStatus] = useState(null); // 'success', 'error', or null
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const location = useLocation();
+
+  // Handle link clicks with scroll behavior
+  const handleLinkClick = (url) => {
+    const [pathname, hash] = url.split('#');
+    const currentPath = location.pathname;
+
+    // If it's the same page
+    if (pathname === currentPath || pathname === '') {
+      // If there's an anchor, scroll to it after a brief delay
+      if (hash) {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      } else {
+        // Scroll to top for same-page links without anchor
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+    // If it's a different page, React Router will handle navigation
+    // and the destination page's useLocation hook will handle scrolling
+  };
+
+  // Handle subscription
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!subscriptionEmail.trim() || !emailRegex.test(subscriptionEmail)) {
+      setSubscriptionStatus('error');
+      setTimeout(() => setSubscriptionStatus(null), 5000);
+      return;
+    }
+
+    setIsSubscribing(true);
+    setSubscriptionStatus(null);
+
+    try {
+      const response = await fetch(
+        "https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: "Newsletter Subscriber",
+            email: subscriptionEmail.trim(),
+            message: "Subscribed to newsletter",
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to subscribe. Please try again.");
+      }
+
+      // Success
+      setSubscriptionStatus('success');
+      setSubscriptionEmail("");
+
+      // Auto clear success message after 5 seconds
+      setTimeout(() => setSubscriptionStatus(null), 5000);
+
+    } catch (error) {
+      console.error("Subscription error:", error);
+      setSubscriptionStatus('error');
+      // Auto clear error message after 5 seconds
+      setTimeout(() => setSubscriptionStatus(null), 5000);
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   useEffect(() => {
     const query = `*[_type == "footer"][0]`;
@@ -164,16 +246,38 @@ const Footer = () => {
           </h2>
           <div className="w-12 h-1 bg-accent mb-8 mx-auto"></div>
 
-          <div className="flex flex-col sm:flex-row w-full max-w-xl shadow-lg rounded-2xl sm:rounded-full overflow-hidden p-2 sm:p-1 border border-border bg-surface gap-3 sm:gap-0">
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              className="w-full sm:w-auto flex-grow px-4 sm:px-6 py-3 outline-none text-secondary placeholder:text-secondary/60 text-center sm:text-left bg-transparent"
-            />
-            <button className="w-full sm:w-auto bg-accent text-primary px-8 py-3 rounded-xl sm:rounded-full font-medium hover:bg-accent-dark hover:text-primary transition-colors shadow-md sm:shadow-none">
-              Subscribe
-            </button>
-          </div>
+          <form onSubmit={handleSubscribe} className="flex flex-col gap-3 w-full max-w-xl">
+            <div className="flex flex-col sm:flex-row shadow-lg rounded-2xl sm:rounded-full overflow-hidden p-2 sm:p-1 border border-border bg-surface gap-3 sm:gap-0">
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                className="w-full sm:w-auto flex-grow px-4 sm:px-6 py-3 outline-none text-secondary placeholder:text-secondary/60 text-center sm:text-left bg-transparent disabled:opacity-60 disabled:cursor-not-allowed"
+                value={subscriptionEmail}
+                onChange={(e) => setSubscriptionEmail(e.target.value)}
+                disabled={isSubscribing}
+                required
+              />
+              <button 
+                type="submit"
+                disabled={isSubscribing}
+                className="w-full sm:w-auto bg-accent text-white px-8 py-3 rounded-xl sm:rounded-full font-medium hover:bg-accent/90 transition-colors shadow-md sm:shadow-none disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isSubscribing ? "Subscribing..." : "Subscribe"}
+              </button>
+            </div>
+
+            {subscriptionStatus === 'success' && (
+              <div className="text-center text-green-600 text-sm font-medium">
+                ✓ Thank you for subscribing! Check your email for confirmation.
+              </div>
+            )}
+
+            {subscriptionStatus === 'error' && (
+              <div className="text-center text-red-600 text-sm font-medium">
+                ✕ Please enter a valid email address.
+              </div>
+            )}
+          </form>
         </div>
 
         {/* Links Grid */}
@@ -187,7 +291,7 @@ const Footer = () => {
             <ul className="space-y-3 text-secondary font-medium">
               {col1.links?.map((link, idx) => (
                 <li key={idx}>
-                  <Link to={link.url} className="hover:text-accent transition-colors">
+                  <Link to={link.url} onClick={() => handleLinkClick(link.url)} className="hover:text-accent transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -203,7 +307,7 @@ const Footer = () => {
             <ul className="space-y-3 text-secondary font-medium">
               {col2.links?.map((link, idx) => (
                 <li key={idx}>
-                  <Link to={link.url} className="hover:text-accent transition-colors">
+                  <Link to={link.url} onClick={() => handleLinkClick(link.url)} className="hover:text-accent transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -219,7 +323,7 @@ const Footer = () => {
             <ul className="space-y-3 text-secondary font-medium">
               {col3.links?.map((link, idx) => (
                 <li key={idx} className={link.label.includes('Internship') ? "pt-4" : ""}>
-                  <Link to={link.url} className={link.label.includes('Internship') ? "inline-flex items-center text-accent font-bold hover:underline" : "hover:text-accent transition-colors"}>
+                  <Link to={link.url} onClick={() => handleLinkClick(link.url)} className={link.label.includes('Internship') ? "inline-flex items-center text-accent font-bold hover:underline" : "hover:text-accent transition-colors"}>
                     {link.label}
                   </Link>
                 </li>
@@ -279,10 +383,10 @@ const Footer = () => {
           {copyrightText}
         </p>
         <div className="flex space-x-6 mt-4 md:mt-0">
-          <Link to="/privacy" className="hover:text-accent transition-colors">
+          <Link to="/privacy" onClick={() => handleLinkClick('/privacy')} className="hover:text-accent transition-colors">
             Privacy Policy
           </Link>
-          <Link to="/terms" className="hover:text-accent transition-colors">
+          <Link to="/terms" onClick={() => handleLinkClick('/terms')} className="hover:text-accent transition-colors">
             Terms & Conditions
           </Link>
         </div>

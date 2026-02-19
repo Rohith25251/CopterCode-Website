@@ -114,7 +114,7 @@ const ImpactTabs = ({ data }) => {
                     initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
                     animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                     exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 0.0, ease: "easeOut" }}
                     className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center"
                   >
                     {/* Text Content */}
@@ -122,7 +122,7 @@ const ImpactTabs = ({ data }) => {
                       <motion.div
                         initial={{ x: -30, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
+                        transition={{ delay: 0.0 }}
                       >
                         {tab.subtitle && (
                           <span className="text-accent text-xs font-bold tracking-[0.2em] uppercase mb-4 block flex items-center">

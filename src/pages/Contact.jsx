@@ -56,6 +56,7 @@ const Contact = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
 
   // Fallbacks
   const seoTitle = sanityData?.seo?.metaTitle || "Contact Us";
@@ -91,16 +92,62 @@ const Contact = () => {
   // Form
   const formTitle = sanityData?.formTitle || "Send us a Message";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate form
+    if (!formState.name.trim() || !formState.email.trim() || !formState.message.trim()) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(null), 5000);
+      return;
+    }
+
     setIsSubmitting(true);
-    // Simulate network request
-    setTimeout(() => {
-      alert("Thank you for your message. We'll be in touch shortly.");
-      setFormState({ name: "", email: "", message: "" });
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch(
+        "https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formState.name.trim(),
+            email: formState.email.trim(),
+            message: formState.message.trim(),
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to send message. Please try again.");
+      }
+
+      // Success
+      setSubmitStatus('success');
+      setFormState({
+        name: "",
+        email: "",
+        message: "",
+      });
+
+      // Auto clear success message after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitStatus('error');
+      // Auto clear error message after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -345,6 +392,7 @@ const Contact = () => {
                   className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
                   placeholder="Jane Doe"
                   required
+                  disabled={isSubmitting}
                   value={formState.name}
                   onChange={(e) =>
                     setFormState({ ...formState, name: e.target.value })
@@ -364,6 +412,7 @@ const Contact = () => {
                   className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
                   placeholder="jane@company.com"
                   required
+                  disabled={isSubmitting}
                   value={formState.email}
                   onChange={(e) =>
                     setFormState({ ...formState, email: e.target.value })
@@ -383,29 +432,56 @@ const Contact = () => {
                   className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all resize-none rounded-xl shadow-inner"
                   placeholder="Tell us about your project..."
                   required
+                  disabled={isSubmitting}
                   value={formState.message}
                   onChange={(e) =>
                     setFormState({ ...formState, message: e.target.value })
                   }
                 ></textarea>
               </div>
+
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-green-600 text-sm font-medium"
+                >
+                  ✓ Thank you for your message. We'll be in touch shortly!
+                </motion.div>
+              )}
+
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-600 text-sm font-medium"
+                >
+                  ✕ Failed to send message. Please try again or contact us directly.
+                </motion.div>
+              )}
+
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full py-4 bg-primary text-white font-bold hover:bg-accent hover:text-primary transition-all duration-300 flex items-center justify-center rounded-xl uppercase tracking-widest text-sm shadow-lg hover:shadow-xl group transform disabled:opacity-70 disabled:cursor-not-allowed"
+                whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                className="w-full py-4 bg-accent text-white font-bold hover:bg-accent/90 transition-all duration-300 flex items-center justify-center rounded-xl uppercase tracking-widest text-sm shadow-lg hover:shadow-xl group transform disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
-                  "Sending..."
+                  <span className="flex items-center">
+                    <span className="inline-block mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    Sending...
+                  </span>
                 ) : (
                   <>
                     Send Message{" "}
                     <ArrowRight
                       size={18}
-                      className="ml-2 group-hover:translate-x-1 transition-transform text-accent"
+                      className="ml-2 group-hover:translate-x-1 transition-transform"
                     />
-                  </>
+                  </> 
                 )}
               </motion.button>
             </form>

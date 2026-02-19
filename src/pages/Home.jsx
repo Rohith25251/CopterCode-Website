@@ -188,8 +188,11 @@ const Home = () => {
     const [currentInternshipSlide, setCurrentInternshipSlide] = useState(0);
     const [activeBusiness, setActiveBusiness] = useState(0);
     const [homeData, setHomeData] = useState(null);
+    const [voiceOfSuccessVisible, setVoiceOfSuccessVisible] = useState(false);
     const actionScrollRef = useRef(null);
     const businessContentRef = useRef(null); // Ref for business details
+    const voiceOfSuccessRef = useRef(null); // Ref for Voice of Success section
+    const youtubePlayerRef = useRef(null); // Ref for YouTube player instance
 
     // Mobile Business Click Handler
     const handleBusinessClick = (index) => {
@@ -273,6 +276,50 @@ const Home = () => {
             })
             .catch(console.error);
     }, []);
+
+    // Intersection Observer for Voice of Success Section - Auto play videos when scrolling to section
+    useEffect(() => {
+        const element = voiceOfSuccessRef.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setVoiceOfSuccessVisible(true);
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, []);
+
+    // Trigger video play when Voice of Success section becomes visible
+    useEffect(() => {
+        if (voiceOfSuccessVisible) {
+            // Handle YouTube videos
+            if (youtubePlayerRef.current && typeof youtubePlayerRef.current.playVideo === 'function') {
+                setTimeout(() => {
+                    youtubePlayerRef.current.playVideo();
+                }, 200);
+            }
+            
+            // Handle HTML5 videos
+            if (voiceOfSuccessRef.current) {
+                const videoElement = voiceOfSuccessRef.current.querySelector('video');
+                if (videoElement) {
+                    setTimeout(() => {
+                        videoElement.play().catch(() => {
+                            // Autoplay might be prevented by browser
+                        });
+                    }, 200);
+                }
+            }
+        }
+    }, [voiceOfSuccessVisible, currentTestimonial]);
 
     const scrollAction = (direction) => {
         if (actionScrollRef.current) {
@@ -606,7 +653,7 @@ const Home = () => {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.0 }}
                 className="py-0 relative"
             >
                 <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[500px] lg:min-h-[800px]">
@@ -617,14 +664,14 @@ const Home = () => {
                                 initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
                                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                                 exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-                                transition={{ duration: 0.5, ease: "circOut" }}
+                                transition={{ duration: 0.0, ease: "circOut" }}
                                 className="relative z-10 flex flex-col items-start"
                             >
                                 <motion.span
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0, duration: 0.4, ease: "easeOut" }}
-                                    className="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-6 block flex items-center"
+                                    className="text-secondary bg-white font-bold tracking-[0.2em] uppercase text-xs mb-6 block flex items-center"
                                 >
                                     <span className="w-2 h-2 bg-accent mr-2 rotate-45"></span>
                                     {businessHeading}
@@ -1237,28 +1284,28 @@ const Home = () => {
                             </div>
                         </div>
 
-                        <div className="relative">
-                            <div className="aspect-square rounded-3xl overflow-hidden border border-border relative bg-surface shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <div className="relative flex items-center justify-center">
+                            <div className="w-full max-w-sm aspect-[4/5] rounded-2xl overflow-hidden border border-border relative bg-surface shadow-xl hover:shadow-2xl transition-shadow duration-500">
                                 <AnimatePresence mode="wait">
                                     <motion.img
                                         key={currentInternshipSlide}
                                         src={internshipImages[currentInternshipSlide]}
                                         alt={`Internship ${currentInternshipSlide + 1}`}
-                                        initial={{ opacity: 0, scale: 1.1 }}
+                                        initial={{ opacity: 0, scale: 1.05 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0 }}
                                         transition={{ duration: 1 }}
                                         className="w-full h-full object-cover absolute inset-0"
                                     />
                                 </AnimatePresence>
-                                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
-                                <div className="absolute bottom-8 left-8 right-8 text-white">
-                                    <h4 className="text-2xl font-bold mb-2">Real-World Projects</h4>
-                                    <p className="text-white/80 text-sm">Join students from top universities working on cutting-edge aerospace challenges.</p>
+                                <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
+                                <div className="absolute bottom-6 left-6 right-6 text-white">
+                                    <h4 className="text-xl font-bold mb-2">Real-World Projects</h4>
+                                    <p className="text-white/90 text-xs leading-relaxed">Join students from top universities working on cutting-edge aerospace challenges.</p>
                                 </div>
                             </div>
-                            {/* Decorative element */}
-                            <div className="absolute -z-10 top-10 -right-10 w-full h-full rounded-3xl border-2 border-accent/20 bg-transparent rotate-6 hidden lg:block" />
+                            {/* Decorative accent bar */}
+                            <div className="absolute -left-4 top-1/2 w-1.5 h-24 bg-gradient-to-b from-accent to-accent/30 rounded-full hidden lg:block transform -translate-y-1/2" />
                         </div>
                     </div>
                 </div>
@@ -1320,7 +1367,7 @@ const Home = () => {
             </section>
 
             {/* Testimonials Video Section */}
-            <section className="py-24 bg-background border-t border-border">
+            <section ref={voiceOfSuccessRef} className="py-24 bg-background border-t border-border">
                 <div className="container mx-auto px-6">
                     <h2 className="text-3xl font-display font-medium mb-12 text-center text-primary">Voice of Success</h2>
 
@@ -1350,7 +1397,7 @@ const Home = () => {
                                                         height: '100%',
                                                         width: '100%',
                                                         playerVars: {
-                                                            autoplay: 1,
+                                                            autoplay: 0,
                                                             mute: 1,
                                                             controls: 1,
                                                             rel: 0,
@@ -1359,6 +1406,12 @@ const Home = () => {
                                                     }}
                                                     className="w-full h-full"
                                                     iframeClassName="w-full h-full object-cover"
+                                                    onReady={(event) => {
+                                                        youtubePlayerRef.current = event.target;
+                                                        if (voiceOfSuccessVisible) {
+                                                            setTimeout(() => event.target.playVideo(), 100);
+                                                        }
+                                                    }}
                                                     onEnd={nextTestimonial}
                                                 />
                                             );
@@ -1367,7 +1420,6 @@ const Home = () => {
                                                 <video
                                                     src={rawUrl}
                                                     className="w-full h-full object-cover"
-                                                    autoPlay
                                                     loop={false}
                                                     muted
                                                     playsInline

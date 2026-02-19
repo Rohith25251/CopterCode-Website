@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import OptimizedImage from './OptimizedImage';
 import { GraduationCap, Briefcase } from "lucide-react";
@@ -51,7 +51,6 @@ const fallbackInterns = [
 ];
 
 const InternsCarousel = ({ data }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const x = useMotionValue(0);
 
   const heading = data?.heading || "Journey of Our Interns";
@@ -79,7 +78,7 @@ const InternsCarousel = ({ data }) => {
   const totalWidth = interns.length * totalItemWidth;
 
   useAnimationFrame((time, delta) => {
-    if (!isHovered && interns.length > 0) {
+    if (interns.length > 0) {
       const safeDelta = Math.min(delta, 100);
       const speed = 50;
       const moveBy = (speed * safeDelta) / 1000;
@@ -95,8 +94,6 @@ const InternsCarousel = ({ data }) => {
   return (
     <div
       className="relative group overflow-hidden py-12"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="px-6 mb-12 text-center">
         <h3 className="text-4xl font-display font-medium mb-4 text-primary">

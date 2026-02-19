@@ -278,7 +278,7 @@ const Careers = () => {
               <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-background to-transparent z-10"></div>
 
               <motion.div
-                className="flex gap-12 items-center whitespace-nowrap"
+                className="flex gap-4 items-center whitespace-nowrap"
                 animate={{ x: ["0%", "-50%"] }}
                 transition={{
                   repeat: Infinity,
@@ -288,7 +288,7 @@ const Careers = () => {
               >
                 {/* We duplicate the logos to create a seamless loop */}
                 {[...Array(2)].map((_, sectionIdx) => (
-                  <div key={sectionIdx} className="flex gap-12 items-center">
+                  <div key={sectionIdx} className="flex gap-4 items-center">
                     {hasSanityLogos ? (
                       trustedLogos.map((url, idx) => (
                         <div
@@ -420,7 +420,7 @@ const Careers = () => {
                     </div>
                   </div>
                   <a
-                    href={job.applyLink || "mailto:hr@coptercode.co.in"}
+                    href={`mailto:hr@coptercode.co.in?subject=Application for ${job.title}`}
                     className="w-full md:w-auto px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-accent hover:text-primary transition-all duration-300 flex items-center justify-center whitespace-nowrap shadow-md"
                   >
                     Apply Now <ArrowRight size={18} className="ml-2" />

@@ -71,7 +71,7 @@ const Hero = ({ data }) => {
 
 
   return (
-    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-10 md:pt-16 pb-20 md:pb-32 group">
+    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-6 md:pt-16 pb-10 md:pb-32 group">
       {/* Premium Background Layers */}
       <div className="absolute inset-0 bg-background z-0" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/5 via-transparent to-transparent opacity-30 pointer-events-none z-0" />
@@ -326,7 +326,7 @@ const Hero = ({ data }) => {
 
           {/* Right Content - Slideshow with Grid Background */}
           <motion.div
-            className="lg:col-span-6 relative mt-16 lg:mt-0 h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center z-10"
+            className="lg:col-span-6 relative mt-10 lg:mt-0 h-[350px] sm:h-[450px] lg:h-[700px] flex items-center justify-center z-10"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
@@ -356,7 +356,7 @@ const Hero = ({ data }) => {
                     alt="CopterCode Feature"
                     loading={currentIndex === 0 ? 'eager' : 'lazy'}
                     decoding="async"
-                    className="w-full h-full object-contain drop-shadow-2xl scale-[1.05] lg:scale-[1.1]"
+                    className="w-full h-full object-contain drop-shadow-2xl scale-[1.2] lg:scale-[1.35]"
                     sizes="(min-width:1024px) 50vw, 100vw"
                   />
                 </motion.div>
