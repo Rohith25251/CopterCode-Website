@@ -4,7 +4,7 @@
   "devCommand": "vite",
   "headers": [
     {
-      "source": "/(?:.*)\\.(?:js|css|svg|png|jpg|jpeg|gif|ico|woff|woff2|eot|ttf|otf|webp)$",
+      "source": "/assets/**/*.{js,css,svg,png,jpg,jpeg,gif,ico,woff,woff2,eot,ttf,otf,webp}",
       "headers": [
         {
           "key": "Cache-Control",
