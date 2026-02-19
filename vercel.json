@@ -1,0 +1,22 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "status": 200
+    }
+  ],
+  "env": {
+    "VITE_SANITY_PROJECT_ID": "@vite_sanity_project_id",
+    "VITE_SANITY_DATASET": "@vite_sanity_dataset"
+  }
+}
