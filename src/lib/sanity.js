@@ -2,7 +2,7 @@ import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 
 export const client = createClient({
-    projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'wsuk3wqx',
+    projectId: import.meta.env.VITE_SANITY_PROJECT_ID || '6oo1bo33',
     dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
     useCdn: true, // set to `false` to bypass the edge cache
     apiVersion: '2023-05-03', // use current date (YYYY-MM-DD) to target the latest API version

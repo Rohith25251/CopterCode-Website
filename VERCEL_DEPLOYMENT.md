@@ -113,7 +113,7 @@ Once connected to GitHub:
 
 | Variable | Purpose | Example |
 |----------|---------|---------|
-| `VITE_SANITY_PROJECT_ID` | Sanity CMS project identifier | `wsuk3wqx` |
+| `VITE_SANITY_PROJECT_ID` | Sanity CMS project identifier | `6oo1bo33` |
 | `VITE_SANITY_DATASET` | Sanity dataset name | `production` |
 
 **Note:** No Firebase variables needed anymore!
