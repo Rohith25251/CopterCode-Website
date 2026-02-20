@@ -48,37 +48,50 @@ export const administrationPage = {
             ]
         },
 
-        // --- CMD SECTION (Existing) ---
+        // --- EXECUTIVE LEADERSHIP SECTION (Array-based for scalability) ---
         {
-            name: 'cmdHeading',
-            title: 'CMD Section Heading',
+            name: 'executiveLeadershipHeading',
+            title: 'Executive Leadership Section Heading',
             type: 'string',
             initialValue: 'Executive Leadership'
         },
         {
-            name: 'cmdName',
-            title: 'CMD Name',
-            type: 'string',
-            initialValue: 'Mr. Karthikeyan Sundharesan'
-        },
-        {
-            name: 'cmdRole',
-            title: 'CMD Role',
-            type: 'string',
-            initialValue: 'Chairman & Managing Director'
-        },
-        {
-            name: 'cmdDescription',
-            title: 'CMD Description',
-            type: 'text',
-            rows: 4,
-            initialValue: 'Leading CopterCode with a focus on sustainable growth and diversified innovation. Mr. Karthikeyan continues the legacy of our founder by steering the organization towards new heights in technology, manufacturing, and services.'
-        },
-        {
-            name: 'cmdImage',
-            title: 'CMD Image',
-            type: 'image',
-            options: { hotspot: true }
+            name: 'executiveLeadership',
+            title: 'Executive Leadership Members',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    title: 'Executive Member',
+                    fields: [
+                        { 
+                            name: 'name', 
+                            type: 'string', 
+                            title: 'Name',
+                            initialValue: 'Mr. Karthikeyan Sundharesan'
+                        },
+                        { 
+                            name: 'role', 
+                            type: 'string', 
+                            title: 'Role',
+                            initialValue: 'Chairman & Managing Director'
+                        },
+                        { 
+                            name: 'description', 
+                            type: 'text', 
+                            title: 'Description',
+                            rows: 4,
+                            initialValue: 'Leading CopterCode with a focus on sustainable growth and diversified innovation. Mr. Karthikeyan continues the legacy of our founder by steering the organization towards new heights in technology, manufacturing, and services.'
+                        },
+                        { 
+                            name: 'image', 
+                            type: 'image', 
+                            title: 'Image',
+                            options: { hotspot: true }
+                        }
+                    ]
+                }
+            ]
         },
         // --- BOARD MEMBERS (Existing) ---
         {
@@ -98,6 +111,13 @@ export const administrationPage = {
                     fields: [
                         { name: 'name', type: 'string', title: 'Name' },
                         { name: 'role', type: 'string', title: 'Role' },
+                        { 
+                            name: 'description', 
+                            type: 'text', 
+                            title: 'Description',
+                            rows: 3,
+                            description: 'Optional: Brief bio or description of the board member'
+                        },
                         { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
                     ]
                 }
@@ -122,6 +142,13 @@ export const administrationPage = {
                     fields: [
                         { name: 'name', type: 'string', title: 'Name' },
                         { name: 'role', type: 'string', title: 'Role' },
+                        { 
+                            name: 'description', 
+                            type: 'text', 
+                            title: 'Description',
+                            rows: 3,
+                            description: 'Optional: Brief bio or description of the advisor'
+                        },
                         { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
                     ]
                 }
@@ -145,6 +172,13 @@ export const administrationPage = {
                     fields: [
                         { name: 'name', type: 'string', title: 'Name' },
                         { name: 'role', type: 'string', title: 'Role' },
+                        { 
+                            name: 'description', 
+                            type: 'text', 
+                            title: 'Description',
+                            rows: 3,
+                            description: 'Optional: Brief bio or description of the team member'
+                        },
                         { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
                     ]
                 }

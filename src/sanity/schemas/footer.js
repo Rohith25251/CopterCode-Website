@@ -25,8 +25,7 @@ export const footer = {
             fields: [
                 { name: 'linkedin', type: 'url', title: 'LinkedIn URL' },
                 { name: 'instagram', type: 'url', title: 'Instagram URL' },
-                { name: 'youtube', type: 'url', title: 'YouTube URL' },
-                { name: 'twitter', type: 'url', title: 'Twitter/X URL' }
+                { name: 'youtube', type: 'url', title: 'YouTube URL' }
             ]
         },
         // --- COLUMN 1 (About) ---

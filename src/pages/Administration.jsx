@@ -17,7 +17,10 @@ const Administration = () => {
   useEffect(() => {
     const query = `*[_type == "administrationPage"][0]{
       ...,
-      cmdImage { asset->{ url } },
+      executiveLeadership[]{
+        ...,
+        image { asset->{ url } }
+      },
       boardMembers[]{
         ...,
         image { asset->{ url } }
@@ -36,7 +39,10 @@ const Administration = () => {
       if (data) {
         setSanityData({
           ...data,
-          cmdImage: data.cmdImage?.asset?.url,
+          executiveLeadership: data.executiveLeadership?.map(member => ({
+            ...member,
+            image: member.image?.asset?.url
+          })),
           boardMembers: data.boardMembers?.map(member => ({
             ...member,
             image: member.image?.asset?.url
@@ -70,8 +76,6 @@ const Administration = () => {
   const heroTitle = sanityData?.heroTitle || "Administration";
   const heroSubtitle = sanityData?.heroSubtitle || "Guided by vision, integrity, and a commitment to excellence.";
 
-
-
   // Fallback Philosophy
   const FALLBACK_PHILOSOPHY = {
     heading: "Our Leadership Philosophy",
@@ -80,10 +84,17 @@ const Administration = () => {
 
   const philosophy = sanityData?.philosophy || FALLBACK_PHILOSOPHY;
 
-  const cmdName = sanityData?.cmdName || "Mr. Karthikeyan Sundharesan";
-  const cmdRole = sanityData?.cmdRole || "Chairman & Managing Director";
-  const cmdDesc = sanityData?.cmdDescription || "Leading CopterCode with a focus on sustainable growth and diversified innovation. Mr. Karthikeyan continues the legacy of our founder by steering the organization towards new heights in technology, manufacturing, and services.";
-  const cmdImage = sanityData?.cmdImage;
+  // Fallback Executive Leadership
+  const FALLBACK_EXECUTIVE_LEADERSHIP = [
+    {
+      name: "Mr. Karthikeyan Sundharesan",
+      role: "Chairman & Managing Director",
+      description: "Leading CopterCode with a focus on sustainable growth and diversified innovation. Mr. Karthikeyan continues the legacy of our founder by steering the organization towards new heights in technology, manufacturing, and services."
+    }
+  ];
+
+  const executiveLeadershipHeading = sanityData?.executiveLeadershipHeading || "Executive Leadership";
+  const executiveLeadership = (sanityData?.executiveLeadership?.length > 0) ? sanityData.executiveLeadership : FALLBACK_EXECUTIVE_LEADERSHIP;
 
   const boardHeading = sanityData?.boardHeading || "Board of Directors";
   const boardMembers = sanityData?.boardMembers || [
@@ -116,6 +127,93 @@ const Administration = () => {
   const managementTeam = (sanityData?.managementTeam?.length > 0) ? sanityData.managementTeam : FALLBACK_MANAGEMENT_TEAM;
 
   const quote = sanityData?.quote || '"The organization continues to pursue self-reliant, sustainable growth while honoring the legacy of its founder."';
+
+  // Helper component for Executive Leadership Grid with Royal Design - Horizontal Layout
+  const ExecutiveLeadershipGrid = ({ title, members }) => (
+    <div className="mb-32 last:mb-0 relative">
+      <div className="text-center mb-16">
+        <h3 className="text-4xl md:text-5xl font-display font-bold text-primary mb-4">{title}</h3>
+        <div className="w-20 h-2 bg-gradient-to-r from-transparent via-accent to-transparent mx-auto rounded-full opacity-90"></div>
+      </div>
+
+      <div className="space-y-16 px-4">
+        {members.map((member, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15, duration: 0.6 }}
+            className="group relative"
+          >
+            {/* Royal Frame Border */}
+            <div className="absolute inset-0 rounded-3xl border-2 border-accent/30 group-hover:border-accent/60 transition-all duration-500 pointer-events-none" style={{ top: '-8px', left: '-8px', right: '-8px', bottom: '-8px' }}></div>
+            
+            {/* Main Card - Horizontal Layout */}
+            <div className="relative bg-white rounded-3xl overflow-hidden shadow-2xl hover:shadow-primary/20 transition-all duration-500 flex flex-row backdrop-blur-sm">
+              {/* Premium Background Accent */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-accent/10 transition-all duration-500"></div>
+
+              {/* Image Container - Left Side */}
+              <div className="w-full md:w-1/3 aspect-auto md:aspect-[3/4] relative overflow-hidden bg-gradient-to-br from-accent/10 to-transparent flex-shrink-0">
+                {member.image ? (
+                  <OptimizedImage
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/20 to-accent/5">
+                    <User size={80} className="text-accent/40" strokeWidth={1} />
+                  </div>
+                )}
+                {/* Premium Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300" />
+
+                {/* Decorative Top Accent Line */}
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-80"></div>
+
+                {/* Name Overlay INSIDE Image */}
+                <div className="absolute bottom-0 left-0 w-full p-8 text-white z-10 md:hidden">
+                  <h4 className="text-2xl font-bold leading-tight mb-2 font-display">{member.name}</h4>
+                  <div className="h-1.5 w-16 bg-gradient-to-r from-accent to-accent/50 rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Details Section - Right Side */}
+              <div className="flex-1 bg-white pt-32 md:pt-40 px-8 md:px-12 pb-8 md:pb-12 border-t md:border-t-0 md:border-l border-accent/10 flex flex-col justify-start relative z-20">
+                {/* Name - Desktop Only */}
+                <h4 className="hidden md:block text-3xl font-bold mb-4 font-display text-primary">{member.name}</h4>
+                
+                {/* Role */}
+                <div className="mb-6">
+                  <p className="text-sm font-bold text-accent tracking-widest uppercase border-l-4 border-accent pl-4 py-2">
+                    {member.role}
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div className="h-1 w-12 bg-gradient-to-r from-accent to-accent/50 rounded-full mb-6"></div>
+
+                {/* Description - Always Visible */}
+                {member.description && (
+                  <div className="flex-1">
+                    <p className="text-base text-secondary leading-relaxed">
+                      {member.description}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Accent */}
+              <div className="absolute bottom-0 right-0 h-1 w-0 bg-gradient-to-l from-accent/30 via-accent to-accent/30 opacity-80 group-hover:w-full transition-all duration-500"></div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
 
   // Helper component for Member Grid with Enhanced Design
   const MemberGrid = ({ title, members }) => (
@@ -209,44 +307,12 @@ const Administration = () => {
         </div>
       </section>
 
-      {/* Detailed Leadership (CMD & Board & Others) */}
+      {/* Detailed Leadership (Executive, Board & Others) */}
       <section id="executive-leadership" className="py-32 bg-[#FAF9F5]">
         <div className="container mx-auto px-6 max-w-7xl">
 
-          {/* CMD Highlight - Executive Leadership */}
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-md border border-gray-100 flex flex-col md:flex-row items-center gap-12 mb-32 hover:shadow-xl transition-shadow duration-500">
-            <div className="w-full md:w-1/3 flex justify-center">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-accent/20 rounded-full blur-3xl transform translate-x-4 translate-y-4 opacity-70 group-hover:opacity-100 transition-opacity"></div>
-                {(cmdImage || sanityData?.cmdImage?.asset?.url) ? (
-                  <OptimizedImage
-                    src={cmdImage}
-                    alt={cmdName}
-                    className="w-72 h-72 object-cover rounded-full border-8 border-white shadow-2xl relative z-10"
-                    sizes="288px"
-                  />
-                ) : (
-                  <div className="w-72 h-72 rounded-full bg-[#FAF9F5] border-8 border-white shadow-2xl flex items-center justify-center relative z-10">
-                    <User size={80} className="text-accent/30" />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="w-full md:w-2/3 text-center md:text-left">
-              <span className="text-accent font-bold tracking-[0.25em] uppercase text-xs mb-4 block inline-block border-b-2 border-accent pb-1">
-                {sanityData?.cmdHeading || "Executive Leadership"}
-              </span>
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-3">
-                {cmdName}
-              </h2>
-              <p className="text-xl text-secondary/80 font-medium tracking-wide mb-8">
-                {cmdRole}
-              </p>
-              <div className="prose prose-lg text-secondary/90 max-w-none">
-                <p className="leading-relaxed">{cmdDesc}</p>
-              </div>
-            </div>
-          </div>
+          {/* Executive Leadership Grid - Royal Design */}
+          <ExecutiveLeadershipGrid title={executiveLeadershipHeading} members={executiveLeadership} />
 
           {/* Board Members Grid */}
           <MemberGrid title={boardHeading} members={boardMembers} icon={Building2} />

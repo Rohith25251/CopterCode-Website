@@ -10,7 +10,6 @@ import {
   Phone,
   PhoneCall,
   Mail,
-  Twitter,
 } from "lucide-react";
 
 
@@ -198,15 +197,13 @@ const Footer = () => {
     const icons = {
       linkedin: <Linkedin size={18} />,
       instagram: <Instagram size={18} />,
-      youtube: <Youtube size={18} />,
-      twitter: <Twitter size={18} />
+      youtube: <Youtube size={18} />
     };
 
     const colors = {
       linkedin: "hover:bg-[#0077b5] hover:border-[#0077b5]",
       instagram: "hover:bg-[#E1306C] hover:border-[#E1306C]",
       youtube: "hover:bg-[#FF0000] hover:border-[#FF0000]",
-      twitter: "hover:bg-primary hover:border-primary",
     };
 
     return (
@@ -230,7 +227,6 @@ const Footer = () => {
             {socialLinks.linkedin && renderSocialIcon('linkedin', socialLinks.linkedin)}
             {socialLinks.instagram && renderSocialIcon('instagram', socialLinks.instagram)}
             {socialLinks.youtube && renderSocialIcon('youtube', socialLinks.youtube)}
-            {socialLinks.twitter && renderSocialIcon('twitter', socialLinks.twitter)}
 
             {!settings && (
               <>

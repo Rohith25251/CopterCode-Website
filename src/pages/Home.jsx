@@ -304,7 +304,7 @@ const Home = () => {
             testimonialsSection[]{
                 title,
                 videoType,
-                videoUrl,
+                videoUrlOrId,
                 _key,
                 videoFile{
                   asset->{
@@ -500,7 +500,7 @@ const Home = () => {
     const testimonials = homeData?.testimonialsSection?.length > 0
         ? homeData.testimonialsSection.map(item => {
             const videoFileUrl = item.videoFile?.asset?.url;
-            const externalUrl = item.videoUrl;
+            const externalUrl = item.videoUrlOrId;
             const url = videoFileUrl || externalUrl;
             return {
                 url: url,
