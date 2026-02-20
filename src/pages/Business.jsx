@@ -221,6 +221,7 @@ const BusinessCard = ({ biz, index }) => {
                       loop
                       muted
                       playsInline
+                      crossOrigin="anonymous"
                       className="w-full h-full object-cover scale-110"
                       preload="auto"
                     >

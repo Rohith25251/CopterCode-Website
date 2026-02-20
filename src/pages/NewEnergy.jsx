@@ -145,8 +145,7 @@ const NewEnergy = () => {
                         autoPlay
                         loop
                         muted
-                        playsInline
-                        className="w-full h-full object-cover opacity-50"
+                        playsInline                        crossOrigin="anonymous"                        className="w-full h-full object-cover opacity-50"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
                 </div>
@@ -198,7 +197,7 @@ const NewEnergy = () => {
                             data.introMediaIsImage ? (
                                         <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" sizes="(min-width:1024px) 50vw, 100vw" />
                                     ) : (
-                                        <video src={data.introMedia} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80" preload="auto" />
+                                        <video src={data.introMedia} autoPlay loop muted playsInline crossOrigin="anonymous" className="w-full h-full object-cover opacity-80" preload="auto" />
                                     )
                         ) : (
                             <div className="text-center p-8">

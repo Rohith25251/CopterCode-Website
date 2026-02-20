@@ -197,8 +197,7 @@ const IndustrialDrones = () => {
             autoPlay
             loop
             muted
-            playsInline
-            className="w-full h-full object-cover opacity-50"
+            playsInline            crossOrigin="anonymous"            className="w-full h-full object-cover opacity-50"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
         </div>
