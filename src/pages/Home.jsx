@@ -270,7 +270,11 @@ const Home = () => {
                 videoType,
                 videoUrl,
                 _key,
-                "videoFileUrl": videoFile.asset->url,
+                videoFile{
+                  asset->{
+                    url
+                  }
+                },
                 link
             },
             cinematicShowcase[]{
@@ -278,7 +282,11 @@ const Home = () => {
                 videoType,
                 videoUrl,
                 _key,
-                "videoFileUrl": videoFile.asset->url
+                videoFile{
+                  asset->{
+                    url
+                  }
+                }
             },
             advancedTechSection{
                 statsValue,
@@ -287,14 +295,22 @@ const Home = () => {
                 heading,
                 videoType,
                 videoUrl,
-                "videoFileUrl": videoFile.asset->url
+                videoFile{
+                  asset->{
+                    url
+                  }
+                }
             },
             testimonialsSection[]{
                 title,
                 videoType,
                 videoUrl,
                 _key,
-                "videoFileUrl": videoFile.asset->url
+                videoFile{
+                  asset->{
+                    url
+                  }
+                }
             },
             upcomingEventsSection {
                 ...,
@@ -355,9 +371,19 @@ const Home = () => {
 
         client.fetch(query)
             .then((data) => {
-                if (data) setHomeData(data);
+                if (data) {
+                    console.log('✅ Home page data loaded from Sanity');
+                    console.log('   - Businesses:', data.businessesSection?.length);
+                    console.log('   - Cinematic videos:', data.cinematicShowcase?.length);
+                    console.log('   - Testimonials:', data.testimonialsSection?.length);
+                    setHomeData(data);
+                } else {
+                    console.warn('⚠️ No home page data from Sanity');
+                }
             })
-            .catch(console.error);
+            .catch(err => {
+                console.error('❌ Error fetching home page:', err);
+            });
     }, []);
 
     // Intersection Observer for Voice of Success Section - Auto play videos when scrolling to section
@@ -415,14 +441,23 @@ const Home = () => {
     // Prepare Data with Fallbacks
     // BUSINESSES
     const businesses = homeData?.businessesSection?.length > 0
-        ? homeData.businessesSection.map((item, index) => ({
-            id: item._key || `biz-${index}`,
-            title: item.title,
-            description: item.description,
-            // Prefer uploaded file URL, then external URL
-            video: item.videoFileUrl || item.videoUrl,
-            link: item.link
-        }))
+        ? homeData.businessesSection.map((item, index) => {
+            const videoFileUrl = item.videoFile?.asset?.url;
+            const externalUrl = item.videoUrl;
+            const video = videoFileUrl || externalUrl;
+            console.log(`🏢 Home - Business ${index}: "${item.title}"`);
+            console.log(`   📁 File URL: ${videoFileUrl || '(empty)'}`);
+            console.log(`   🔗 External URL: ${externalUrl || '(empty)'}`);
+            console.log(`   ✅ Using: ${video || '(FALLBACK)'}`);
+            return {
+                id: item._key || `biz-${index}`,
+                title: item.title,
+                description: item.description,
+                // Prefer uploaded file URL, then external URL
+                video: video,
+                link: item.link
+            };
+        })
         : businessData;
 
     const currentBusiness = businesses[activeBusiness] || businesses[0];
@@ -441,20 +476,37 @@ const Home = () => {
     // CINEMATIC VIDEO SHOWCASE
     const cinematicVideos = homeData?.cinematicShowcase?.length > 0
         ? homeData.cinematicShowcase
-            .map(item => ({
-                url: item.videoFileUrl || item.videoUrl,
-                label: item.label,
-                _key: item._key
-            }))
-            .filter(video => video.url) // Only include items with a video URL
+            .map((item, idx) => {
+                const videoFileUrl = item.videoFile?.asset?.url;
+                const externalUrl = item.videoUrl;
+                const url = videoFileUrl || externalUrl;
+                console.log(`🎬 Cinematic ${idx}: "${item.label}"`);
+                console.log(`   📁 File URL: ${videoFileUrl || '(empty)'}`);
+                console.log(`   🔗 External URL: ${externalUrl || '(empty)'}`);
+                console.log(`   ✅ Using: ${url || '(filtered out)'}`);
+                return {
+                    url: url,
+                    label: item.label,
+                    _key: item._key
+                };
+            })
+            .filter(video => {
+                if (!video.url) console.warn(`   ❌ Filtered out - no URL`);
+                return video.url;
+            }) // Only include items with a video URL
         : FALLBACK_CINEMATIC;
 
     // TESTIMONIALS
     const testimonials = homeData?.testimonialsSection?.length > 0
-        ? homeData.testimonialsSection.map(item => ({
-            url: item.videoFileUrl || item.videoUrl,
-            title: item.title
-        }))
+        ? homeData.testimonialsSection.map(item => {
+            const videoFileUrl = item.videoFile?.asset?.url;
+            const externalUrl = item.videoUrl;
+            const url = videoFileUrl || externalUrl;
+            return {
+                url: url,
+                title: item.title
+            };
+        })
         : FALLBACK_TESTIMONIALS.map(t => ({
             url: t.file,
             title: t.title
@@ -479,7 +531,7 @@ const Home = () => {
     const advTechUnit = homeData?.advancedTechSection?.statsUnit || "%";
     const advTechLabel = homeData?.advancedTechSection?.statsLabel || "Operational Efficiency";
     const advTechHeading = homeData?.advancedTechSection?.heading || "Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems";
-    const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home%20Advanced%20Technology.mp4";
+    const advTechVideo = homeData?.advancedTechSection?.videoFile?.asset?.url || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home%20Advanced%20Technology.mp4";
 
     // Global Footprint Image
     const globalFootprintSrc = homeData?.globalFootprintImage

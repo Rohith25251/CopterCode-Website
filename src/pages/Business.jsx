@@ -190,6 +190,7 @@ const BusinessCard = ({ biz, index }) => {
               (() => {
                 const potentialId = getVideoId(biz.video);
                 const isYoutube = /^[a-zA-Z0-9_-]{11}$/.test(potentialId) && !biz.video.match(/\.(mp4|webm|ogg)$/i);
+                console.log(`🎥 ${biz.title}: url="${biz.video}" → ${isYoutube ? 'YouTube ID: ' + potentialId : 'Direct video'}`);
 
                 if (isYoutube) {
                   return (
@@ -217,6 +218,8 @@ const BusinessCard = ({ biz, index }) => {
                 } else {
                   return (
                     <video
+                      key={biz.video}
+                      src={biz.video}
                       autoPlay={true}
                       loop
                       muted
@@ -224,11 +227,19 @@ const BusinessCard = ({ biz, index }) => {
                       crossOrigin="anonymous"
                       className="w-full h-full object-cover scale-110"
                       preload="metadata"
-                      onError={(e) => console.error(`Video load error for ${biz.title}:`, e)}
-                    >
-                      <source src={biz.video} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                      onError={(e) => {
+                        console.error(`❌ Video load error for ${biz.title}:`, {
+                          url: biz.video,
+                          error: e.message || e
+                        });
+                      }}
+                      onLoadStart={() => {
+                        console.log(`✅ Started loading video for ${biz.title}: ${biz.video}`);
+                      }}
+                      onCanPlay={() => {
+                        console.log(`▶️ Video ready to play: ${biz.title}`);
+                      }}
+                    />
                   );
                 }
               })()
@@ -331,15 +342,18 @@ const Business = () => {
 
   useEffect(() => {
     const query = `*[_type == "businessPage"][0]{
-      ...,
+      seo,
+      heroTitle,
+      heroSubtitle,
       businesses[]{
+        _key,
         title,
         iconName,
         description,
         videoType,
         videoUrl,
-        _key,
-        "videoFileUrl": videoFile.asset->url,
+        videoFile,
+        "videoFileAssetUrl": videoFile.asset->url,
         services,
         features,
         link
@@ -347,13 +361,35 @@ const Business = () => {
     }`;
     client.fetch(query)
       .then(data => {
+        console.log('\n=====================================================');
+        console.log('✅ Business page RAW data from Sanity:');
+        console.log('=====================================================');
         if (data) {
-          console.log('Business data from Sanity:', data);
+          console.log('📊 Number of businesses:', data.businesses?.length);
+          if (data.businesses && data.businesses.length > 0) {
+            data.businesses.forEach((biz, idx) => {
+              const videoFileUrl = biz.videoFileAssetUrl;
+              const externalUrl = biz.videoUrl;
+              console.log(`\n🏢 Business ${idx + 1}: "${biz.title}"`);
+              console.log(`   └─ videoType: ${biz.videoType}`);
+              console.log(`   ├─ videoFile (raw): ${biz.videoFile ? 'EXISTS' : 'null/undefined'}`);
+              if (biz.videoFile) {
+                console.log(`   │  ├─ _type: ${biz.videoFile._type}`);
+                console.log(`   │  └─ asset._ref: ${biz.videoFile.asset?._ref || 'null'}`);
+              }
+              console.log(`   ├─ videoUrl: ${externalUrl || 'null'}`);
+              console.log(`   ├─ videoFileAssetUrl: ${videoFileUrl || 'null'}`);
+              console.log(`   └─ RESOLVED: ${videoFileUrl || externalUrl || 'NO URL FOUND'}`);
+            });
+          }
           setSanityData(data);
+        } else {
+          console.warn('⚠️ No business page data found in Sanity');
         }
+        console.log('=====================================================\n');
       })
       .catch(err => {
-        console.error('Error fetching business data:', err);
+        console.error('❌ Error fetching business data:', err);
       });
   }, []);
 
@@ -365,26 +401,50 @@ const Business = () => {
 
   // Use Sanity list if populated, else use fallback
   const businesses = sanityData?.businesses?.length > 0
-    ? sanityData.businesses.map(b => {
-      // Resolve video URL: prioritize uploaded file, then external URL
-      const videoUrl = b.videoFileUrl || b.videoUrl;
-      if (videoUrl) {
-        console.log(`✅ ${b.title}: Using video URL:`, videoUrl);
-      } else {
-        console.warn(`⚠️ ${b.title}: No video URL found (videoFileUrl: ${b.videoFileUrl}, videoUrl: ${b.videoUrl})`);
-      }
-      return {
-        id: b._key,
-        title: b.title,
-        iconName: b.iconName,
-        desc: b.description,
-        services: b.services || [], // Array of strings
-        features: b.features || [], // Array of strings
-        video: videoUrl, // Use resolved video URL
-        link: b.link
-      };
-    })
-    : uniqueFallbackBusinesses; // Use the corrected unique fallback list
+    ? (() => {
+      console.log('\n🎬 Processing Sanity businesses data...');
+      const result = sanityData.businesses.map((b, idx) => {
+        // Use the dereferenced videoFileAssetUrl from Sanity query
+        // Fall back to videoUrl if no file was uploaded
+        const uploadedVideoUrl = b.videoFileAssetUrl;
+        const externalVideoUrl = b.videoUrl;
+        const resolvedUrl = uploadedVideoUrl || externalVideoUrl;
+
+        console.log(`   [${idx + 1}] ${b.title}:`, {
+          'uploadedVideoUrl (file)': uploadedVideoUrl || '(empty)',
+          'externalVideoUrl': externalVideoUrl || '(empty)',
+          'USING': resolvedUrl || '❌ NONE - WILL USE FALLBACK'
+        });
+
+        return {
+          id: b._key,
+          title: b.title,
+          iconName: b.iconName,
+          desc: b.description,
+          services: b.services || [],
+          features: b.features || [],
+          video: resolvedUrl,
+          link: b.link
+        };
+      });
+      console.log(`✅ Mapped ${result.length} businesses\n`);
+      return result;
+    })()
+    : (() => {
+      console.warn('⚠️ NO SANITY BUSINESSES - Using fallback businesses');
+      return uniqueFallbackBusinesses;
+    })();
+
+  // Log final businesses with videos
+  useEffect(() => {
+    console.log('\n📋 FINAL BUSINESSES ARRAY:');
+    businesses.forEach((biz, idx) => {
+      console.log(`${idx + 1}. ${biz.title}:`, {
+        'has video': biz.video ? '✅' : '❌',
+        'video URL': biz.video || '(none)'
+      });
+    });
+  }, [businesses]);
 
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-background">
