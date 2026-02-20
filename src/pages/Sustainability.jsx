@@ -54,7 +54,6 @@ const Sustainability = () => {
         ...item,
         IconComponent: iconComponentMap[item.icon?.toLowerCase()] || Star
     }));
-    }));
 
 
     return (
