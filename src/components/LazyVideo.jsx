@@ -26,29 +26,18 @@ export default function LazyVideo({ src, poster, className = '', autoPlay = true
     return () => obs.disconnect();
   }, [eager]);
 
-  // Handle video autoplay with Promise handling
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !isVisible || !autoPlay) return;
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
 
-    // Ensure video source is loaded
-    video.load();
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
 
-    // Try to play with Promise handling
-    const playPromise = video.play();
-    
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch(error => {
-          // Autoplay was prevented
-          console.log('Autoplay prevented:', error.name);
-          setIsPlaying(false);
-        });
-    }
-  }, [isVisible, autoPlay, src]);
+  const handleError = (e) => {
+    console.error('Video error:', e.target.error?.message);
+    setIsPlaying(false);
+  };
 
   return (
     <div ref={ref} className={className}>
@@ -56,13 +45,16 @@ export default function LazyVideo({ src, poster, className = '', autoPlay = true
         ref={videoRef}
         poster={poster}
         className="w-full h-full object-cover"
-        autoPlay={autoPlay}
+        autoPlay={autoPlay && (eager || isVisible)}
         loop={loop}
         muted={muted}
         playsInline={playsInline}
         crossOrigin="anonymous"
         webkit-playsinline="true"
         preload="auto"
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onError={handleError}
       >
         {(eager || isVisible) && <source src={src} type="video/mp4" />}
       </video>
