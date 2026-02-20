@@ -224,7 +224,7 @@ const BusinessCard = ({ biz, index }) => {
                       crossOrigin="anonymous"
                       className="w-full h-full object-cover scale-110"
                       preload="metadata"
-                      onError={(e) => console.error(`Video load error for ${biz.title}:`, biz.video, e)}
+                      onError={(e) => console.error(`Video load error for ${biz.title}:`, e)}
                     >
                       <source src={biz.video} type="video/mp4" />
                       Your browser does not support the video tag.
@@ -364,19 +364,20 @@ const Business = () => {
 
   // Use Sanity list if populated, else use fallback
   const businesses = sanityData?.businesses?.length > 0
-    ? sanityData.businesses
-        .map(b => ({
-          id: b._key || b.title,
-          title: b.title,
-          iconName: b.iconName,
-          desc: b.description,
-          services: b.services || [], // Array of strings
-          features: b.features || [], // Array of strings
-          video: b.videoFileUrl || b.videoFile?.url || b.videoUrl, // Prioritize file upload
-          link: b.link
-        }))
-        .filter(b => b.video) // Only include businesses with video
-    : uniqueFallbackBusinesses.filter(b => b.video);
+    ? sanityData.businesses.map(b => {
+      const videoUrl = b.videoFileUrl || b.videoFile?.url || b.videoUrl;
+      return {
+        id: b._key,
+        title: b.title,
+        iconName: b.iconName,
+        desc: b.description,
+        services: b.services || [], // Array of strings
+        features: b.features || [], // Array of strings
+        video: videoUrl, // Prioritize file upload
+        link: b.link
+      };
+    })
+    : uniqueFallbackBusinesses; // Use the corrected unique fallback list
 
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-background">
