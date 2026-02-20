@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { client } from "../lib/sanity";
 import PageHeader from '../components/PageHeader';
 import SEO from '../components/SEO';
+import { iconComponentMap } from '../sanity/schemas/icons';
 import { Leaf, Globe, Zap, Users, Shield, Briefcase, Code, Sun, Star } from 'lucide-react';
 
 
@@ -38,19 +39,6 @@ const Sustainability = () => {
     const csrHeading = sanityData?.csrHeading || "CSR Initiatives";
     const csrDesc = sanityData?.csrDescription || "Supporting arts, culture, and heritage through CSR. Serving multiple industries across India and the USA (Texas).";
 
-    // Icon Mapping
-    const iconMap = {
-        users: Users,
-        briefcase: Briefcase,
-        globe: Globe,
-        leaf: Leaf,
-        zap: Zap,
-        shield: Shield,
-        code: Code,
-        sun: Sun,
-        star: Star
-    };
-
     const rawGrid = sanityData?.impactGrid || [
         { icon: "users", text: "Empowering people with care, empathy, and inclusiveness" },
         { icon: "briefcase", text: "Creating employment and enriching human capital" },
@@ -64,7 +52,8 @@ const Sustainability = () => {
 
     const gridItems = rawGrid.map(item => ({
         ...item,
-        IconComponent: iconMap[item.icon] || Star
+        IconComponent: iconComponentMap[item.icon?.toLowerCase()] || Star
+    }));
     }));
 
 

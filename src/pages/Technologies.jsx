@@ -3,6 +3,7 @@ import { client } from '../lib/sanity';
 import PageHeader from '../components/PageHeader';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
+import { iconComponentMap } from '../sanity/schemas/icons';
 import {
     Code2, Database, Globe, Server, Cloud, Cpu, Layers, Terminal, Smartphone
 } from 'lucide-react';
@@ -70,16 +71,6 @@ const Technologies = () => {
     const heroSubtitle = sanityData?.heroSubtitle || "Leveraging cutting-edge tools and frameworks to build future-proof, scalable software solutions.";
     const activeTechStack = (sanityData?.techStack?.length > 0) ? sanityData.techStack : fallbackTechStack;
 
-    const iconMap = {
-        globe: Globe,
-        server: Server,
-        database: Database,
-        cloud: Cloud,
-        cpu: Cpu,
-        smartphone: Smartphone,
-        layers: Layers
-    };
-
     return (
         <div className="bg-background min-h-screen">
             <SEO title={seoTitle} description={seoDesc} />
@@ -98,7 +89,7 @@ const Technologies = () => {
                             // Handle both Sanity string icons and Fallback component icons
                             let IconComponent = Layers;
                             if (typeof group.icon === 'string') {
-                                IconComponent = iconMap[group.icon.toLowerCase()] || Layers;
+                                IconComponent = iconComponentMap[group.icon.toLowerCase()] || Layers;
                             } else if (group.icon) {
                                 IconComponent = group.icon;
                             }

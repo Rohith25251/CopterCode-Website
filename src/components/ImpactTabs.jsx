@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Leaf, Lightbulb, TrendingUp } from "lucide-react";
 
@@ -33,7 +33,6 @@ const DEFAULT_TABS = [
     id: "impact",
     label: "Our Impact",
     title: "Impact in Numbers",
-    subtitle: "Corporate Excellence",
     content:
       "CopterCode delivers measurable impact by enabling smarter, safer, and more efficient operations across multiple industries. Through precision technology, data-driven insights, and scalable digital platforms, we help organizations enhance productivity, reduce risk, and achieve sustained operational excellence while expanding their reach across regional and global markets.",
     stats: [
@@ -59,7 +58,6 @@ const ImpactTabs = ({ data }) => {
         id: t._key || `tab-${index}`, // Use Sanity key or index
         label: t.tabTitle || "Tab",
         title: t.sectionTitle || t.tabTitle,
-        subtitle: "Sustainability", // optional
         content: t.description,
         stats: t.metrics?.map((m) => ({
           value: m.metricValue,
@@ -69,7 +67,16 @@ const ImpactTabs = ({ data }) => {
       }))
       : DEFAULT_TABS;
 
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const [activeTab, setActiveTab] = useState(tabs[0]?.id || null);
+  const hasInitialized = useRef(false);
+
+  // Auto-select first tab only when data loads from Sanity
+  useEffect(() => {
+    if (data?.tabs?.length > 0 && !hasInitialized.current) {
+      setActiveTab(tabs[0].id);
+      hasInitialized.current = true;
+    }
+  }, [data, tabs]);
 
   return (
     <section className="py-32 bg-surface relative overflow-hidden text-primary">
@@ -124,13 +131,7 @@ const ImpactTabs = ({ data }) => {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.0 }}
                       >
-                        {tab.subtitle && (
-                          <span className="text-accent text-xs font-bold tracking-[0.2em] uppercase mb-4 block flex items-center">
-                            <div className="w-6 h-px bg-accent mr-3"></div>
-                            {tab.subtitle}
-                          </span>
-                        )}
-                        <h2 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-8 leading-tight">
+                        <h2 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-8 leading-tight mt-0">
                           {tab.title}
                         </h2>
                         <p className="text-lg text-secondary leading-relaxed mb-10 border-l-2 border-accent/20 pl-6">

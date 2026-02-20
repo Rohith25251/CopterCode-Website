@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { client, urlFor } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
+import { iconComponentMap } from '../sanity/schemas/icons';
 import {
   ExternalLink,
   Cpu,
@@ -16,18 +17,6 @@ import {
 import SEO from "../components/SEO";
 import { motion } from "framer-motion";
 
-
-// Mapping of string names from Sanity to actual components
-const iconMap = {
-  Cpu: Cpu,
-  Cloud: Cloud,
-  Database: Database,
-  Layout: LayoutIcon,
-  Code: Code,
-  Globe: Globe,
-  Shield: Shield,
-  Zap: Zap
-};
 
 // Colors for gradients mapped by index or random not needed as original used manual strings.
 // We can auto-assign a gradient based on index.
@@ -143,7 +132,7 @@ const Projects = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {projectsList.map((project, index) => {
-              const IconComponent = iconMap[project.iconName] || iconMap.Cpu;
+              const IconComponent = iconComponentMap[project.iconName?.toLowerCase()] || iconComponentMap.cpu;
               const gradient = gradients[index % gradients.length];
 
               return (

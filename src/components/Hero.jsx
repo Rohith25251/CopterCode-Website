@@ -130,10 +130,10 @@ const Hero = ({ data }) => {
       <div className="absolute bottom-[-20%] left-[-15%] w-[900px] h-[900px] bg-gray-400/20 rounded-full blur-[180px] pointer-events-none z-0 mix-blend-screen opacity-60" />
 
       <div className="container mx-auto px-6 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Left Content (Text) */}
           <motion.div
-            className="lg:col-span-6 flex flex-col justify-center relative z-20"
+            className="lg:col-span-5 flex flex-col justify-center relative z-20"
             initial="hidden"
             animate="visible"
             variants={{
@@ -326,7 +326,7 @@ const Hero = ({ data }) => {
 
           {/* Right Content - Slideshow with Grid Background */}
           <motion.div
-            className="lg:col-span-6 relative mt-10 lg:mt-0 h-[350px] sm:h-[450px] lg:h-[700px] flex items-center justify-center z-10"
+            className="lg:col-span-7 relative mt-8 md:mt-10 lg:mt-0 h-[280px] sm:h-[350px] md:h-[450px] lg:h-[600px] flex items-center justify-center z-10"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
@@ -356,7 +356,7 @@ const Hero = ({ data }) => {
                     alt="CopterCode Feature"
                     loading={currentIndex === 0 ? 'eager' : 'lazy'}
                     decoding="async"
-                    className="w-full h-full object-contain drop-shadow-2xl scale-[1.2] lg:scale-[1.35]"
+                    className="w-full h-full object-contain drop-shadow-2xl scale-100 lg:scale-110"
                     sizes="(min-width:1024px) 50vw, 100vw"
                   />
                 </motion.div>

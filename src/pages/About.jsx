@@ -5,6 +5,7 @@ import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { motion } from "framer-motion";
+import { iconComponentMap } from '../sanity/schemas/icons';
 import {
   Rocket,
   TrendingUp,
@@ -18,19 +19,6 @@ import {
   Zap,
 } from "lucide-react";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-
-// Icon Map helper
-const iconMap = {
-  rocket: Rocket,
-  chart: TrendingUp,
-  globe: Globe,
-  users: Users,
-  award: Award,
-  building: Building2,
-  lightbulb: Lightbulb,
-  shield: Shield,
-  zap: Zap,
-};
 
 const About = () => {
   useScrollToTop(); // Force scroll to top on mount
@@ -108,7 +96,7 @@ const About = () => {
       title: "Infrastructure & Construction",
       description: "In 2023, CopterCode made a strategic entry into the construction and infrastructure sector, expanding our portfolio beyond technology and manufacturing. This venture allowed us to leverage our drone technology and project management expertise in the construction industry. We took on various infrastructure projects while maintaining our commitment to quality, safety, and timely delivery, establishing ourselves as a reliable partner in India's growing infrastructure development.",
       imageUrl: "/mediafiles/news and media/IMG_3327.jpg",
-      icon: "building2",
+      icon: "building",
     },
     {
       year: "2024",
@@ -208,7 +196,7 @@ const About = () => {
             <div className="space-y-24 md:space-y-0">
               {journeyData.map((item, index) => {
                 const isEven = index % 2 === 0;
-                const Icon = iconMap[item.icon] || Lightbulb;
+                const Icon = iconComponentMap[item.icon?.toLowerCase()] || iconComponentMap.lightbulb;
 
                 return (
                   <motion.div

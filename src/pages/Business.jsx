@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import YouTube from 'react-youtube';
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
+import { iconComponentMap } from "../sanity/schemas/icons";
 import {
   Plane,
   Code,
@@ -29,22 +30,12 @@ const getVideoId = (url) => {
   return (match && match[2].length === 11) ? match[2] : url;
 };
 
-// Icon Map
-const iconMap = {
-  Plane: Plane,
-  Code: Code,
-  Sun: Sun,
-  Database: Database,
-  Coffee: Coffee,
-  Shield: Shield
-};
-
 // Fallback Data
 const fallbackBusinesses = [
   {
     id: "drones",
     title: "Industrial Drones & UAV",
-    iconName: "Plane", // Changed to string key for mapping
+    iconName: "plane",
     desc: "We design, manufacture, and deploy advanced unmanned aerial vehicle solutions tailored for agriculture, surveillance, mapping, and industrial inspections.",
     services: ["Inspection", "Mapping", "Surveillance", "Delivery"],
     features: [
@@ -58,7 +49,7 @@ const fallbackBusinesses = [
   {
     id: "digital",
     title: "Digital Services",
-    iconName: "Code",
+    iconName: "code",
     desc: "Accelerate your digital transformation with our comprehensive suite of services, from cloud architecture to custom software development.",
     services: [
       "Cybersecurity",
@@ -73,7 +64,7 @@ const fallbackBusinesses = [
   {
     id: "energy",
     title: "New Energy & Materials",
-    iconName: "Sun",
+    iconName: "sun",
     desc: "Pioneering sustainable power solutions and advanced materials to drive the next generation of eco-friendly technology.",
     services: [
       "Solar panel installation",
@@ -87,7 +78,7 @@ const fallbackBusinesses = [
   {
     id: "erp",
     title: "ERP Software Solutions",
-    iconName: "Database",
+    iconName: "database",
     desc: "Streamline your enterprise operations with our robust, scalable, and intelligent ERP systems designed for modern businesses.",
     services: ["Finance & HR", "Inventory", "Manufacturing", "Supply Chain"],
     features: [
@@ -120,7 +111,7 @@ const fallbackBusinesses = [
   {
     id: "security",
     title: "Infra Security",
-    iconName: "Shield",
+    iconName: "shield",
     desc: "Protecting critical infrastructure with state-of-the-art surveillance, AI-driven threat detection, and secure communication networks.",
     services: [
       "Firewall setup",
@@ -135,7 +126,7 @@ const fallbackBusinesses = [
   {
     id: "retail",
     title: "Retail & Food Collaborations",
-    iconName: "Coffee",
+    iconName: "coffee",
     desc: "Revolutionizing supply chains and customer experiences in the retail and food sectors through automation and smart logistics.",
     services: ["Premium confectionery", "Hygienic kitchens", "Authentic cuisine", "Export-ready products"], // Fixed data
     features: ["Sustainable packaging", "Strict quality control", "Fast logistics"],
@@ -160,7 +151,7 @@ const BusinessCard = ({ biz, index }) => {
   const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
-  const IconComponent = iconMap[biz.iconName] || Plane;
+  const IconComponent = iconComponentMap[biz.iconName?.toLowerCase()] || iconComponentMap.plane;
 
   return (
     <section

@@ -12,6 +12,7 @@ import { ASSETS } from '../constants/assets';
 import { useScrollToTop } from '../hooks/useScrollToTop';
 import { client, urlFor } from '../lib/sanity';
 import ScrollingAnnouncementBar from '../components/ScrollingAnnouncementBar';
+import { iconComponentMap } from '../sanity/schemas/icons';
 
 /* --- FALLBACK DATA --- */
 const getVideoId = (url) => {
@@ -258,7 +259,12 @@ const Home = () => {
                     "image": image.asset->url
                 }
             },
-            careersSection,
+            careersSection {
+                ...,
+                benefits[]{
+                    ...
+                }
+            },
             internshipSection {
                 ...,
                 "image": image.asset->url,
@@ -267,6 +273,39 @@ const Home = () => {
             sustainabilitySection {
                 ...,
                 "bannerImage": bannerImage.asset->url
+            },
+            ourPhilosophySection {
+                ...,
+                tabs[]{
+                    ...
+                }
+            },
+            scrollingAnnouncementBar {
+                ...,
+                announcements[]{
+                    ...
+                }
+            },
+            engineeringCommandCenterSection {
+                ...,
+                focusAreas[]{
+                    ...
+                },
+                coreCapabilities[]{
+                    ...
+                }
+            },
+            whyChooseSection {
+                ...,
+                features[]{
+                    ...
+                },
+                caseStudies[]{
+                    ...,
+                    stats[]{
+                        ...
+                    }
+                }
             }
         }`;
 
@@ -387,11 +426,7 @@ const Home = () => {
         : "/mediafiles/Where Do Our Interns Reached/placements-reach.png";
 
     // --- NEW SECTIONS DATA ---
-    const iconMap = {
-        users: Users, globe: Globe, leaf: Leaf, code: Code,
-        zap: Zap, heart: Heart, sun: Sun, shield: Shield, star: Star,
-        chart: BarChart, file: FileText, piechart: PieChart
-    };
+    // Using centralized iconComponentMap from icons.js for consistency across the website
 
     // About Summary Fallback
     const aboutSummary = homeData?.aboutSummarySection || {
@@ -434,14 +469,14 @@ const Home = () => {
 
     const careerBenefits = homeData?.careersSection?.benefits?.map(b => ({
         ...b,
-        icon: iconMap[b.icon?.toLowerCase()] || Zap
+        icon: iconComponentMap[b.icon?.toLowerCase()] || Zap
     })) || PREVIEW_BENEFITS;
 
     const internshipStats = homeData?.internshipSection?.stats || INTERNSHIP_STATS;
 
     const sustainabilityImpact = homeData?.sustainabilitySection?.impactItems?.map(i => ({
         ...i,
-        icon: iconMap[i.icon?.toLowerCase()] || Leaf
+        icon: iconComponentMap[i.icon?.toLowerCase()] || Leaf
     })) || SUSTAINABILITY_IMPACT;
 
     // Section Text Content
@@ -1050,7 +1085,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                         {investorSummary.highlights && investorSummary.highlights.map((item, idx) => {
-                            const Icon = iconMap[item.icon] || BarChart;
+                            const Icon = iconComponentMap[item.icon?.toLowerCase()] || BarChart;
                             return (
                                 <motion.div
                                     key={idx}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
+import { iconComponentMap } from '../sanity/schemas/icons';
 import { ArrowRight, FileText, TrendingUp, PieChart, ShieldCheck, BarChart, Briefcase, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -62,18 +63,9 @@ const Investors = () => {
         { icon: "shieldCheck", title: "Governance", description: "Board of directors, committees, and corporate policies." },
     ];
 
-    const iconMap = {
-        trendingUp: TrendingUp,
-        fileText: FileText,
-        pieChart: PieChart,
-        shieldCheck: ShieldCheck,
-        barChart: BarChart,
-        briefcase: Briefcase,
-    };
-
     const highlights = rawHighlights.map(item => ({
         ...item,
-        IconComponent: iconMap[item.icon] || Star
+        IconComponent: iconComponentMap[item.icon?.toLowerCase()] || Star
     }));
 
     const investors = sanityData?.investors && sanityData.investors.length > 0 ? sanityData.investors : INVESTOR_LOGOS;

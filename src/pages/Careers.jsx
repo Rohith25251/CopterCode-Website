@@ -3,6 +3,7 @@ import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import OptimizedImage from "../components/OptimizedImage";
 import SEO from "../components/SEO";
+import { iconComponentMap } from '../sanity/schemas/icons';
 import {
   Briefcase,
   Heart,
@@ -17,21 +18,6 @@ import {
   Star
 } from "lucide-react";
 import { motion } from "framer-motion";
-
-
-// Icon Map helper
-const iconMap = {
-  zap: Zap,
-  award: Award,
-  globe: Globe,
-  heart: Heart,
-  briefcase: Briefcase,
-  shield: Shield,
-  users: Users,
-  target: Target,
-  lightbulb: Lightbulb,
-  star: Star
-};
 
 const Careers = () => {
   const [sanityData, setSanityData] = useState(null);
@@ -107,10 +93,10 @@ const Careers = () => {
     },
   ];
 
-  // Map string icons to components
+  // Map string icons to components using centralized iconComponentMap
   const benefits = rawBenefits.map(b => ({
     ...b,
-    IconComponent: iconMap[b.icon] || Star // Default to Star if not found
+    IconComponent: iconComponentMap[b.icon?.toLowerCase()] || Star // Default to Star if not found
   }));
 
 
