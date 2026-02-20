@@ -273,7 +273,10 @@ const Home = () => {
                 "videoFileUrl": videoFile.asset->url
             },
             cinematicShowcase[]{
-                ...,
+                label,
+                videoType,
+                videoUrl,
+                _key,
                 videoFile {
                     ...,
                     "url": asset->url
@@ -440,10 +443,13 @@ const Home = () => {
 
     // CINEMATIC VIDEO SHOWCASE
     const cinematicVideos = homeData?.cinematicShowcase?.length > 0
-        ? homeData.cinematicShowcase.map(item => ({
-            url: item.videoFileUrl || item.videoFile?.url || item.videoUrl,
-            label: item.label
-        }))
+        ? homeData.cinematicShowcase
+            .map(item => ({
+                url: item.videoFileUrl || item.videoFile?.url || item.videoUrl,
+                label: item.label,
+                _key: item._key
+            }))
+            .filter(video => video.url) // Only include items with a video URL
         : FALLBACK_CINEMATIC;
 
     // TESTIMONIALS
@@ -984,7 +990,7 @@ const Home = () => {
 
                         return (
                             <motion.div
-                                key={idx}
+                                key={video._key || idx}
                                 whileHover={{ y: -5 }}
                                 onMouseEnter={(e) => {
                                     if (!isYoutube) {
@@ -1045,10 +1051,12 @@ const Home = () => {
                                         muted
                                         playsInline
                                         crossOrigin="anonymous"
-                                        preload="auto"
+                                        preload="metadata"
                                         webkit-playsinline="true"
+                                        onError={(e) => console.error(`Video load error for ${video.label}:`, e)}
                                     >
                                         <source src={video.url} type="video/mp4" />
+                                        Your browser does not support the video tag.
                                     </video>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
