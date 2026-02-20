@@ -223,9 +223,11 @@ const BusinessCard = ({ biz, index }) => {
                       playsInline
                       crossOrigin="anonymous"
                       className="w-full h-full object-cover scale-110"
-                      preload="auto"
+                      preload="metadata"
+                      onError={(e) => console.error(`Video load error for ${biz.title}:`, biz.video, e)}
                     >
                       <source src={biz.video} type="video/mp4" />
+                      Your browser does not support the video tag.
                     </video>
                   );
                 }
@@ -331,12 +333,20 @@ const Business = () => {
     const query = `*[_type == "businessPage"][0]{
       ...,
       businesses[]{
-        ...,
+        title,
+        iconName,
+        description,
+        videoType,
+        videoUrl,
+        _key,
         videoFile {
           ...,
           "url": asset->url
         },
-        "videoFileUrl": videoFile.asset->url
+        "videoFileUrl": videoFile.asset->url,
+        services,
+        features,
+        link
       }
     }`;
     client.fetch(query)
@@ -354,17 +364,19 @@ const Business = () => {
 
   // Use Sanity list if populated, else use fallback
   const businesses = sanityData?.businesses?.length > 0
-    ? sanityData.businesses.map(b => ({
-      id: b._key,
-      title: b.title,
-      iconName: b.iconName,
-      desc: b.description,
-      services: b.services, // Array of strings
-      features: b.features, // Array of strings
-      video: b.videoFileUrl || b.videoFile?.url || b.videoUrl, // Prioritize file upload
-      link: b.link
-    }))
-    : uniqueFallbackBusinesses; // Use the corrected unique fallback list
+    ? sanityData.businesses
+        .map(b => ({
+          id: b._key || b.title,
+          title: b.title,
+          iconName: b.iconName,
+          desc: b.description,
+          services: b.services || [], // Array of strings
+          features: b.features || [], // Array of strings
+          video: b.videoFileUrl || b.videoFile?.url || b.videoUrl, // Prioritize file upload
+          link: b.link
+        }))
+        .filter(b => b.video) // Only include businesses with video
+    : uniqueFallbackBusinesses.filter(b => b.video);
 
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-background">
