@@ -254,6 +254,10 @@ const Home = () => {
             },
             advancedTechSection{
                 ...,
+                videoFile {
+                    ...,
+                    "url": asset->url
+                },
                 "videoFileUrl": videoFile.asset->url
             },
             testimonialsSection[]{
