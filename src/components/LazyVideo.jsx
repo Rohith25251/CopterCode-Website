@@ -41,6 +41,7 @@ export default function LazyVideo({ src, poster, className = '', autoPlay = true
         loop={loop}
         muted={muted}
         playsInline={playsInline}
+        crossOrigin="anonymous"
         webkit-playsinline="true"
         preload="none"
       />

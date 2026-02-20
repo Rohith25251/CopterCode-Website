@@ -986,6 +986,8 @@ const Home = () => {
                                         loop
                                         muted
                                         playsInline
+                                        crossOrigin="anonymous"
+                                        preload="metadata"
                                         webkit-playsinline="true"
                                     />
                                 )}
@@ -1226,9 +1228,20 @@ const Home = () => {
                                             autoPlay 
                                             loop 
                                             muted 
-                                            playsInline 
+                                            playsInline
+                                            crossOrigin="anonymous"
+                                            preload="metadata"
                                             className="w-full h-full object-cover"
-                                            onError={(e) => console.error('Video load error:', e)}
+                                            onError={(e) => {
+                                                const errorCode = e.target.error?.code;
+                                                const errorMsg = {
+                                                    1: 'MEDIA_ERR_ABORTED',
+                                                    2: 'MEDIA_ERR_NETWORK',
+                                                    3: 'MEDIA_ERR_DECODE',
+                                                    4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
+                                                }[errorCode] || 'Unknown Error';
+                                                console.error('Video load error:', errorMsg, 'URL:', advTechVideo);
+                                            }}
                                         >
                                             <source src={advTechVideo} type="video/mp4" />
                                             Your browser does not support the video tag.
@@ -1503,6 +1516,8 @@ const Home = () => {
                                                     muted
                                                     playsInline
                                                     controls
+                                                    crossOrigin="anonymous"
+                                                    preload="metadata"
                                                     onEnded={nextTestimonial}
                                                 />
                                             );
