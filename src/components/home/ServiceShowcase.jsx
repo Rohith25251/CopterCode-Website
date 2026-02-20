@@ -95,8 +95,27 @@ const ServiceShowcase = ({ data }) => {
                     <motion.div
                         key={idx}
                         whileHover={{ y: -5 }}
-                        onMouseEnter={(e) => e.currentTarget.querySelector('video')?.play()}
-                        onMouseLeave={(e) => e.currentTarget.querySelector('video')?.pause()}
+                        onMouseEnter={(e) => {
+                            const video = e.currentTarget.querySelector('video');
+                            if (video) {
+                                video._playPromise = video.play();
+                                if (video._playPromise !== undefined) {
+                                    video._playPromise.catch(() => {});
+                                }
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            const video = e.currentTarget.querySelector('video');
+                            if (video) {
+                                if (video._playPromise !== undefined) {
+                                    video._playPromise.then(() => {
+                                        video.pause();
+                                    }).catch(() => {});
+                                } else {
+                                    video.pause();
+                                }
+                            }
+                        }}
                         className="min-w-[350px] md:min-w-[450px] aspect-[16/9] bg-surface-highlight rounded-3xl overflow-hidden relative group snap-center border border-border shadow-md hover:shadow-xl transition-all duration-300"
                     >
                         <video

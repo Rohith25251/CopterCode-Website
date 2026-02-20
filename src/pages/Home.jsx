@@ -22,7 +22,7 @@ const useVideoLazyLoad = (initialDelay = true) => {
 
     useEffect(() => {
         if (!initialDelay) return;
-        
+
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -389,7 +389,7 @@ const Home = () => {
                     youtubePlayerRef.current.playVideo();
                 }, 200);
             }
-            
+
             // Handle HTML5 videos
             if (voiceOfSuccessRef.current) {
                 const videoElement = voiceOfSuccessRef.current.querySelector('video');
@@ -459,7 +459,7 @@ const Home = () => {
 
     // Testimonial videos load immediately on page load
     const [testimonialVideoReady, setTestimonialVideoReady] = useState(true);
-    
+
     // Advanced tech video loads immediately on page load
     const [advTechVideoReady, setAdvTechVideoReady] = useState(true);
 
@@ -986,8 +986,31 @@ const Home = () => {
                             <motion.div
                                 key={idx}
                                 whileHover={{ y: -5 }}
-                                onMouseEnter={(e) => !isYoutube && e.currentTarget.querySelector('video')?.play()}
-                                onMouseLeave={(e) => !isYoutube && e.currentTarget.querySelector('video')?.pause()}
+                                onMouseEnter={(e) => {
+                                    if (!isYoutube) {
+                                        const video = e.currentTarget.querySelector('video');
+                                        if (video) {
+                                            video._playPromise = video.play();
+                                            if (video._playPromise !== undefined) {
+                                                video._playPromise.catch(() => { });
+                                            }
+                                        }
+                                    }
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (!isYoutube) {
+                                        const video = e.currentTarget.querySelector('video');
+                                        if (video) {
+                                            if (video._playPromise !== undefined) {
+                                                video._playPromise.then(() => {
+                                                    video.pause();
+                                                }).catch(() => { });
+                                            } else {
+                                                video.pause();
+                                            }
+                                        }
+                                    }
+                                }}
                                 className="min-w-[85vw] md:min-w-[450px] aspect-[16/9] bg-surface-highlight rounded-3xl overflow-hidden relative group snap-center border border-border shadow-md hover:shadow-xl transition-all duration-300"
                             >
                                 {isYoutube ? (
@@ -1231,7 +1254,7 @@ const Home = () => {
                                 if (!advTechVideo) {
                                     return <div className="w-full h-full bg-surface flex items-center justify-center text-secondary">Video not available</div>;
                                 }
-                                
+
                                 const potentialId = getVideoId(advTechVideo);
                                 const isYoutube = /^[a-zA-Z0-9_-]{11}$/.test(potentialId);
 
@@ -1261,11 +1284,11 @@ const Home = () => {
                                 } else {
                                     return (
                                         <>
-                                            <video 
+                                            <video
                                                 key={advTechVideo}
                                                 autoPlay={true}
-                                                loop 
-                                                muted 
+                                                loop
+                                                muted
                                                 playsInline
                                                 crossOrigin="anonymous"
                                                 preload="auto"
