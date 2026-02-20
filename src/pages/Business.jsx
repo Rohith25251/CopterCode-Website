@@ -339,10 +339,6 @@ const Business = () => {
         videoType,
         videoUrl,
         _key,
-        videoFile {
-          ...,
-          "url": asset->url
-        },
         "videoFileUrl": videoFile.asset->url,
         services,
         features,
@@ -351,9 +347,14 @@ const Business = () => {
     }`;
     client.fetch(query)
       .then(data => {
-        if (data) setSanityData(data);
+        if (data) {
+          console.log('Business data from Sanity:', data);
+          setSanityData(data);
+        }
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error('Error fetching business data:', err);
+      });
   }, []);
 
   const seoTitle = sanityData?.seo?.metaTitle || "Our Businesses";
@@ -365,7 +366,13 @@ const Business = () => {
   // Use Sanity list if populated, else use fallback
   const businesses = sanityData?.businesses?.length > 0
     ? sanityData.businesses.map(b => {
-      const videoUrl = b.videoFileUrl || b.videoFile?.url || b.videoUrl;
+      // Resolve video URL: prioritize uploaded file, then external URL
+      const videoUrl = b.videoFileUrl || b.videoUrl;
+      if (videoUrl) {
+        console.log(`✅ ${b.title}: Using video URL:`, videoUrl);
+      } else {
+        console.warn(`⚠️ ${b.title}: No video URL found (videoFileUrl: ${b.videoFileUrl}, videoUrl: ${b.videoUrl})`);
+      }
       return {
         id: b._key,
         title: b.title,
@@ -373,7 +380,7 @@ const Business = () => {
         desc: b.description,
         services: b.services || [], // Array of strings
         features: b.features || [], // Array of strings
-        video: videoUrl, // Prioritize file upload
+        video: videoUrl, // Use resolved video URL
         link: b.link
       };
     })

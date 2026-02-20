@@ -265,38 +265,35 @@ const Home = () => {
                 }
             },
             businessesSection[]{
-                ...,
-                videoFile {
-                    ...,
-                    "url": asset->url
-                },
-                "videoFileUrl": videoFile.asset->url
+                title,
+                description,
+                videoType,
+                videoUrl,
+                _key,
+                "videoFileUrl": videoFile.asset->url,
+                link
             },
             cinematicShowcase[]{
                 label,
                 videoType,
                 videoUrl,
                 _key,
-                videoFile {
-                    ...,
-                    "url": asset->url
-                },
                 "videoFileUrl": videoFile.asset->url
             },
             advancedTechSection{
-                ...,
-                videoFile {
-                    ...,
-                    "url": asset->url
-                },
+                statsValue,
+                statsUnit,
+                statsLabel,
+                heading,
+                videoType,
+                videoUrl,
                 "videoFileUrl": videoFile.asset->url
             },
             testimonialsSection[]{
-                ...,
-                videoFile {
-                    ...,
-                    "url": asset->url
-                },
+                title,
+                videoType,
+                videoUrl,
+                _key,
                 "videoFileUrl": videoFile.asset->url
             },
             upcomingEventsSection {
@@ -423,7 +420,7 @@ const Home = () => {
             title: item.title,
             description: item.description,
             // Prefer uploaded file URL, then external URL
-            video: item.videoFileUrl || item.videoFile?.url || item.videoUrl,
+            video: item.videoFileUrl || item.videoUrl,
             link: item.link
         }))
         : businessData;
@@ -445,7 +442,7 @@ const Home = () => {
     const cinematicVideos = homeData?.cinematicShowcase?.length > 0
         ? homeData.cinematicShowcase
             .map(item => ({
-                url: item.videoFileUrl || item.videoFile?.url || item.videoUrl,
+                url: item.videoFileUrl || item.videoUrl,
                 label: item.label,
                 _key: item._key
             }))
@@ -455,7 +452,7 @@ const Home = () => {
     // TESTIMONIALS
     const testimonials = homeData?.testimonialsSection?.length > 0
         ? homeData.testimonialsSection.map(item => ({
-            url: item.videoFileUrl || item.videoFile?.url || item.videoUrlOrId,
+            url: item.videoFileUrl || item.videoUrl,
             title: item.title
         }))
         : FALLBACK_TESTIMONIALS.map(t => ({
@@ -482,7 +479,7 @@ const Home = () => {
     const advTechUnit = homeData?.advancedTechSection?.statsUnit || "%";
     const advTechLabel = homeData?.advancedTechSection?.statsLabel || "Operational Efficiency";
     const advTechHeading = homeData?.advancedTechSection?.heading || "Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems";
-    const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoFile?.url || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home%20Advanced%20Technology.mp4";
+    const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home%20Advanced%20Technology.mp4";
 
     // Global Footprint Image
     const globalFootprintSrc = homeData?.globalFootprintImage
