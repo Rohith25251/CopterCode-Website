@@ -254,10 +254,6 @@ const Home = () => {
             },
             advancedTechSection{
                 ...,
-                videoFile {
-                    ...,
-                    "url": asset->url
-                },
                 "videoFileUrl": videoFile.asset->url
             },
             testimonialsSection[]{
@@ -435,6 +431,18 @@ const Home = () => {
     const advTechLabel = homeData?.advancedTechSection?.statsLabel || "Operational Efficiency";
     const advTechHeading = homeData?.advancedTechSection?.heading || "Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems";
     const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoFile?.url || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home Advanced Technology.mp4";
+    
+    // Debug: Log the video data
+    useEffect(() => {
+        if (homeData?.advancedTechSection) {
+            console.log('Advanced Tech Section:', {
+                videoFileUrl: homeData.advancedTechSection.videoFileUrl,
+                videoFile: homeData.advancedTechSection.videoFile,
+                videoUrl: homeData.advancedTechSection.videoUrl,
+                finalVideo: advTechVideo
+            });
+        }
+    }, [homeData, advTechVideo]);
 
     // Global Footprint Image
     const globalFootprintSrc = homeData?.globalFootprintImage
@@ -1177,12 +1185,17 @@ const Home = () => {
                     <div className="relative">
                         <div className="aspect-[4/3] rounded-3xl overflow-hidden border border-border relative shadow-2xl bg-surface">
                             {(() => {
+                                // Debug logging
+                                console.log('Video Source:', advTechVideo);
+                                
+                                if (!advTechVideo) {
+                                    return <div className="w-full h-full bg-surface flex items-center justify-center text-secondary">Video not available</div>;
+                                }
+                                
                                 const potentialId = getVideoId(advTechVideo);
                                 const isYoutube = /^[a-zA-Z0-9_-]{11}$/.test(potentialId);
 
-                                if (isYoutube && !advTechVideo?.includes('pexels')) { // Pexels URLs might look like IDs so be careful, but mainly check for youtube domains in regex if needed. Our regex handles youtube domains. The simple ID check might flag some file names as IDs. But let's stick to the regex which checks for youtube patterns if URL is full.
-                                    // Actually the regex `getVideoId` handles full URLs correctly.
-
+                                if (isYoutube && !advTechVideo?.includes('pexels')) {
                                     return (
                                         <YouTube
                                             videoId={potentialId}
@@ -1194,7 +1207,7 @@ const Home = () => {
                                                     mute: 1,
                                                     controls: 0,
                                                     loop: 1,
-                                                    playlist: potentialId, // Loop needs playlist for single video
+                                                    playlist: potentialId,
                                                     modestbranding: 1,
                                                     rel: 0
                                                 },
@@ -1205,9 +1218,20 @@ const Home = () => {
                                     );
                                 } else {
                                     return (
-                                        <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+                                        <video 
+                                            autoPlay 
+                                            loop 
+                                            muted 
+                                            playsInline 
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => console.error('Video load error:', e)}
+                                        >
                                             <source src={advTechVideo} type="video/mp4" />
+                                            Your browser does not support the video tag.
                                         </video>
+                                    );
+                                }
+                            })()}
                                     );
                                 }
                             })()}
