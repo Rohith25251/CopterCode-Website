@@ -108,6 +108,7 @@ const BusinessTemplate = () => {
                             muted
                             playsInline
                             className="w-full h-full object-cover opacity-50"
+                            preload="metadata"
                         />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
@@ -161,7 +162,7 @@ const BusinessTemplate = () => {
                                 data.introMediaIsImage ? (
                                     <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" />
                                 ) : (
-                                    <LazyVideo src={data.introMedia} className="w-full h-full object-cover opacity-80" />
+                                    <LazyVideo eager={true} src={data.introMedia} className="w-full h-full object-cover opacity-80" />
                                 )
                             ) : (
                                 <div className="text-center p-8">

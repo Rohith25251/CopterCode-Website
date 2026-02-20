@@ -285,7 +285,7 @@ const PrivacyPolicy = () => {
             <div className="space-y-6">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Company</h3>
-                <p className="text-gray-600">{sanityData?.contact?.company || 'CopterCode Industries Limited'}</p>
+                <p className="text-gray-600">{sanityData?.contact?.company || 'CopterCode'}</p>
               </div>
 
               <div>
@@ -293,8 +293,8 @@ const PrivacyPolicy = () => {
                   <Mail size={18} className="mr-2 text-blue-600" />
                   Email
                 </h3>
-                <a href={`mailto:${sanityData?.contact?.email || 'privacy@coptercode.com'}`} className="text-blue-600 hover:underline">
-                  {sanityData?.contact?.email || 'privacy@coptercode.com'}
+                <a href={`mailto:${sanityData?.contact?.email || 'hr@coptercode.com'}`} className="text-blue-600 hover:underline">
+                  {sanityData?.contact?.email || 'hr@coptercode.com'}
                 </a>
               </div>
 

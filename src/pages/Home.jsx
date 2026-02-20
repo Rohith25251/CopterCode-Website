@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import YouTube from 'react-youtube';
 import Hero from '../components/Hero';
 import ImpactTabs from '../components/ImpactTabs';
@@ -13,6 +13,34 @@ import { useScrollToTop } from '../hooks/useScrollToTop';
 import { client, urlFor } from '../lib/sanity';
 import ScrollingAnnouncementBar from '../components/ScrollingAnnouncementBar';
 import { iconComponentMap } from '../sanity/schemas/icons';
+
+/* --- PERFORMANCE OPTIMIZATION --- */
+// Hook for aggressive lazy loading with configurable threshold
+const useVideoLazyLoad = (initialDelay = true) => {
+    const [isReady, setIsReady] = useState(!initialDelay);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if (!initialDelay) return;
+        
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsReady(true);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.05, rootMargin: '250px' } // Early trigger at 250px before visible
+        );
+
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, [initialDelay]);
+
+    return { ref, isReady };
+};
 
 /* --- FALLBACK DATA --- */
 const getVideoId = (url) => {
@@ -429,24 +457,26 @@ const Home = () => {
             title: t.title
         }));
 
-    // Dynamic Advanced Tech
+    // Testimonial videos load immediately on page load
+    const [testimonialVideoReady, setTestimonialVideoReady] = useState(true);
+    
+    // Advanced tech video loads immediately on page load
+    const [advTechVideoReady, setAdvTechVideoReady] = useState(true);
+
+    // Load cinematic videos on page load (no lazy loading) - play on hover
+    const [cinematicVideoReady, setCinematicVideoReady] = useState(true);
+    useEffect(() => {
+        // Videos are loaded immediately on page load
+        // They will play only on hover via onMouseEnter/onMouseLeave
+        setCinematicVideoReady(true);
+    }, []);
+
+    // Dynamic Advanced Tech Variables
     const advTechStat = homeData?.advancedTechSection?.statsValue || "99";
     const advTechUnit = homeData?.advancedTechSection?.statsUnit || "%";
     const advTechLabel = homeData?.advancedTechSection?.statsLabel || "Operational Efficiency";
     const advTechHeading = homeData?.advancedTechSection?.heading || "Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems";
     const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoFile?.url || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home Advanced Technology.mp4";
-    
-    // Debug: Log the video data
-    useEffect(() => {
-        if (homeData?.advancedTechSection) {
-            console.log('Advanced Tech Section:', {
-                videoFileUrl: homeData.advancedTechSection.videoFileUrl,
-                videoFile: homeData.advancedTechSection.videoFile,
-                videoUrl: homeData.advancedTechSection.videoUrl,
-                finalVideo: advTechVideo
-            });
-        }
-    }, [homeData]);
 
     // Global Footprint Image
     const globalFootprintSrc = homeData?.globalFootprintImage
@@ -813,6 +843,7 @@ const Home = () => {
                                     } else {
                                         return (
                                             <LazyVideo
+                                                eager={true}
                                                 key={videoSrc}
                                                 src={videoSrc}
                                                 className="w-full h-full object-cover"
@@ -915,6 +946,7 @@ const Home = () => {
 
             {/* Essentials Video Showcase (Service Showcase) */}
             <motion.section
+                data-cinematic-showcase
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -966,7 +998,7 @@ const Home = () => {
                                                 height: '100%',
                                                 width: '100%',
                                                 playerVars: {
-                                                    autoplay: 1,
+                                                    autoplay: 0,
                                                     mute: 1,
                                                     controls: 0,
                                                     loop: 1,
@@ -977,19 +1009,24 @@ const Home = () => {
                                             }}
                                             className="w-full h-full absolute inset-0"
                                             iframeClassName="w-full h-full object-cover"
+                                            onReady={(event) => {
+                                                // Store reference but don't play until hover
+                                                event.target.setVolume(0);
+                                            }}
                                         />
                                     </div>
                                 ) : (
                                     <video
-                                        src={video.url}
                                         className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500 scale-100 group-hover:scale-105 transition-transform"
                                         loop
                                         muted
                                         playsInline
                                         crossOrigin="anonymous"
-                                        preload="metadata"
+                                        preload="auto"
                                         webkit-playsinline="true"
-                                    />
+                                    >
+                                        <source src={video.url} type="video/mp4" />
+                                    </video>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
                                 <div className="absolute bottom-6 left-6 z-20">
@@ -1188,12 +1225,9 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <div className="relative">
+                    <div className="relative" data-advanced-tech-video>
                         <div className="aspect-[4/3] rounded-3xl overflow-hidden border border-border relative shadow-2xl bg-surface flex items-center justify-center">
                             {(() => {
-                                // Debug logging
-                                console.log('Video Source:', advTechVideo);
-                                
                                 if (!advTechVideo) {
                                     return <div className="w-full h-full bg-surface flex items-center justify-center text-secondary">Video not available</div>;
                                 }
@@ -1229,26 +1263,15 @@ const Home = () => {
                                         <>
                                             <video 
                                                 key={advTechVideo}
-                                                autoPlay 
+                                                autoPlay={true}
                                                 loop 
                                                 muted 
                                                 playsInline
                                                 crossOrigin="anonymous"
-                                                preload="metadata"
+                                                preload="auto"
                                                 className="w-full h-full object-cover absolute inset-0"
                                                 onError={(e) => {
-                                                    const errorCode = e.target.error?.code;
-                                                    const errorMsg = {
-                                                        1: 'MEDIA_ERR_ABORTED',
-                                                        2: 'MEDIA_ERR_NETWORK',
-                                                        3: 'MEDIA_ERR_DECODE',
-                                                        4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
-                                                    }[errorCode] || 'Unknown Error';
-                                                    console.error('Video load error:', errorMsg, 'URL:', advTechVideo);
-                                                }}
-                                                onLoadedMetadata={(e) => {
-                                                    console.log('Video metadata loaded:', e.target.src);
-                                                    e.target.play().catch(err => console.log('Autoplay error:', err));
+                                                    console.error('Video error:', e.target.error?.message);
                                                 }}
                                             >
                                                 <source src={advTechVideo} type="video/mp4" />
@@ -1465,7 +1488,7 @@ const Home = () => {
             </section>
 
             {/* Testimonials Video Section */}
-            <section ref={voiceOfSuccessRef} className="py-24 bg-background border-t border-border">
+            <section ref={voiceOfSuccessRef} data-testimonials-section className="py-24 bg-background border-t border-border">
                 <div className="container mx-auto px-6">
                     <h2 className="text-3xl font-display font-medium mb-12 text-center text-primary">Voice of Success</h2>
 
@@ -1516,16 +1539,17 @@ const Home = () => {
                                         } else {
                                             return (
                                                 <video
-                                                    src={rawUrl}
                                                     className="w-full h-full object-cover"
                                                     loop={false}
                                                     muted
                                                     playsInline
                                                     controls
                                                     crossOrigin="anonymous"
-                                                    preload="metadata"
+                                                    preload="auto"
                                                     onEnded={nextTestimonial}
-                                                />
+                                                >
+                                                    <source src={rawUrl} type="video/mp4" />
+                                                </video>
                                             );
                                         }
                                     })()}

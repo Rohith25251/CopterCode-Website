@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
 import { Layers, Globe, Cpu, Database, Cloud, Code2, ShieldCheck, Smartphone } from 'lucide-react';
 import SEO from '../components/SEO';
+import { client } from '../lib/sanity';
+import { useScrollToTop } from '../hooks/useScrollToTop';
+
 const ICON_MAP = {
     Globe, Layers, Cpu, Database, Cloud, Code2, ShieldCheck, Smartphone
 };
@@ -50,16 +53,44 @@ const FALLBACK_SERVICES = [
 ];
 
 const Services = () => {
+    useScrollToTop(); // Force scroll to top on mount
+    const [sanityData, setSanityData] = useState(null);
+
+    useEffect(() => {
+        const query = `*[_type == "servicesPage"][0]{
+            seo {
+                metaTitle,
+                metaDescription
+            },
+            hero {
+                title,
+                subtitle
+            },
+            services[]
+        }`;
+
+        client.fetch(query)
+            .then((data) => {
+                if (data) setSanityData(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching services data from Sanity:', error);
+            });
+    }, []);
 
     // Services List
-    const servicesList = FALLBACK_SERVICES;
+    const seoTitle = sanityData?.seo?.metaTitle || 'Services';
+    const seoDesc = sanityData?.seo?.metaDescription || 'Explore our web, AI, and cloud services.';
+    const heroTitle = sanityData?.hero?.title || 'Our Services';
+    const heroSubtitle = sanityData?.hero?.subtitle || 'Comprehensive software solutions tailored to your business needs.';
+    const servicesList = sanityData?.services?.length > 0 ? sanityData.services : FALLBACK_SERVICES;
 
     return (
         <div className="bg-background min-h-screen">
-            <SEO title="Services" description="Explore our web, AI, and cloud services." />
+            <SEO title={seoTitle} description={seoDesc} />
             <PageHeader
-                title="Our Services"
-                subtitle="Comprehensive software solutions tailored to your business needs."
+                title={heroTitle}
+                subtitle={heroSubtitle}
             />
 
             <section className="py-24">

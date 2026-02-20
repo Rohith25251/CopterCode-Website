@@ -197,7 +197,7 @@ const RetailFood = () => {
                             data.introMediaIsImage ? (
                                 <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" sizes="(min-width:1024px) 50vw, 100vw" />
                             ) : (
-                                <video src={data.introMedia} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80" preload="none" />
+                                <video src={data.introMedia} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80" preload="auto" />
                             )
                         ) : (
                             <div className="text-center p-8">

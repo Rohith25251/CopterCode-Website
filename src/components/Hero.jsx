@@ -38,6 +38,15 @@ const Hero = ({ data }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Preload adjacent images
+  useEffect(() => {
+    if (images.length > 1) {
+      const nextIndex = (currentIndex + 1) % images.length;
+      const img = new Image();
+      img.src = images[nextIndex];
+    }
+  }, [currentIndex, images]);
+
   useEffect(() => {
     if (images.length > 1) {
       const timer = setInterval(() => {
@@ -326,41 +335,51 @@ const Hero = ({ data }) => {
 
           {/* Right Content - Slideshow with Grid Background */}
           <motion.div
-            className="lg:col-span-7 relative mt-8 md:mt-10 lg:mt-0 h-[280px] sm:h-[350px] md:h-[450px] lg:h-[600px] flex items-center justify-center z-10"
+            className="lg:col-span-7 relative mt-8 md:mt-10 lg:mt-0 flex items-center justify-center z-10 group"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            {/* Architectural Grid Background */}
-            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-              <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:60px_60px]" />
-              <div className="absolute inset-0 bg-gradient-to-l from-background via-transparent to-transparent" />
-            </div>
-
-            {/* Premium Backlight Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-accent/10 blur-[80px] rounded-full pointer-events-none z-0" />
-
-            {/* Image Container */}
-            <div className="relative w-full h-full z-10 flex items-center justify-center p-0">
+            {/* Image Container - Auto-sized to image */}
+            <div className="relative flex items-center justify-center w-full max-w-4xl">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="w-full h-full"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ 
+                    duration: 0.7, 
+                    ease: "easeInOut"
+                  }}
+                  className="relative w-full"
+                  style={{ willChange: 'opacity' }}
                 >
                   <OptimizedImage
                     src={images[currentIndex]}
                     alt="CopterCode Feature"
                     loading={currentIndex === 0 ? 'eager' : 'lazy'}
                     decoding="async"
-                    className="w-full h-full object-contain drop-shadow-2xl scale-100 lg:scale-110"
+                    className="w-full h-auto drop-shadow-2xl"
                     sizes="(min-width:1024px) 50vw, 100vw"
                   />
                 </motion.div>
               </AnimatePresence>
+
+              {/* Image Indicator Dots */}
+              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+                {images.map((_, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="h-1.5 rounded-full bg-accent/50 cursor-pointer hover:bg-accent/80 transition-all"
+                    animate={{
+                      width: idx === currentIndex ? 24 : 8,
+                      backgroundColor: idx === currentIndex ? 'rgba(160,174,192,0.9)' : 'rgba(160,174,192,0.4)',
+                    }}
+                    transition={{ duration: 0.3 }}
+                  />
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>

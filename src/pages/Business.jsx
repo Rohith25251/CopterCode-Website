@@ -30,6 +30,14 @@ const getVideoId = (url) => {
   return (match && match[2].length === 11) ? match[2] : url;
 };
 
+// Video eager loading hook - loads all videos immediately on page load
+const useVideoVisibility = () => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(true); // Load immediately on page load
+
+  return { ref, isVisible };
+};
+
 // Fallback Data
 const fallbackBusinesses = [
   {
@@ -138,12 +146,12 @@ const fallbackBusinesses = [
 // Deduplicating retry logic in a sane way
 const uniqueFallbackBusinesses = fallbackBusinesses.filter((v, i, a) => a.findIndex(v2 => (v2.id === v.id)) === i);
 
-
 const BusinessCard = ({ biz, index }) => {
+  const { ref, isVisible } = useVideoVisibility();
   const isEven = index % 2 === 0;
-  const ref = useRef(null);
+  const scrollRef = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: ref,
+    target: scrollRef,
     offset: ["start end", "end start"],
   });
 
@@ -155,7 +163,7 @@ const BusinessCard = ({ biz, index }) => {
 
   return (
     <section
-      ref={ref}
+      ref={scrollRef}
       className="min-h-[85vh] flex items-center py-24 relative overflow-hidden group"
     >
       {/* Background Parallax Video/Image Container */}
@@ -172,6 +180,7 @@ const BusinessCard = ({ biz, index }) => {
         >
           {/* Visual Side */}
           <motion.div
+            ref={ref}
             style={{ y, opacity }}
             className="w-full lg:w-1/2 aspect-[4/3] lg:aspect-auto lg:h-[600px] relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/15 border border-border"
           >
@@ -208,13 +217,15 @@ const BusinessCard = ({ biz, index }) => {
                 } else {
                   return (
                     <video
-                      src={biz.video}
-                      autoPlay
+                      autoPlay={true}
                       loop
                       muted
                       playsInline
                       className="w-full h-full object-cover scale-110"
-                    />
+                      preload="auto"
+                    >
+                      <source src={biz.video} type="video/mp4" />
+                    </video>
                   );
                 }
               })()

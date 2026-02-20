@@ -23,6 +23,7 @@ import { privacyPolicyPage } from './schemas/privacyPolicyPage'
 import { termsAndConditionsPage } from './schemas/termsAndConditionsPage'
 import { scrollingAnnouncementBar } from './schemas/scrollingAnnouncementBar'
 import { preloaderPage } from './schemas/preloaderPage'
+import { servicesPage } from './schemas/servicesPage'
 
 export default defineConfig({
     name: 'default',
@@ -36,6 +37,6 @@ export default defineConfig({
     plugins: [structureTool(), visionTool()],
 
     schema: {
-        types: [homePage, businessPage, businessVerticalsPage, projectsPage, navigation, footer, aboutPage, administrationPage, careersPage, contactPage, sustainabilityPage, investorsPage, eventsPage, getInTouchPage, insightsPage, internshipPage, technologiesPage, locationsPage, privacyPolicyPage, termsAndConditionsPage, scrollingAnnouncementBar, preloaderPage],
+        types: [homePage, businessPage, businessVerticalsPage, projectsPage, navigation, footer, aboutPage, administrationPage, careersPage, contactPage, sustainabilityPage, investorsPage, eventsPage, getInTouchPage, insightsPage, internshipPage, technologiesPage, locationsPage, privacyPolicyPage, termsAndConditionsPage, scrollingAnnouncementBar, preloaderPage, servicesPage],
     },
 })

@@ -250,7 +250,7 @@ const IndustrialDrones = () => {
               data.introMediaIsImage ? (
                 <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" />
               ) : (
-                <LazyVideo src={data.introMedia} className="w-full h-full object-cover opacity-80" />
+                <LazyVideo eager={true} src={data.introMedia} className="w-full h-full object-cover opacity-80" />
               )
             ) : (
               <div className="text-center p-8">

@@ -230,7 +230,7 @@ const TermsAndConditions = () => {
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="bg-white border border-gray-200 p-6 rounded-lg">
-                            <h3 className="text-gray-900 font-bold mb-4">CopterCode Industries Limited</h3>
+                            <h3 className="text-gray-900 font-bold mb-4">CopterCode</h3>
                             <div className="space-y-3 text-sm text-gray-700">
                                 <p>
                                     <span className="font-semibold text-gray-900">Address:</span><br />
@@ -239,11 +239,11 @@ const TermsAndConditions = () => {
                             </div>
                         </div>
                         <div className="bg-white border border-gray-200 p-6 rounded-lg space-y-4">
-                            <a href={`mailto:${sanityData?.contact?.email || "legal@coptercode.co.in"}`} className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                            <a href={`mailto:${sanityData?.contact?.email || "hr@coptercode.co.in"}`} className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
                                 <Mail className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
                                 <div>
                                     <p className="text-xs text-gray-600">Email</p>
-                                    <p className="text-sm font-semibold text-gray-900">{sanityData?.contact?.email || "legal@coptercode.co.in"}</p>
+                                    <p className="text-sm font-semibold text-gray-900">{sanityData?.contact?.email || "hr@coptercode.co.in"}</p>
                                 </div>
                             </a>
                             <a href={`tel:${sanityData?.contact?.phone || "+918072193600"}`} className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
