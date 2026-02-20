@@ -320,6 +320,10 @@ const Business = () => {
       ...,
       businesses[]{
         ...,
+        videoFile {
+          ...,
+          "url": asset->url
+        },
         "videoFileUrl": videoFile.asset->url
       }
     }`;
@@ -345,7 +349,7 @@ const Business = () => {
       desc: b.description,
       services: b.services, // Array of strings
       features: b.features, // Array of strings
-      video: b.videoFileUrl || b.videoUrl, // Prioritize file upload
+      video: b.videoFileUrl || b.videoFile?.url || b.videoUrl, // Prioritize file upload
       link: b.link
     }))
     : uniqueFallbackBusinesses; // Use the corrected unique fallback list

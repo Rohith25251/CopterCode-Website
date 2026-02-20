@@ -238,18 +238,34 @@ const Home = () => {
             },
             businessesSection[]{
                 ...,
+                videoFile {
+                    ...,
+                    "url": asset->url
+                },
                 "videoFileUrl": videoFile.asset->url
             },
             cinematicShowcase[]{
                 ...,
+                videoFile {
+                    ...,
+                    "url": asset->url
+                },
                 "videoFileUrl": videoFile.asset->url
             },
             advancedTechSection{
                 ...,
+                videoFile {
+                    ...,
+                    "url": asset->url
+                },
                 "videoFileUrl": videoFile.asset->url
             },
             testimonialsSection[]{
                 ...,
+                videoFile {
+                    ...,
+                    "url": asset->url
+                },
                 "videoFileUrl": videoFile.asset->url
             },
             upcomingEventsSection {
@@ -376,7 +392,7 @@ const Home = () => {
             title: item.title,
             description: item.description,
             // Prefer uploaded file URL, then external URL
-            video: item.videoFileUrl || item.videoUrl,
+            video: item.videoFileUrl || item.videoFile?.url || item.videoUrl,
             link: item.link
         }))
         : businessData;
@@ -397,7 +413,7 @@ const Home = () => {
     // CINEMATIC VIDEO SHOWCASE
     const cinematicVideos = homeData?.cinematicShowcase?.length > 0
         ? homeData.cinematicShowcase.map(item => ({
-            url: item.videoFileUrl || item.videoUrl,
+            url: item.videoFileUrl || item.videoFile?.url || item.videoUrl,
             label: item.label
         }))
         : FALLBACK_CINEMATIC;
@@ -405,7 +421,7 @@ const Home = () => {
     // TESTIMONIALS
     const testimonials = homeData?.testimonialsSection?.length > 0
         ? homeData.testimonialsSection.map(item => ({
-            url: item.videoFileUrl || item.videoUrlOrId,
+            url: item.videoFileUrl || item.videoFile?.url || item.videoUrlOrId,
             title: item.title
         }))
         : FALLBACK_TESTIMONIALS.map(t => ({
@@ -418,7 +434,7 @@ const Home = () => {
     const advTechUnit = homeData?.advancedTechSection?.statsUnit || "%";
     const advTechLabel = homeData?.advancedTechSection?.statsLabel || "Operational Efficiency";
     const advTechHeading = homeData?.advancedTechSection?.heading || "Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems";
-    const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home Advanced Technology.mp4";
+    const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoFile?.url || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home Advanced Technology.mp4";
 
     // Global Footprint Image
     const globalFootprintSrc = homeData?.globalFootprintImage
