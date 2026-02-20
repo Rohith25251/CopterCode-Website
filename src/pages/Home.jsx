@@ -476,7 +476,7 @@ const Home = () => {
     const advTechUnit = homeData?.advancedTechSection?.statsUnit || "%";
     const advTechLabel = homeData?.advancedTechSection?.statsLabel || "Operational Efficiency";
     const advTechHeading = homeData?.advancedTechSection?.heading || "Revolutionizing Logistics & Surveillance with AI-Powered Autonomous Drone Systems";
-    const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoFile?.url || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home Advanced Technology.mp4";
+    const advTechVideo = homeData?.advancedTechSection?.videoFileUrl || homeData?.advancedTechSection?.videoFile?.url || homeData?.advancedTechSection?.videoUrl || "/mediafiles/videos/Home%20Advanced%20Technology.mp4";
 
     // Global Footprint Image
     const globalFootprintSrc = homeData?.globalFootprintImage
@@ -1293,8 +1293,18 @@ const Home = () => {
                                                 crossOrigin="anonymous"
                                                 preload="auto"
                                                 className="w-full h-full object-cover absolute inset-0"
+                                                onLoadedData={() => console.log('Video loaded:', advTechVideo)}
                                                 onError={(e) => {
-                                                    console.error('Video error:', e.target.error?.message);
+                                                    const video = e.target;
+                                                    if (video.error) {
+                                                        const errorCodes = {
+                                                            1: 'MEDIA_ERR_ABORTED',
+                                                            2: 'MEDIA_ERR_NETWORK',
+                                                            3: 'MEDIA_ERR_DECODE',
+                                                            4: 'MEDIA_ERR_SRC_NOT_SUPPORTED'
+                                                        };
+                                                        console.error('Video error:', errorCodes[video.error.code] || 'Unknown', `Code: ${video.error.code}`, { url: advTechVideo });
+                                                    }
                                                 }}
                                             >
                                                 <source src={advTechVideo} type="video/mp4" />

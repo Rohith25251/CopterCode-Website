@@ -35,7 +35,16 @@ export default function LazyVideo({ src, poster, className = '', autoPlay = true
   };
 
   const handleError = (e) => {
-    console.error('Video error:', e.target.error?.message);
+    const video = e.target;
+    if (video.error) {
+      const errorCodes = {
+        1: 'MEDIA_ERR_ABORTED',
+        2: 'MEDIA_ERR_NETWORK',
+        3: 'MEDIA_ERR_DECODE',
+        4: 'MEDIA_ERR_SRC_NOT_SUPPORTED'
+      };
+      console.error('Video error:', errorCodes[video.error.code] || 'Unknown', `Code: ${video.error.code}`, { src, poster });
+    }
     setIsPlaying(false);
   };
 
