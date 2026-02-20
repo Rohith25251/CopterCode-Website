@@ -446,7 +446,7 @@ const Home = () => {
                 finalVideo: advTechVideo
             });
         }
-    }, [homeData, advTechVideo]);
+    }, [homeData]);
 
     // Global Footprint Image
     const globalFootprintSrc = homeData?.globalFootprintImage
@@ -1189,7 +1189,7 @@ const Home = () => {
                     </div>
 
                     <div className="relative">
-                        <div className="aspect-[4/3] rounded-3xl overflow-hidden border border-border relative shadow-2xl bg-surface">
+                        <div className="aspect-[4/3] rounded-3xl overflow-hidden border border-border relative shadow-2xl bg-surface flex items-center justify-center">
                             {(() => {
                                 // Debug logging
                                 console.log('Video Source:', advTechVideo);
@@ -1203,56 +1203,62 @@ const Home = () => {
 
                                 if (isYoutube && !advTechVideo?.includes('pexels')) {
                                     return (
-                                        <YouTube
-                                            videoId={potentialId}
-                                            opts={{
-                                                height: '100%',
-                                                width: '100%',
-                                                playerVars: {
-                                                    autoplay: 1,
-                                                    mute: 1,
-                                                    controls: 0,
-                                                    loop: 1,
-                                                    playlist: potentialId,
-                                                    modestbranding: 1,
-                                                    rel: 0
-                                                },
-                                            }}
-                                            className="w-full h-full absolute inset-0 pointer-events-none"
-                                            iframeClassName="w-full h-full object-cover"
-                                        />
+                                        <div className="w-full h-full absolute inset-0">
+                                            <YouTube
+                                                videoId={potentialId}
+                                                opts={{
+                                                    height: '100%',
+                                                    width: '100%',
+                                                    playerVars: {
+                                                        autoplay: 1,
+                                                        mute: 1,
+                                                        controls: 0,
+                                                        loop: 1,
+                                                        playlist: potentialId,
+                                                        modestbranding: 1,
+                                                        rel: 0
+                                                    },
+                                                }}
+                                                className="w-full h-full"
+                                                iframeClassName="w-full h-full object-cover"
+                                            />
+                                        </div>
                                     );
                                 } else {
                                     return (
-                                        <video 
-                                            autoPlay 
-                                            loop 
-                                            muted 
-                                            playsInline
-                                            crossOrigin="anonymous"
-                                            preload="metadata"
-                                            className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                                const errorCode = e.target.error?.code;
-                                                const errorMsg = {
-                                                    1: 'MEDIA_ERR_ABORTED',
-                                                    2: 'MEDIA_ERR_NETWORK',
-                                                    3: 'MEDIA_ERR_DECODE',
-                                                    4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
-                                                }[errorCode] || 'Unknown Error';
-                                                console.error('Video load error:', errorMsg, 'URL:', advTechVideo);
-                                            }}
-                                        >
-                                            <source src={advTechVideo} type="video/mp4" />
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        <>
+                                            <video 
+                                                key={advTechVideo}
+                                                autoPlay 
+                                                loop 
+                                                muted 
+                                                playsInline
+                                                crossOrigin="anonymous"
+                                                preload="metadata"
+                                                className="w-full h-full object-cover absolute inset-0"
+                                                onError={(e) => {
+                                                    const errorCode = e.target.error?.code;
+                                                    const errorMsg = {
+                                                        1: 'MEDIA_ERR_ABORTED',
+                                                        2: 'MEDIA_ERR_NETWORK',
+                                                        3: 'MEDIA_ERR_DECODE',
+                                                        4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
+                                                    }[errorCode] || 'Unknown Error';
+                                                    console.error('Video load error:', errorMsg, 'URL:', advTechVideo);
+                                                }}
+                                                onLoadedMetadata={(e) => {
+                                                    console.log('Video metadata loaded:', e.target.src);
+                                                    e.target.play().catch(err => console.log('Autoplay error:', err));
+                                                }}
+                                            >
+                                                <source src={advTechVideo} type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </>
                                     );
                                 }
                             })()}
-                                    );
-                                }
-                            })()}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                         </div>
                     </div>
                 </div>
