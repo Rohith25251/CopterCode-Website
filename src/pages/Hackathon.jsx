@@ -55,8 +55,8 @@ const Hackathon = () => {
         }).catch(console.error);
     }, []);
 
-    const seoTitle = sanityData?.seo?.metaTitle || "Hackathons";
-    const seoDesc = sanityData?.seo?.metaDescription || "Join CopterCode hackathons, innovation challenges, and coding competitions.";
+    const seoTitle = sanityData?.seo?.metaTitle || "Hackathons | Innovation Challenges & Competitions";
+    const seoDesc = sanityData?.seo?.metaDescription || "Join CopterCode hackathons and innovation challenges. Compete in drone technology, AI/ML, blockchain, and autonomous systems with prize pools and industry mentorship.";
 
     const heroTitle = sanityData?.heroTitle || "Hackathons";
     const heroSubtitle = sanityData?.heroSubtitle || "Code the future with CopterCode. Join our innovation challenges and competitions.";
@@ -248,7 +248,7 @@ const Hackathon = () => {
 
     return (
         <div className="bg-background min-h-screen text-primary overflow-x-hidden">
-            <SEO title={seoTitle} description={seoDesc} />
+            <SEO title={seoTitle} description={seoDesc} keywords="hackathon, innovation challenge, coding competition, drone technology, AI/ML, blockchain, autonomous systems, tech competition" />
             <PageHeader
                 title={heroTitle}
                 subtitle={heroSubtitle}

@@ -125,12 +125,12 @@ const ERPSolutions = () => {
 
     const data = sanityData || fallbackData;
 
-    const seoTitle = data.seo?.metaTitle || data.heroTitle || "ERP Software Solutions";
-    const seoDesc = data.seo?.metaDescription || "Empowering Organizations with Smart Software from CopterCode.";
+    const seoTitle = data.seo?.metaTitle || data.heroTitle || "ERP & LMS Software | Enterprise Solutions";
+    const seoDesc = data.seo?.metaDescription || "Cloud-based ERP systems and learning management platforms. Modular architecture, real-time analytics, multi-currency support, and compliance-ready enterprise software.";
 
     return (
         <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary pt-20">
-            <SEO title={seoTitle} description={seoDesc} />
+            <SEO title={seoTitle} description={seoDesc} keywords="ERP software, enterprise resource planning, LMS, learning management system, cloud ERP, business automation, inventory management" />
 
             {/* Hero Section */}
             <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">

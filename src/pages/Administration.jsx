@@ -272,8 +272,10 @@ const Administration = () => {
   return (
     <div className="bg-[#FAF9F5] min-h-screen text-primary selection:bg-accent selection:text-white font-sans">
       <SEO
-        title={sanityData?.seo?.metaTitle || "Administration & Leadership | CopterCode"}
-        description={sanityData?.seo?.metaDescription || "Meet the leadership team behind CopterCode. Committed to operational excellence, stronger governance, and driving technological innovation across all sectors."}
+        title={sanityData?.seo?.metaTitle || "Administration | Leadership & Governance"}
+        description={sanityData?.seo?.metaDescription || "Meet CopterCode's executive leadership, board of directors, and advisory team. Strong governance and strategic leadership for innovation and growth."}
+        keywords={sanityData?.seo?.keywords || "leadership team, executive management, board of directors, company governance, administration, CopterCode leadership"}
+        canonicalUrl="https://coptercode.com/administration"
         ogTitle="CopterCode Administration - Leading with Vision"
         ogDescription="Our administration is dedicated to integrity and sustainable growth. Learn about our governance structure and the team steering CopterCode towards the future."
       />

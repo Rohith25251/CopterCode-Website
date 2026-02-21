@@ -35,8 +35,8 @@ const Events = () => {
         }).catch(console.error);
     }, []);
 
-    const seoTitle = sanityData?.seo?.metaTitle || "Events";
-    const seoDesc = sanityData?.seo?.metaDescription || "Upcoming events, workshops, and conferences by CopterCode.";
+    const seoTitle = sanityData?.seo?.metaTitle || "Events | Conferences & Networking";
+    const seoDesc = sanityData?.seo?.metaDescription || "Join CopterCode's global events, conferences, and hackathons. Network with industry leaders in drone technology, AI, and enterprise solutions.";
 
     const heroTitle = sanityData?.heroTitle || "Events";
     const heroSubtitle = sanityData?.heroSubtitle || "Connect with us at our upcoming global summits, workshops, and exclusive meets.";
@@ -95,7 +95,7 @@ const Events = () => {
 
     return (
         <div className="bg-background min-h-screen text-primary overflow-x-hidden">
-            <SEO title={seoTitle} description={seoDesc} />
+            <SEO title={seoTitle} description={seoDesc} keywords={sanityData?.seo?.keywords || "events, conferences, hackathons, tech summit, innovation, networking, drone technology"} canonicalUrl="https://coptercode.com/events" />
             <PageHeader
                 title={heroTitle}
                 subtitle={heroSubtitle}

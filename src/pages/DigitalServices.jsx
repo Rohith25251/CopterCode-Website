@@ -170,12 +170,12 @@ const DigitalServices = () => {
 
   const data = sanityData || fallbackData;
 
-  const seoTitle = data.seo?.metaTitle || data.heroTitle || "Digital Services";
-  const seoDesc = data.seo?.metaDescription || "Transforming Businesses in the Digital Era with CopterCode.";
+  const seoTitle = data.seo?.metaTitle || data.heroTitle || "Digital Services | Cybersecurity & Cloud";
+  const seoDesc = data.seo?.metaDescription || "Digital transformation services: cybersecurity, managed IT support, cloud solutions, custom software development, LMS platforms, and 24/7 enterprise security monitoring.";
 
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary pt-20">
-      <SEO title={seoTitle} description={seoDesc} />
+      <SEO title={seoTitle} description={seoDesc} keywords="cybersecurity, cloud solutions, managed IT services, digital transformation, LMS, custom software, enterprise security" />
 
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">

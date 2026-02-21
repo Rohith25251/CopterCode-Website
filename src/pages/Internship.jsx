@@ -58,8 +58,8 @@ const Internship = () => {
     }).catch(console.error);
   }, []);
 
-  const seoTitle = sanityData?.seo?.metaTitle || "Internship Programme";
-  const seoDesc = sanityData?.seo?.metaDescription || "CopterCode Internship Programme - Empowering Future Innovators.";
+  const seoTitle = sanityData?.seo?.metaTitle || "Internship Programme | Real-World Tech Experience";
+  const seoDesc = sanityData?.seo?.metaDescription || "CopterCode internship program provides real-world exposure to drone technology, AI, cybersecurity, software development, IoT, and renewable energy for college students.";
 
   const sanityHeroImage = sanityData?.heroBackgroundImage ? urlFor(sanityData.heroBackgroundImage).url() : null;
   const sanityCarouselImages = sanityData?.heroBackgroundImages?.length > 0
@@ -134,12 +134,14 @@ const Internship = () => {
   return (
     <div className="bg-background min-h-screen text-primary overflow-x-hidden">
       <SEO
-        title={sanityData?.seo?.metaTitle || "Internship Program | CopterCode - Launch Your Career"}
-        description={sanityData?.seo?.metaDescription || "Kickstart your career with CopterCode's internship program. Gain hands-on experience, mentorship, and training in cutting-edge technologies."}
-        ogTitle="CopterCode Internship - Learn from the Best"
-        ogDescription="Join our internship program to work on real-world projects. Experience growth, learning, and mentorship in the fields of AI and drone technology."
+        title={seoTitle || "Internship | Real-World Tech Experience"}
+        description={seoDesc || "CopterCode internship program offers real-world experience in drone technology, AI, cybersecurity, software development, and renewable energy for students."}
+        keywords={sanityData?.seo?.keywords || "internship program, drone technology, AI internship, cybersecurity training, software development, student internship, tech training"}
+        canonicalUrl="https://coptercode.com/internship"
+        ogTitle="CopterCode Internship Program"
+        ogDescription="Gain real-world experience in drone tech, AI, and software development at CopterCode."
         twitterTitle="Intern at CopterCode"
-        twitterDescription="Start your journey with us. Apply for the CopterCode internship program and gain invaluable industry experience."
+        twitterDescription="Join the CopterCode internship program and gain invaluable industry experience."
       />
       <PageHeader
         title={heroTitle}

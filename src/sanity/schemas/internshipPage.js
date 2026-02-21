@@ -16,8 +16,9 @@ export const internshipPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Internship Programme' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'CopterCode Internship Programme - Empowering Future Innovators.' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Internship | Real-World Tech Experience' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'CopterCode internship program offers real-world experience in drone technology, AI, cybersecurity, software development, and renewable energy for students.' },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'internship program, drone technology, AI internship, cybersecurity training, software development, student internship, tech training' }
             ]
         },
         // --- HERO ---

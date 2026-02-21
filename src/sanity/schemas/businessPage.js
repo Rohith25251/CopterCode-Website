@@ -17,8 +17,9 @@ export const businessPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Business | Solutions & Services' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: "Explore CopterCode's business verticals: industrial drones, digital transformation, ERP systems, sustainable energy, and infrastructure security solutions." },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'business solutions, industrial drones, digital transformation, ERP systems, enterprise software, sustainable energy' }
             ]
         },
         // --- HERO SECTION ---

@@ -18,8 +18,9 @@ export const careersPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Careers | Drone Tech & AI Engineering' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: "Join CopterCode's innovative team. Explore careers in drone technology, AI/ML engineering, software development, and industrial automation with growth opportunities." },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'drone technology jobs, AI engineer, software engineering careers, industrial automation, machine learning, CopterCode careers, tech jobs' }
             ]
         },
         // --- HERO ---

@@ -16,8 +16,9 @@ export const contactPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Contact Us | CopterCode' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: "Contact CopterCode for inquiries, partnerships, and support. We're here to help with drone technology, enterprise software, and industrial automation solutions." },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'contact, inquiries, partnerships, drone technology support, enterprise software, support services' }
             ]
         },
         // --- HERO ---

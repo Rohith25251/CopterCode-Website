@@ -695,9 +695,9 @@ const Home = () => {
     return (
         <div className="bg-background text-primary selection:bg-accent selection:text-white">
             <SEO
-                title={homeData?.seo?.metaTitle}
-                description={homeData?.seo?.metaDescription}
-                keywords={homeData?.seo?.keywords}
+                title={homeData?.seo?.metaTitle || "CopterCode | Drone Tech, AI & Digital Solutions"}
+                description={homeData?.seo?.metaDescription || "CopterCode delivers cutting-edge drone technology, AI automation, ERP systems, digital services, cybersecurity, sustainable energy, and innovative tech solutions."}
+                keywords={homeData?.seo?.keywords || "drone technology, AI automation, ERP systems, digital services, cybersecurity, industrial drones, enterprise software, innovation"}
                 ogImage={homeData?.seo?.metaImage || homeData?.heroSection?.heroImages?.[0] || "/mediafiles/Home/IMG_1851.jpg"}
             />
 

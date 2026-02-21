@@ -57,8 +57,8 @@ const Careers = () => {
   }, []);
 
   // Fallbacks
-  const seoTitle = sanityData?.seo?.metaTitle || "Careers";
-  const seoDesc = sanityData?.seo?.metaDescription || "Join the CopterCode team.";
+  const seoTitle = sanityData?.seo?.metaTitle || "Careers | Drone Tech & AI Engineering Jobs";
+  const seoDesc = sanityData?.seo?.metaDescription || "Join CopterCode's innovative team. Explore careers in drone technology, AI/ML engineering, software development, and automation. Growth, global exposure, and benefits.";
   const heroTitle = sanityData?.heroTitle || "Careers";
   const heroSubtitle = sanityData?.heroSubtitle || "Join us to build the future together.";
 
@@ -155,14 +155,14 @@ const Careers = () => {
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-primary selection:text-background overflow-x-hidden">
       <SEO
-        title={sanityData?.seo?.metaTitle || "Careers at CopterCode | Drone Tech & AI Engineering Jobs"}
-        description={sanityData?.seo?.metaDescription || "Join CopterCode careers. Explore job opportunities in drone technology, AI/ML, software engineering, and industrial automation. Competitive benefits, remote options, and growth potential in a dynamic tech environment."}
-        keywords="drone technology jobs, AI engineer hiring, software engineering careers, industrial automation, UAV careers, machine learning jobs, CopterCode careers, tech jobs remote"
-        canonicalUrl="https://coptercode.co.in/careers"
-        ogTitle="Careers at CopterCode | Drone Tech & AI Engineering Opportunities"
-        ogDescription="Build the future with CopterCode. Explore exciting job opportunities in drone tech, AI, industrial automation, and software engineering with competitive benefits."
-        twitterTitle="CopterCode Is Hiring | Drone Tech & AI Jobs"
-        twitterDescription="Ready to make an impact? Explore career opportunities at CopterCode in drone technology, AI/ML, and enterprise software. Grow with a innovative tech company."
+        title={sanityData?.seo?.metaTitle || "Careers | Drone Tech & AI Engineering"}
+        description={sanityData?.seo?.metaDescription || "Join CopterCode's innovative team. Explore careers in drone technology, AI/ML engineering, software development, and industrial automation with growth opportunities."}
+        keywords={sanityData?.seo?.keywords || "drone technology jobs, AI engineer, software engineering careers, industrial automation, machine learning, CopterCode careers, tech jobs"}
+        canonicalUrl="https://coptercode.com/careers"
+        ogTitle="Careers at CopterCode | Drone Tech & AI Engineering"
+        ogDescription="Build the future with CopterCode. Explore exciting job opportunities in drone tech, AI, and enterprise software."
+        twitterTitle="CopterCode Is Hiring"
+        twitterDescription="Explore career opportunities in drone technology, AI/ML, and enterprise software at CopterCode."
       />
       <PageHeader
         title={heroTitle === "Careers" ? "Careers in Drone Technology & AI Engineering" : heroTitle}

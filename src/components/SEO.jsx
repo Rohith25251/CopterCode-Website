@@ -74,8 +74,31 @@ const SEO = ({
         setMetaTag('name', 'twitter:description', twitterDescription || finalDescription);
         setMetaTag('name', 'twitter:image', twitterImage || finalImage);
 
-        // 6. Structured Data (JSON-LD)
-        const schemaData = {
+        // 6. Structured Data (JSON-LD) - Organization + Breadcrumbs
+        
+        // Breadcrumb Schema for Sitelinks
+        const pathSegments = location.pathname.split('/').filter(Boolean);
+        const breadcrumbItems = [
+          { position: 1, name: 'Home', url: 'https://coptercode.com' },
+          ...pathSegments.map((segment, idx) => ({
+            position: idx + 2,
+            name: segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' '),
+            url: `https://coptercode.com/${pathSegments.slice(0, idx + 1).join('/')}`
+          }))
+        ];
+
+        const breadcrumbSchema = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": breadcrumbItems.map(item => ({
+                "@type": "ListItem",
+                "position": item.position,
+                "name": item.name,
+                "item": item.url
+            }))
+        };
+
+        const organizationSchema = {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "CopterCode",
@@ -85,7 +108,11 @@ const SEO = ({
                 "https://www.linkedin.com/company/coptercode",
                 "https://twitter.com/coptercode"
             ],
-            "description": defaultDescription
+            "description": defaultDescription,
+            "potentialAction": {
+                "@type": "ViewAction",
+                "url": location.pathname
+            }
         };
 
         let scriptSchema = document.querySelector("script[id='schema-org']");
@@ -95,7 +122,11 @@ const SEO = ({
             scriptSchema.type = 'application/ld+json';
             document.head.appendChild(scriptSchema);
         }
-        scriptSchema.text = JSON.stringify(schemaData);
+        // Include both Organization and Breadcrumb schemas
+        scriptSchema.text = JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [organizationSchema, breadcrumbSchema]
+        });
 
     }, [title, description, ogTitle, ogDescription, ogUrl, ogImage, twitterTitle, twitterDescription, twitterImage, keywords, canonicalUrl, location]);
 

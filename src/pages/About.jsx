@@ -140,8 +140,9 @@ const About = () => {
   return (
     <div className="bg-[#FAF9F5] min-h-screen text-primary selection:bg-accent selection:text-white">
       <SEO
-        title={seo?.metaTitle || "About Us | CopterCode"}
-        description={seo?.metaDescription || "From vision to reality - the CopterCode story."}
+        title={seo?.metaTitle || "About CopterCode | Innovation in Drones, AI & Industrial Automation"}
+        description={seo?.metaDescription || "Discover CopterCode's journey from drone technology to enterprise AI, digital transformation, and sustainable solutions. Leading innovators in industrial automation and enterprise software."}
+        keywords="CopterCode, drone technology, industrial automation, enterprise AI, digital transformation, sustainable innovation, IoT solutions"
       />
 
       {/* Header */}

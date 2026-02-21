@@ -16,8 +16,9 @@ export const eventsPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Events | Conferences & Networking' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: "Join CopterCode's global events, conferences, and hackathons. Network with industry leaders in drone technology, AI, and enterprise solutions." },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'events, conferences, hackathons, tech summit, innovation, networking, drone technology' }
             ]
         },
         // --- HERO ---

@@ -16,8 +16,9 @@ export const administrationPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Administration | Leadership & Governance' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: "Meet CopterCode's executive leadership, board of directors, and advisory team. Strong governance and strategic leadership for innovation and growth." },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'leadership team, executive management, board of directors, company governance, administration, CopterCode leadership' }
             ]
         },
         // --- HERO ---

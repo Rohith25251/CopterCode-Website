@@ -79,15 +79,15 @@ const Services = () => {
     }, []);
 
     // Services List
-    const seoTitle = sanityData?.seo?.metaTitle || 'Services';
-    const seoDesc = sanityData?.seo?.metaDescription || 'Explore our web, AI, and cloud services.';
+    const seoTitle = sanityData?.seo?.metaTitle || 'Web Development, Cloud & AI Services | CopterCode';
+    const seoDesc = sanityData?.seo?.metaDescription || 'Comprehensive software solutions: web development, full-stack applications, AI automation, SaaS platforms, cloud infrastructure, mobile apps, and enterprise cybersecurity services.';
     const heroTitle = sanityData?.hero?.title || 'Our Services';
     const heroSubtitle = sanityData?.hero?.subtitle || 'Comprehensive software solutions tailored to your business needs.';
     const servicesList = sanityData?.services?.length > 0 ? sanityData.services : FALLBACK_SERVICES;
 
     return (
         <div className="bg-background min-h-screen">
-            <SEO title={seoTitle} description={seoDesc} />
+            <SEO title={seoTitle} description={seoDesc} keywords="web development, full-stack development, AI automation, SaaS, cloud solutions, cybersecurity, API development, mobile apps" />
             <PageHeader
                 title={heroTitle}
                 subtitle={heroSubtitle}

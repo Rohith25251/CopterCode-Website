@@ -171,12 +171,14 @@ const Contact = () => {
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary overflow-hidden relative">
       <SEO
-        title={sanityData?.seo?.metaTitle || "Contact Us | CopterCode - Get in Touch"}
-        description={sanityData?.seo?.metaDescription || "Have a project in mind or need support? Contact CopterCode today. We are here to answer your inquiries and discuss partnership opportunities."}
-        ogTitle="Connect with CopterCode"
-        ogDescription="Reach out to our team for inquiries, support, or collaborations. Let's discuss how we can help you achieve your goals with our advanced solutions."
-        twitterTitle="Get in Touch with CopterCode"
-        twitterDescription="We'd love to hear from you. Contact us for any questions about our services or to start a new project."
+        title={sanityData?.seo?.metaTitle || "Contact Us | CopterCode"}
+        description={sanityData?.seo?.metaDescription || "Contact CopterCode for inquiries, partnerships, and support. We're here to help with drone technology, enterprise software, and industrial automation solutions."}
+        keywords={sanityData?.seo?.keywords || "contact, inquiries, partnerships, drone technology support, enterprise software, support services"}
+        canonicalUrl="https://coptercode.com/contact"
+        ogTitle="Contact CopterCode"
+        ogDescription="Reach our team for inquiries and collaborations. Let's discuss your business needs."
+        twitterTitle="Contact CopterCode"
+        twitterDescription="Get in touch with us for any questions about our services."
       />
 
       {/* Background Decoration */}
@@ -221,11 +223,25 @@ const Contact = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
+          className="container mx-auto px-6"
         >
-          {/* Left Column: Contact Info */}
-          <div className="space-y-12">
-            <motion.div variants={containerVariants} className="space-y-8">
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Get in Touch with Our Team</h2>
+            <p className="text-lg text-secondary max-w-3xl">
+              Whether you have questions about our industrial drone solutions, enterprise software services, or would like to explore partnership opportunities, we're here to help.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+            {/* Left Column: Contact Info */}
+            <div className="space-y-12">
+              <motion.div variants={containerVariants} className="space-y-8">
+                <div>
+                  <h3 className="text-2xl font-bold text-primary mb-6 flex items-center">
+                    <MapPin className="mr-3 text-accent" size={24} />
+                    Our Locations
+                  </h3>
+                </div>
               {/* Headquarters (India) */}
               <motion.div
                 variants={itemVariants}

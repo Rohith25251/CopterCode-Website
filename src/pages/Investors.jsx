@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { client } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { iconComponentMap } from '../sanity/schemas/icons';
-import { ArrowRight, FileText, TrendingUp, PieChart, ShieldCheck, BarChart, Briefcase, Star } from "lucide-react";
+import { ArrowRight, FileText, TrendingUp, PieChart, ShieldCheck, BarChart, Briefcase, Star, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
 
@@ -48,8 +49,8 @@ const Investors = () => {
         }).catch(console.error);
     }, []);
 
-    const seoTitle = sanityData?.seo?.metaTitle || "Investor Relations";
-    const seoDesc = sanityData?.seo?.metaDescription || "Financial information and investor resources for CopterCode.";
+    const seoTitle = sanityData?.seo?.metaTitle || "Investor Relations & Financial Reporting | CopterCode";
+    const seoDesc = sanityData?.seo?.metaDescription || "Explore CopterCode's investor relations, financial reports, shareholder information, and corporate governance. Transparent financial performance and investor resources.";
 
     const heroTitle = sanityData?.heroTitle || "Our Investors";
     const heroSubtitle = sanityData?.heroSubtitle || "Transparent governance and sustainable value creation.";
@@ -72,13 +73,26 @@ const Investors = () => {
 
     return (
         <div className="bg-background min-h-screen text-primary">
-            <SEO title={seoTitle} description={seoDesc} />
+            <SEO title={seoTitle} description={seoDesc} keywords="investor relations, financial reporting, shareholder information, corporate governance, CopterCode, annual reports, financial performance" />
             <PageHeader title={heroTitle} subtitle={heroSubtitle} />
 
             <section className="py-20">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto text-center mb-16">
                         <p className="text-xl text-secondary leading-relaxed">{introText}</p>
+                    </div>
+
+                    {/* About Investor Relations Section */}
+                    <div className="max-w-4xl mx-auto mb-20">
+                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+                            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">About Our Investor Relations Program</h2>
+                            <p className="text-lg text-secondary leading-relaxed mb-4">
+                                At CopterCode, we believe in maintaining transparent communication with our investors and stakeholders. Our investor relations program provides comprehensive access to financial information, corporate governance details, and strategic insights into our diversified business operations.
+                            </p>
+                            <p className="text-lg text-secondary leading-relaxed mb-4">
+                                Whether you're researching our <Link to="/business" className="text-accent hover:text-accent/80 font-semibold">drone technology solutions</Link>, our <Link to="/digital-services" className="text-accent hover:text-accent/80 font-semibold">digital services and ERP offerings</Link>, or our sustainable initiatives, our investor resources offer detailed insights into CopterCode's growth trajectory and market position.
+                            </p>
+                        </motion.div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
@@ -101,8 +115,11 @@ const Investors = () => {
             <section className="py-20 bg-surface/50">
                 <div className="container mx-auto px-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-primary mb-4">Our Investors</h2>
-                        <div className="w-16 h-1 bg-accent/30 mx-auto rounded-full"></div>
+                        <h2 className="text-4xl font-bold text-primary mb-4">Our Strategic Investment Partners</h2>
+                        <p className="text-lg text-secondary max-w-3xl mx-auto">
+                            Our investors are carefully selected partners who share our vision of innovation, sustainability, and long-term value creation in industrial automation and enterprise technology.
+                        </p>
+                        <div className="w-16 h-1 bg-accent/30 mx-auto rounded-full mt-6"></div>
                     </motion.div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
@@ -112,10 +129,63 @@ const Investors = () => {
                                     <img src={investor.logo} alt={investor.name} className="w-20 h-20 object-contain" loading="lazy" decoding="async" />
                                 </motion.div>
                                 <h3 className="text-2xl font-bold text-primary mb-4">{investor.name}</h3>
-                                <p className="text-secondary leading-relaxed">{investor.description}</p>
+                                <p className="text-secondary leading-relaxed mb-6">{investor.description}</p>
+                                <div className="flex items-center justify-center text-accent font-semibold hover:tracking-wide transition-all">
+                                    {investor.name && `Visit ${investor.name}`} <ExternalLink size={16} className="ml-2" />
+                                </div>
                             </motion.a>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* Additional Resources Section */}
+            <section className="py-20">
+                <div className="container mx-auto px-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Why Invest in CopterCode?</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="bg-surface p-8 rounded-2xl border border-border">
+                                <h3 className="text-xl font-bold text-primary mb-3">Diversified Portfolio</h3>
+                                <p className="text-secondary leading-relaxed">
+                                    Our operations span industrial drones, enterprise AI, digital services, manufacturing, and infrastructure. This diversification reduces risk and provides multiple revenue streams.
+                                </p>
+                            </div>
+                            <div className="bg-surface p-8 rounded-2xl border border-border">
+                                <h3 className="text-xl font-bold text-primary mb-3">Innovation Leadership</h3>
+                                <p className="text-secondary leading-relaxed">
+                                    We're pioneers in <Link to="/industrial-drones" className="text-accent hover:text-accent/80 font-semibold">UAV technology</Link> and <Link to="/erp-solutions" className="text-accent hover:text-accent/80 font-semibold">enterprise software solutions</Link>, positioning us at the forefront of technological advancement.
+                                </p>
+                            </div>
+                            <div className="bg-surface p-8 rounded-2xl border border-border">
+                                <h3 className="text-xl font-bold text-primary mb-3">Sustainability Commitment</h3>
+                                <p className="text-secondary leading-relaxed">
+                                    Through our <Link to="/new-energy" className="text-accent hover:text-accent/80 font-semibold">sustainable energy initiatives</Link> and responsible business practices, we're building a future-proof enterprise.
+                                </p>
+                            </div>
+                            <div className="bg-surface p-8 rounded-2xl border border-border">
+                                <h3 className="text-xl font-bold text-primary mb-3">Global Expansion</h3>
+                                <p className="text-secondary leading-relaxed">
+                                    With operations in multiple continents and strategic partnerships worldwide, CopterCode is positioned for continued international growth.
+                                </p>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Contact CTA Section */}
+            <section className="py-20 bg-surface/50">
+                <div className="container mx-auto px-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl mx-auto text-center">
+                        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Have Investor Inquiries?</h2>
+                        <p className="text-lg text-secondary mb-8">
+                            For more information about investor relations, financial reports, or to discuss investment opportunities, please reach out to us.
+                        </p>
+                        <Link to="/contact" className="inline-flex items-center justify-center bg-accent text-white px-8 py-4 rounded-lg font-semibold hover:bg-accent/90 transition-colors">
+                            Contact Investor Relations <ArrowRight size={20} className="ml-2" />
+                        </Link>
+                    </motion.div>
                 </div>
             </section>
         </div>

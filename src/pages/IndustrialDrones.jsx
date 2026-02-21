@@ -182,12 +182,12 @@ const IndustrialDrones = () => {
 
   const data = sanityData || fallbackData;
 
-  const seoTitle = data.seo?.metaTitle || data.heroTitle || "Industrial Drones & UAV";
-  const seoDesc = data.seo?.metaDescription || "Redefining Industries with Advanced UAV Solutions from CopterCode.";
+  const seoTitle = data.seo?.metaTitle || data.heroTitle || "Industrial Drones & UAV Solutions | CopterCode";
+  const seoDesc = data.seo?.metaDescription || "Advanced unmanned aerial vehicles for inspection, surveillance, mapping, agriculture, logistics, and disaster management. DGCA-compliant drone technology and services.";
 
   return (
     <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary pt-20">
-      <SEO title={seoTitle} description={seoDesc} />
+      <SEO title={seoTitle} description={seoDesc} keywords="industrial drones, UAV solutions, aerial inspection, agricultural drones, drone mapping, DGCA approved, industrial automation" />
 
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
