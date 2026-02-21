@@ -502,6 +502,8 @@ const Contact = () => {
               </motion.button>
             </form>
           </motion.div>
+          </div>
+        </motion.div>
       </section>
     </div>
   );
