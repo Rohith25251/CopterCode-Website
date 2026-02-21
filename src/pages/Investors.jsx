@@ -12,7 +12,7 @@ const INVESTOR_LOGOS = [
     {
         name: "MurgDur",
         logo: "/_optimized/mediafiles/logos/MurgDur-logo-CNKz8pTh.webp",
-        url: "https://murgdur2.vercel.app/",
+        url: "https://murgdur.com/",
         description: "A leading venture capital firm focused on early-stage technology startups with high growth potential, supporting our vision since inception."
     },
     {
