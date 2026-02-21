@@ -53,6 +53,7 @@ const Navbar = () => {
     { name: "Business", path: "/business" },
     { name: "Administration", path: "/administration" },
     { name: "Careers", path: "/careers" },
+    { name: "Events", path: "/events" },
     { name: "Insights", path: "/news" },
     { name: "Contact", path: "/contact" },
   ];
@@ -78,6 +79,7 @@ const Navbar = () => {
 
   const primaryCTA = navData?.ctaButton || { label: "Get in Touch", link: "/get-in-touch" };
   const secondaryCTA = navData?.secondaryButton || { label: "Internship", link: "/internship" };
+  const tertiaryCTA = navData?.tertiaryButton || { label: "Hackathon", link: "/hackathon" };
 
 
   const handleSamePageClick = (path) => {
@@ -98,14 +100,14 @@ const Navbar = () => {
           className="flex items-center space-x-3 group min-w-fit"
           onClick={() => handleSamePageClick("/")}
         >
-            <motion.div
+          <motion.div
             className="relative h-16 w-16 overflow-hidden rounded-2xl bg-black shadow-2xl flex items-center justify-center z-20 border-none outline-none"
             whileHover={{}}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
+          >
             <OptimizedImage
               src={logoSrc}
               alt={companyTitle}
@@ -133,7 +135,15 @@ const Navbar = () => {
         </div>
 
         <div className="hidden xl:flex items-center space-x-4 min-w-fit">
-          {/* Secondary CTA (Internship) - Swapped to Dark Filled */}
+          {/* Tertiary CTA (Hackathon) - New */}
+          <Link
+            to={tertiaryCTA.link}
+            className="px-6 py-2.5 rounded-full bg-[#2A3140] text-white font-bold text-xs hover:bg-primary transition-all duration-300 shadow-lg"
+          >
+            {tertiaryCTA.label}
+          </Link>
+
+          {/* Secondary CTA (Internship) */}
           <Link
             to={secondaryCTA.link}
             className="px-6 py-2.5 rounded-full bg-[#2A3140] text-white font-bold text-xs hover:bg-primary transition-all duration-300 shadow-lg"
@@ -232,12 +242,21 @@ const Navbar = () => {
 
                   {/* Integrated CTAs */}
                   <motion.div
-                    className="pt-8 mt-4 border-t border-gray-200/50 space-y-6"
+                    className="pt-8 mt-4 border-t border-gray-200/50 space-y-4"
                     variants={{
                       hidden: { opacity: 0, y: 20 },
                       visible: { opacity: 1, y: 0 },
                     }}
                   >
+                    <Link
+                      to={tertiaryCTA.link}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-between w-full px-6 py-4 rounded-2xl bg-[#2A3140] text-white font-bold text-lg hover:bg-primary transition-all shadow-xl group"
+                    >
+                      {tertiaryCTA.label}
+                      <ArrowRight size={20} className="text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                    </Link>
+
                     <Link
                       to={secondaryCTA.link}
                       onClick={() => setIsOpen(false)}

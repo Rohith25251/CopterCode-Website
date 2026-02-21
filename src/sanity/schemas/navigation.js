@@ -33,7 +33,7 @@ export const navigation = {
                     title: 'Menu Item',
                     fields: [
                         { name: 'name', type: 'string', title: 'Display Name' },
-                        { name: 'path', type: 'string', title: 'URL Path' }
+                        { name: 'path', type: 'string', title: 'URL Path', description: 'e.g. /about, /hackathon' }
                     ]
                 }
             ]
@@ -49,7 +49,7 @@ export const navigation = {
                     title: 'Menu Item',
                     fields: [
                         { name: 'name', type: 'string', title: 'Display Name' },
-                        { name: 'path', type: 'string', title: 'URL Path' }
+                        { name: 'path', type: 'string', title: 'URL Path', description: 'e.g. /about, /hackathon' }
                     ]
                 }
             ]
@@ -58,6 +58,15 @@ export const navigation = {
         {
             name: 'ctaButton',
             title: 'Primary Button (e.g. Get in Touch)',
+            type: 'object',
+            fields: [
+                { name: 'label', type: 'string', title: 'Label' },
+                { name: 'link', type: 'string', title: 'Link' }
+            ]
+        },
+        {
+            name: 'tertiaryButton',
+            title: 'Tertiary Button (e.g. Hackathon)',
             type: 'object',
             fields: [
                 { name: 'label', type: 'string', title: 'Label' },

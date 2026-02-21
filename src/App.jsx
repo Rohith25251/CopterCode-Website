@@ -17,6 +17,7 @@ const Careers = lazy(() => import('./pages/Careers'));
 const Internship = lazy(() => import('./pages/Internship'));
 const Investors = lazy(() => import('./pages/Investors'));
 const Events = lazy(() => import('./pages/Events'));
+const Hackathon = lazy(() => import('./pages/Hackathon'));
 const GetInTouch = lazy(() => import('./pages/GetInTouch'));
 const Contact = lazy(() => import('./pages/Contact'));
 const IndustrialDrones = lazy(() => import('./pages/IndustrialDrones'));
@@ -73,6 +74,7 @@ function AppContent() {
                             <Route path="/sustainability" element={<Suspense fallback={<PagePlaceholder />}><Sustainability /></Suspense>} />
                             <Route path="/news" element={<Suspense fallback={<PagePlaceholder />}><News /></Suspense>} />
                             <Route path="/events" element={<Suspense fallback={<PagePlaceholder />}><Events /></Suspense>} />
+                            <Route path="/hackathon" element={<Suspense fallback={<PagePlaceholder />}><Hackathon /></Suspense>} />
                             <Route path="/services" element={<Suspense fallback={<PagePlaceholder />}><Services /></Suspense>} />
                             <Route path="/technologies" element={<Suspense fallback={<PagePlaceholder />}><Technologies /></Suspense>} />
                             <Route path="/projects" element={<Suspense fallback={<PagePlaceholder />}><Projects /></Suspense>} />
