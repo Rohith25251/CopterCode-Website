@@ -11,20 +11,28 @@ const Sustainability = () => {
 
     useEffect(() => {
         const query = `*[_type == "sustainabilityPage"][0]`;
-        client.fetch(query).then(data => {
-            if (data) {
-                setSanityData({
-                    seo: data.seo,
-                    heroTitle: data.hero?.title,
-                    heroSubtitle: data.hero?.subtitle,
-                    introHeading: data.intro?.heading,
-                    introDescription: data.intro?.description,
-                    impactGrid: data.impactGrid,
-                    csrHeading: data.csr?.heading,
-                    csrDescription: data.csr?.description
-                });
-            }
-        }).catch(console.error);
+        client.fetch(query)
+            .then(data => {
+                if (data) {
+                    console.log('✅ Sustainability page data loaded from Sanity');
+                    console.log('   - Impact Grid:', data.impactGrid?.length || 0);
+                    setSanityData({
+                        seo: data.seo,
+                        heroTitle: data.hero?.title,
+                        heroSubtitle: data.hero?.subtitle,
+                        introHeading: data.intro?.heading,
+                        introDescription: data.intro?.description,
+                        impactGrid: data.impactGrid,
+                        csrHeading: data.csr?.heading,
+                        csrDescription: data.csr?.description
+                    });
+                } else {
+                    console.warn('⚠️ No sustainability page data from Sanity - using fallbacks');
+                }
+            })
+            .catch(err => {
+                console.error('❌ Error fetching sustainability page:', err.message || err);
+            });
     }, []);
 
     const seoTitle = sanityData?.seo?.metaTitle || "Sustainability & Impact";

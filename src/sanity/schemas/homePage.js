@@ -517,6 +517,53 @@ export const homePage = {
                 }
             ]
         },
+        // --- HACKATHON SHOWCASE SECTION ---
+        {
+            name: 'hackathonShowcaseSection',
+            title: 'Hackathon Showcase Section',
+            type: 'object',
+            fields: [
+                { name: 'isEnabled', type: 'boolean', title: 'Enable Section', initialValue: true },
+                { name: 'heading', type: 'string', title: 'Section Heading', initialValue: 'Innovation Challenges & Hackathons' },
+                { name: 'subheading', type: 'string', title: 'Subheading', initialValue: 'Compete, Create, and Win Amazing Prizes' },
+                { name: 'description', type: 'text', title: 'Section Description' },
+                {
+                    name: 'highlights',
+                    title: 'Key Highlights',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'title', type: 'string', title: 'Highlight Title' },
+                                { name: 'description', type: 'string', title: 'Description' },
+                                {
+                                    name: 'icon',
+                                    title: 'Icon',
+                                    type: 'string',
+                                    options: {
+                                        list: iconsList.map(icon => ({
+                                            title: icon.title,
+                                            value: icon.value
+                                        }))
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                { name: 'ctaText', type: 'string', title: 'CTA Button Text', initialValue: 'Explore Hackathons' },
+                { name: 'ctaLink', type: 'string', title: 'CTA Button Link', initialValue: '/hackathon' },
+                { name: 'featuredImage', type: 'image', title: 'Featured Image (Single)', options: { hotspot: true } },
+                {
+                    name: 'carouselImages',
+                    title: 'Carousel Images',
+                    type: 'array',
+                    of: [{ type: 'image', options: { hotspot: true } }],
+                    description: 'Multiple images for auto-rotating carousel. If provided, takes priority over single featured image.'
+                }
+            ]
+        },
         // --- SUSTAINABILITY SECTION ---
         {
             name: 'sustainabilitySection',

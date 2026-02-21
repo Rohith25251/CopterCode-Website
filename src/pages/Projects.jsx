@@ -38,14 +38,23 @@ const Projects = () => {
       clientLogos[]{ asset->{ url } }
     }`;
 
-    client.fetch(query).then((sanityResult) => {
-      if (sanityResult) {
-        setData({
-          ...sanityResult,
-          clientLogos: sanityResult.clientLogos?.map(logo => logo.asset.url) || []
-        });
-      }
-    }).catch(console.error);
+    client.fetch(query)
+      .then((sanityResult) => {
+        if (sanityResult) {
+          console.log('✅ Projects page data loaded from Sanity');
+          console.log('   - Projects:', sanityResult.projects?.length || 0);
+          console.log('   - Client Logos:', sanityResult.clientLogos?.length || 0);
+          setData({
+            ...sanityResult,
+            clientLogos: sanityResult.clientLogos?.map(logo => logo.asset.url) || []
+          });
+        } else {
+          console.warn('⚠️ No projects page data from Sanity - using fallbacks');
+        }
+      })
+      .catch(err => {
+        console.error('❌ Error fetching projects page:', err.message || err);
+      });
   }, []);
 
   const fallbackData = {

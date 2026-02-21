@@ -413,6 +413,8 @@ const News = () => {
       .fetch(query)
       .then((data) => {
         if (data) {
+          console.log('✅ News/Insights page data loaded from Sanity');
+          console.log('   - Years:', data.years?.length || 0);
           setSanityData({
             seo: data.seo,
             heroTitle: data.hero?.title,
@@ -423,9 +425,13 @@ const News = () => {
               gallery: y.gallery?.map((img) => urlFor(img).url()) || [],
             })),
           });
+        } else {
+          console.warn('⚠️ No insights page data from Sanity - using fallbacks');
         }
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error('❌ Error fetching news/insights page:', err.message || err);
+      });
   }, []);
 
   const seoTitle = sanityData?.seo?.metaTitle || "Insights";

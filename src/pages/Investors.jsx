@@ -29,24 +29,32 @@ const Investors = () => {
 
     useEffect(() => {
         const query = `*[_type == "investorsPage"][0]{..., investors[] { ..., logo { asset->{ url } } } }`;
-        client.fetch(query).then(data => {
-            if (data) {
-                setSanityData({
-                    seo: data.seo,
-                    heroTitle: data.hero?.title,
-                    heroSubtitle: data.hero?.subtitle,
-                    introText: data.hero?.introText,
-                    highlights: data.highlights,
-                    investors: data.investors?.map(inv => ({
-                        name: inv.name,
-                        logo: inv.logo?.asset?.url,
-                        url: inv.url,
-                        description: inv.description
-                    })) || [],
-                    inquiryButtonLink: data.inquiries?.buttonLink
-                });
-            }
-        }).catch(console.error);
+        client.fetch(query)
+            .then(data => {
+                if (data) {
+                    console.log('✅ Investors page data loaded from Sanity');
+                    console.log('   - Investors:', data.investors?.length || 0);
+                    setSanityData({
+                        seo: data.seo,
+                        heroTitle: data.hero?.title,
+                        heroSubtitle: data.hero?.subtitle,
+                        introText: data.hero?.introText,
+                        highlights: data.highlights,
+                        investors: data.investors?.map(inv => ({
+                            name: inv.name,
+                            logo: inv.logo?.asset?.url,
+                            url: inv.url,
+                            description: inv.description
+                        })) || [],
+                        inquiryButtonLink: data.inquiries?.buttonLink
+                    });
+                } else {
+                    console.warn('⚠️ No investors page data from Sanity - using fallbacks');
+                }
+            })
+            .catch(err => {
+                console.error('❌ Error fetching investors page:', err.message || err);
+            });
     }, []);
 
     const seoTitle = sanityData?.seo?.metaTitle || "Investor Relations & Financial Reporting | CopterCode";

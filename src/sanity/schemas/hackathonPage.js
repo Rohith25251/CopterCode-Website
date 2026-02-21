@@ -27,7 +27,21 @@ export const hackathonPage = {
             type: 'object',
             fields: [
                 { name: 'title', type: 'string', title: 'Title', initialValue: 'Hackathons' },
-                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Code the future with CopterCode. Join our innovation challenges and competitions.' }
+                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Code the future with CopterCode. Join our innovation challenges and competitions.' },
+                {
+                    name: 'backgroundImage',
+                    type: 'image',
+                    title: 'Background Image (Single)',
+                    options: { hotspot: true },
+                    description: 'Single background image for the hero section'
+                },
+                {
+                    name: 'backgroundImages',
+                    type: 'array',
+                    title: 'Background Image Carousel',
+                    of: [{ type: 'image', options: { hotspot: true } }],
+                    description: 'Multiple images for carousel rotation in the hero section (rotates every 5 seconds). If provided, takes priority over single background image.'
+                }
             ]
         },
         // --- HACKATHONS LIST ---
@@ -82,7 +96,7 @@ export const hackathonPage = {
                             initialValue: 'upcoming'
                         },
                         { name: 'featured', type: 'boolean', title: 'Featured Hackathon', initialValue: false, description: 'Mark as featured to display prominently at the top of the page' },
-                        { name: 'image', type: 'image', title: 'Hackathon Image/Poster', options: { hotspot: true }, description: 'Image displayed on the hackathon card' },
+                        { name: 'image', type: 'image', title: 'Hackathon Image/Poster', options: { hotspot: true }, description: 'Primary image displayed on the hackathon card' },
 
                         // --- Date & Location ---
                         { name: 'date', type: 'string', title: 'Display Date', description: 'Formatted date shown on the card (e.g. "April 15-17, 2026")' },

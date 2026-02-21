@@ -71,10 +71,16 @@ const Services = () => {
 
         client.fetch(query)
             .then((data) => {
-                if (data) setSanityData(data);
+                if (data) {
+                    console.log('✅ Services page data loaded from Sanity');
+                    console.log('   - Services:', data.services?.length || 0);
+                    setSanityData(data);
+                } else {
+                    console.warn('⚠️ No services page data from Sanity - using fallbacks');
+                }
             })
             .catch((error) => {
-                console.error('Error fetching services data from Sanity:', error);
+                console.error('❌ Error fetching services data from Sanity:', error.message || error);
             });
     }, []);
 

@@ -12,11 +12,16 @@ const PrivacyPolicy = () => {
     const query = `*[_type == "privacyPolicyPage"][0]`;
     client.fetch(query)
       .then(data => {
-        setSanityData(data);
+        if (data) {
+          console.log('✅ Privacy Policy page data loaded from Sanity');
+          setSanityData(data);
+        } else {
+          console.warn('⚠️ No privacy policy page data from Sanity - using defaults');
+        }
         setLoading(false);
       })
       .catch(err => {
-        console.error('Error fetching privacy policy:', err);
+        console.error('❌ Error fetching privacy policy:', err.message || err);
         setLoading(false);
       });
   }, []);

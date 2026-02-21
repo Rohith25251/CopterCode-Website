@@ -170,6 +170,8 @@ const Locations = () => {
       .fetch(query)
       .then((data) => {
         if (data) {
+          console.log('✅ Locations page data loaded from Sanity');
+          console.log('   - Locations:', data.locations?.length || 0);
           setSanityData({
             seo: data.seo,
             heroTitle: data.hero?.title,
@@ -181,9 +183,13 @@ const Locations = () => {
               image: loc.image ? urlFor(loc.image).url() : null,
             })),
           });
+        } else {
+          console.warn('⚠️ No locations page data from Sanity - using fallbacks');
         }
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error('❌ Error fetching locations page:', err.message || err);
+      });
   }, []);
 
   const seoTitle = sanityData?.seo?.metaTitle || "Operating Locations";

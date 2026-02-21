@@ -53,16 +53,24 @@ const Technologies = () => {
 
     useEffect(() => {
         const query = `*[_type == "technologiesPage"][0]`;
-        client.fetch(query).then((data) => {
-            if (data) {
-                setSanityData({
-                    seo: data.seo,
-                    heroTitle: data.hero?.title,
-                    heroSubtitle: data.hero?.subtitle,
-                    techStack: data.techStack
-                });
-            }
-        }).catch(console.error);
+        client.fetch(query)
+            .then((data) => {
+                if (data) {
+                    console.log('✅ Technologies page data loaded from Sanity');
+                    console.log('   - Tech Stack:', data.techStack?.length || 0);
+                    setSanityData({
+                        seo: data.seo,
+                        heroTitle: data.hero?.title,
+                        heroSubtitle: data.hero?.subtitle,
+                        techStack: data.techStack
+                    });
+                } else {
+                    console.warn('⚠️ No technologies page data from Sanity - using fallbacks');
+                }
+            })
+            .catch(err => {
+                console.error('❌ Error fetching technologies page:', err.message || err);
+            });
     }, []);
 
     const seoTitle = sanityData?.seo?.metaTitle || "Technologies & Stack";

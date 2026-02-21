@@ -214,8 +214,18 @@ const Home = () => {
     useScrollToTop(); // Force scroll to top on mount
 
     const [currentTestimonial, setCurrentTestimonial] = useState(0);
-    const [currentInternshipSlide, setCurrentInternshipSlide] = useState(0);
+    const HACKATHON_CAROUSEL_IMAGES = [
+        "/_optimized/mediafiles/hackathons/hackathon_drones.webp",
+        "/_optimized/mediafiles/hackathons/hackathon_ai.webp",
+        "/_optimized/mediafiles/hackathons/hackathon_blockchain.webp",
+        "/_optimized/mediafiles/hackathons/hackathon_quantum.webp",
+        "/_optimized/mediafiles/hackathons/hackathon_space_water.webp",
+        "/_optimized/mediafiles/hackathons/hackathon_creative.webp"
+    ];
+
+    const [activeHackathonSlide, setActiveHackathonSlide] = useState(0);
     const [activeBusiness, setActiveBusiness] = useState(0);
+    const [currentInternshipSlide, setCurrentInternshipSlide] = useState(0);
     const [homeData, setHomeData] = useState(null);
     const [voiceOfSuccessVisible, setVoiceOfSuccessVisible] = useState(false);
     const actionScrollRef = useRef(null);
@@ -366,6 +376,14 @@ const Home = () => {
                         ...
                     }
                 }
+            },
+            hackathonShowcaseSection {
+                ...,
+                "featuredImage": featuredImage.asset->url,
+                "carouselImages": carouselImages[].asset->url,
+                highlights[]{
+                    ...
+                }
             }
         }`;
 
@@ -373,16 +391,20 @@ const Home = () => {
             .then((data) => {
                 if (data) {
                     console.log('✅ Home page data loaded from Sanity');
-                    console.log('   - Businesses:', data.businessesSection?.length);
-                    console.log('   - Cinematic videos:', data.cinematicShowcase?.length);
-                    console.log('   - Testimonials:', data.testimonialsSection?.length);
+                    console.log('   - Businesses:', data.businessesSection?.length || 0);
+                    console.log('   - Cinematic videos:', data.cinematicShowcase?.length || 0);
+                    console.log('   - Testimonials:', data.testimonialsSection?.length || 0);
+                    console.log('   - Events:', data.upcomingEventsSection?.events?.length || 0);
+                    console.log('   - Hackathon Carousel:', data.hackathonShowcaseSection?.carouselImages?.length || 0);
                     setHomeData(data);
                 } else {
-                    console.warn('⚠️ No home page data from Sanity');
+                    console.warn('⚠️ No home page data from Sanity - using fallbacks');
+                    setHomeData(null);
                 }
             })
             .catch(err => {
-                console.error('❌ Error fetching home page:', err);
+                console.error('❌ Error fetching home page:', err.message || err);
+                setHomeData(null);
             });
     }, []);
 
@@ -621,6 +643,20 @@ const Home = () => {
         }, 4000);
         return () => clearInterval(interval);
     }, [internshipImages]);
+
+    // Hackathon carousel images (with fallback to default carousel)
+    const hackathonCarouselImages = (homeData?.hackathonShowcaseSection?.carouselImages && homeData.hackathonShowcaseSection.carouselImages.length > 0)
+        ? homeData.hackathonShowcaseSection.carouselImages
+        : HACKATHON_CAROUSEL_IMAGES;
+
+    // Auto-slide hackathon carousel
+    useEffect(() => {
+        if (hackathonCarouselImages.length <= 1) return;
+        const interval = setInterval(() => {
+            setActiveHackathonSlide(prev => (prev + 1) % hackathonCarouselImages.length);
+        }, 3000); // Change image every 3 seconds
+        return () => clearInterval(interval);
+    }, [hackathonCarouselImages]);
 
     const sustainabilityHeading = homeData?.sustainabilitySection?.heading || "Sustainability & CSR";
     const sustainabilityDesc = homeData?.sustainabilitySection?.description || "We are committed to building societal and business value together. Driving sustainable growth across all operations while empowering communities through innovation and care.";
@@ -1521,6 +1557,105 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* HACKATHON SHOWCASE SECTION */}
+            {homeData?.hackathonShowcaseSection?.isEnabled !== false && (
+                <section className="py-24 bg-gradient-to-b from-surface to-background border-t border-border relative overflow-hidden">
+                    {/* Background decorative elements */}
+                    <div className="absolute top-0 left-0 w-1/2 h-96 bg-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
+                    <div className="absolute bottom-0 right-0 w-1/2 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+                    <div className="container mx-auto px-6 relative z-10">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                            {/* Left Column - Content */}
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8 }}
+                            >
+                                <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                                    {homeData?.hackathonShowcaseSection?.subheading || "Compete & Create"}
+                                </span>
+                                <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6 leading-tight">
+                                    {homeData?.hackathonShowcaseSection?.heading || "Innovation Challenges & Hackathons"}
+                                </h2>
+                                <p className="text-lg text-secondary leading-relaxed mb-8 border-l-4 border-accent pl-6">
+                                    {homeData?.hackathonShowcaseSection?.description || "Join our hackathons and innovation challenges to showcase your skills, collaborate with industry professionals, and win amazing prizes."}
+                                </p>
+
+                                {/* Highlights Grid */}
+                                {homeData?.hackathonShowcaseSection?.highlights && homeData.hackathonShowcaseSection.highlights.length > 0 && (
+                                    <div className="space-y-4 mb-8">
+                                        {homeData.hackathonShowcaseSection.highlights.map((highlight, idx) => (
+                                            <motion.div
+                                                key={idx}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                                                className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors"
+                                            >
+                                                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent flex-shrink-0 mt-1">
+                                                    <Code size={20} />
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-primary mb-1">{highlight.title}</h4>
+                                                    <p className="text-sm text-secondary">{highlight.description}</p>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* CTA Button */}
+                                <Link
+                                    to={homeData?.hackathonShowcaseSection?.ctaLink || "/hackathon"}
+                                    className="inline-flex items-center px-8 py-4 bg-accent text-white rounded-full hover:bg-accent-dark transition-all shadow-lg font-bold hover:shadow-xl transform hover:scale-105"
+                                >
+                                    {homeData?.hackathonShowcaseSection?.ctaText || "Explore Hackathons"}
+                                    <ArrowRight className="ml-2" size={20} />
+                                </Link>
+                            </motion.div>
+
+                            {/* Right Column - Carousel Images */}
+                            <motion.div
+                                initial={{ opacity: 0, x: 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8 }}
+                                className="relative"
+                            >
+                                <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border/30 group h-[400px] md:h-[500px]">
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={activeHackathonSlide}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 1 }}
+                                            className="w-full h-full absolute inset-0"
+                                        >
+                                            <img
+                                                src={hackathonCarouselImages[activeHackathonSlide]}
+                                                alt={`Hackathon ${activeHackathonSlide + 1}`}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </motion.div>
+                                    </AnimatePresence>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent opacity-100"></div>
+                                    <div className="absolute inset-0 flex flex-col justify-end p-8 text-white">
+                                        <h3 className="text-2xl font-bold mb-2">Innovate with Purpose</h3>
+                                        <p className="text-white/90 text-sm">Win prizes, build your portfolio, and land your dream role.</p>
+                                    </div>
+                                </div>
+                                {/* Decorative accent */}
+                                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-accent/10 rounded-full blur-2xl pointer-events-none"></div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* SUSTAINABILITY SECTION (New) */}
             <section className="py-24 bg-background border-t border-border">

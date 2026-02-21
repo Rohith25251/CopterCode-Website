@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { client } from "../lib/sanity";
+import { client, urlFor } from "../lib/sanity";
 import PageHeader from '../components/PageHeader';
 import SEO from '../components/SEO';
 import { Calendar, MapPin, ArrowRight, Target, Package, Scale, ScrollText, Trophy, Users } from 'lucide-react';
@@ -11,6 +11,14 @@ import { Link } from 'react-router-dom';
 
 const Hackathon = () => {
     const [sanityData, setSanityData] = useState(null);
+
+    const HEADER_IMAGES = [
+        "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
+        "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
+        "/mediafiles/Home/IMG_1851.jpg",
+        "/mediafiles/Home/IMG_3322.jpg",
+        "/mediafiles/Home/IMG_3854.jpg"
+    ];
 
     const getFallbackImage = (category, title) => {
         const text = ((category || '') + " " + (title || '')).toLowerCase();
@@ -25,34 +33,60 @@ const Hackathon = () => {
     useEffect(() => {
         const query = `*[_type == "hackathonPage"][0]{
             ...,
+            hero {
+                ...,
+                backgroundImage { asset->{ url } },
+                backgroundImages[] { asset->{ url } }
+            },
             hackathonsList[] {
                 ...,
-                image { asset->{ url } }
+                image { asset->{ url } },
+                secondImage { asset->{ url } }
             }
         }`;
-        client.fetch(query).then(data => {
-            if (data) {
-                setSanityData({
-                    seo: data.seo,
-                    heroTitle: data.hero?.title,
-                    heroSubtitle: data.hero?.subtitle,
-                    hackathonsList: (data.hackathonsList || []).map(hackathon => {
-                        // Check if Sanity returned a valid image URL
-                        let imgUrl = hackathon.image?.asset?.url;
+        client.fetch(query)
+            .then(data => {
+                if (data) {
+                    console.log('✅ Hackathon page data loaded from Sanity');
+                    console.log('   - Hero Images:', data.hero?.backgroundImages?.length || 'none');
+                    console.log('   - Hackathons:', data.hackathonsList?.length || 0);
+                    
+                    // Process hero background images
+                    const sanityHeroImage = data.hero?.backgroundImage ? urlFor(data.hero.backgroundImage).url() : null;
+                    const sanityCarouselImages = data.hero?.backgroundImages?.length > 0
+                        ? data.hero.backgroundImages.map(img => urlFor(img).url())
+                        : [];
 
-                        // If no valid HTTP URL exists, use the mapped optimized image
-                        if (!imgUrl || !imgUrl.startsWith('http')) {
-                            imgUrl = getFallbackImage(hackathon.category, hackathon.title);
-                        }
+                    const heroImages = sanityCarouselImages.length > 0
+                        ? sanityCarouselImages
+                        : (sanityHeroImage ? [sanityHeroImage] : HEADER_IMAGES);
 
-                        return {
-                            ...hackathon,
-                            image: imgUrl
-                        };
-                    })
-                });
-            }
-        }).catch(console.error);
+                    setSanityData({
+                        seo: data.seo,
+                        heroTitle: data.hero?.title,
+                        heroSubtitle: data.hero?.subtitle,
+                        heroImages: heroImages,
+                        hackathonsList: (data.hackathonsList || []).map(hackathon => {
+                            let imgUrl = hackathon.image?.asset?.url;
+
+                            // If no valid HTTP URL exists, use the mapped optimized image
+                            if (!imgUrl || !imgUrl.startsWith('http')) {
+                                imgUrl = getFallbackImage(hackathon.category, hackathon.title);
+                            }
+
+                            return {
+                                ...hackathon,
+                                image: imgUrl
+                            };
+                        })
+                    });
+                } else {
+                    console.warn('⚠️ No hackathon page data from Sanity - using fallbacks');
+                }
+            })
+            .catch(err => {
+                console.error('❌ Error fetching hackathon page:', err.message || err);
+            });
     }, []);
 
     const seoTitle = sanityData?.seo?.metaTitle || "Hackathons | Innovation Challenges & Competitions";
@@ -60,6 +94,7 @@ const Hackathon = () => {
 
     const heroTitle = sanityData?.heroTitle || "Hackathons";
     const heroSubtitle = sanityData?.heroSubtitle || "Code the future with CopterCode. Join our innovation challenges and competitions.";
+    const heroImages = (sanityData?.heroImages && sanityData.heroImages.length > 0) ? sanityData.heroImages : HEADER_IMAGES;
 
     const hackathonsList = sanityData?.hackathonsList || [
         {
@@ -70,6 +105,7 @@ const Hackathon = () => {
             description: "A thrilling 48-hour hackathon to develop innovative drone solutions and autonomous systems. Open to students and professionals.",
             fullDescription: "Participants will work in teams of 3-5 to design, prototype, and present cutting-edge drone technology solutions. The event includes mentorship sessions, workshops on embedded systems, and networking opportunities with industry leaders from CopterCode and partner organizations.",
             image: "/_optimized/mediafiles/hackathons/hackathon_drones.webp",
+            secondImage: "/_optimized/mediafiles/hackathons/hackathon_ai.webp",
             registerLink: "/contact",
             status: "upcoming",
             tags: ["Innovation", "Drones", "Automation"],
@@ -252,6 +288,7 @@ const Hackathon = () => {
             <PageHeader
                 title={heroTitle}
                 subtitle={heroSubtitle}
+                images={heroImages}
             />
 
             {/* Featured Hackathons Section */}
@@ -270,34 +307,36 @@ const Hackathon = () => {
                                 viewport={{ once: true, margin: "-50px" }}
                                 className="group relative bg-white rounded-3xl overflow-hidden border border-border/60 transition-all duration-500 shadow-lg hover:shadow-2xl"
                             >
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                                <div className="flex flex-col lg:flex-row gap-0">
                                     {/* Featured Image */}
-                                    <div className="relative h-80 lg:h-full min-h-[400px] overflow-hidden order-2 lg:order-1">
-                                        <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-500" />
-                                        {featuredHackathon.image && (
-                                            featuredHackathon.image.includes('_optimized') ? (
-                                                <img
-                                                    src={featuredHackathon.image}
-                                                    alt={featuredHackathon.title}
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                                                />
-                                            ) : (
-                                                <OptimizedImage
-                                                    src={featuredHackathon.image}
-                                                    alt={featuredHackathon.title}
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                                                    sizes="(min-width:1024px) 50vw, 100vw"
-                                                />
-                                            )
-                                        )}
+                                    <div className="w-full lg:w-[45%] h-64 lg:h-auto min-h-[300px] lg:min-h-[500px] overflow-hidden order-2 lg:order-1">
+                                        <div className="relative w-full h-full">
+                                            <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-500" />
+                                            {featuredHackathon.image && (
+                                                featuredHackathon.image.includes('_optimized') ? (
+                                                    <img
+                                                        src={featuredHackathon.image}
+                                                        alt={featuredHackathon.title}
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                                    />
+                                                ) : (
+                                                    <OptimizedImage
+                                                        src={featuredHackathon.image}
+                                                        alt={featuredHackathon.title}
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                                        sizes="(min-width:1024px) 45vw, 100vw"
+                                                    />
+                                                )
+                                            )}
+                                        </div>
                                     </div>
 
                                     {/* Featured Content */}
-                                    <div className="p-8 lg:p-14 flex flex-col justify-center order-1 lg:order-2 relative z-20 bg-white">
+                                    <div className="pt-12 px-8 pb-8 lg:pt-12 lg:px-14 lg:pb-14 flex flex-col justify-start order-1 lg:order-2 relative z-20 bg-white w-full lg:w-[55%] overflow-y-auto max-h-screen lg:max-h-[500px]">
                                         <div>
                                             {/* Status & Category Badges */}
                                             <div className="flex flex-wrap gap-3 mb-8">

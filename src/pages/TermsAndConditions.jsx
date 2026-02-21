@@ -9,11 +9,18 @@ const TermsAndConditions = () => {
 
     useEffect(() => {
         const query = `*[_type == "termsAndConditionsPage"][0]`;
-        client.fetch(query).then((data) => {
-            if (data) {
-                setSanityData(data);
-            }
-        }).catch(console.error);
+        client.fetch(query)
+            .then((data) => {
+                if (data) {
+                    console.log('✅ Terms & Conditions page data loaded from Sanity');
+                    setSanityData(data);
+                } else {
+                    console.warn('⚠️ No terms & conditions page data from Sanity - using defaults');
+                }
+            })
+            .catch(err => {
+                console.error('❌ Error fetching terms & conditions page:', err.message || err);
+            });
     }, []);
 
     const effectiveDate = sanityData?.dates?.effectiveDate || "January 15, 2025";
