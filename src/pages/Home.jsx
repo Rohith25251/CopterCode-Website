@@ -1587,24 +1587,27 @@ const Home = () => {
                                 {/* Highlights Grid */}
                                 {homeData?.hackathonShowcaseSection?.highlights && homeData.hackathonShowcaseSection.highlights.length > 0 && (
                                     <div className="space-y-4 mb-8">
-                                        {homeData.hackathonShowcaseSection.highlights.map((highlight, idx) => (
-                                            <motion.div
-                                                key={idx}
-                                                initial={{ opacity: 0, x: -20 }}
-                                                whileInView={{ opacity: 1, x: 0 }}
-                                                viewport={{ once: true }}
-                                                transition={{ delay: idx * 0.1, duration: 0.6 }}
-                                                className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors"
-                                            >
-                                                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent flex-shrink-0 mt-1">
-                                                    <Code size={20} />
-                                                </div>
-                                                <div>
-                                                    <h4 className="font-bold text-primary mb-1">{highlight.title}</h4>
-                                                    <p className="text-sm text-secondary">{highlight.description}</p>
-                                                </div>
-                                            </motion.div>
-                                        ))}
+                                        {homeData.hackathonShowcaseSection.highlights.map((highlight, idx) => {
+                                            const IconComponent = highlight.icon ? (iconComponentMap[highlight.icon] || Code) : Code;
+                                            return (
+                                                <motion.div
+                                                    key={idx}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    whileInView={{ opacity: 1, x: 0 }}
+                                                    viewport={{ once: true }}
+                                                    transition={{ delay: idx * 0.1, duration: 0.6 }}
+                                                    className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors"
+                                                >
+                                                    <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent flex-shrink-0 mt-1">
+                                                        <IconComponent size={20} />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="font-bold text-primary mb-1">{highlight.title}</h4>
+                                                        <p className="text-sm text-secondary">{highlight.description}</p>
+                                                    </div>
+                                                </motion.div>
+                                            );
+                                        })}
                                     </div>
                                 )}
 
