@@ -154,7 +154,7 @@ const Footer = () => {
       { label: "New Energy & Materials", url: "/New Energy & Materials" },
       { label: "ERP Software Solutions", url: "/ERP Software Solutions" },
       { label: "Retail & Food Collaborations", url: "/Retail & Food Collaborations" },
-      { label: "Infrastructure Security", url: "/Infrastructure Security" },
+      { label: "Infra Security", url: "/Infra Security" },
     ]
   };
 
