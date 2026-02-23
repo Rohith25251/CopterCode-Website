@@ -149,12 +149,12 @@ const Footer = () => {
   const defaultCol2 = {
     title: "Businesses",
     links: [
-      { label: "Industrial Drones & UAV", url: "/industrial-drones" },
-      { label: "Digital Services", url: "/digital-services" },
-      { label: "New Energy & Materials", url: "/new-energy" },
-      { label: "ERP Software Solutions", url: "/erp-solutions" },
-      { label: "Retail & Food Collaborations", url: "/retail-food" },
-      { label: "Infrastructure Security", url: "/infra-security" },
+      { label: "Industrial Drones & UAV", url: "/Industrial Drones & UAV" },
+      { label: "Digital Services", url: "/Digital Services" },
+      { label: "New Energy & Materials", url: "/New Energy & Materials" },
+      { label: "ERP Software Solutions", url: "/ERP Software Solutions" },
+      { label: "Retail & Food Collaborations", url: "/Retail & Food Collaborations" },
+      { label: "Infrastructure Security", url: "/Infrastructure Security" },
     ]
   };
 
