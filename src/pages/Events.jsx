@@ -22,6 +22,7 @@ const Events = () => {
         }`;
         client.fetch(query).then(data => {
             if (data) {
+                console.log('✅ Events page data loaded from Sanity');
                 setSanityData({
                     seo: data.seo,
                     heroTitle: data.hero?.title,
@@ -31,8 +32,12 @@ const Events = () => {
                         image: event.image?.asset?.url
                     }))
                 });
+            } else {
+                console.warn('⚠️ No events page data from Sanity - using fallbacks');
             }
-        }).catch(console.error);
+        }).catch(err => {
+            console.error('❌ Error fetching events page:', err.message || err);
+        });
     }, []);
 
     const seoTitle = sanityData?.seo?.metaTitle || "Events | Conferences & Networking";

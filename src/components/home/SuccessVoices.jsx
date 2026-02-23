@@ -34,7 +34,7 @@ const SuccessVoices = ({ data }) => {
 
     return (
         <section className="py-24 bg-background border-t border-border">
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 className="text-3xl font-display font-medium mb-12 text-center text-primary">Voice of Success</h2>
 
                 <div className="max-w-5xl mx-auto relative group">

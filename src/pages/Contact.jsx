@@ -23,6 +23,7 @@ const Contact = () => {
 
     client.fetch(query).then((data) => {
       if (data) {
+        console.log('✅ Contact page data loaded from Sanity');
         setSanityData({
           seo: data.seo,
           heroTitle: data.hero?.title,
@@ -46,8 +47,12 @@ const Contact = () => {
           weekendStatus: data.hours?.weekendStatus,
           formTitle: data.form?.title,
         });
+      } else {
+        console.warn('⚠️ No contact page data from Sanity - using defaults');
       }
-    }).catch(console.error);
+    }).catch(err => {
+      console.error('❌ Error fetching contact page:', err.message || err);
+    });
   }, []);
 
   const [formState, setFormState] = useState({

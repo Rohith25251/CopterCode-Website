@@ -20,7 +20,7 @@ export const CinematicShowcase = ({ items }) => {
 
     return (
         <section className="py-24 bg-background border-t border-border overflow-hidden">
-            <div className="container mx-auto px-6 mb-12 flex justify-between items-end">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12 flex justify-between items-end">
                 <div>
                     <h2 className="text-3xl md:text-4xl font-display font-medium text-primary mb-2">CopterCode in Action</h2>
                     <div className="w-20 h-1 bg-accent rounded-full" />
@@ -70,10 +70,10 @@ export const AnnouncementsSection = ({ items }) => {
     const displayItems = items || defaultItems;
 
     return (
-        <section className="py-24 bg-surface">
-            <div className="container mx-auto px-6">
-                <div className="mb-12">
-                    <h2 className="text-3xl md:text-4xl font-display font-medium text-primary mb-2">Announcements</h2>
+        <section className="py-16 sm:py-20 md:py-24 bg-surface">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mb-8 sm:mb-10 md:mb-12">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-medium text-primary mb-2">Announcements</h2>
                     <div className="w-20 h-1 bg-accent rounded-full" />
                 </div>
 
@@ -120,9 +120,9 @@ export const AdvancedTechSection = ({ data }) => {
     const videoSrc = data?.videoUrl || data?.videoFile;
 
     return (
-        <section className="py-24 bg-background overflow-hidden">
-            <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <section className="py-16 sm:py-20 md:py-24 bg-background overflow-hidden">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
                     <div>
                         <span className="text-secondary text-xs font-bold tracking-[0.2em] uppercase mb-4 block flex items-center">
                             <div className="w-8 h-px bg-accent mr-3" />
@@ -177,9 +177,9 @@ export const TestimonialsSection = ({ items }) => {
     const videoSrc = item.videoFile || item.genericVideoUrl || item.videoUrl;
 
     return (
-        <section className="py-24 bg-surface text-center">
-            <div className="container mx-auto px-6">
-                <h2 className="text-3xl font-display font-medium text-primary mb-12">Voice of Success</h2>
+        <section className="py-16 sm:py-20 md:py-24 bg-surface text-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className="text-2xl sm:text-3xl font-display font-medium text-primary mb-8 sm:mb-10 md:mb-12">Voice of Success</h2>
 
                 <div className="max-w-4xl mx-auto relative group">
                     <div className="aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-border relative">
@@ -220,9 +220,9 @@ export const TestimonialsSection = ({ items }) => {
 // 5. Global Footprint
 export const FootprintSection = ({ imageUrl }) => {
     return (
-        <section className="py-24 bg-background">
-            <div className="container mx-auto px-6 text-center">
-                <h2 className="text-3xl md:text-4xl font-display font-medium text-primary mb-16">Global Footprint of Our Talent</h2>
+        <section className="py-16 sm:py-20 md:py-24 bg-background">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-medium text-primary mb-12 sm:mb-14 md:mb-16">Global Footprint of Our Talent</h2>
 
                 <div className="bg-white p-8 md:p-16 rounded-3xl shadow-sm border border-border mx-auto max-w-5xl">
                         {imageUrl ? (

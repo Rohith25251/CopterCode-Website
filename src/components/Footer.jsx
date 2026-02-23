@@ -102,6 +102,7 @@ const Footer = () => {
     const query = `*[_type == "footer"][0]`;
     client.fetch(query).then(data => {
       if (data) {
+        console.log('✅ Footer data loaded from Sanity');
         // Map Sanity data to expected structure
         setFooterData({
           subscriptionTitle: data.subscriptionTitle,
@@ -116,8 +117,12 @@ const Footer = () => {
           contactTitle: "Contact Us", // Default or add to schema if needed, strictly not asked but good to have
           socialLinks: data.socialLinks
         });
+      } else {
+        console.warn('⚠️  No footer data from Sanity - using defaults');
       }
-    }).catch(console.error);
+    }).catch(err => {
+      console.error('❌ Error fetching footer data:', err.message || err);
+    });
   }, []);
 
   const settings = footerData ? { socialLinks: footerData.socialLinks, companyName: "CopterCode" } : null;
@@ -220,10 +225,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-background text-primary pt-20 pb-10 border-t border-border font-sans">
-      <div className="container mx-auto px-6">
+    <footer className="bg-background text-primary pt-16 sm:pt-20 pb-8 sm:pb-10 border-t border-border font-sans">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Stay Updated Section */}
-        <div className="flex flex-col items-center text-center mb-20">
+        <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
           <div className="flex space-x-4 mb-8">
             {socialLinks.linkedin && renderSocialIcon('linkedin', socialLinks.linkedin)}
             {socialLinks.instagram && renderSocialIcon('instagram', socialLinks.instagram)}
@@ -238,7 +243,7 @@ const Footer = () => {
             )}
           </div>
 
-          <h2 className="text-3xl md:text-4xl font-display font-medium text-primary mb-2">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-medium text-primary mb-2">
             {footerData?.subscriptionTitle || `Stay Updated with ${settings?.companyName || "CopterCode"}`}
           </h2>
           <div className="w-12 h-1 bg-accent mb-8 mx-auto"></div>
@@ -278,7 +283,7 @@ const Footer = () => {
         </div>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-t border-border pt-16 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 border-t border-border pt-12 sm:pt-16 text-sm">
 
           {/* Column 1 */}
           <div>
@@ -375,11 +380,11 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center text-sm text-secondary/70">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center text-sm text-secondary/70 gap-4">
         <p>
           {copyrightText}
         </p>
-        <div className="flex space-x-6 mt-4 md:mt-0">
+        <div className="flex space-x-6 mt-0">
           <Link to="/privacy" onClick={() => handleLinkClick('/privacy')} className="hover:text-accent transition-colors">
             Privacy Policy
           </Link>

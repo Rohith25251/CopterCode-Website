@@ -23,12 +23,17 @@ const Navbar = () => {
 
     client.fetch(query).then((data) => {
       if (data) {
+        console.log('✅ Navigation data loaded from Sanity');
         setSanityNavData({
           ...data,
           logo: data.logo?.asset?.url
         });
+      } else {
+        console.warn('⚠️  No navigation data from Sanity - using defaults');
       }
-    }).catch(console.error);
+    }).catch(err => {
+      console.error('❌ Error fetching navigation data:', err.message || err);
+    });
   }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -54,7 +59,6 @@ const Navbar = () => {
     { name: "Administration", path: "/administration" },
     { name: "Careers", path: "/careers" },
     { name: "Events", path: "/events" },
-    { name: "Insights", path: "/news" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -94,14 +98,14 @@ const Navbar = () => {
       className={`fixed w-full z-[1000] transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm" : "bg-transparent"}`}
       style={{ height: "var(--nav-height)" }}
     >
-      <div className="container mx-auto px-6 h-full flex justify-between items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex justify-between items-center">
         <Link
           to="/"
-          className="flex items-center space-x-3 group min-w-fit"
+          className="flex items-center space-x-2 sm:space-x-3 group min-w-fit"
           onClick={() => handleSamePageClick("/")}
         >
           <motion.div
-            className="relative h-16 w-16 overflow-hidden rounded-2xl bg-black shadow-2xl flex items-center justify-center z-20 border-none outline-none"
+            className="relative h-12 sm:h-16 w-12 sm:w-16 overflow-hidden rounded-2xl bg-black shadow-2xl flex items-center justify-center z-20 border-none outline-none"
             whileHover={{}}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -115,7 +119,7 @@ const Navbar = () => {
               sizes="64px"
             />
           </motion.div>
-          <span className="text-xl font-display font-bold tracking-wide text-primary group-hover:text-accent transition-colors block">
+          <span className="text-sm xs:text-base sm:text-xl font-display font-bold tracking-wide text-primary group-hover:text-accent transition-colors block">
             {companyTitle}
           </span>
         </Link>

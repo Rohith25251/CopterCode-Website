@@ -37,7 +37,7 @@ const Announcements = ({ data }) => {
             viewport={{ once: true }}
             className="py-24 bg-background text-primary relative"
         >
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 className="text-5xl font-display font-medium text-primary mb-2">Announcements</h2>
                 <div className="w-20 h-1 bg-accent mb-16"></div>
 

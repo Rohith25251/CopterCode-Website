@@ -29,14 +29,14 @@ const PartnerLogos = ({ data }) => {
     const marqueeLogos = [...logos, ...logos, ...logos, ...logos];
 
     return (
-        <section className="py-24 bg-surface relative overflow-hidden">
-            <div className="container mx-auto px-6">
+        <section className="py-16 sm:py-20 md:py-24 bg-surface relative overflow-hidden">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center">
                     <motion.h4
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-2xl font-bold mb-12 text-secondary uppercase tracking-widest"
+                        className="text-xl sm:text-2xl font-bold mb-8 sm:mb-10 md:mb-12 text-secondary uppercase tracking-widest"
                     >
                         {heading}
                     </motion.h4>

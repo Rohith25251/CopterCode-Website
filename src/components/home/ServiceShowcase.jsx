@@ -63,7 +63,7 @@ const ServiceShowcase = ({ data }) => {
             viewport={{ once: true }}
             className="py-24 bg-surface border-y border-border"
         >
-            <div className="container mx-auto px-6 mb-8 flex justify-between items-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8 flex justify-between items-center">
                 <div>
                     <h2 className="text-3xl font-display font-medium mb-2 text-primary">CopterCode in Action</h2>
                     <div className="w-12 h-1 bg-accent rounded-full"></div>

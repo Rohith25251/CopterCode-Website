@@ -91,7 +91,7 @@ const BusinessesSection = ({ businessData }) => {
         <section className="relative w-full min-h-[90vh] lg:min-h-screen bg-background flex flex-col lg:flex-row overflow-hidden">
 
             {/* LEFT PANEL: Content Area (Dark, Minimal, Editorial) */}
-            <div className="w-full lg:w-1/2 bg-background flex flex-col justify-center px-8 md:px-16 lg:px-24 py-12 lg:py-0 relative z-10 order-2 lg:order-1 border-r border-primary/10">
+            <div className="w-full lg:w-1/2 bg-background flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-12 lg:py-0 relative z-10 order-2 lg:order-1 border-r border-primary/10">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeIndex}
@@ -114,7 +114,7 @@ const BusinessesSection = ({ businessData }) => {
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-primary leading-[1.1] mb-8"
+                            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-medium text-primary leading-[1.1] mb-6 sm:mb-8"
                         >
                             {currentBusiness.title.split('&').map((part, i, arr) => (
                                 <span key={i} className="block">
@@ -128,7 +128,7 @@ const BusinessesSection = ({ businessData }) => {
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className="text-lg text-secondary leading-relaxed mb-12 font-light"
+                            className="text-sm sm:text-base md:text-lg text-secondary leading-relaxed mb-8 sm:mb-12 font-light"
                         >
                             {currentBusiness.description}
                         </motion.p>

@@ -33,6 +33,7 @@ const Careers = () => {
 
     client.fetch(query).then((data) => {
       if (data) {
+        console.log('✅ Careers page data loaded from Sanity');
         // Flatten the structure to match what the component expects
         setSanityData({
           seo: data.seo,
@@ -52,8 +53,12 @@ const Careers = () => {
           ctaButtonText: data.cta?.buttonText,
           ctaButtonLink: data.cta?.buttonLink
         });
+      } else {
+        console.warn('⚠️ No careers page data from Sanity - using fallbacks');
       }
-    }).catch(console.error);
+    }).catch(err => {
+      console.error('❌ Error fetching careers page:', err.message || err);
+    });
   }, []);
 
   // Fallbacks

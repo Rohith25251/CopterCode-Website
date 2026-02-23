@@ -19,7 +19,7 @@ const TechnologyHighlights = ({ data }) => {
 
     return (
         <section className="py-24 bg-white relative overflow-hidden">
-            <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-20 items-center">
                 <div>
                     <span className="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-6 block flex items-center">
                         <div className="w-8 h-px bg-secondary mr-3"></div>

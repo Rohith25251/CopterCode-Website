@@ -37,6 +37,7 @@ const Administration = () => {
 
     client.fetch(query).then((data) => {
       if (data) {
+        console.log('✅ Administration page data loaded from Sanity');
         setSanityData({
           ...data,
           executiveLeadership: data.executiveLeadership?.map(member => ({
@@ -56,8 +57,12 @@ const Administration = () => {
             image: member.image?.asset?.url
           }))
         });
+      } else {
+        console.warn('⚠️ No administration page data from Sanity - using fallbacks');
       }
-    }).catch(console.error);
+    }).catch(err => {
+      console.error('❌ Error fetching administration page:', err.message || err);
+    });
   }, []);
 
   // Handle hash-based scroll navigation

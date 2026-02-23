@@ -80,7 +80,7 @@ const Hero = ({ data }) => {
 
 
   return (
-    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-6 md:pt-16 pb-10 md:pb-32 group">
+    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-6 sm:pt-8 md:pt-12 lg:pt-16 pb-8 sm:pb-12 md:pb-20 lg:pb-32 group">
       {/* Premium Background Layers */}
       <div className="absolute inset-0 bg-background z-0" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/5 via-transparent to-transparent opacity-30 pointer-events-none z-0" />
@@ -138,11 +138,11 @@ const Hero = ({ data }) => {
       <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-white/20 rounded-full blur-[150px] pointer-events-none z-0 mix-blend-screen opacity-60" />
       <div className="absolute bottom-[-20%] left-[-15%] w-[900px] h-[900px] bg-gray-400/20 rounded-full blur-[180px] pointer-events-none z-0 mix-blend-screen opacity-60" />
 
-      <div className="container mx-auto px-6 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10 items-center max-w-7xl mx-auto">
           {/* Left Content (Text) */}
           <motion.div
-            className="lg:col-span-5 flex flex-col justify-center relative z-20"
+            className="flex flex-col justify-center relative z-20"
             initial="hidden"
             animate="visible"
             variants={{
@@ -159,16 +159,16 @@ const Hero = ({ data }) => {
                 hidden: { opacity: 0, scale: 0.8 },
                 visible: { opacity: 1, scale: 1 },
               }}
-              className="inline-block border border-accent/40 rounded-full px-5 py-2 mb-8 w-fit bg-primary/5 backdrop-blur-sm shadow-[0_0_15px_rgba(160,174,192,0.15)] group-hover:shadow-[0_0_25px_rgba(160,174,192,0.3)] transition-shadow duration-500"
+              className="inline-block border border-accent/40 rounded-full px-4 sm:px-5 py-2 mb-6 sm:mb-8 w-fit bg-primary/5 backdrop-blur-sm shadow-[0_0_15px_rgba(160,174,192,0.15)] group-hover:shadow-[0_0_25px_rgba(160,174,192,0.3)] transition-shadow duration-500"
             >
-              <span className="text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase text-secondary drop-shadow-sm flex items-center gap-2">
+              <span className="text-[9px] sm:text-xs font-bold tracking-[0.25em] uppercase text-secondary drop-shadow-sm flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
                 {label}
               </span>
             </motion.div>
 
             {/* Main Headline - Animated Letters */}
-            <h1 className="font-display font-black tracking-tighter text-primary mb-8 leading-none text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl drop-shadow-2xl">
+            <h1 className="font-display font-black tracking-tighter text-primary mb-6 sm:mb-8 leading-tight text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl drop-shadow-2xl whitespace-normal">
               <span className="sr-only">{headline}</span>
               <span aria-hidden="true" className="block">
                 {(() => {
@@ -252,7 +252,7 @@ const Hero = ({ data }) => {
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0 },
               }}
-              className="text-lg md:text-xl text-secondary/80 mb-10 max-w-lg leading-relaxed font-light tracking-wide border-l-2 border-accent/20 pl-6"
+              className="text-sm sm:text-base md:text-base lg:text-lg text-secondary/80 mb-8 sm:mb-10 max-w-md leading-relaxed font-light tracking-wide border-l-2 border-accent/20 pl-4 sm:pl-6"
             >
               {subheadline ? (
                 Array.isArray(subheadline) ? (
@@ -297,23 +297,23 @@ const Hero = ({ data }) => {
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0 },
               }}
-              className="flex flex-col sm:flex-row gap-5 items-start sm:items-center"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center w-full sm:w-auto"
             >
-              <Link to={ctaLink}>
+              <Link to={ctaLink} className="w-full sm:w-auto">
                 <motion.div
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0 0 40px rgba(0,0,0,0.1)",
                   }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 bg-primary text-white rounded font-bold w-full sm:w-auto text-center shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 relative overflow-hidden group/btn"
+                  className="px-8 sm:px-10 py-3 sm:py-4 bg-primary text-white rounded font-bold text-center text-sm sm:text-base shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 relative overflow-hidden group/btn"
                 >
                   <span className="relative z-10">{ctaText}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-500" />
                 </motion.div>
               </Link>
 
-              <Link to={secondaryCtaLink}>
+              <Link to={secondaryCtaLink} className="w-full sm:w-auto">
                 <motion.div
                   whileHover={{
                     scale: 1.05,
@@ -321,7 +321,7 @@ const Hero = ({ data }) => {
                     backgroundColor: "rgba(160,174,192,0.1)",
                   }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 text-primary font-medium flex items-center justify-center space-x-2 border border-accent/40 rounded bg-transparent w-full sm:w-auto group shadow-[0_0_15px_rgba(160,174,192,0.05)] transition-all duration-300"
+                  className="px-8 sm:px-10 py-3 sm:py-4 text-primary font-medium flex items-center justify-center space-x-2 border border-accent/40 rounded bg-transparent text-sm sm:text-base group shadow-[0_0_15px_rgba(160,174,192,0.05)] transition-all duration-300"
                 >
                   <span>{secondaryCtaText}</span>
                   <ArrowRight
@@ -335,7 +335,7 @@ const Hero = ({ data }) => {
 
           {/* Right Content - Slideshow with Grid Background */}
           <motion.div
-            className="lg:col-span-7 relative mt-8 md:mt-10 lg:mt-0 flex items-center justify-center z-10 group"
+            className="flex col-span-1 relative mt-8 md:mt-6 lg:mt-0 flex items-center justify-center z-10 group"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
@@ -367,7 +367,7 @@ const Hero = ({ data }) => {
               </AnimatePresence>
 
               {/* Image Indicator Dots */}
-              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+              <div className="absolute -bottom-8 sm:-bottom-10 md:-bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-2">
                 {images.map((_, idx) => (
                   <motion.div
                     key={idx}

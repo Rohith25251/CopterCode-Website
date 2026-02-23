@@ -10,14 +10,14 @@ const PlacementSection = ({ data }) => {
     if (!isActive) return null;
 
     return (
-        <section className="py-24 bg-surface relative overflow-hidden">
-            <div className="container mx-auto px-6">
-                <div className="mb-24 text-center">
+        <section className="py-16 sm:py-20 md:py-24 bg-surface relative overflow-hidden">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mb-16 sm:mb-20 md:mb-24 text-center">
                     <motion.h3
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl font-display font-medium mb-12 text-primary"
+                        className="text-2xl sm:text-3xl md:text-4xl font-display font-medium mb-8 sm:mb-10 md:mb-12 text-primary"
                     >
                         {title}
                     </motion.h3>
