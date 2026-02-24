@@ -669,6 +669,13 @@ export const homePage = {
                     ]
                 },
                 {
+                    name: 'quoteImage',
+                    title: 'Quote Card Image (Optional)',
+                    description: 'Upload an image to replace the default text-based "Zero Latency" quote card.',
+                    type: 'image',
+                    options: { hotspot: true }
+                },
+                {
                     name: 'caseStudies',
                     title: 'Case Studies',
                     type: 'array',
@@ -696,6 +703,23 @@ export const homePage = {
                         }
                     ]
                 }
+            ]
+        },
+        // --- ACCREDITATIONS & PARTNERSHIPS SECTION ---
+        {
+            name: 'accreditationsSection',
+            title: 'Accreditations & Partnerships Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Section Heading', initialValue: 'Our Accreditations & Partnerships' },
+                {
+                    name: 'logos',
+                    title: 'Partner Logos',
+                    type: 'array',
+                    of: [{ type: 'image', options: { hotspot: true } }]
+                },
+                { name: 'enableAutoScroll', type: 'boolean', title: 'Enable Auto-Scroll', initialValue: true },
+                { name: 'scrollInterval', type: 'number', title: 'Scroll Interval (seconds)', initialValue: 3 }
             ]
         }
     ]

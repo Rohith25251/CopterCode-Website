@@ -367,6 +367,7 @@ const Home = () => {
             },
             whyChooseSection {
                 ...,
+                "quoteImage": quoteImage.asset->url,
                 features[]{
                     ...
                 },
@@ -384,6 +385,10 @@ const Home = () => {
                 highlights[]{
                     ...
                 }
+            },
+            accreditationsSection {
+                ...,
+                "logos": logos[].asset->url
             }
         }`;
 
@@ -1875,15 +1880,85 @@ const Home = () => {
                                 ))}
                             </div>
 
-                            {/* Decorative Quote-like Box - Dark Contrast */}
-                            <div className="mt-8 bg-primary rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
-                                <div className="relative z-10">
-                                    <h4 className="text-2xl font-black text-white italic mb-2">"Zero Latency."</h4>
-                                    <p className="text-gray-400 text-sm font-medium">Our commitment to real-time performance in both drone telemetry and digital infrastructure.</p>
+                            {/* Decorative Quote-like Box / Image Block */}
+                            {WHY_CHOOSE_DATA.quoteImage ? (
+                                <div className="mt-8 rounded-3xl overflow-hidden shadow-2xl relative w-full h-[200px] border border-border bg-primary/10">
+                                    <img
+                                        src={WHY_CHOOSE_DATA.quoteImage}
+                                        alt="Zero Latency Quote"
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-                            </div>
+                            ) : (
+                                <div className="mt-8 bg-primary rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
+                                    <div className="relative z-10">
+                                        <h4 className="text-2xl font-black text-white italic mb-2">"Zero Latency."</h4>
+                                        <p className="text-gray-400 text-sm font-medium">Our commitment to real-time performance in both drone telemetry and digital infrastructure.</p>
+                                    </div>
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+                                </div>
+                            )}
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ACCREDITATIONS & PARTNERSHIPS SECTION */}
+            <section className="py-20 bg-primary text-white relative overflow-hidden border-t border-white/5">
+                {/* Subtle Ambient Glow */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+
+                <div className="container mx-auto px-6 relative z-10">
+                    <h2 className="text-xl md:text-2xl font-bold font-medium mb-10 text-center text-white tracking-wide">
+                        {homeData?.accreditationsSection?.heading || "Our Accreditations & Partnerships"}
+                    </h2>
+
+                    <div className="relative overflow-hidden w-full max-w-6xl mx-auto group pb-4 pt-4">
+                        {(() => {
+                            const logos = homeData?.accreditationsSection?.logos?.length > 0
+                                ? homeData.accreditationsSection.logos
+                                : [
+                                    "/_optimized/mediafiles/Our Accreditations & Partnerships/ChatGPT Image Feb 24, 2026, 03_46_20 PM.webp",
+                                    "/_optimized/mediafiles/Our Accreditations & Partnerships/ChatGPT Image Feb 24, 2026, 03_47_06 PM.webp"
+                                ];
+
+                            const enableAutoScroll = homeData?.accreditationsSection?.enableAutoScroll !== false;
+                            const intervalSecs = homeData?.accreditationsSection?.scrollInterval || 3;
+                            const shouldScroll = enableAutoScroll && logos.length > 3;
+
+                            // Time to scroll the entire sequence equals (interval * number of logos)
+                            const animationDuration = shouldScroll ? `${logos.length * intervalSecs}s` : '0s';
+
+                            return (
+                                <>
+                                    {shouldScroll && (
+                                        <>
+                                            <style>{`
+                                                @keyframes logoMarquee {
+                                                    0% { transform: translateX(0); }
+                                                    100% { transform: translateX(calc(-50% - 1rem)); } 
+                                                }
+                                            `}</style>
+                                            <div className="absolute left-0 top-0 bottom-0 w-12 md:w-32 bg-gradient-to-r from-primary to-transparent z-10 pointer-events-none"></div>
+                                            <div className="absolute right-0 top-0 bottom-0 w-12 md:w-32 bg-gradient-to-l from-primary to-transparent z-10 pointer-events-none"></div>
+                                        </>
+                                    )}
+                                    <div
+                                        className={`flex items-center gap-6 md:gap-8 ${shouldScroll ? 'w-max' : 'justify-center flex-wrap'}`}
+                                        style={shouldScroll ? {
+                                            animation: `logoMarquee ${animationDuration} linear infinite`,
+                                            willChange: 'transform'
+                                        } : {}}
+                                    >
+                                        {(shouldScroll ? [...logos, ...logos] : logos).map((logoUrl, i) => (
+                                            <div key={i} className="bg-white px-6 py-6 md:px-8 md:py-8 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.3)] border border-white/10 flex items-center justify-center hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] transition-all shrink-0 w-44 md:w-56 h-28 md:h-36 hover:-translate-y-1">
+                                                <img src={logoUrl} alt={`Partner ${i}`} className="max-w-[80%] max-h-[80%] object-contain" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            );
+                        })()}
                     </div>
                 </div>
             </section>
