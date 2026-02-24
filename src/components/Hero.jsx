@@ -139,10 +139,10 @@ const Hero = ({ data }) => {
       <div className="absolute bottom-[-20%] left-[-15%] w-[900px] h-[900px] bg-gray-400/20 rounded-full blur-[180px] pointer-events-none z-0 mix-blend-screen opacity-60" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10 items-center max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-10 items-center max-w-[90rem] mx-auto">
           {/* Left Content (Text) */}
           <motion.div
-            className="flex flex-col justify-center relative z-20"
+            className="flex flex-col justify-center relative z-20 lg:col-span-5"
             initial="hidden"
             animate="visible"
             variants={{
@@ -335,24 +335,24 @@ const Hero = ({ data }) => {
 
           {/* Right Content - Slideshow with Grid Background */}
           <motion.div
-            className="flex col-span-1 relative mt-8 md:mt-6 lg:mt-0 flex items-center justify-center z-10 group"
+            className="flex lg:col-span-7 relative mt-10 md:mt-12 lg:mt-0 items-center justify-center z-10 group w-full"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
             {/* Image Container - Auto-sized to image */}
-            <div className="relative flex items-center justify-center w-full max-w-4xl">
-              <AnimatePresence mode="wait">
+            <div className="relative grid grid-cols-1 grid-rows-1 place-items-center w-full max-w-5xl">
+              <AnimatePresence>
                 <motion.div
                   key={currentIndex}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ 
-                    duration: 0.7, 
+                  transition={{
+                    duration: 0.7,
                     ease: "easeInOut"
                   }}
-                  className="relative w-full"
+                  className="col-start-1 row-start-1 relative w-full"
                   style={{ willChange: 'opacity' }}
                 >
                   <OptimizedImage
@@ -360,8 +360,8 @@ const Hero = ({ data }) => {
                     alt="CopterCode Feature"
                     loading={currentIndex === 0 ? 'eager' : 'lazy'}
                     decoding="async"
-                    className="w-full h-auto drop-shadow-2xl"
-                    sizes="(min-width:1024px) 50vw, 100vw"
+                    className="w-full h-auto drop-shadow-2xl rounded-2xl origin-center transition-transform duration-700"
+                    sizes="(min-width:1024px) 60vw, 100vw"
                   />
                 </motion.div>
               </AnimatePresence>
