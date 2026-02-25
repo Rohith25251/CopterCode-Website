@@ -17,22 +17,42 @@ const Preloader = ({ setLoading }) => {
         const fetchContent = async () => {
             try {
                 const query = `*[_type == "preloaderPage"][0]{
+                    videoOnlyMode,
                     titlePrefix,
                     highlightedTitle,
                     tagline,
                     "logo": logo.asset->url,
-                    "backgroundImage": backgroundImage.asset->url
+                    background {
+                        type,
+                        image { asset->{ url } },
+                        video {
+                            source,
+                            videoUrl,
+                            "uploadedVideoUrl": uploadedVideo.asset->url,
+                            posterImage { asset->{ url } }
+                        }
+                    }
                 }`;
 
                 const data = await client.fetch(query);
 
                 if (data) {
+                    // Determine background type
+                    let bgType = data.background?.type || 'image';
+                    if (data.videoOnlyMode) {
+                        bgType = 'video'; // Force video type when video-only mode is enabled
+                    }
+
                     setContent({
-                        image: data.backgroundImage || defaultContent.image,
+                        image: bgType === 'image' && data.background?.image?.asset?.url 
+                            ? data.background.image.asset.url 
+                            : defaultContent.image,
                         logo: data.logo || defaultContent.logo,
                         titlePrefix: data.titlePrefix || defaultContent.titlePrefix,
                         highlightedTitle: data.highlightedTitle || defaultContent.highlightedTitle,
-                        tagline: data.tagline || defaultContent.tagline
+                        tagline: data.tagline || defaultContent.tagline,
+                        background: data.background || null,
+                        videoOnlyMode: data.videoOnlyMode || false
                     });
                 }
             } catch (error) {
@@ -59,19 +79,63 @@ const Preloader = ({ setLoading }) => {
                 transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
             }}
         >
-            {/* Background Image with Overlay */}
+            {/* Background Image/Video with Overlay */}
             <div className="absolute inset-0 z-0">
-                <img
-                    src={content.image}
-                    alt="Loading Background"
-                    className="w-full h-full object-cover opacity-100 scale-105 animate-pulse-slow"
-                    loading="eager"
-                    decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+                {content.background?.type === 'video' ? (
+                    // Video Background
+                    <div className="relative w-full h-full">
+                        {content.background.video?.source === 'upload' && content.background.video?.uploadedVideoUrl ? (
+                            <video
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                className="w-full h-full object-cover opacity-100"
+                                poster={content.background.video?.posterImage?.asset?.url}
+                            >
+                                <source src={content.background.video.uploadedVideoUrl} type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                        ) : content.background.video?.source === 'url' && content.background.video?.videoUrl ? (
+                            // Embed video URL (e.g., YouTube)
+                            /youtube.com|youtu.be/.test(content.background.video.videoUrl) ? (
+                                <iframe
+                                    className="w-full h-full"
+                                    src={content.background.video.videoUrl.replace(/youtube.com\/watch\?v=|youtu.be\//, 'youtube.com/embed/')}
+                                    frameBorder="0"
+                                    allow="autoplay; muted"
+                                    allowFullScreen
+                                />
+                            ) : (
+                                <video
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                    className="w-full h-full object-cover opacity-100"
+                                    poster={content.background.video?.posterImage?.asset?.url}
+                                >
+                                    <source src={content.background.video.videoUrl} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            )
+                        ) : null}
+                    </div>
+                ) : (
+                    // Image Background
+                    <img
+                        src={content.image}
+                        alt="Loading Background"
+                        className="w-full h-full object-cover opacity-100 scale-105 animate-pulse-slow"
+                        loading="eager"
+                        decoding="async"
+                    />
+                )}
+                {!content.videoOnlyMode && <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />}
             </div>
 
-            {/* Center Content */}
+            {/* Center Content - Only show when NOT in video-only mode */}
+            {!content.videoOnlyMode && (
             <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
                 {/* Logo Section */}
                 <motion.div
@@ -136,6 +200,7 @@ const Preloader = ({ setLoading }) => {
                     />
                 </div>
             </div>
+            )}
         </motion.div>
     );
 };

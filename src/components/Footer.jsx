@@ -164,6 +164,7 @@ const Footer = () => {
       { label: "News & Updates", url: "/news" },
       { label: "Events", url: "/events" },
       { label: "Hackathon", url: "/hackathon" },
+      { label: "Services", url: "/services" },
       { label: "Careers", url: "/careers" },
       { label: "Partner With Us", url: "/investors" },
       { label: "Contact Coptercode", url: "/contact" },
