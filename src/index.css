@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Monument Extended';
+  src: url('https://cdn.jsdelivr.net/npm/monument-extended@1/monument-extended.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/monument-extended@1/monument-extended.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

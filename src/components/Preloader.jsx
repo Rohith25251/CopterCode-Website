@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { client } from "../lib/sanity";
 
 const defaultContent = {
-    image: "/mediafiles/IIT.jpg",
+    image: "/mediafiles/preloader_bg.png",
     logo: "/mediafiles/Preloder logo.png",
     titlePrefix: "WELCOME TO",
     highlightedTitle: "COPTERCODE",
@@ -18,9 +18,31 @@ const Preloader = ({ setLoading }) => {
             try {
                 const query = `*[_type == "preloaderPage"][0]{
                     videoOnlyMode,
-                    titlePrefix,
-                    highlightedTitle,
-                    tagline,
+                    imageOnlyMode,
+                    titlePrefix {
+                        text,
+                        color,
+                        customColor,
+                        fontSize,
+                        fontWeight,
+                        letterSpacing
+                    },
+                    highlightedTitle {
+                        text,
+                        color,
+                        customColor,
+                        fontSize,
+                        fontWeight,
+                        letterSpacing
+                    },
+                    tagline {
+                        text,
+                        color,
+                        customColor,
+                        fontSize,
+                        fontWeight,
+                        letterSpacing
+                    },
                     "logo": logo.asset->url,
                     background {
                         type,
@@ -41,6 +63,8 @@ const Preloader = ({ setLoading }) => {
                     let bgType = data.background?.type || 'image';
                     if (data.videoOnlyMode) {
                         bgType = 'video'; // Force video type when video-only mode is enabled
+                    } else if (data.imageOnlyMode) {
+                        bgType = 'image'; // Force image type when image-only mode is enabled
                     }
 
                     setContent({
@@ -48,11 +72,12 @@ const Preloader = ({ setLoading }) => {
                             ? data.background.image.asset.url 
                             : defaultContent.image,
                         logo: data.logo || defaultContent.logo,
-                        titlePrefix: data.titlePrefix || defaultContent.titlePrefix,
-                        highlightedTitle: data.highlightedTitle || defaultContent.highlightedTitle,
-                        tagline: data.tagline || defaultContent.tagline,
+                        titlePrefix: data.titlePrefix || { text: defaultContent.titlePrefix },
+                        highlightedTitle: data.highlightedTitle || { text: defaultContent.highlightedTitle },
+                        tagline: data.tagline || { text: defaultContent.tagline },
                         background: data.background || null,
-                        videoOnlyMode: data.videoOnlyMode || false
+                        videoOnlyMode: data.videoOnlyMode || false,
+                        imageOnlyMode: data.imageOnlyMode || false
                     });
                 }
             } catch (error) {
@@ -126,17 +151,17 @@ const Preloader = ({ setLoading }) => {
                     <img
                         src={content.image}
                         alt="Loading Background"
-                        className="w-full h-full object-cover opacity-100 scale-105 animate-pulse-slow"
+                        className="w-full h-full object-cover opacity-100"
                         loading="eager"
                         decoding="async"
                     />
                 )}
-                {!content.videoOnlyMode && <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />}
+                {!content.videoOnlyMode && !content.imageOnlyMode && <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-transparent" />}
             </div>
 
-            {/* Center Content - Only show when NOT in video-only mode */}
-            {!content.videoOnlyMode && (
-            <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+            {/* Center Content - Only show when NOT in video-only or image-only mode */}
+            {!content.videoOnlyMode && !content.imageOnlyMode && (
+            <div className="relative z-10 flex flex-col items-center justify-center text-center px-3 sm:px-4 py-16 sm:py-0 max-w-xl sm:max-w-4xl mx-auto">
                 {/* Logo Section */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -159,20 +184,28 @@ const Preloader = ({ setLoading }) => {
                         initial={{ y: "100%" }}
                         animate={{ y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3, ease: [0.33, 1, 0.68, 1] }}
-                        className="text-sm md:text-base tracking-[0.4em] font-light text-white/80 uppercase mb-2"
+                        style={{
+                            fontFamily: "'Open Sans', sans-serif",
+                            color: '#000000'
+                        }}
+                        className={`uppercase mb-2 text-xs sm:text-sm md:text-base ${content.titlePrefix?.fontWeight || 'font-light'} ${content.titlePrefix?.letterSpacing || 'tracking-[0.2em]'} sm:tracking-[0.4em]`}
                     >
-                        {content.titlePrefix}
+                        {content.titlePrefix?.text || content.titlePrefix}
                     </motion.h2>
                 </div>
 
-                <div className="overflow-hidden mb-8">
+                <div className="overflow-hidden mb-4 sm:mb-8">
                     <motion.h1
                         initial={{ y: "100%" }}
                         animate={{ y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                        className="text-5xl md:text-7xl font-display font-bold text-white tracking-tight"
+                        style={{
+                            fontFamily: "'Monument Extended', sans-serif",
+                            color: '#000000'
+                        }}
+                        className={`font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl ${content.highlightedTitle?.fontWeight || 'font-bold'} ${content.highlightedTitle?.letterSpacing || 'tracking-tight'} leading-tight`}
                     >
-                        <span className="text-white">{content.highlightedTitle}</span>
+                        <span>{content.highlightedTitle?.text || content.highlightedTitle}</span>
                     </motion.h1>
                 </div>
 
@@ -181,9 +214,13 @@ const Preloader = ({ setLoading }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 0.8 }}
-                    className="text-white/60 text-xs md:text-sm tracking-[0.2em] font-light uppercase mb-12"
+                    style={{
+                        fontFamily: "'Open Sans', sans-serif",
+                        color: '#000000'
+                    }}
+                    className={`uppercase mb-8 sm:mb-12 text-xs sm:text-sm ${content.tagline?.fontWeight || 'font-light'} ${content.tagline?.letterSpacing || 'tracking-[0.1em]'} sm:tracking-[0.2em]`}
                 >
-                    {content.tagline}
+                    {content.tagline?.text || content.tagline}
                 </motion.p>
 
                 {/* Elegant Progress Line */}
