@@ -213,7 +213,7 @@ export const internshipPage = {
                 { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Join CopterCode' },
                 { name: 'subheading', type: 'text', title: 'Subheading', initialValue: 'Where innovation meets opportunity. Apply now and start building the future with us.' },
                 { name: 'buttonText', type: 'string', title: 'Button Text', initialValue: 'Apply for Internship' },
-                { name: 'link', type: 'string', title: 'Link', initialValue: 'https://forms.gle/bPkBxkdAHwDDrFJm6' },
+                { name: 'link', type: 'string', title: 'Link', initialValue: '/internship-registration' },
                 { name: 'backgroundImage', type: 'image', title: 'Background Image', options: { hotspot: true } }
             ]
         }

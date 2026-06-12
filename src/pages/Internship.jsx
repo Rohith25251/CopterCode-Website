@@ -5,6 +5,7 @@ import PartnerLogos from "../components/PartnerLogos";
 import { ArrowRight, Star, Play, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import OptimizedImage from "../components/OptimizedImage";
+import { Link } from "react-router-dom";
 
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
@@ -128,7 +129,9 @@ const Internship = () => {
   const ctaHeading = sanityData?.ctaHeading || "Join CopterCode";
   const ctaSubheading = sanityData?.ctaSubheading || "Where innovation meets opportunity. Apply now and start building the future with us.";
   const ctaButtonText = sanityData?.ctaButtonText || "Apply for Internship";
-  const ctaLink = sanityData?.ctaLink || "https://forms.gle/bPkBxkdAHwDDrFJm6";
+  const ctaLink = (sanityData?.ctaLink && !sanityData.ctaLink.includes("forms.gle"))
+    ? sanityData.ctaLink
+    : "/internship-registration";
 
 
   return (
@@ -381,16 +384,28 @@ const Internship = () => {
             {ctaSubheading}
           </p>
 
-          <motion.a
-            href={ctaLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-10 py-5 bg-white text-primary font-bold rounded-full text-lg hover:bg-accent hover:text-primary transition-all shadow-xl hover:shadow-2xl hover:shadow-accent/20"
-          >
-            {ctaButtonText} <ArrowRight className="ml-2" />
-          </motion.a>
+          {ctaLink.startsWith("/") ? (
+            <Link to={ctaLink} target="_blank" rel="noopener noreferrer">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center px-10 py-5 bg-white text-primary font-bold rounded-full text-lg hover:bg-accent hover:text-primary transition-all shadow-xl hover:shadow-2xl hover:shadow-accent/20"
+              >
+                {ctaButtonText} <ArrowRight className="ml-2" />
+              </motion.button>
+            </Link>
+          ) : (
+            <motion.a
+              href={ctaLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center px-10 py-5 bg-white text-primary font-bold rounded-full text-lg hover:bg-accent hover:text-primary transition-all shadow-xl hover:shadow-2xl hover:shadow-accent/20"
+            >
+              {ctaButtonText} <ArrowRight className="ml-2" />
+            </motion.a>
+          )}
         </div>
       </section>
     </div>

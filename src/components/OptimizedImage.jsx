@@ -22,7 +22,7 @@ export default function OptimizedImage({ src, alt = '', className = '', loading 
   }
 
   // Only handle absolute /mediafiles paths; otherwise fallback to src only
-  const isMedia = src.startsWith('/mediafiles/') || src.includes('/mediafiles/');
+  const isMedia = !src.startsWith('/_optimized/') && (src.startsWith('/mediafiles/') || src.includes('/mediafiles/'));
   const relPath = isMedia ? src.replace(/^\//, '') : null; // mediafiles/...
   const optimizedBase = isMedia ? '/_optimized/' + relPath : null; // /_optimized/mediafiles/...
 

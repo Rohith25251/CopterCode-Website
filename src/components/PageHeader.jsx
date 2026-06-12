@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import BackButton from './ui/BackButton';
 import OptimizedImage from './OptimizedImage';
 
-const PageHeader = ({ title, subtitle, image, images, children }) => {
+const PageHeader = ({ title, subtitle, image, images, justifyClass = "justify-between", showBackButton = true, ptClass = "pt-48", children }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const backgroundImages = images && images.length > 0 ? images : (image ? [image] : []);
 
@@ -18,7 +18,7 @@ const PageHeader = ({ title, subtitle, image, images, children }) => {
     }, [backgroundImages.length]);
 
     return (
-        <section className="relative pt-48 pb-24 bg-surface overflow-hidden">
+        <section className={`relative ${ptClass} pb-24 bg-surface overflow-hidden`}>
             <div className="absolute inset-0 z-0">
                 <AnimatePresence mode='wait'>
                     {backgroundImages.length > 0 && (
@@ -42,11 +42,13 @@ const PageHeader = ({ title, subtitle, image, images, children }) => {
             </div>
 
             {/* Back Button Fixed */}
-            <div className="fixed top-24 left-6 md:left-12 z-50">
-                <BackButton />
-            </div>
+            {showBackButton && (
+                <div className="fixed top-24 left-6 md:left-12 z-50">
+                    <BackButton />
+                </div>
+            )}
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
+            <div className={`container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center ${justifyClass} gap-6 md:gap-8`}>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
