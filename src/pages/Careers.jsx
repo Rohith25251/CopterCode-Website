@@ -21,6 +21,27 @@ import {
   ChevronRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PortableText } from "@portabletext/react";
+
+const careersPortableTextComponents = {
+  marks: {
+    link: ({ value, children }) => {
+      const target = (value?.href || '').startsWith('http') ? '_blank' : undefined;
+      return (
+        <a
+          href={value?.href}
+          target={target}
+          rel={target === '_blank' ? 'noindex nofollow' : undefined}
+          className="text-blue-700 hover:underline font-bold transition-colors inline"
+        >
+          {children}
+        </a>
+      );
+    },
+    strong: ({ children }) => <strong className="font-bold text-slate-900">{children}</strong>,
+    em: ({ children }) => <em className="italic text-slate-800">{children}</em>
+  }
+};
 
 const HERO_SLIDES = [
   {
@@ -834,9 +855,13 @@ const Careers = () => {
               {rolesDescription}
             </p>
             {sanityData?.rolesHiringNote ? (
-              <p className="text-slate-600 text-sm mt-4 font-semibold">
-                {sanityData.rolesHiringNote}
-              </p>
+              <div className="text-slate-600 text-sm mt-4 font-semibold">
+                {Array.isArray(sanityData.rolesHiringNote) ? (
+                  <PortableText value={sanityData.rolesHiringNote} components={careersPortableTextComponents} />
+                ) : (
+                  sanityData.rolesHiringNote
+                )}
+              </div>
             ) : (
               <p className="text-slate-600 text-sm mt-4 font-semibold">
                 We are hiring talented engineers, designers, and specialists across <a href="/locations" className="text-blue-700 hover:underline font-bold">multiple locations</a> and remote positions. Check out our <a href="/about" className="text-blue-700 hover:underline font-bold">company culture</a> to see if you would be a great fit.
@@ -850,9 +875,13 @@ const Careers = () => {
               {sanityData?.rolesAboutTitle || "About Our Positions"}
             </h3>
             {sanityData?.rolesAboutText ? (
-              <p className="text-xs text-slate-600 leading-relaxed font-semibold">
-                {sanityData.rolesAboutText}
-              </p>
+              <div className="text-xs text-slate-600 leading-relaxed font-semibold">
+                {Array.isArray(sanityData.rolesAboutText) ? (
+                  <PortableText value={sanityData.rolesAboutText} components={careersPortableTextComponents} />
+                ) : (
+                  sanityData.rolesAboutText
+                )}
+              </div>
             ) : (
               <p className="text-xs text-slate-600 leading-relaxed font-semibold">
                 We offer competitive salaries, <a href="/contact" className="text-blue-700 hover:underline font-bold">flexible work arrangements</a>, professional development opportunities, and a collaborative environment where innovation thrives. Learn more about our <a href="/technologies" className="text-blue-700 hover:underline font-bold">technology stack</a> and technical focus areas.
@@ -1006,9 +1035,13 @@ const Careers = () => {
               <h2 className="text-3xl md:text-5xl font-display font-black mb-6 tracking-tight text-slate-900">
                 {sanityData?.ctaHeading || "Ready to Join Our Team?"}
               </h2>
-              <p className="text-base md:text-lg text-slate-700 mb-10 leading-relaxed font-semibold max-w-3xl mx-auto">
-                {ctaDescription}
-              </p>
+              <div className="text-base md:text-lg text-slate-700 mb-10 leading-relaxed font-semibold max-w-3xl mx-auto">
+                {Array.isArray(ctaDescription) ? (
+                  <PortableText value={ctaDescription} components={careersPortableTextComponents} />
+                ) : (
+                  ctaDescription
+                )}
+              </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <motion.a
                   whileHover={{ scale: 1.05 }}

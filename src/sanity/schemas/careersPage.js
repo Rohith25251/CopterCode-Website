@@ -167,9 +167,97 @@ export const careersPage = {
                 { name: 'label', type: 'string', title: 'Label', initialValue: 'Opportunities' },
                 { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Open Roles' },
                 { name: 'description', type: 'text', title: 'Description', initialValue: 'Find your next challenge.' },
-                { name: 'hiringNote', type: 'text', title: 'Hiring Note / Sub-text', rows: 2, initialValue: 'We are hiring talented engineers, designers, and specialists across multiple locations and remote positions. Check out our company culture to see if you would be a great fit.' },
+                {
+                    name: 'hiringNote',
+                    title: 'Hiring Note / Sub-text',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'block',
+                            styles: [{ title: 'Normal', value: 'normal' }],
+                            marks: {
+                                decorators: [{ title: 'Strong', value: 'strong' }, { title: 'Emphasis', value: 'em' }],
+                                annotations: [
+                                    {
+                                        name: 'link',
+                                        type: 'object',
+                                        title: 'Link',
+                                        fields: [
+                                            {
+                                                name: 'href',
+                                                type: 'url',
+                                                title: 'URL',
+                                                validation: Rule => Rule.uri({
+                                                    allowRelative: true,
+                                                    scheme: ['http', 'https', 'mailto', 'tel']
+                                                })
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    initialValue: [
+                        {
+                            _type: 'block',
+                            children: [
+                                {
+                                    _type: 'span',
+                                    text: 'We are hiring talented engineers, designers, and specialists across multiple locations and remote positions. Check out our company culture to see if you would be a great fit.'
+                                }
+                            ],
+                            markDefs: [],
+                            style: 'normal'
+                        }
+                    ]
+                },
                 { name: 'aboutTitle', type: 'string', title: 'About Positions Card Title', initialValue: 'About Our Positions' },
-                { name: 'aboutText', type: 'text', title: 'About Positions Card Content', rows: 3, initialValue: 'We offer competitive salaries, flexible work arrangements, professional development opportunities, and a collaborative environment where innovation thrives. Learn more about our technology stack and technical focus areas.' },
+                {
+                    name: 'aboutText',
+                    title: 'About Positions Card Content',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'block',
+                            styles: [{ title: 'Normal', value: 'normal' }],
+                            marks: {
+                                decorators: [{ title: 'Strong', value: 'strong' }, { title: 'Emphasis', value: 'em' }],
+                                annotations: [
+                                    {
+                                        name: 'link',
+                                        type: 'object',
+                                        title: 'Link',
+                                        fields: [
+                                            {
+                                                name: 'href',
+                                                type: 'url',
+                                                title: 'URL',
+                                                validation: Rule => Rule.uri({
+                                                    allowRelative: true,
+                                                    scheme: ['http', 'https', 'mailto', 'tel']
+                                                })
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    initialValue: [
+                        {
+                            _type: 'block',
+                            children: [
+                                {
+                                    _type: 'span',
+                                    text: 'We offer competitive salaries, flexible work arrangements, professional development opportunities, and a collaborative environment where innovation thrives. Learn more about our technology stack and technical focus areas.'
+                                }
+                            ],
+                            markDefs: [],
+                            style: 'normal'
+                        }
+                    ]
+                },
                 {
                     name: 'list',
                     title: 'Job List',
@@ -235,7 +323,51 @@ export const careersPage = {
             type: 'object',
             fields: [
                 { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Ready to Join Our Team?' },
-                { name: 'description', type: 'text', title: 'Description', rows: 2, initialValue: 'Explore opportunities to work on cutting-edge drone technology, AI, and digital solutions.' },
+                {
+                    name: 'description',
+                    title: 'Description',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'block',
+                            styles: [{ title: 'Normal', value: 'normal' }],
+                            marks: {
+                                decorators: [{ title: 'Strong', value: 'strong' }, { title: 'Emphasis', value: 'em' }],
+                                annotations: [
+                                    {
+                                        name: 'link',
+                                        type: 'object',
+                                        title: 'Link',
+                                        fields: [
+                                            {
+                                                name: 'href',
+                                                type: 'url',
+                                                title: 'URL',
+                                                validation: Rule => Rule.uri({
+                                                    allowRelative: true,
+                                                    scheme: ['http', 'https', 'mailto', 'tel']
+                                                })
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    initialValue: [
+                        {
+                            _type: 'block',
+                            children: [
+                                {
+                                    _type: 'span',
+                                    text: 'Explore opportunities to work on cutting-edge drone technology, AI, and digital solutions.'
+                                }
+                            ],
+                            markDefs: [],
+                            style: 'normal'
+                        }
+                    ]
+                },
                 {
                     name: 'images',
                     title: 'CTA Carousel Images',
