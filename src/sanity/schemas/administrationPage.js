@@ -185,6 +185,64 @@ export const administrationPage = {
                 }
             ]
         },
+        // --- ADDITIONAL BOARDS (Dynamic boards for future scalability) ---
+        {
+            name: 'additionalBoards',
+            title: 'Additional Boards & Committees',
+            description: 'Add other boards, committees, or teams here. They will render dynamically on the page.',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    name: 'boardGroup',
+                    title: 'Board / Group',
+                    fields: [
+                        {
+                            name: 'title',
+                            type: 'string',
+                            title: 'Board / Group Title',
+                            description: 'e.g. Scientific Advisory Board, Tech Committee, etc.'
+                        },
+                        {
+                            name: 'layout',
+                            type: 'string',
+                            title: 'Display Layout',
+                            description: 'Choose between standard 4-column grid or royal/executive horizontal list.',
+                            options: {
+                                list: [
+                                    { title: 'Standard Grid (4 columns)', value: 'grid' },
+                                    { title: 'Royal/Executive (Horizontal list)', value: 'royal' }
+                                ]
+                            },
+                            initialValue: 'grid'
+                        },
+                        {
+                            name: 'members',
+                            type: 'array',
+                            title: 'Members',
+                            of: [
+                                {
+                                    type: 'object',
+                                    title: 'Member',
+                                    fields: [
+                                        { name: 'name', type: 'string', title: 'Name' },
+                                        { name: 'role', type: 'string', title: 'Role' },
+                                        { 
+                                            name: 'description', 
+                                            type: 'text', 
+                                            title: 'Description',
+                                            rows: 3,
+                                            description: 'Optional: Brief bio or description'
+                                        },
+                                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         // --- QUOTE ---
         {
             name: 'quote',

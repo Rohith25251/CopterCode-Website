@@ -32,6 +32,13 @@ const Administration = () => {
       managementTeam[]{
         ...,
         image { asset->{ url } }
+      },
+      additionalBoards[]{
+        ...,
+        members[]{
+          ...,
+          image { asset->{ url } }
+        }
       }
     }`;
 
@@ -55,6 +62,13 @@ const Administration = () => {
           managementTeam: data.managementTeam?.map(member => ({
             ...member,
             image: member.image?.asset?.url
+          })),
+          additionalBoards: data.additionalBoards?.map(board => ({
+            ...board,
+            members: board.members?.map(member => ({
+              ...member,
+              image: member.image?.asset?.url
+            }))
           }))
         });
       } else {
@@ -329,6 +343,23 @@ const Administration = () => {
 
           {/* Management Team Grid */}
           <MemberGrid title={managementHeading} members={managementTeam} icon={Award} />
+
+          {/* Dynamic Additional Boards */}
+          {sanityData?.additionalBoards?.map((board, idx) => (
+            board.layout === 'royal' ? (
+              <ExecutiveLeadershipGrid 
+                key={`additional-${idx}`} 
+                title={board.title} 
+                members={board.members || []} 
+              />
+            ) : (
+              <MemberGrid 
+                key={`additional-${idx}`} 
+                title={board.title} 
+                members={board.members || []} 
+              />
+            )
+          ))}
 
 
           <div className="mt-32 text-center max-w-4xl mx-auto relative">

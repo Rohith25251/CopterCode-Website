@@ -99,7 +99,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate form
     if (!formState.name.trim() || !formState.email.trim() || !formState.message.trim()) {
       setSubmitStatus('error');
@@ -121,6 +121,7 @@ const Contact = () => {
           body: JSON.stringify({
             name: formState.name.trim(),
             email: formState.email.trim(),
+            contact_email: formState.email.trim(),
             message: formState.message.trim(),
           }),
         }
@@ -247,266 +248,266 @@ const Contact = () => {
                     Our Locations
                   </h3>
                 </div>
-              {/* Headquarters (India) */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ x: 10 }}
-                className="flex items-start space-x-6 group p-4 rounded-2xl hover:bg-surface transition-colors border border-transparent hover:border-border"
-              >
-                <div className="w-14 h-14 bg-surface-highlight flex items-center justify-center text-primary shrink-0 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-border group-hover:border-accent/40">
-                  <MapPin className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-primary font-bold mb-2 text-xl group-hover:text-accent transition-colors">
-                    {hqTitle}
-                  </h4>
-                  <div className="text-secondary space-y-1.5 text-base">
-                    <p className="font-semibold text-primary">
-                      {hqName}
-                    </p>
-                    <p>{hqAddress}</p>
-                    {/* Mobile Numbers */}
-                    <div className="flex items-start pt-2 gap-4">
-                      <Phone size={18} className="text-accent mt-1 shrink-0" />
-                      <div className="flex flex-col">
+                {/* Headquarters (India) */}
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ x: 10 }}
+                  className="flex items-start space-x-6 group p-4 rounded-2xl hover:bg-surface transition-colors border border-transparent hover:border-border"
+                >
+                  <div className="w-14 h-14 bg-surface-highlight flex items-center justify-center text-primary shrink-0 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-border group-hover:border-accent/40">
+                    <MapPin className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-primary font-bold mb-2 text-xl group-hover:text-accent transition-colors">
+                      {hqTitle}
+                    </h4>
+                    <div className="text-secondary space-y-1.5 text-base">
+                      <p className="font-semibold text-primary">
+                        {hqName}
+                      </p>
+                      <p>{hqAddress}</p>
+                      {/* Mobile Numbers */}
+                      <div className="flex items-start pt-2 gap-4">
+                        <Phone size={18} className="text-accent mt-1 shrink-0" />
+                        <div className="flex flex-col">
+                          <a
+                            href={`tel:${hqPhone1.replace(/\s+/g, '')}`}
+                            className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
+                          >
+                            {hqPhone1}
+                          </a>
+                          <a
+                            href={`tel:${hqPhone2.replace(/\s+/g, '')}`}
+                            className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
+                          >
+                            {hqPhone2}
+                          </a>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <PhoneCall size={18} className="text-accent shrink-0" />
                         <a
-                          href={`tel:${hqPhone1.replace(/\s+/g, '')}`}
+                          href={`tel:${hqLandline.replace(/\D/g, '')}`}
                           className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
                         >
-                          {hqPhone1}
-                        </a>
-                        <a
-                          href={`tel:${hqPhone2.replace(/\s+/g, '')}`}
-                          className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
-                        >
-                          {hqPhone2}
+                          {hqLandline}
                         </a>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <PhoneCall size={18} className="text-accent shrink-0" />
-                      <a
-                        href={`tel:${hqLandline.replace(/\D/g, '')}`}
-                        className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
-                      >
-                        {hqLandline}
-                      </a>
-                    </div>
 
-                    {/* Email */}
-                    <div className="flex items-start gap-4">
-                      <Mail size={18} className="text-accent mt-1 shrink-0" />
-                      <div className="flex flex-col">
-                        <a
-                          href={`mailto:${hqEmail}`}
-                          className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
-                        >
-                          {hqEmail}
-                        </a>
+                      {/* Email */}
+                      <div className="flex items-start gap-4">
+                        <Mail size={18} className="text-accent mt-1 shrink-0" />
+                        <div className="flex flex-col">
+                          <a
+                            href={`mailto:${hqEmail}`}
+                            className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
+                          >
+                            {hqEmail}
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
 
-              {/* USA Office */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ x: 10 }}
-                className="flex items-start space-x-6 group p-4 rounded-2xl hover:bg-surface transition-colors border border-transparent hover:border-border"
-              >
-                <div className="w-14 h-14 bg-surface-highlight flex items-center justify-center text-primary shrink-0 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-border group-hover:border-accent/40">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-primary font-bold mb-2 text-xl group-hover:text-accent transition-colors">
-                    {usaTitle}
-                  </h4>
-                  <div className="text-secondary space-y-1.5 text-base">
-                    <p className="font-semibold text-primary">{usaName}</p>
-                    <p>{usaAddress}</p>
-                    <div className="flex items-start pt-2 gap-3">
-                      <Phone size={16} className="text-accent mt-1 shrink-0" />
-                      <div className="flex flex-col">
-                        <a
-                          href={`tel:${usaPhone.replace(/[()\s-]/g, '')}`}
-                          className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent"
-                        >
-                          {usaPhone}
-                        </a>
+                {/* USA Office */}
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ x: 10 }}
+                  className="flex items-start space-x-6 group p-4 rounded-2xl hover:bg-surface transition-colors border border-transparent hover:border-border"
+                >
+                  <div className="w-14 h-14 bg-surface-highlight flex items-center justify-center text-primary shrink-0 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-border group-hover:border-accent/40">
+                    <Globe className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-primary font-bold mb-2 text-xl group-hover:text-accent transition-colors">
+                      {usaTitle}
+                    </h4>
+                    <div className="text-secondary space-y-1.5 text-base">
+                      <p className="font-semibold text-primary">{usaName}</p>
+                      <p>{usaAddress}</p>
+                      <div className="flex items-start pt-2 gap-3">
+                        <Phone size={16} className="text-accent mt-1 shrink-0" />
+                        <div className="flex flex-col">
+                          <a
+                            href={`tel:${usaPhone.replace(/[()\s-]/g, '')}`}
+                            className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent"
+                          >
+                            {usaPhone}
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-4">
-                      <Mail size={18} className="text-accent mt-1 shrink-0" />
-                      <div className="flex flex-col">
-                        <a
-                          href={`mailto:${usaEmail}`}
-                          className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
-                        >
-                          {usaEmail}
-                        </a>
+                      <div className="flex items-start gap-4">
+                        <Mail size={18} className="text-accent mt-1 shrink-0" />
+                        <div className="flex flex-col">
+                          <a
+                            href={`mailto:${usaEmail}`}
+                            className="hover:text-accent transition-colors font-medium border-b border-transparent hover:border-accent max-w-max"
+                          >
+                            {usaEmail}
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
 
-              {/* Business Hours */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ x: 10 }}
-                className="flex items-start space-x-6 group p-4 rounded-2xl hover:bg-surface transition-colors border border-transparent hover:border-border"
-              >
-                <div className="w-14 h-14 bg-surface-highlight flex items-center justify-center text-primary shrink-0 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-border group-hover:border-accent/40">
-                  <Clock className="w-6 h-6" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-primary font-bold mb-2 text-xl group-hover:text-accent transition-colors">
-                    {hoursTitle}
-                  </h4>
-                  <div className="text-secondary space-y-2 text-base">
-                    <div className="flex justify-between w-full max-w-xs border-b border-border pb-1 border-dashed">
-                      <span>{weekdaysLabel}</span>
-                      <span className="text-primary font-medium">
-                        {weekdaysTime}
-                      </span>
-                    </div>
-                    <div className="flex justify-between w-full max-w-xs">
-                      <span>{weekendLabel}</span>
-                      <span className="text-accent font-bold bg-accent/10 px-2 rounded text-sm">
-                        {weekendStatus}
-                      </span>
+                {/* Business Hours */}
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ x: 10 }}
+                  className="flex items-start space-x-6 group p-4 rounded-2xl hover:bg-surface transition-colors border border-transparent hover:border-border"
+                >
+                  <div className="w-14 h-14 bg-surface-highlight flex items-center justify-center text-primary shrink-0 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300 border border-border group-hover:border-accent/40">
+                    <Clock className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-primary font-bold mb-2 text-xl group-hover:text-accent transition-colors">
+                      {hoursTitle}
+                    </h4>
+                    <div className="text-secondary space-y-2 text-base">
+                      <div className="flex justify-between w-full max-w-xs border-b border-border pb-1 border-dashed">
+                        <span>{weekdaysLabel}</span>
+                        <span className="text-primary font-medium">
+                          {weekdaysTime}
+                        </span>
+                      </div>
+                      <div className="flex justify-between w-full max-w-xs">
+                        <span>{weekendLabel}</span>
+                        <span className="text-accent font-bold bg-accent/10 px-2 rounded text-sm">
+                          {weekendStatus}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          </div>
+            </div>
 
-          {/* Right Column: Contact Form */}
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ y: -5 }}
-            className="bg-surface p-8 md:p-12 border border-border rounded-3xl h-fit shadow-2xl relative overflow-hidden group"
-          >
+            {/* Right Column: Contact Form */}
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-              className="absolute top-0 right-0 w-64 h-64 bg-background/5 rounded-full blur-[80px] -mr-16 -mt-16 pointer-events-none"
-            />
+              variants={itemVariants}
+              whileHover={{ y: -5 }}
+              className="bg-surface p-8 md:p-12 border border-border rounded-3xl h-fit shadow-2xl relative overflow-hidden group"
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                className="absolute top-0 right-0 w-64 h-64 bg-background/5 rounded-full blur-[80px] -mr-16 -mt-16 pointer-events-none"
+              />
 
-            <h3 className="text-2xl font-display font-bold text-primary mb-8 relative z-10">
-              {formTitle}
-            </h3>
+              <h3 className="text-2xl font-display font-bold text-primary mb-8 relative z-10">
+                {formTitle}
+              </h3>
 
-            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-bold text-primary mb-2 ml-1"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
-                  placeholder="Jane Doe"
-                  required
-                  disabled={isSubmitting}
-                  value={formState.name}
-                  onChange={(e) =>
-                    setFormState({ ...formState, name: e.target.value })
-                  }
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-bold text-primary mb-2 ml-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
-                  placeholder="jane@company.com"
-                  required
-                  disabled={isSubmitting}
-                  value={formState.email}
-                  onChange={(e) =>
-                    setFormState({ ...formState, email: e.target.value })
-                  }
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-bold text-primary mb-2 ml-1"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows="4"
-                  className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all resize-none rounded-xl shadow-inner"
-                  placeholder="Tell us about your project..."
-                  required
-                  disabled={isSubmitting}
-                  value={formState.message}
-                  onChange={(e) =>
-                    setFormState({ ...formState, message: e.target.value })
-                  }
-                ></textarea>
-              </div>
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-bold text-primary mb-2 ml-1"
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
+                    placeholder="Jane Doe"
+                    required
+                    disabled={isSubmitting}
+                    value={formState.name}
+                    onChange={(e) =>
+                      setFormState({ ...formState, name: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-bold text-primary mb-2 ml-1"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
+                    placeholder="jane@company.com"
+                    required
+                    disabled={isSubmitting}
+                    value={formState.email}
+                    onChange={(e) =>
+                      setFormState({ ...formState, email: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-bold text-primary mb-2 ml-1"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    rows="4"
+                    className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all resize-none rounded-xl shadow-inner"
+                    placeholder="Tell us about your project..."
+                    required
+                    disabled={isSubmitting}
+                    value={formState.message}
+                    onChange={(e) =>
+                      setFormState({ ...formState, message: e.target.value })
+                    }
+                  ></textarea>
+                </div>
 
-              {submitStatus === 'success' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-green-600 text-sm font-medium"
-                >
-                  ✓ Thank you for your message. We'll be in touch shortly!
-                </motion.div>
-              )}
-
-              {submitStatus === 'error' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-600 text-sm font-medium"
-                >
-                  ✕ Failed to send message. Please try again or contact us directly.
-                </motion.div>
-              )}
-
-              <motion.button
-                type="submit"
-                disabled={isSubmitting}
-                whileHover={!isSubmitting ? { scale: 1.02 } : {}}
-                whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                className="w-full py-4 bg-accent text-white font-bold hover:bg-accent/90 transition-all duration-300 flex items-center justify-center rounded-xl uppercase tracking-widest text-sm shadow-lg hover:shadow-xl group transform disabled:opacity-70 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? (
-                  <span className="flex items-center">
-                    <span className="inline-block mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    Sending...
-                  </span>
-                ) : (
-                  <>
-                    Send Message{" "}
-                    <ArrowRight
-                      size={18}
-                      className="ml-2 group-hover:translate-x-1 transition-transform"
-                    />
-                  </> 
+                {submitStatus === 'success' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-green-600 text-sm font-medium"
+                  >
+                    ✓ Thank you for your message. We'll be in touch shortly!
+                  </motion.div>
                 )}
-              </motion.button>
-            </form>
-          </motion.div>
+
+                {submitStatus === 'error' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-600 text-sm font-medium"
+                  >
+                    ✕ Failed to send message. Please try again or contact us directly.
+                  </motion.div>
+                )}
+
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                  whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                  className="w-full py-4 bg-accent text-white font-bold hover:bg-accent/90 transition-all duration-300 flex items-center justify-center rounded-xl uppercase tracking-widest text-sm shadow-lg hover:shadow-xl group transform disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center">
+                      <span className="inline-block mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                      Sending...
+                    </span>
+                  ) : (
+                    <>
+                      Send Message{" "}
+                      <ArrowRight
+                        size={18}
+                        className="ml-2 group-hover:translate-x-1 transition-transform"
+                      />
+                    </>
+                  )}
+                </motion.button>
+              </form>
+            </motion.div>
           </div>
         </motion.div>
       </section>

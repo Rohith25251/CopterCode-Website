@@ -20,7 +20,7 @@ const PageHeader = ({ title, subtitle, image, images, justifyClass = "justify-be
     return (
         <section className={`relative ${ptClass} pb-24 bg-surface overflow-hidden`}>
             <div className="absolute inset-0 z-0">
-                <AnimatePresence mode='wait'>
+                <AnimatePresence>
                     {backgroundImages.length > 0 && (
                         <motion.div
                             key={currentImageIndex}

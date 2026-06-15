@@ -47,7 +47,7 @@ const Footer = () => {
   // Handle subscription
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    
+
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!subscriptionEmail.trim() || !emailRegex.test(subscriptionEmail)) {
@@ -61,16 +61,16 @@ const Footer = () => {
 
     try {
       const response = await fetch(
-        "https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0",
+        "https://submitbox.app/api/f/9931d030-8a89-4432-b863-5b5998bddbb6",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: "Newsletter Subscriber",
+            name: subscriptionEmail.trim(),
+            subscriberEmail: subscriptionEmail.trim(),
             email: subscriptionEmail.trim(),
-            message: "Subscribed to newsletter",
           }),
         }
       );
@@ -260,7 +260,7 @@ const Footer = () => {
                 disabled={isSubscribing}
                 required
               />
-              <button 
+              <button
                 type="submit"
                 disabled={isSubscribing}
                 className="w-full sm:w-auto bg-accent text-white px-8 py-3 rounded-xl sm:rounded-full font-medium hover:bg-accent/90 transition-colors shadow-md sm:shadow-none disabled:opacity-70 disabled:cursor-not-allowed"

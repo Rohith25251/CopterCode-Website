@@ -84,12 +84,12 @@ const IMAGES_RIGHT = [
 
 const ScrollFadeCard = ({ item }) => {
   return (
-    <div 
+    <div
       className="w-64 h-80 rounded-2xl overflow-hidden border border-white/60 shadow-lg bg-white/10 transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/20 relative shrink-0 group"
     >
-      <OptimizedImage 
-        src={item.src} 
-        alt={item.name} 
+      <OptimizedImage
+        src={item.src}
+        alt={item.name}
         className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 ease-out"
         loading="lazy"
         decoding="async"
@@ -115,7 +115,7 @@ const InternshipRegistration = () => {
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
   const [validationError, setValidationError] = useState("");
   const [isXl, setIsXl] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     studentName: "",
     contactNumber: "",
@@ -141,9 +141,9 @@ const InternshipRegistration = () => {
   // Derived data references
   const sanityInterns = sanityData?.registeredInterns?.length > 0
     ? sanityData.registeredInterns.map(intern => ({
-        src: intern.image ? urlFor(intern.image).width(256).height(320).quality(85).format('webp').url() : "",
-        name: intern.name
-      })).filter(item => item.src)
+      src: intern.image ? urlFor(intern.image).width(256).height(320).quality(85).format('webp').url() : "",
+      name: intern.name
+    })).filter(item => item.src)
     : [];
 
   const internsPool = sanityInterns.length > 0 ? sanityInterns : REGISTERED_INTERNS;
@@ -278,10 +278,10 @@ const InternshipRegistration = () => {
   const overviewParagraphs = sanityData?.overviewParagraphs?.length > 0
     ? sanityData.overviewParagraphs
     : [
-        "We are delighted to invite students from your esteemed institution to be part of the CopterCode Winter Internship & Industry Orientation Program, scheduled during June and July 2026, conducted offline at the prestigious IIT Madras Research Park, Chennai Venue.",
-        "It serves as a professional industry induction platform, where students will experience how global companies function, understand real job responsibilities, and work like industry interns inside a professional corporate environment.",
-        "Through this internship, students will be onboarded into real international engineering and technology environments, working on Live Projects for companies in the Netherlands and Texas (USA). They will gain hands-on exposure to corporate workflows, problem-solving practices, team collaboration methods, and global project execution standards, helping them transition confidently from campus to corporate with true industry readiness."
-      ];
+      "We are delighted to invite students from your esteemed institution to be part of the CopterCode Winter Internship & Industry Orientation Program, scheduled during June and July 2026, conducted offline at the prestigious IIT Madras Research Park, Chennai Venue.",
+      "It serves as a professional industry induction platform, where students will experience how global companies function, understand real job responsibilities, and work like industry interns inside a professional corporate environment.",
+      "Through this internship, students will be onboarded into real international engineering and technology environments, working on Live Projects for companies in the Netherlands and Texas (USA). They will gain hands-on exposure to corporate workflows, problem-solving practices, team collaboration methods, and global project execution standards, helping them transition confidently from campus to corporate with true industry readiness."
+    ];
   const overviewSupportNote = sanityData?.overviewSupportNote || "We kindly request your valuable support in circulating this opportunity among your students and encouraging deserving candidates to participate.";
 
   const outcomesTitle = sanityData?.outcomesTitle || "Internship Deliverables & Outcomes";
@@ -303,35 +303,35 @@ const InternshipRegistration = () => {
   ];
 
   const formHeading = sanityData?.formHeading || "Internship Registration Form";
-  const formEndpoint = sanityData?.formEndpoint || "https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0";
-  
+  const formEndpoint = sanityData?.formEndpoint || "https://submitbox.app/api/f/ce6d8a87-b339-4e8b-82c8-1816d60fe69c";
+
   const nameLabel = sanityData?.formFields?.nameLabel || "Student Name (Full Name)";
   const namePlaceholder = sanityData?.formFields?.namePlaceholder || "e.g. Rohith Kumar";
-  
+
   const whatsappLabel = sanityData?.formFields?.whatsappLabel || "WhatsApp Contact";
   const whatsappPlaceholder = sanityData?.formFields?.whatsappPlaceholder || "e.g. +91 8072193600";
-  
+
   const emailLabel = sanityData?.formFields?.emailLabel || "Email Address";
   const emailPlaceholder = sanityData?.formFields?.emailPlaceholder || "e.g. student@college.edu";
-  
+
   const collegeLabel = sanityData?.formFields?.collegeLabel || "College Name";
   const collegePlaceholder = sanityData?.formFields?.collegePlaceholder || "e.g. IIT Madras";
-  
+
   const dobLabel = sanityData?.formFields?.dobLabel || "Date of Birth";
-  
+
   const addressLabel = sanityData?.formFields?.addressLabel || "Address";
   const addressPlaceholder = sanityData?.formFields?.addressPlaceholder || "Please enter your full communication address";
 
   const electivesLabel = sanityData?.formElectives?.label || "Intern Preferable Elective";
   const electivesOptions = (sanityData?.formElectives?.options?.length > 0) ? sanityData.formElectives.options : [
-    { 
-      value: "Full Stack Developer & Software Developer With AI ML Intern - Venue : IIT Madras Rp", 
+    {
+      value: "Full Stack Developer & Software Developer With AI ML Intern - Venue : IIT Madras Rp",
       title: "Full Stack Developer & Software Developer With AI/ML",
       description: "Build modern web applications and AI models. Conducted offline at IIT Madras RP.",
       venueBadge: "Venue: IIT Madras RP"
     },
-    { 
-      value: "Drone Design and R&D Intern (UAVs) - Venue : IIT Madras Rp", 
+    {
+      value: "Drone Design and R&D Intern (UAVs) - Venue : IIT Madras Rp",
       title: "Drone Design and R&D Intern (UAVs)",
       description: "Work on structural engineering, physics modeling, and UAV design. Conducted offline at IIT Madras RP.",
       venueBadge: "Venue: IIT Madras RP"
@@ -436,6 +436,8 @@ const InternshipRegistration = () => {
     try {
       // Assemble structured data payload
       const payload = {
+        name: formData.studentName.trim(),
+        email: formData.email.trim(),
         "Form Type": "Internship Registration",
         "Student Name": formData.studentName.trim(),
         "WhatsApp Contact": formData.contactNumber.trim(),
@@ -494,7 +496,8 @@ const InternshipRegistration = () => {
         ogDescription={seoDesc}
       />
 
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes marqueeUp {
           0% {
             transform: translate3d(0, 0, 0);
@@ -555,7 +558,7 @@ const InternshipRegistration = () => {
                 className="w-24 md:w-28 h-auto object-contain mb-4 drop-shadow-md"
               />
             )}
-            
+
             {/* Title Prefix */}
             {preloaderData.titlePrefix && (
               <h2 className="uppercase text-[10px] md:text-xs font-light tracking-[0.3em] text-slate-500 mb-1 pl-[0.3em]">
@@ -605,345 +608,397 @@ const InternshipRegistration = () => {
           )}
 
           <div className="max-w-3xl mx-auto space-y-16">
-          
-          {/* Description & Overview Card */}
-          <motion.section 
-            initial={{ opacity: 0, y: 50, scale: 0.98 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="glass-panel p-8 md:p-12 rounded-3xl border border-white/40 shadow-xl backdrop-blur-md space-y-8"
-          >
-            <div className="space-y-4">
-              <span className="px-4 py-1.5 rounded-full bg-primary/5 text-primary font-bold text-xs tracking-wider uppercase inline-block border border-primary/10 backdrop-blur-sm">
-                {overviewTag}
-              </span>
-              <h2 className="text-3xl md:text-4xl font-display font-extrabold text-primary leading-tight">
-                {overviewTitle}
-              </h2>
-              <p className="text-xl font-bold text-slate-700">
-                {overviewGreeting}
-              </p>
-            </div>
 
-            <div className="prose prose-slate max-w-none text-slate-600 space-y-6 leading-relaxed text-base md:text-lg font-medium">
-              {sanityData?.overviewParagraphs ? (
-                sanityData.overviewParagraphs.map((para, idx) => (
-                  <p key={idx}>{para}</p>
-                ))
-              ) : (
-                <>
-                  <p>
-                    We are delighted to invite students from your esteemed institution to be part of the <strong className="text-primary font-bold">CopterCode Winter Internship & Industry Orientation Program</strong>, scheduled during June and July 2026, conducted offline at the prestigious <strong className="text-primary font-bold">IIT Madras Research Park, Chennai Venue</strong>.
-                  </p>
-                  <p>
-                    It serves as a professional industry induction platform, where students will experience how global companies function, understand real job responsibilities, and work like industry interns inside a professional corporate environment.
-                  </p>
-                  <p>
-                    Through this internship, students will be onboarded into real international engineering and technology environments, working on <strong className="text-primary font-bold">Live Projects</strong> for companies in the <strong className="text-primary font-bold">Netherlands</strong> and <strong className="text-primary font-bold">Texas (USA)</strong>. They will gain hands-on exposure to corporate workflows, problem-solving practices, team collaboration methods, and global project execution standards, helping them transition confidently from campus to corporate with true industry readiness.
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 backdrop-blur-sm flex items-start space-x-4">
-              <div className="w-10 h-10 rounded-xl bg-white border border-primary/10 flex items-center justify-center text-blue-500 shadow-sm shrink-0">
-                <Sparkles size={20} className="animate-pulse" />
+            {/* Description & Overview Card */}
+            <motion.section
+              initial={{ opacity: 0, y: 50, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="glass-panel p-8 md:p-12 rounded-3xl border border-white/40 shadow-xl backdrop-blur-md space-y-8"
+            >
+              <div className="space-y-4">
+                <span className="px-4 py-1.5 rounded-full bg-primary/5 text-primary font-bold text-xs tracking-wider uppercase inline-block border border-primary/10 backdrop-blur-sm">
+                  {overviewTag}
+                </span>
+                <h2 className="text-3xl md:text-4xl font-display font-extrabold text-primary leading-tight">
+                  {overviewTitle}
+                </h2>
+                <p className="text-xl font-bold text-slate-700">
+                  {overviewGreeting}
+                </p>
               </div>
-              <p className="text-sm md:text-base text-slate-700 font-semibold italic leading-relaxed">
-                {overviewSupportNote}
-              </p>
-            </div>
-          </motion.section>
 
-          {/* Outcomes Visual Dashboard */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
-            <div className="flex items-center space-x-3">
-              <div className="w-1.5 h-8 bg-primary rounded-full" />
-              <h3 className="text-2xl md:text-3xl font-display font-extrabold text-primary">
-                {outcomesTitle}
-              </h3>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {outcomesList.map((outcome, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, y: 30, scale: 0.97 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ scale: 1.02, translateY: -2 }}
-                  className="p-6 rounded-2xl bg-white/40 border border-white/20 shadow-md hover:shadow-lg transition-all duration-300 flex items-start space-x-4 backdrop-blur-sm hover:border-primary/20"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-green-500/10 text-green-600 flex items-center justify-center shrink-0">
-                    <CheckCircle size={22} />
-                  </div>
-                  <div>
-                    <h4 className="font-extrabold text-primary text-base md:text-lg">{outcome.title}</h4>
-                    <p className="text-xs md:text-sm text-slate-500 font-semibold mt-1 leading-relaxed">{outcome.description || outcome.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+              <div className="prose prose-slate max-w-none text-slate-600 space-y-6 leading-relaxed text-base md:text-lg font-medium">
+                {sanityData?.overviewParagraphs ? (
+                  sanityData.overviewParagraphs.map((para, idx) => (
+                    <p key={idx}>{para}</p>
+                  ))
+                ) : (
+                  <>
+                    <p>
+                      We are delighted to invite students from your esteemed institution to be part of the <strong className="text-primary font-bold">CopterCode Winter Internship & Industry Orientation Program</strong>, scheduled during June and July 2026, conducted offline at the prestigious <strong className="text-primary font-bold">IIT Madras Research Park, Chennai Venue</strong>.
+                    </p>
+                    <p>
+                      It serves as a professional industry induction platform, where students will experience how global companies function, understand real job responsibilities, and work like industry interns inside a professional corporate environment.
+                    </p>
+                    <p>
+                      Through this internship, students will be onboarded into real international engineering and technology environments, working on <strong className="text-primary font-bold">Live Projects</strong> for companies in the <strong className="text-primary font-bold">Netherlands</strong> and <strong className="text-primary font-bold">Texas (USA)</strong>. They will gain hands-on exposure to corporate workflows, problem-solving practices, team collaboration methods, and global project execution standards, helping them transition confidently from campus to corporate with true industry readiness.
+                    </p>
+                  </>
+                )}
+              </div>
 
-          {/* Contact Details & Channels */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
-            <div className="flex items-center space-x-3">
-              <div className="w-1.5 h-8 bg-primary rounded-full" />
-              <h3 className="text-2xl md:text-3xl font-display font-extrabold text-primary">
-                {supportTitle}
-              </h3>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {supportChannels.map((contact, idx) => {
-                const IconComponent = typeof contact.icon === 'string' 
-                  ? (Lucide[contact.icon] || Lucide.Globe) 
-                  : (contact.icon || Lucide.Globe);
+              <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 backdrop-blur-sm flex items-start space-x-4">
+                <div className="w-10 h-10 rounded-xl bg-white border border-primary/10 flex items-center justify-center text-blue-500 shadow-sm shrink-0">
+                  <Sparkles size={20} className="animate-pulse" />
+                </div>
+                <p className="text-sm md:text-base text-slate-700 font-semibold italic leading-relaxed">
+                  {overviewSupportNote}
+                </p>
+              </div>
+            </motion.section>
 
-                return (
-                  <motion.a 
+            {/* Outcomes Visual Dashboard */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-1.5 h-8 bg-primary rounded-full" />
+                <h3 className="text-2xl md:text-3xl font-display font-extrabold text-primary">
+                  {outcomesTitle}
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {outcomesList.map((outcome, idx) => (
+                  <motion.div
                     key={idx}
-                    href={contact.href}
-                    target={contact.href.startsWith("http") ? "_blank" : undefined}
-                    rel={contact.href.startsWith("http") ? "noopener noreferrer" : undefined}
                     initial={{ opacity: 0, y: 30, scale: 0.97 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                    whileHover={{ scale: 1.03, translateY: -3 }}
-                    className="p-5 rounded-2xl bg-white/40 border border-white/20 shadow-md hover:shadow-xl transition-all duration-300 flex items-center space-x-4 backdrop-blur-sm hover:bg-white/60 group hover:border-primary/20"
+                    transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    whileHover={{ scale: 1.02, translateY: -2 }}
+                    className="p-6 rounded-2xl bg-white/40 border border-white/20 shadow-md hover:shadow-lg transition-all duration-300 flex items-start space-x-4 backdrop-blur-sm hover:border-primary/20"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-slate-100/80 group-hover:bg-primary group-hover:text-white text-slate-700 flex items-center justify-center shrink-0 transition-all duration-300 shadow-sm">
-                      <IconComponent size={20} />
+                    <div className="w-10 h-10 rounded-xl bg-green-500/10 text-green-600 flex items-center justify-center shrink-0">
+                      <CheckCircle size={22} />
                     </div>
-                    <div className="overflow-hidden">
-                      <p className="text-xs font-extrabold uppercase tracking-wider text-slate-400 group-hover:text-primary transition-colors">{contact.label}</p>
-                      <p className="text-sm font-bold text-slate-700 mt-1 truncate group-hover:underline">{contact.value}</p>
+                    <div>
+                      <h4 className="font-extrabold text-primary text-base md:text-lg">{outcome.title}</h4>
+                      <p className="text-xs md:text-sm text-slate-500 font-semibold mt-1 leading-relaxed">{outcome.description || outcome.desc}</p>
                     </div>
-                  </motion.a>
-                );
-              })}
-            </div>
-          </motion.div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
 
-          {/* Registration Form container */}
-          <div className="max-w-4xl mx-auto relative" id="form-section">
-            <AnimatePresence mode="wait">
-              {submitStatus === "success" ? (
-                <motion.div
-                  key="success-card"
-                  initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="p-8 md:p-12 rounded-3xl bg-white/85 border border-white/40 shadow-2xl backdrop-blur-xl text-center space-y-6"
-                >
-                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto text-green-500 shadow-inner">
-                    <FileCheck size={40} className="animate-bounce" />
-                  </div>
-                  
-                  <h3 className="text-3xl font-display font-extrabold text-primary">Registration Completed!</h3>
-                  <p className="text-secondary leading-relaxed font-semibold">
-                    Thank you for submitting your internship application, <strong>{formData.studentName}</strong>. Your registration has been successfully logged inside the CopterCode verification desk.
-                  </p>
+            {/* Contact Details & Channels */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-1.5 h-8 bg-primary rounded-full" />
+                <h3 className="text-2xl md:text-3xl font-display font-extrabold text-primary">
+                  {supportTitle}
+                </h3>
+              </div>
 
-                  <div className="p-6 rounded-2xl bg-white/50 border border-white/20 text-left space-y-4 text-sm font-semibold text-slate-700">
-                    <p className="font-extrabold text-primary border-b border-primary/10 pb-2.5">Application Summary:</p>
-                    <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">WhatsApp Number</span> {formData.contactNumber}</p>
-                    <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Email Address</span> {formData.email}</p>
-                    <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Department/Branch</span> {formData.branch === "Other" ? formData.customBranch : formData.branch}</p>
-                    <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Selected Elective</span> {formData.elective.split(" - Venue")[0]}</p>
-                    <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Preferred Batch</span> {formData.batch}</p>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {supportChannels.map((contact, idx) => {
+                  const IconComponent = typeof contact.icon === 'string'
+                    ? (Lucide[contact.icon] || Lucide.Globe)
+                    : (contact.icon || Lucide.Globe);
 
-                  <p className="text-xs text-slate-500 font-semibold">
-                    Our HR coordination desk will contact you shortly on your WhatsApp number or email with setup instructions.
-                  </p>
-
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setSubmitStatus(null);
-                      setFormData({
-                        studentName: "",
-                        contactNumber: "",
-                        email: "",
-                        collegeName: "",
-                        elective: "Full Stack Developer & Software Developer With AI ML Intern - Venue : IIT Madras Rp",
-                        batch: "Batch No . 3 { JUNE } 2026",
-                        branch: "",
-                        customBranch: "",
-                        year: "3rd Year",
-                        dob: "",
-                        address: "",
-                        period1Month: false,
-                        period3Month: false,
-                        placementInterest: "yes",
-                        agreePayFee: false,
-                        agreeHybridMode: false,
-                        agreeNonRefundable: false,
-                        agreeExtension: false,
-                        confirmTerms: false
-                      });
-                    }}
-                    className="w-full py-4 bg-primary text-white font-extrabold rounded-2xl uppercase tracking-widest text-xs hover:bg-primary/95 transition-all shadow-md"
-                  >
-                    Submit Another Registration
-                  </motion.button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="registration-form"
-                  initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-white/40 border border-white/20 shadow-2xl backdrop-blur-xl p-8 md:p-12 rounded-3xl relative space-y-8"
-                >
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-1.5 h-8 bg-primary rounded-full" />
-                    <h3 className="text-2xl md:text-3xl font-display font-extrabold text-primary">
-                      {formHeading}
-                    </h3>
-                  </div>
-
-                  <form onSubmit={handleSubmit} className="space-y-8">
-                    
-                    {/* Name input */}
-                    <div className="group/field relative space-y-2.5">
-                      <label htmlFor="studentName" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                        {nameLabel} <span className="text-red-500 ml-0.5">*</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                          <User size={18} />
-                        </div>
-                        <input
-                          type="text"
-                          id="studentName"
-                          name="studentName"
-                          required
-                          disabled={isSubmitting}
-                          placeholder={namePlaceholder}
-                          className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                          value={formData.studentName}
-                          onChange={handleChange}
-                        />
+                  return (
+                    <motion.a
+                      key={idx}
+                      href={contact.href}
+                      target={contact.href.startsWith("http") ? "_blank" : undefined}
+                      rel={contact.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                      whileHover={{ scale: 1.03, translateY: -3 }}
+                      className="p-5 rounded-2xl bg-white/40 border border-white/20 shadow-md hover:shadow-xl transition-all duration-300 flex items-center space-x-4 backdrop-blur-sm hover:bg-white/60 group hover:border-primary/20"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-slate-100/80 group-hover:bg-primary group-hover:text-white text-slate-700 flex items-center justify-center shrink-0 transition-all duration-300 shadow-sm">
+                        <IconComponent size={20} />
                       </div>
+                      <div className="overflow-hidden">
+                        <p className="text-xs font-extrabold uppercase tracking-wider text-slate-400 group-hover:text-primary transition-colors">{contact.label}</p>
+                        <p className="text-sm font-bold text-slate-700 mt-1 truncate group-hover:underline">{contact.value}</p>
+                      </div>
+                    </motion.a>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* Registration Form container */}
+            <div className="max-w-4xl mx-auto relative" id="form-section">
+              <AnimatePresence mode="wait">
+                {submitStatus === "success" ? (
+                  <motion.div
+                    key="success-card"
+                    initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="p-8 md:p-12 rounded-3xl bg-white/85 border border-white/40 shadow-2xl backdrop-blur-xl text-center space-y-6"
+                  >
+                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto text-green-500 shadow-inner">
+                      <FileCheck size={40} className="animate-bounce" />
                     </div>
 
-                    {/* Contact & Email Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <h3 className="text-3xl font-display font-extrabold text-primary">Registration Completed!</h3>
+                    <p className="text-secondary leading-relaxed font-semibold">
+                      Thank you for submitting your internship application, <strong>{formData.studentName}</strong>. Your registration has been successfully logged inside the CopterCode verification desk.
+                    </p>
+
+                    <div className="p-6 rounded-2xl bg-white/50 border border-white/20 text-left space-y-4 text-sm font-semibold text-slate-700">
+                      <p className="font-extrabold text-primary border-b border-primary/10 pb-2.5">Application Summary:</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">WhatsApp Number</span> {formData.contactNumber}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Email Address</span> {formData.email}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Department/Branch</span> {formData.branch === "Other" ? formData.customBranch : formData.branch}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Selected Elective</span> {formData.elective.split(" - Venue")[0]}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Preferred Batch</span> {formData.batch}</p>
+                    </div>
+
+                    <p className="text-xs text-slate-500 font-semibold">
+                      Our HR coordination desk will contact you shortly on your WhatsApp number or email with setup instructions.
+                    </p>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setSubmitStatus(null);
+                        setFormData({
+                          studentName: "",
+                          contactNumber: "",
+                          email: "",
+                          collegeName: "",
+                          elective: "Full Stack Developer & Software Developer With AI ML Intern - Venue : IIT Madras Rp",
+                          batch: "Batch No . 3 { JUNE } 2026",
+                          branch: "",
+                          customBranch: "",
+                          year: "3rd Year",
+                          dob: "",
+                          address: "",
+                          period1Month: false,
+                          period3Month: false,
+                          placementInterest: "yes",
+                          agreePayFee: false,
+                          agreeHybridMode: false,
+                          agreeNonRefundable: false,
+                          agreeExtension: false,
+                          confirmTerms: false
+                        });
+                      }}
+                      className="w-full py-4 bg-primary text-white font-extrabold rounded-2xl uppercase tracking-widest text-xs hover:bg-primary/95 transition-all shadow-md"
+                    >
+                      Submit Another Registration
+                    </motion.button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="registration-form"
+                    initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="bg-white/40 border border-white/20 shadow-2xl backdrop-blur-xl p-8 md:p-12 rounded-3xl relative space-y-8"
+                  >
+                    <div className="flex items-center space-x-3 mb-6">
+                      <div className="w-1.5 h-8 bg-primary rounded-full" />
+                      <h3 className="text-2xl md:text-3xl font-display font-extrabold text-primary">
+                        {formHeading}
+                      </h3>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-8">
+
+                      {/* Name input */}
                       <div className="group/field relative space-y-2.5">
-                        <label htmlFor="contactNumber" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                          {whatsappLabel} <span className="text-red-500 ml-0.5">*</span>
+                        <label htmlFor="studentName" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                          {nameLabel} <span className="text-red-500 ml-0.5">*</span>
                         </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                            <Phone size={18} />
+                            <User size={18} />
                           </div>
                           <input
-                            type="tel"
-                            id="contactNumber"
-                            name="contactNumber"
+                            type="text"
+                            id="studentName"
+                            name="studentName"
                             required
                             disabled={isSubmitting}
-                            placeholder={whatsappPlaceholder}
+                            placeholder={namePlaceholder}
                             className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                            value={formData.contactNumber}
+                            value={formData.studentName}
                             onChange={handleChange}
                           />
                         </div>
                       </div>
 
+                      {/* Contact & Email Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="group/field relative space-y-2.5">
+                          <label htmlFor="contactNumber" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                            {whatsappLabel} <span className="text-red-500 ml-0.5">*</span>
+                          </label>
+                          <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                              <Phone size={18} />
+                            </div>
+                            <input
+                              type="tel"
+                              id="contactNumber"
+                              name="contactNumber"
+                              required
+                              disabled={isSubmitting}
+                              placeholder={whatsappPlaceholder}
+                              className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
+                              value={formData.contactNumber}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="group/field relative space-y-2.5">
+                          <label htmlFor="email" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                            {emailLabel} <span className="text-red-500 ml-0.5">*</span>
+                          </label>
+                          <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                              <Mail size={18} />
+                            </div>
+                            <input
+                              type="email"
+                              id="email"
+                              name="email"
+                              required
+                              disabled={isSubmitting}
+                              placeholder={emailPlaceholder}
+                              className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
+                              value={formData.email}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* College Name */}
                       <div className="group/field relative space-y-2.5">
-                        <label htmlFor="email" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                          {emailLabel} <span className="text-red-500 ml-0.5">*</span>
+                        <label htmlFor="collegeName" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                          {collegeLabel} <span className="text-red-500 ml-0.5">*</span>
                         </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                            <Mail size={18} />
+                            <Building size={18} />
                           </div>
                           <input
-                            type="email"
-                            id="email"
-                            name="email"
+                            type="text"
+                            id="collegeName"
+                            name="collegeName"
                             required
                             disabled={isSubmitting}
-                            placeholder={emailPlaceholder}
+                            placeholder={collegePlaceholder}
                             className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                            value={formData.email}
+                            value={formData.collegeName}
                             onChange={handleChange}
                           />
                         </div>
                       </div>
-                    </div>
 
-                    {/* College Name */}
-                    <div className="group/field relative space-y-2.5">
-                      <label htmlFor="collegeName" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                        {collegeLabel} <span className="text-red-500 ml-0.5">*</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                          <Building size={18} />
+                      {/* Internship Preferable Elective */}
+                      <div className="space-y-4">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
+                          <BookOpen size={15} className="mr-2 text-slate-400" /> {electivesLabel} <span className="text-red-500 ml-0.5">*</span>
+                        </label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {electivesOptions.map((opt, idx) => {
+                            const isSelected = formData.elective === opt.value;
+                            return (
+                              <label
+                                key={idx}
+                                className={`flex flex-col p-6 rounded-3xl border transition-all duration-300 cursor-pointer shadow-sm relative overflow-hidden group ${isSelected ? "bg-white/80 border-primary ring-4 ring-primary/5 shadow-md scale-[1.01]" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50"}`}
+                              >
+                                <div className="flex items-start justify-between w-full z-10">
+                                  <h4 className={`text-sm font-extrabold leading-tight ${isSelected ? "text-primary" : "text-slate-700 group-hover:text-primary"} transition-colors`}>{opt.title}</h4>
+                                  <input
+                                    type="radio"
+                                    name="elective"
+                                    disabled={isSubmitting}
+                                    className="sr-only"
+                                    value={opt.value}
+                                    checked={isSelected}
+                                    onChange={handleChange}
+                                  />
+                                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-300 shrink-0 ${isSelected ? "border-primary bg-primary" : "border-slate-300 bg-white/50"}`}>
+                                    <AnimatePresence>
+                                      {isSelected && (
+                                        <motion.div
+                                          initial={{ scale: 0 }}
+                                          animate={{ scale: 1 }}
+                                          exit={{ scale: 0 }}
+                                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                          className="w-2 h-2 rounded-full bg-white"
+                                        />
+                                      )}
+                                    </AnimatePresence>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-slate-500 mt-2.5 font-semibold leading-relaxed z-10">{opt.description || opt.desc}</p>
+                                <div className="flex items-center space-x-1.5 mt-4 max-w-max z-10">
+                                  <span className={`text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full transition-colors ${isSelected ? "bg-primary/10 text-primary" : "bg-slate-200/50 text-slate-600"}`}>{opt.venueBadge || "Venue: IIT Madras RP"}</span>
+                                </div>
+                              </label>
+                            );
+                          })}
                         </div>
-                        <input
-                          type="text"
-                          id="collegeName"
-                          name="collegeName"
-                          required
-                          disabled={isSubmitting}
-                          placeholder={collegePlaceholder}
-                          className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                          value={formData.collegeName}
-                          onChange={handleChange}
-                        />
                       </div>
-                    </div>
 
-                    {/* Internship Preferable Elective */}
-                    <div className="space-y-4">
-                      <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
-                        <BookOpen size={15} className="mr-2 text-slate-400" /> {electivesLabel} <span className="text-red-500 ml-0.5">*</span>
-                      </label>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {electivesOptions.map((opt, idx) => {
-                          const isSelected = formData.elective === opt.value;
-                          return (
-                            <label 
-                              key={idx}
-                              className={`flex flex-col p-6 rounded-3xl border transition-all duration-300 cursor-pointer shadow-sm relative overflow-hidden group ${isSelected ? "bg-white/80 border-primary ring-4 ring-primary/5 shadow-md scale-[1.01]" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50"}`}
-                            >
-                              <div className="flex items-start justify-between w-full z-10">
-                                <h4 className={`text-sm font-extrabold leading-tight ${isSelected ? "text-primary" : "text-slate-700 group-hover:text-primary"} transition-colors`}>{opt.title}</h4>
+                      {/* Preferred Batch selection */}
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
+                            <Clock size={15} className="mr-2 text-slate-400" /> {batchesLabel} <span className="text-red-500 ml-0.5">*</span>
+                          </label>
+                          <span className="text-[10px] text-slate-400 font-bold italic block mt-1">
+                            {batchesNote}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {batchesOptions.map((opt, idx) => {
+                            const isSelected = formData.batch === opt.value;
+                            return (
+                              <label
+                                key={idx}
+                                className={`flex items-center justify-between p-4 px-5 rounded-2xl border transition-all duration-300 cursor-pointer text-xs font-bold relative group ${isSelected ? "bg-white/80 border-primary shadow-sm text-primary ring-4 ring-primary/5" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50 text-slate-500 hover:text-slate-800"}`}
+                              >
+                                <span>{opt.label}</span>
                                 <input
                                   type="radio"
-                                  name="elective"
+                                  name="batch"
                                   disabled={isSubmitting}
                                   className="sr-only"
                                   value={opt.value}
                                   checked={isSelected}
                                   onChange={handleChange}
                                 />
-                                <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-300 shrink-0 ${isSelected ? "border-primary bg-primary" : "border-slate-300 bg-white/50"}`}>
+                                <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300 shrink-0 ${isSelected ? "border-primary bg-primary" : "border-slate-300 bg-white/50"}`}>
                                   <AnimatePresence>
                                     {isSelected && (
                                       <motion.div
@@ -951,430 +1006,378 @@ const InternshipRegistration = () => {
                                         animate={{ scale: 1 }}
                                         exit={{ scale: 0 }}
                                         transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                        className="w-2 h-2 rounded-full bg-white"
+                                        className="w-1.5 h-1.5 rounded-full bg-white"
                                       />
                                     )}
                                   </AnimatePresence>
                                 </div>
-                              </div>
-                              <p className="text-xs text-slate-500 mt-2.5 font-semibold leading-relaxed z-10">{opt.description || opt.desc}</p>
-                              <div className="flex items-center space-x-1.5 mt-4 max-w-max z-10">
-                                <span className={`text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full transition-colors ${isSelected ? "bg-primary/10 text-primary" : "bg-slate-200/50 text-slate-600"}`}>{opt.venueBadge || "Venue: IIT Madras RP"}</span>
-                              </div>
-                            </label>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Preferred Batch selection */}
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
-                          <Clock size={15} className="mr-2 text-slate-400" /> {batchesLabel} <span className="text-red-500 ml-0.5">*</span>
-                        </label>
-                        <span className="text-[10px] text-slate-400 font-bold italic block mt-1">
-                          {batchesNote}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {batchesOptions.map((opt, idx) => {
-                          const isSelected = formData.batch === opt.value;
-                          return (
-                            <label 
-                              key={idx}
-                              className={`flex items-center justify-between p-4 px-5 rounded-2xl border transition-all duration-300 cursor-pointer text-xs font-bold relative group ${isSelected ? "bg-white/80 border-primary shadow-sm text-primary ring-4 ring-primary/5" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50 text-slate-500 hover:text-slate-800"}`}
-                            >
-                              <span>{opt.label}</span>
-                              <input
-                                type="radio"
-                                name="batch"
-                                disabled={isSubmitting}
-                                className="sr-only"
-                                value={opt.value}
-                                checked={isSelected}
-                                onChange={handleChange}
-                              />
-                              <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300 shrink-0 ${isSelected ? "border-primary bg-primary" : "border-slate-300 bg-white/50"}`}>
-                                <AnimatePresence>
-                                  {isSelected && (
-                                    <motion.div
-                                      initial={{ scale: 0 }}
-                                      animate={{ scale: 1 }}
-                                      exit={{ scale: 0 }}
-                                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                      className="w-1.5 h-1.5 rounded-full bg-white"
-                                    />
-                                  )}
-                                </AnimatePresence>
-                              </div>
-                            </label>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Branch & Year Selection */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="group/field relative space-y-2.5">
-                        <label htmlFor="branch" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                          {branchLabel} <span className="text-red-500 ml-0.5">*</span>
-                        </label>
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                            <Building size={18} />
-                          </div>
-                          <select
-                            id="branch"
-                            name="branch"
-                            required
-                            disabled={isSubmitting}
-                            className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-10 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold appearance-none cursor-pointer"
-                            value={formData.branch}
-                            onChange={handleChange}
-                          >
-                            <option value="">{branchPlaceholder}</option>
-                            {branchOptions.map((branch) => (
-                              <option key={branch} value={branch}>
-                                {branch}
-                              </option>
-                            ))}
-                          </select>
-                          <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                            <ChevronDown size={18} />
-                          </div>
+                              </label>
+                            );
+                          })}
                         </div>
                       </div>
 
-                      <div className="group/field relative space-y-2.5">
-                        <label htmlFor="year" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                          {yearLabel} <span className="text-red-500 ml-0.5">*</span>
-                        </label>
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                            <Calendar size={18} />
-                          </div>
-                          <select
-                            id="year"
-                            name="year"
-                            required
-                            disabled={isSubmitting}
-                            className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-10 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold appearance-none cursor-pointer"
-                            value={formData.year}
-                            onChange={handleChange}
-                          >
-                            <option value="">{yearPlaceholder}</option>
-                            {yearOptions.map((yr) => (
-                              <option key={yr} value={yr}>
-                                {yr}
-                              </option>
-                            ))}
-                          </select>
-                          <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                            <ChevronDown size={18} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Dynamic Custom Branch input */}
-                    <AnimatePresence>
-                      {formData.branch === "Other" && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                          animate={{ opacity: 1, height: "auto", marginTop: 8 }}
-                          exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="group/field relative space-y-2.5 pt-2 overflow-hidden"
-                        >
-                          <label htmlFor="customBranch" className="block text-xs font-bold uppercase tracking-widest text-slate-500">
-                            Specify Other Branch / Department <span className="text-red-500 ml-0.5">*</span>
+                      {/* Branch & Year Selection */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="group/field relative space-y-2.5">
+                          <label htmlFor="branch" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                            {branchLabel} <span className="text-red-500 ml-0.5">*</span>
                           </label>
                           <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
                               <Building size={18} />
                             </div>
-                            <input
-                              type="text"
-                              id="customBranch"
-                              name="customBranch"
+                            <select
+                              id="branch"
+                              name="branch"
                               required
                               disabled={isSubmitting}
-                              placeholder="Enter your department name"
-                              className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                              value={formData.customBranch}
+                              className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-10 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold appearance-none cursor-pointer"
+                              value={formData.branch}
                               onChange={handleChange}
-                            />
+                            >
+                              <option value="">{branchPlaceholder}</option>
+                              {branchOptions.map((branch) => (
+                                <option key={branch} value={branch}>
+                                  {branch}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                              <ChevronDown size={18} />
+                            </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {/* Date of Birth */}
-                    <div className="group/field relative space-y-2.5">
-                      <label htmlFor="dob" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                        {dobLabel} <span className="text-red-500 ml-0.5">*</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                          <Calendar size={18} />
                         </div>
-                        <input
-                          type="date"
-                          id="dob"
-                          name="dob"
-                          required
-                          disabled={isSubmitting}
-                          className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                          value={formData.dob}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
 
-                    {/* Address */}
-                    <div className="group/field relative space-y-2.5">
-                      <label htmlFor="address" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                        {addressLabel} <span className="text-red-500 ml-0.5">*</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute top-4 left-0 pl-4 flex items-start pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                          <MapPin size={18} />
-                        </div>
-                        <textarea
-                          id="address"
-                          name="address"
-                          rows="3"
-                          required
-                          disabled={isSubmitting}
-                          placeholder={addressPlaceholder}
-                          className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 resize-none rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                          value={formData.address}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Internship & Project Period */}
-                    <div className="space-y-4">
-                      <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
-                        <Clock size={15} className="mr-2 text-slate-400" /> {periodLabel} <span className="text-red-500 ml-0.5">*</span>
-                      </label>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {periodOptions.map((opt, idx) => {
-                          const isChecked = formData[opt.name];
-                          return (
-                            <label 
-                              key={idx}
-                              className={`flex items-center p-4 px-5 rounded-2xl border transition-all duration-300 cursor-pointer text-xs font-bold relative group ${isChecked ? "bg-white/80 border-primary shadow-sm text-primary ring-4 ring-primary/5" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50 text-slate-500 hover:text-slate-800"}`}
+                        <div className="group/field relative space-y-2.5">
+                          <label htmlFor="year" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                            {yearLabel} <span className="text-red-500 ml-0.5">*</span>
+                          </label>
+                          <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                              <Calendar size={18} />
+                            </div>
+                            <select
+                              id="year"
+                              name="year"
+                              required
+                              disabled={isSubmitting}
+                              className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-10 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold appearance-none cursor-pointer"
+                              value={formData.year}
+                              onChange={handleChange}
                             >
-                              <input
-                                type="checkbox"
-                                name={opt.name}
-                                disabled={isSubmitting}
-                                className="sr-only"
-                                checked={isChecked}
-                                onChange={() => handleCheckboxGroup(opt.name)}
-                              />
-                              <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all duration-300 shrink-0 mr-3 ${isChecked ? "border-primary bg-primary text-white" : "border-slate-300 bg-white/50 text-transparent"}`}>
-                                <AnimatePresence>
-                                  {isChecked && (
-                                    <motion.div
-                                      initial={{ scale: 0, opacity: 0 }}
-                                      animate={{ scale: 1, opacity: 1 }}
-                                      exit={{ scale: 0, opacity: 0 }}
-                                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                    >
-                                      <Check size={12} strokeWidth={3} />
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                              </div>
-                              <span>{opt.label}</span>
+                              <option value="">{yearPlaceholder}</option>
+                              {yearOptions.map((yr) => (
+                                <option key={yr} value={yr}>
+                                  {yr}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                              <ChevronDown size={18} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Dynamic Custom Branch input */}
+                      <AnimatePresence>
+                        {formData.branch === "Other" && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="group/field relative space-y-2.5 pt-2 overflow-hidden"
+                          >
+                            <label htmlFor="customBranch" className="block text-xs font-bold uppercase tracking-widest text-slate-500">
+                              Specify Other Branch / Department <span className="text-red-500 ml-0.5">*</span>
                             </label>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Placement Support Interest */}
-                    <div className="space-y-4">
-                      <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
-                        <HelpCircle size={15} className="mr-2 text-slate-400" /> {placementLabel} <span className="text-red-500 ml-0.5">*</span>
-                      </label>
-                      <div className="grid grid-cols-2 gap-4">
-                        {[
-                          { value: "yes", label: placementOptionYes },
-                          { value: "no", label: placementOptionNo }
-                        ].map((opt, idx) => {
-                          const isSelected = formData.placementInterest === opt.value;
-                          return (
-                            <label 
-                              key={idx}
-                              className={`flex items-center justify-between p-4 px-5 rounded-2xl border transition-all duration-300 cursor-pointer text-xs font-bold relative group ${isSelected ? "bg-white/80 border-primary shadow-sm text-primary ring-4 ring-primary/5" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50 text-slate-500 hover:text-slate-800"}`}
-                            >
-                              <span>{opt.label}</span>
+                            <div className="relative">
+                              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                                <Building size={18} />
+                              </div>
                               <input
-                                type="radio"
-                                name="placementInterest"
+                                type="text"
+                                id="customBranch"
+                                name="customBranch"
+                                required
                                 disabled={isSubmitting}
-                                className="sr-only"
-                                value={opt.value}
-                                checked={isSelected}
+                                placeholder="Enter your department name"
+                                className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
+                                value={formData.customBranch}
                                 onChange={handleChange}
                               />
-                              <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300 shrink-0 ${isSelected ? "border-primary bg-primary" : "border-slate-300 bg-white/50"}`}>
-                                <AnimatePresence>
-                                  {isSelected && (
-                                    <motion.div
-                                      initial={{ scale: 0 }}
-                                      animate={{ scale: 1 }}
-                                      exit={{ scale: 0 }}
-                                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                      className="w-1.5 h-1.5 rounded-full bg-white"
-                                    />
-                                  )}
-                                </AnimatePresence>
-                              </div>
-                            </label>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Disclosures & Terms Checkboxes */}
-                    <div className="space-y-5 pt-6 border-t border-slate-200/50">
-                      <span className="block text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center">
-                        <ShieldAlert size={16} className="mr-2 text-red-500 shrink-0" /> {termsLabel}
-                      </span>
-
-                      <div className="space-y-3.5 text-sm leading-relaxed text-slate-600 font-medium">
-                        {sanityData?.formTerms?.disclosuresList ? (
-                          termsDisclosures.map((text, idx) => (
-                            <div key={idx} className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
-                              <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
-                              <span>{text}</span>
                             </div>
-                          ))
-                        ) : (
-                          <>
-                            <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
-                              <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
-                              <span>I understand and agree to pay <strong className="text-primary font-bold">INR ₹6,990 + 18% applicable taxes</strong> towards the CopterCode International Live Project Internship & Training, which includes credentials and participation in the program.</span>
-                            </div>
-                            <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
-                              <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
-                              <span>I acknowledge that the internship will be conducted in hybrid mode (online and offline) under CopterCode at the venue <strong className="text-primary font-extrabold">IIT Madras Research Park (RP)</strong>.</span>
-                            </div>
-                            <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
-                              <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
-                              <span>I agree that the fee is non-refundable under any circumstances.</span>
-                            </div>
-                            <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
-                              <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
-                              <span><strong>For the 3-Month Hybrid Internship:</strong> Based on performance, attendance, and project evaluation during the initial one-month internship phase, candidates may be considered for extension to the 3-month hybrid internship program.</span>
-                            </div>
-                          </>
+                          </motion.div>
                         )}
+                      </AnimatePresence>
 
-                        {/* Master Agreement Checkbox */}
-                        <label className="flex items-start cursor-pointer transition-all duration-300 p-5 bg-emerald-50/40 hover:bg-emerald-50/70 border border-emerald-200/40 hover:border-emerald-300/60 rounded-2xl mt-5 text-emerald-950 shadow-sm group">
+                      {/* Date of Birth */}
+                      <div className="group/field relative space-y-2.5">
+                        <label htmlFor="dob" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                          {dobLabel} <span className="text-red-500 ml-0.5">*</span>
+                        </label>
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                            <Calendar size={18} />
+                          </div>
                           <input
-                            type="checkbox"
-                            name="confirmTerms"
+                            type="date"
+                            id="dob"
+                            name="dob"
                             required
                             disabled={isSubmitting}
-                            className="sr-only"
-                            checked={formData.confirmTerms}
+                            className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
+                            value={formData.dob}
                             onChange={handleChange}
                           />
-                          <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all duration-300 mr-4 mt-0.5 shrink-0 group-hover:scale-105 ${formData.confirmTerms ? "bg-emerald-600 border-emerald-600 text-white" : "border-emerald-400 bg-white/50 text-transparent"}`}>
-                            <AnimatePresence>
-                              {formData.confirmTerms && (
-                                <motion.div
-                                  initial={{ scale: 0, opacity: 0 }}
-                                  animate={{ scale: 1, opacity: 1 }}
-                                  exit={{ scale: 0, opacity: 0 }}
-                                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                >
-                                  <Check size={14} strokeWidth={3.5} />
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                          <span className="font-extrabold leading-normal select-none">
-                            {termsAgreement} <span className="text-red-500">*</span>
-                          </span>
-                        </label>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Display validation error */}
-                    <AnimatePresence>
-                      {validationError && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                          animate={{ opacity: 1, height: "auto", marginTop: 16 }}
-                          exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="overflow-hidden"
-                        >
-                          <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-600 text-xs font-bold flex items-center">
-                            <ShieldAlert size={18} className="mr-2.5 shrink-0" />
-                            <span>{validationError}</span>
+                      {/* Address */}
+                      <div className="group/field relative space-y-2.5">
+                        <label htmlFor="address" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                          {addressLabel} <span className="text-red-500 ml-0.5">*</span>
+                        </label>
+                        <div className="relative">
+                          <div className="absolute top-4 left-0 pl-4 flex items-start pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                            <MapPin size={18} />
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {/* Display submit error status */}
-                    <AnimatePresence>
-                      {submitStatus === "error" && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                          animate={{ opacity: 1, height: "auto", marginTop: 16 }}
-                          exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="overflow-hidden"
-                        >
-                          <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-600 text-xs font-bold flex items-center">
-                            <ShieldAlert size={18} className="mr-2.5 shrink-0" />
-                            <span>Failed to submit. Please check your network connection and try again.</span>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {/* Action Button */}
-                    <motion.button
-                      id="submit-registration"
-                      type="submit"
-                      disabled={isSubmitting}
-                      whileHover={!isSubmitting ? { scale: 1.01 } : {}}
-                      whileTap={!isSubmitting ? { scale: 0.99 } : {}}
-                      className="w-full py-4 bg-primary text-white font-extrabold hover:bg-primary/95 transition-all duration-300 flex items-center justify-center rounded-2xl uppercase tracking-widest text-xs shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed group text-center"
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center">
-                          <span className="inline-block mr-2.5 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                          {submittingText}
-                        </span>
-                      ) : (
-                        <>
-                          {submitText}
-                          <ArrowRight
-                            size={16}
-                            className="ml-2 group-hover:translate-x-1 transition-transform duration-300"
+                          <textarea
+                            id="address"
+                            name="address"
+                            rows="3"
+                            required
+                            disabled={isSubmitting}
+                            placeholder={addressPlaceholder}
+                            className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 resize-none rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
+                            value={formData.address}
+                            onChange={handleChange}
                           />
-                        </>
-                      )}
-                    </motion.button>
-                    
-                  </form>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                        </div>
+                      </div>
+
+                      {/* Internship & Project Period */}
+                      <div className="space-y-4">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
+                          <Clock size={15} className="mr-2 text-slate-400" /> {periodLabel} <span className="text-red-500 ml-0.5">*</span>
+                        </label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {periodOptions.map((opt, idx) => {
+                            const isChecked = formData[opt.name];
+                            return (
+                              <label
+                                key={idx}
+                                className={`flex items-center p-4 px-5 rounded-2xl border transition-all duration-300 cursor-pointer text-xs font-bold relative group ${isChecked ? "bg-white/80 border-primary shadow-sm text-primary ring-4 ring-primary/5" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50 text-slate-500 hover:text-slate-800"}`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  name={opt.name}
+                                  disabled={isSubmitting}
+                                  className="sr-only"
+                                  checked={isChecked}
+                                  onChange={() => handleCheckboxGroup(opt.name)}
+                                />
+                                <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all duration-300 shrink-0 mr-3 ${isChecked ? "border-primary bg-primary text-white" : "border-slate-300 bg-white/50 text-transparent"}`}>
+                                  <AnimatePresence>
+                                    {isChecked && (
+                                      <motion.div
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 0, opacity: 0 }}
+                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                      >
+                                        <Check size={12} strokeWidth={3} />
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                                <span>{opt.label}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Placement Support Interest */}
+                      <div className="space-y-4">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center">
+                          <HelpCircle size={15} className="mr-2 text-slate-400" /> {placementLabel} <span className="text-red-500 ml-0.5">*</span>
+                        </label>
+                        <div className="grid grid-cols-2 gap-4">
+                          {[
+                            { value: "yes", label: placementOptionYes },
+                            { value: "no", label: placementOptionNo }
+                          ].map((opt, idx) => {
+                            const isSelected = formData.placementInterest === opt.value;
+                            return (
+                              <label
+                                key={idx}
+                                className={`flex items-center justify-between p-4 px-5 rounded-2xl border transition-all duration-300 cursor-pointer text-xs font-bold relative group ${isSelected ? "bg-white/80 border-primary shadow-sm text-primary ring-4 ring-primary/5" : "bg-white/20 border-white/20 hover:bg-white/30 hover:border-slate-300/50 text-slate-500 hover:text-slate-800"}`}
+                              >
+                                <span>{opt.label}</span>
+                                <input
+                                  type="radio"
+                                  name="placementInterest"
+                                  disabled={isSubmitting}
+                                  className="sr-only"
+                                  value={opt.value}
+                                  checked={isSelected}
+                                  onChange={handleChange}
+                                />
+                                <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300 shrink-0 ${isSelected ? "border-primary bg-primary" : "border-slate-300 bg-white/50"}`}>
+                                  <AnimatePresence>
+                                    {isSelected && (
+                                      <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        exit={{ scale: 0 }}
+                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                        className="w-1.5 h-1.5 rounded-full bg-white"
+                                      />
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Disclosures & Terms Checkboxes */}
+                      <div className="space-y-5 pt-6 border-t border-slate-200/50">
+                        <span className="block text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center">
+                          <ShieldAlert size={16} className="mr-2 text-red-500 shrink-0" /> {termsLabel}
+                        </span>
+
+                        <div className="space-y-3.5 text-sm leading-relaxed text-slate-600 font-medium">
+                          {sanityData?.formTerms?.disclosuresList ? (
+                            termsDisclosures.map((text, idx) => (
+                              <div key={idx} className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
+                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
+                                <span>{text}</span>
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
+                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
+                                <span>I understand and agree to pay <strong className="text-primary font-bold">INR ₹6,990 + 18% applicable taxes</strong> towards the CopterCode International Live Project Internship & Training, which includes credentials and participation in the program.</span>
+                              </div>
+                              <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
+                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
+                                <span>I acknowledge that the internship will be conducted in hybrid mode (online and offline) under CopterCode at the venue <strong className="text-primary font-extrabold">IIT Madras Research Park (RP)</strong>.</span>
+                              </div>
+                              <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
+                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
+                                <span>I agree that the fee is non-refundable under any circumstances.</span>
+                              </div>
+                              <div className="flex items-start p-4 bg-white/30 border border-white/20 rounded-2xl shadow-sm backdrop-blur-sm">
+                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 mr-3 shrink-0" />
+                                <span><strong>For the 3-Month Hybrid Internship:</strong> Based on performance, attendance, and project evaluation during the initial one-month internship phase, candidates may be considered for extension to the 3-month hybrid internship program.</span>
+                              </div>
+                            </>
+                          )}
+
+                          {/* Master Agreement Checkbox */}
+                          <label className="flex items-start cursor-pointer transition-all duration-300 p-5 bg-emerald-50/40 hover:bg-emerald-50/70 border border-emerald-200/40 hover:border-emerald-300/60 rounded-2xl mt-5 text-emerald-950 shadow-sm group">
+                            <input
+                              type="checkbox"
+                              name="confirmTerms"
+                              required
+                              disabled={isSubmitting}
+                              className="sr-only"
+                              checked={formData.confirmTerms}
+                              onChange={handleChange}
+                            />
+                            <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all duration-300 mr-4 mt-0.5 shrink-0 group-hover:scale-105 ${formData.confirmTerms ? "bg-emerald-600 border-emerald-600 text-white" : "border-emerald-400 bg-white/50 text-transparent"}`}>
+                              <AnimatePresence>
+                                {formData.confirmTerms && (
+                                  <motion.div
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 0, opacity: 0 }}
+                                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                  >
+                                    <Check size={14} strokeWidth={3.5} />
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                            <span className="font-extrabold leading-normal select-none">
+                              {termsAgreement} <span className="text-red-500">*</span>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Display validation error */}
+                      <AnimatePresence>
+                        {validationError && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-600 text-xs font-bold flex items-center">
+                              <ShieldAlert size={18} className="mr-2.5 shrink-0" />
+                              <span>{validationError}</span>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Display submit error status */}
+                      <AnimatePresence>
+                        {submitStatus === "error" && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-600 text-xs font-bold flex items-center">
+                              <ShieldAlert size={18} className="mr-2.5 shrink-0" />
+                              <span>Failed to submit. Please check your network connection and try again.</span>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Action Button */}
+                      <motion.button
+                        id="submit-registration"
+                        type="submit"
+                        disabled={isSubmitting}
+                        whileHover={!isSubmitting ? { scale: 1.01 } : {}}
+                        whileTap={!isSubmitting ? { scale: 0.99 } : {}}
+                        className="w-full py-4 bg-primary text-white font-extrabold hover:bg-primary/95 transition-all duration-300 flex items-center justify-center rounded-2xl uppercase tracking-widest text-xs shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed group text-center"
+                      >
+                        {isSubmitting ? (
+                          <span className="flex items-center">
+                            <span className="inline-block mr-2.5 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                            {submittingText}
+                          </span>
+                        ) : (
+                          <>
+                            {submitText}
+                            <ArrowRight
+                              size={16}
+                              className="ml-2 group-hover:translate-x-1 transition-transform duration-300"
+                            />
+                          </>
+                        )}
+                      </motion.button>
+
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
           </div>
         </div>
