@@ -58,15 +58,15 @@ const BRANCH_OPTIONS = [
 ];
 
 const REGISTERED_INTERNS = [
-  { src: "/_optimized/mediafiles/registeration intern/intern_1.webp", name: "A Devendhiran" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_2.webp", name: "A Senthurapandi" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_3.webp", name: "A Kathir" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_4.webp", name: "Aathi Lakshmi" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_5.webp", name: "Abinaya K" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_6.webp", name: "Abinesh M" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_7.webp", name: "Adit Ram S G" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_8.webp", name: "Amirtha Shree S" },
-  { src: "/_optimized/mediafiles/registeration intern/intern_9.webp", name: "Anagha P P" }
+  { src: "/mediafiles/registeration intern/intern_1.jpg", name: "A Devendhiran" },
+  { src: "/mediafiles/registeration intern/intern_2.jpg", name: "A Senthurapandi" },
+  { src: "/mediafiles/registeration intern/intern_3.jpg", name: "A Kathir" },
+  { src: "/mediafiles/registeration intern/intern_4.jpg", name: "Aathi Lakshmi" },
+  { src: "/mediafiles/registeration intern/intern_5.jpg", name: "Abinaya K" },
+  { src: "/mediafiles/registeration intern/intern_6.jpg", name: "Abinesh M" },
+  { src: "/mediafiles/registeration intern/intern_7.jpg", name: "Adit Ram S G" },
+  { src: "/mediafiles/registeration intern/intern_8.jpg", name: "Amirtha Shree S" },
+  { src: "/mediafiles/registeration intern/intern_9.jpg", name: "Anagha P P" }
 ];
 
 const IMAGES_LEFT = [
@@ -87,11 +87,13 @@ const ScrollFadeCard = ({ item }) => {
     <div 
       className="w-64 h-80 rounded-2xl overflow-hidden border border-white/60 shadow-lg bg-white/10 transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/20 relative shrink-0 group"
     >
-      <img 
+      <OptimizedImage 
         src={item.src} 
         alt={item.name} 
         className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 ease-out"
         loading="lazy"
+        decoding="async"
+        sizes="256px"
       />
       {/* Always visible premium dark gradient overlay covering the baked-in 'VERIFIED INTERN' watermark */}
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent pt-8 pb-3 px-3 flex items-end transition-all duration-300">
@@ -112,6 +114,7 @@ const InternshipRegistration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
   const [validationError, setValidationError] = useState("");
+  const [isXl, setIsXl] = useState(false);
   
   const [formData, setFormData] = useState({
     studentName: "",
@@ -171,23 +174,34 @@ const InternshipRegistration = () => {
 
 
   useEffect(() => {
-    const preloaderQuery = `*[_type == "preloaderPage"][0]{
-      "logo": logo.asset->url,
-      background {
-        image { asset->{ url } }
+    // 1. Viewport match listener for responsive loading
+    const mediaQuery = window.matchMedia("(min-width: 1280px)");
+    setIsXl(mediaQuery.matches);
+    const handleResize = (e) => setIsXl(e.matches);
+    mediaQuery.addEventListener("change", handleResize);
+
+    // 2. Combined GROQ query to fetch all static page and preloader content in a single round-trip
+    const combinedQuery = `{
+      "preloader": *[_type == "preloaderPage"][0]{
+        "logo": logo.asset->url,
+        background {
+          image { asset->{ url } }
+        },
+        titlePrefix,
+        highlightedTitle,
+        tagline
       },
-      titlePrefix,
-      highlightedTitle,
-      tagline
+      "registration": *[_type == "internshipRegistrationPage"][0]
     }`;
-    client.fetch(preloaderQuery).then((data) => {
-      if (data) {
+
+    client.fetch(combinedQuery).then((data) => {
+      if (data?.preloader) {
         setPreloaderData({
-          logo: data.logo || "/mediafiles/Preloder logo.png",
-          image: data.background?.image?.asset?.url || "/_optimized/mediafiles/preloader_bg.webp",
-          titlePrefix: typeof data.titlePrefix === 'object' ? data.titlePrefix?.text : (data.titlePrefix || "WELCOME TO"),
-          highlightedTitle: typeof data.highlightedTitle === 'object' ? data.highlightedTitle?.text : (data.highlightedTitle || "COPTERCODE"),
-          tagline: typeof data.tagline === 'object' ? data.tagline?.text : (data.tagline || "Engineering The Unknown")
+          logo: data.preloader.logo || "/mediafiles/Preloder logo.png",
+          image: data.preloader.background?.image?.asset?.url || "/_optimized/mediafiles/preloader_bg.webp",
+          titlePrefix: typeof data.preloader.titlePrefix === 'object' ? data.preloader.titlePrefix?.text : (data.preloader.titlePrefix || "WELCOME TO"),
+          highlightedTitle: typeof data.preloader.highlightedTitle === 'object' ? data.preloader.highlightedTitle?.text : (data.preloader.highlightedTitle || "COPTERCODE"),
+          tagline: typeof data.preloader.tagline === 'object' ? data.preloader.tagline?.text : (data.preloader.tagline || "Engineering The Unknown")
         });
       } else {
         setPreloaderData({
@@ -198,8 +212,39 @@ const InternshipRegistration = () => {
           tagline: "Engineering The Unknown"
         });
       }
+
+      if (data?.registration) {
+        const reg = data.registration;
+        setSanityData({
+          seo: reg.seo,
+          heroTitle: reg.hero?.title,
+          heroSubtitle: reg.hero?.subtitle,
+          heroBackgroundImages: reg.hero?.backgroundImages,
+          overviewTag: reg.overview?.tag,
+          overviewTitle: reg.overview?.title,
+          overviewGreeting: reg.overview?.greeting,
+          overviewParagraphs: reg.overview?.descriptionParagraphs,
+          overviewSupportNote: reg.overview?.supportNote,
+          outcomesTitle: reg.outcomes?.title,
+          outcomesList: reg.outcomes?.list,
+          supportTitle: reg.support?.title,
+          supportChannels: reg.support?.channels,
+          formHeading: reg.registrationForm?.heading,
+          formEndpoint: reg.registrationForm?.endpoint,
+          formFields: reg.registrationForm?.fieldsConfig,
+          formElectives: reg.registrationForm?.electivesSection,
+          formBatches: reg.registrationForm?.batchesSection,
+          formDropdowns: reg.registrationForm?.dropdownsSection,
+          formPeriod: reg.registrationForm?.periodSection,
+          formPlacement: reg.registrationForm?.placementSection,
+          formTerms: reg.registrationForm?.termsSection,
+          formSubmitText: reg.registrationForm?.submitActionText,
+          formSubmittingText: reg.registrationForm?.submittingText,
+          registeredInterns: reg.registeredInterns
+        });
+      }
     }).catch((err) => {
-      console.error("Failed to fetch preloader data for header:", err);
+      console.error("Failed to fetch Sanity data for internship registration page:", err);
       setPreloaderData({
         logo: "/mediafiles/Preloder logo.png",
         image: "/_optimized/mediafiles/preloader_bg.webp",
@@ -208,41 +253,8 @@ const InternshipRegistration = () => {
         tagline: "Engineering The Unknown"
       });
     });
-  }, []);
 
-  useEffect(() => {
-    const query = `*[_type == "internshipRegistrationPage"][0]`;
-    client.fetch(query).then((data) => {
-      if (data) {
-        setSanityData({
-          seo: data.seo,
-          heroTitle: data.hero?.title,
-          heroSubtitle: data.hero?.subtitle,
-          heroBackgroundImages: data.hero?.backgroundImages,
-          overviewTag: data.overview?.tag,
-          overviewTitle: data.overview?.title,
-          overviewGreeting: data.overview?.greeting,
-          overviewParagraphs: data.overview?.descriptionParagraphs,
-          overviewSupportNote: data.overview?.supportNote,
-          outcomesTitle: data.outcomes?.title,
-          outcomesList: data.outcomes?.list,
-          supportTitle: data.support?.title,
-          supportChannels: data.support?.channels,
-          formHeading: data.registrationForm?.heading,
-          formEndpoint: data.registrationForm?.endpoint,
-          formFields: data.registrationForm?.fieldsConfig,
-          formElectives: data.registrationForm?.electivesSection,
-          formBatches: data.registrationForm?.batchesSection,
-          formDropdowns: data.registrationForm?.dropdownsSection,
-          formPeriod: data.registrationForm?.periodSection,
-          formPlacement: data.registrationForm?.placementSection,
-          formTerms: data.registrationForm?.termsSection,
-          formSubmitText: data.registrationForm?.submitActionText,
-          formSubmittingText: data.registrationForm?.submittingText,
-          registeredInterns: data.registeredInterns
-        });
-      }
-    }).catch(console.error);
+    return () => mediaQuery.removeEventListener("change", handleResize);
   }, []);
 
   const seoTitle = sanityData?.seo?.metaTitle || "Internship Registration | IIT Madras RP Venue - CopterCode";
@@ -485,27 +497,31 @@ const InternshipRegistration = () => {
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes marqueeUp {
           0% {
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateY(-50%);
+            transform: translate3d(0, -50%, 0);
           }
         }
         @keyframes marqueeDown {
           0% {
-            transform: translateY(-50%);
+            transform: translate3d(0, -50%, 0);
           }
           100% {
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
           }
         }
         .marquee-up {
           animation: marqueeUp 50s linear infinite;
           will-change: transform;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
         }
         .marquee-down {
           animation: marqueeDown 50s linear infinite;
           will-change: transform;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
         }
         .marquee-container:hover .marquee-up,
         .marquee-container:hover .marquee-down {
@@ -567,22 +583,26 @@ const InternshipRegistration = () => {
       <main className="py-24 relative z-10" id="registration-container">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl relative">
           {/* Left Side Column */}
-          <div className="hidden xl:flex absolute left-[-190px] top-0 bottom-0 w-72 overflow-hidden select-none pointer-events-none marquee-container justify-center">
-            <div className="flex flex-col gap-y-8 marquee-up pointer-events-auto py-4">
-              {leftMarqueeItems.map((item, idx) => (
-                <ScrollFadeCard key={idx} item={item} />
-              ))}
+          {isXl && (
+            <div className="hidden xl:flex absolute left-[-190px] top-0 bottom-0 w-72 overflow-hidden select-none pointer-events-none marquee-container justify-center">
+              <div className="flex flex-col gap-y-8 marquee-up pointer-events-auto py-4">
+                {leftMarqueeItems.map((item, idx) => (
+                  <ScrollFadeCard key={idx} item={item} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Right Side Column */}
-          <div className="hidden xl:flex absolute right-[-190px] top-0 bottom-0 w-72 overflow-hidden select-none pointer-events-none marquee-container justify-center">
-            <div className="flex flex-col gap-y-8 marquee-down pointer-events-auto py-4">
-              {rightMarqueeItems.map((item, idx) => (
-                <ScrollFadeCard key={idx} item={item} />
-              ))}
+          {isXl && (
+            <div className="hidden xl:flex absolute right-[-190px] top-0 bottom-0 w-72 overflow-hidden select-none pointer-events-none marquee-container justify-center">
+              <div className="flex flex-col gap-y-8 marquee-down pointer-events-auto py-4">
+                {rightMarqueeItems.map((item, idx) => (
+                  <ScrollFadeCard key={idx} item={item} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="max-w-3xl mx-auto space-y-16">
           
