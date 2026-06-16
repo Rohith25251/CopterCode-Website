@@ -1,4 +1,3 @@
-import PageHeader from "../components/PageHeader";
 import {
   Mail,
   Phone,
@@ -8,18 +7,48 @@ import {
   Clock,
   Globe,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { client } from "../lib/sanity";
 import SEO from "../components/SEO";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import BackButton from "../components/ui/BackButton";
 
+
+const HERO_SLIDES = [
+  {
+    image: "/mediafiles/news and media/IMG_1699.jpg",
+    category: "General Inquiries",
+    title: "Get in Touch",
+    quote: "Whether you have questions about our technology, products, or services, our global support teams are here to assist you."
+  },
+  {
+    image: "/mediafiles/news and media/IMG_3327.jpg",
+    category: "Partnerships",
+    title: "Partner With Us",
+    quote: "Collaborate with CopterCode to drive innovation in drone technology and industrial automation. Let's build the future of flight together."
+  },
+  {
+    image: "/mediafiles/news and media/IMG_3330.jpg",
+    category: "Careers & HR",
+    title: "Join the Flight",
+    quote: "Explore career opportunities, internship programs, and global workspaces with us. Be a part of a fast-growing team of innovators."
+  }
+];
 
 const Contact = () => {
   const [sanityData, setSanityData] = useState(null);
 
   useEffect(() => {
-    const query = `*[_type == "contactPage"][0]`;
+    const query = `*[_type == "contactPage"][0]{
+      ...,
+      heroSlides[] {
+        ...,
+        image { asset->{ url } }
+      }
+    }`;
 
     client.fetch(query).then((data) => {
       if (data) {
@@ -28,6 +57,13 @@ const Contact = () => {
           seo: data.seo,
           heroTitle: data.hero?.title,
           heroSubtitle: data.hero?.subtitle,
+          heroSlides: data.heroSlides?.map(slide => ({
+            ...slide,
+            image: slide.image?.asset?.url
+          })),
+          introHeading: data.intro?.heading,
+          introSubheading: data.intro?.subheading,
+          locationsTitle: data.intro?.locationsTitle,
           hqTitle: data.hq?.title,
           hqName: data.hq?.name,
           hqAddress: data.hq?.address,
@@ -55,6 +91,24 @@ const Contact = () => {
     });
   }, []);
 
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const heroSlides = sanityData?.heroSlides || HERO_SLIDES;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlideIndex((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [heroSlides]);
+
+  const handlePrevSlide = () => {
+    setCurrentSlideIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlideIndex((prev) => (prev + 1) % heroSlides.length);
+  };
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -69,6 +123,11 @@ const Contact = () => {
 
   const heroTitle = sanityData?.heroTitle || "Contact Us";
   const heroSubtitle = sanityData?.heroSubtitle || "We'd love to hear from you. Let's start a conversation.";
+
+  // Intro
+  const introHeading = sanityData?.introHeading || "Get in Touch with Our Team";
+  const introSubheading = sanityData?.introSubheading || "Whether you have questions about our industrial drone solutions, enterprise software services, or would like to explore partnership opportunities, we're here to help.";
+  const locationsTitle = sanityData?.locationsTitle || "Our Locations";
 
   // HQ
   const hqTitle = sanityData?.hqTitle || "Headquarters (India)";
@@ -218,10 +277,78 @@ const Contact = () => {
         />
       </div>
 
-      <PageHeader
-        title={heroTitle}
-        subtitle={heroSubtitle}
-      />
+      {/* Floating Back Button */}
+      <div className="fixed top-24 left-6 md:left-12 z-50">
+        <BackButton />
+      </div>
+
+      {/* Full Size Sliding Hero Banner */}
+      <section className="relative h-[80vh] md:h-[85vh] min-h-[500px] w-full overflow-hidden bg-slate-950">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlideIndex}
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 1.0, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <img
+              src={heroSlides[currentSlideIndex]?.image}
+              alt={heroSlides[currentSlideIndex]?.title}
+              className="w-full h-full object-cover"
+            />
+            {/* Soft, premium dark gradient overlay for quote legibility */}
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Carousel Content */}
+        <div className="absolute inset-0 z-20 flex items-center">
+          <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-6xl w-full">
+            <div className="max-w-3xl text-left">
+              <span className="px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 inline-block mb-6 backdrop-blur-sm">
+                {heroSlides[currentSlideIndex]?.category}
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight text-white mb-6 leading-[1.1]">
+                {heroSlides[currentSlideIndex]?.title}
+              </h1>
+              <p className="text-lg sm:text-xl text-slate-300 font-medium italic mb-8 border-l-4 border-blue-500 pl-4 leading-relaxed max-w-2xl">
+                "{heroSlides[currentSlideIndex]?.quote}"
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+          {heroSlides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlideIndex(idx)}
+              className={`h-1.5 transition-all duration-500 rounded-full ${currentSlideIndex === idx ? "w-8 bg-blue-500" : "w-2 bg-slate-500/50 hover:bg-slate-500"}`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Carousel Arrow Controls */}
+        <button
+          onClick={handlePrevSlide}
+          className="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-950/40 hover:bg-slate-950/70 border border-white/5 text-white flex items-center justify-center backdrop-blur-sm transition-all duration-300 hidden md:flex"
+          aria-label="Previous Slide"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          onClick={handleNextSlide}
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-950/40 hover:bg-slate-950/70 border border-white/5 text-white flex items-center justify-center backdrop-blur-sm transition-all duration-300 hidden md:flex"
+          aria-label="Next Slide"
+        >
+          <ChevronRight size={20} />
+        </button>
+      </section>
 
       <section className="py-24 relative z-10">
         <motion.div
@@ -232,9 +359,9 @@ const Contact = () => {
           className="container mx-auto px-6"
         >
           <div className="mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Get in Touch with Our Team</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{introHeading}</h2>
             <p className="text-lg text-secondary max-w-3xl">
-              Whether you have questions about our industrial drone solutions, enterprise software services, or would like to explore partnership opportunities, we're here to help.
+              {introSubheading}
             </p>
           </div>
 
@@ -245,7 +372,7 @@ const Contact = () => {
                 <div>
                   <h3 className="text-2xl font-bold text-primary mb-6 flex items-center">
                     <MapPin className="mr-3 text-accent" size={24} />
-                    Our Locations
+                    {locationsTitle}
                   </h3>
                 </div>
                 {/* Headquarters (India) */}
@@ -388,15 +515,15 @@ const Contact = () => {
             <motion.div
               variants={itemVariants}
               whileHover={{ y: -5 }}
-              className="bg-surface p-8 md:p-12 border border-border rounded-3xl h-fit shadow-2xl relative overflow-hidden group"
+              className="bg-slate-950 p-8 md:p-12 border border-slate-800 rounded-3xl h-fit shadow-2xl relative overflow-hidden group"
             >
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                className="absolute top-0 right-0 w-64 h-64 bg-background/5 rounded-full blur-[80px] -mr-16 -mt-16 pointer-events-none"
+                className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[100px] -mr-16 -mt-16 pointer-events-none"
               />
 
-              <h3 className="text-2xl font-display font-bold text-primary mb-8 relative z-10">
+              <h3 className="text-2xl font-display font-black tracking-tight text-white mb-8 relative z-10">
                 {formTitle}
               </h3>
 
@@ -404,14 +531,14 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-bold text-primary mb-2 ml-1"
+                    className="block text-xs font-extrabold tracking-widest text-slate-300 uppercase mb-2 ml-1"
                   >
                     Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
+                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all rounded-xl shadow-inner"
                     placeholder="Jane Doe"
                     required
                     disabled={isSubmitting}
@@ -424,14 +551,14 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-bold text-primary mb-2 ml-1"
+                    className="block text-xs font-extrabold tracking-widest text-slate-300 uppercase mb-2 ml-1"
                   >
                     Email
                   </label>
                   <input
                     type="email"
                     id="email"
-                    className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all rounded-xl shadow-inner"
+                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all rounded-xl shadow-inner"
                     placeholder="jane@company.com"
                     required
                     disabled={isSubmitting}
@@ -444,14 +571,14 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-bold text-primary mb-2 ml-1"
+                    className="block text-xs font-extrabold tracking-widest text-slate-300 uppercase mb-2 ml-1"
                   >
                     Message
                   </label>
                   <textarea
                     id="message"
                     rows="4"
-                    className="w-full bg-background border border-border p-4 text-primary placeholder:text-secondary/60 focus:border-accent focus:ring-1 focus:ring-accent/20 outline-none transition-all resize-none rounded-xl shadow-inner"
+                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all resize-none rounded-xl shadow-inner"
                     placeholder="Tell us about your project..."
                     required
                     disabled={isSubmitting}
@@ -467,7 +594,7 @@ const Contact = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-green-600 text-sm font-medium"
+                    className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-sm font-medium"
                   >
                     ✓ Thank you for your message. We'll be in touch shortly!
                   </motion.div>
@@ -478,7 +605,7 @@ const Contact = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-600 text-sm font-medium"
+                    className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm font-medium"
                   >
                     ✕ Failed to send message. Please try again or contact us directly.
                   </motion.div>
@@ -489,11 +616,11 @@ const Contact = () => {
                   disabled={isSubmitting}
                   whileHover={!isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                  className="w-full py-4 bg-accent text-white font-bold hover:bg-accent/90 transition-all duration-300 flex items-center justify-center rounded-xl uppercase tracking-widest text-sm shadow-lg hover:shadow-xl group transform disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-white hover:bg-slate-100 text-black font-extrabold transition-all duration-300 flex items-center justify-center rounded-xl uppercase tracking-widest text-xs shadow-lg hover:shadow-white/10 group transform disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
-                    <span className="flex items-center">
-                      <span className="inline-block mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    <span className="flex items-center text-black">
+                      <span className="inline-block mr-2 w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
                       Sending...
                     </span>
                   ) : (

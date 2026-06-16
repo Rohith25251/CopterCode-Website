@@ -21,6 +21,25 @@ export const contactPage = {
                 { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'contact, inquiries, partnerships, drone technology support, enterprise software, support services' }
             ]
         },
+        // --- HERO SLIDE CAROUSEL ---
+        {
+            name: 'heroSlides',
+            title: 'Hero Slide Carousel',
+            description: 'Slides for the main top hero carousel (No CTA buttons will be displayed).',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    title: 'Hero Slide',
+                    fields: [
+                        { name: 'title', type: 'string', title: 'Title' },
+                        { name: 'quote', type: 'text', title: 'Quote', rows: 2 },
+                        { name: 'category', type: 'string', title: 'Category/Tag', initialValue: 'Contact Info' },
+                        { name: 'image', type: 'image', title: 'Slide Image', options: { hotspot: true } }
+                    ]
+                }
+            ]
+        },
         // --- HERO ---
         {
             name: 'hero',
@@ -29,6 +48,17 @@ export const contactPage = {
             fields: [
                 { name: 'title', type: 'string', title: 'Title', initialValue: 'Contact Us' },
                 { name: 'subtitle', type: 'string', title: 'Subtitle', initialValue: "We'd love to hear from you. Let's start a conversation." }
+            ]
+        },
+        // --- INTRO ---
+        {
+            name: 'intro',
+            title: 'Introduction Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Get in Touch with Our Team' },
+                { name: 'subheading', type: 'text', title: 'Subheading', rows: 3, initialValue: "Whether you have questions about our industrial drone solutions, enterprise software services, or would like to explore partnership opportunities, we're here to help." },
+                { name: 'locationsTitle', type: 'string', title: 'Locations Title', initialValue: 'Our Locations' }
             ]
         },
         // --- HEADQUARTERS (INDIA) ---
