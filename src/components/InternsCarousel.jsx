@@ -50,6 +50,13 @@ const fallbackInterns = [
   }
 ];
 
+const getInitials = (name) => {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
 const InternsCarousel = ({ data }) => {
   const x = useMotionValue(0);
 
@@ -113,25 +120,29 @@ const InternsCarousel = ({ data }) => {
             >
               <div className="aspect-[4/5] overflow-hidden relative h-[500px]">
                 {intern.image ? (
-                  <OptimizedImage
-                    src={intern.image}
-                    alt={intern.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
-                    loading="lazy"
-                    decoding="async"
-                    sizes="300px"
-                  />
+                  <>
+                    <OptimizedImage
+                      src={intern.image}
+                      alt={intern.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
+                      loading="lazy"
+                      decoding="async"
+                      sizes="300px"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/25 to-transparent opacity-90 z-10" />
+                  </>
                 ) : (
-                  <div className="w-full h-full bg-surface-highlight flex items-center justify-center text-secondary">
-                    <div className="text-center p-4">
-                      <span className="block text-4xl mb-2">🎓</span>
-                      No Image
+                  <div className="w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center">
+                    <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-4 group-hover/card:scale-105 transition-transform duration-500">
+                      <span className="text-4xl font-display font-black text-white/80">
+                        {getInitials(intern.name)}
+                      </span>
                     </div>
+                    <span className="text-[10px] font-extrabold text-white/40 tracking-[0.2em] uppercase">CopterCode Intern</span>
                   </div>
                 )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/25 to-transparent opacity-90" />
-                <div className="absolute bottom-6 left-6 right-6 text-white">
+                <div className="absolute bottom-6 left-6 right-6 text-white z-20">
                   <div className="bg-primary/40 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 inline-block mb-3 rounded-full">
                     Fresher
                   </div>

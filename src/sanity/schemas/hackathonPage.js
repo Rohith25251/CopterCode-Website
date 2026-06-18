@@ -16,31 +16,29 @@ export const hackathonPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Hackathons | Innovation Challenges & Competitions' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'Join CopterCode hackathons and innovation challenges. Compete in drone technology, AI/ML, blockchain, and autonomous systems with prize pools and industry mentorship.' },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'hackathon, innovation challenge, coding competition, drone technology, AI/ML, blockchain, autonomous systems, tech competition' }
             ]
         },
-        // --- HERO ---
+        // --- HERO SLIDE CAROUSEL ---
         {
-            name: 'hero',
-            title: 'Hero Section',
-            type: 'object',
-            fields: [
-                { name: 'title', type: 'string', title: 'Title', initialValue: 'Hackathons' },
-                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Code the future with CopterCode. Join our innovation challenges and competitions.' },
+            name: 'heroSlides',
+            title: 'Hero Slide Carousel',
+            description: 'Slides for the main top hero carousel, each with its own background image, text, and CTA button.',
+            type: 'array',
+            of: [
                 {
-                    name: 'backgroundImage',
-                    type: 'image',
-                    title: 'Background Image (Single)',
-                    options: { hotspot: true },
-                    description: 'Single background image for the hero section'
-                },
-                {
-                    name: 'backgroundImages',
-                    type: 'array',
-                    title: 'Background Image Carousel',
-                    of: [{ type: 'image', options: { hotspot: true } }],
-                    description: 'Multiple images for carousel rotation in the hero section (rotates every 5 seconds). If provided, takes priority over single background image.'
+                    type: 'object',
+                    title: 'Hero Slide',
+                    fields: [
+                        { name: 'title', type: 'string', title: 'Title' },
+                        { name: 'quote', type: 'text', title: 'Quote / Subtitle', rows: 2 },
+                        { name: 'category', type: 'string', title: 'Category/Tag', initialValue: 'Hackathons' },
+                        { name: 'image', type: 'image', title: 'Slide Image', options: { hotspot: true } },
+                        { name: 'ctaLabel', type: 'string', title: 'CTA Button Label', initialValue: 'Register Now' },
+                        { name: 'ctaLink', type: 'string', title: 'CTA Button Link', initialValue: '/contact' }
+                    ]
                 }
             ]
         },
@@ -97,6 +95,13 @@ export const hackathonPage = {
                         },
                         { name: 'featured', type: 'boolean', title: 'Featured Hackathon', initialValue: false, description: 'Mark as featured to display prominently at the top of the page' },
                         { name: 'image', type: 'image', title: 'Hackathon Image/Poster', options: { hotspot: true }, description: 'Primary image displayed on the hackathon card' },
+                        {
+                            name: 'secondImage',
+                            type: 'image',
+                            title: 'Secondary Image',
+                            options: { hotspot: true },
+                            description: 'Optional secondary image (e.g. for hover effects or gallery)'
+                        },
 
                         // --- Date & Location ---
                         { name: 'date', type: 'string', title: 'Display Date', description: 'Formatted date shown on the card (e.g. "April 15-17, 2026")' },

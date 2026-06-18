@@ -56,7 +56,7 @@ export const contactPage = {
             title: 'Introduction Section',
             type: 'object',
             fields: [
-                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Get in Touch with Our Team' },
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Talk to Our Team' },
                 { name: 'subheading', type: 'text', title: 'Subheading', rows: 3, initialValue: "Whether you have questions about our industrial drone solutions, enterprise software services, or would like to explore partnership opportunities, we're here to help." },
                 { name: 'locationsTitle', type: 'string', title: 'Locations Title', initialValue: 'Our Locations' }
             ]

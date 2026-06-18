@@ -21,34 +21,30 @@ export const internshipPage = {
                 { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'internship program, drone technology, AI internship, cybersecurity training, software development, student internship, tech training' }
             ]
         },
-        // --- HERO ---
+        // --- HERO SCROLL BUTTON ---
         {
-            name: 'hero',
-            title: 'Hero Section',
-            type: 'object',
-            fields: [
-                { name: 'title', type: 'string', title: 'Title', initialValue: 'Internship Programme' },
-                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Empowering the next generation of innovators with real-world exposure to emerging technologies.' },
+            name: 'heroScrollButtonText',
+            title: 'Hero Scroll Button Text',
+            type: 'string',
+            initialValue: 'Ready to Launch? Apply Now',
+            description: 'Text for the floating apply button on the top right'
+        },
+        // --- HERO SLIDE CAROUSEL ---
+        {
+            name: 'heroSlides',
+            title: 'Hero Slide Carousel',
+            description: 'Slides for the main top hero carousel, each with its own background image, title, and quote.',
+            type: 'array',
+            of: [
                 {
-                    name: 'backgroundImage',
-                    title: 'Background Image (Single)',
-                    type: 'image',
-                    options: { hotspot: true },
-                    description: 'Fallback image if no carousel images are provided.'
-                },
-                {
-                    name: 'backgroundImages',
-                    title: 'Background Images (Carousel)',
-                    type: 'array',
-                    of: [{ type: 'image', options: { hotspot: true } }],
-                    description: 'Upload multiple images to create a background slideshow.'
-                },
-                {
-                    name: 'scrollButtonText',
-                    title: 'Hero Scroll Button Text',
-                    type: 'string',
-                    initialValue: 'Ready to Launch? Apply Now',
-                    description: 'Text for the button that scrolls to the application section.'
+                    type: 'object',
+                    title: 'Hero Slide',
+                    fields: [
+                        { name: 'title', type: 'string', title: 'Title' },
+                        { name: 'quote', type: 'text', title: 'Quote / Subtitle', rows: 2 },
+                        { name: 'category', type: 'string', title: 'Category/Tag', initialValue: 'Internship Programme' },
+                        { name: 'image', type: 'image', title: 'Slide Image', options: { hotspot: true } }
+                    ]
                 }
             ]
         },

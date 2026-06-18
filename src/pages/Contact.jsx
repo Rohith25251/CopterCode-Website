@@ -21,7 +21,7 @@ const HERO_SLIDES = [
   {
     image: "/mediafiles/news and media/IMG_1699.jpg",
     category: "General Inquiries",
-    title: "Get in Touch",
+    title: "Talk to Our Team",
     quote: "Whether you have questions about our technology, products, or services, our global support teams are here to assist you."
   },
   {
@@ -119,13 +119,13 @@ const Contact = () => {
 
   // Fallbacks
   const seoTitle = sanityData?.seo?.metaTitle || "Contact Us";
-  const seoDesc = sanityData?.seo?.metaDescription || "Get in touch with CopterCode.";
+  const seoDesc = sanityData?.seo?.metaDescription || "Talk to the CopterCode team for inquiries, support, and partnerships.";
 
   const heroTitle = sanityData?.heroTitle || "Contact Us";
   const heroSubtitle = sanityData?.heroSubtitle || "We'd love to hear from you. Let's start a conversation.";
 
   // Intro
-  const introHeading = sanityData?.introHeading || "Get in Touch with Our Team";
+  const introHeading = sanityData?.introHeading || "Talk to Our Team";
   const introSubheading = sanityData?.introSubheading || "Whether you have questions about our industrial drone solutions, enterprise software services, or would like to explore partnership opportunities, we're here to help.";
   const locationsTitle = sanityData?.locationsTitle || "Our Locations";
 
@@ -243,7 +243,7 @@ const Contact = () => {
         ogTitle="Contact CopterCode"
         ogDescription="Reach our team for inquiries and collaborations. Let's discuss your business needs."
         twitterTitle="Contact CopterCode"
-        twitterDescription="Get in touch with us for any questions about our services."
+        twitterDescription="Talk to our team for any questions about our services."
       />
 
       {/* Background Decoration */}
@@ -283,8 +283,8 @@ const Contact = () => {
       </div>
 
       {/* Full Size Sliding Hero Banner */}
-      <section className="relative h-[80vh] md:h-[85vh] min-h-[500px] w-full overflow-hidden bg-slate-950">
-        <AnimatePresence mode="wait">
+      <section className="relative h-[85vh] md:h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
+        <AnimatePresence>
           <motion.div
             key={currentSlideIndex}
             initial={{ opacity: 0, scale: 1.03 }}
@@ -538,7 +538,7 @@ const Contact = () => {
                   <input
                     type="text"
                     id="name"
-                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all rounded-xl shadow-inner"
+                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all rounded-xl shadow-inner"
                     placeholder="Jane Doe"
                     required
                     disabled={isSubmitting}
@@ -558,7 +558,7 @@ const Contact = () => {
                   <input
                     type="email"
                     id="email"
-                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all rounded-xl shadow-inner"
+                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all rounded-xl shadow-inner"
                     placeholder="jane@company.com"
                     required
                     disabled={isSubmitting}
@@ -578,7 +578,7 @@ const Contact = () => {
                   <textarea
                     id="message"
                     rows="4"
-                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all resize-none rounded-xl shadow-inner"
+                    className="w-full bg-slate-900 border border-slate-800 p-4 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all resize-none rounded-xl shadow-inner"
                     placeholder="Tell us about your project..."
                     required
                     disabled={isSubmitting}

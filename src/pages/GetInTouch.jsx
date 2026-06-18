@@ -1,21 +1,28 @@
-import PageHeader from '../components/PageHeader';
 import SEO from '../components/SEO';
 import { Mail, Phone, MessageSquare, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from "react";
 import { client } from "../lib/sanity";
+import BackButton from '../components/ui/BackButton';
 
 const GetInTouch = () => {
     const [sanityData, setSanityData] = useState(null);
 
     useEffect(() => {
-        const query = `*[_type == "getInTouchPage"][0]`;
+        const query = `*[_type == "getInTouchPage"][0] {
+            ...,
+            hero {
+                ...,
+                image { asset->{ url } }
+            }
+        }`;
         client.fetch(query).then((data) => {
             if (data) {
                 setSanityData({
                     seo: data.seo,
                     heroTitle: data.hero?.title,
                     heroSubtitle: data.hero?.subtitle,
+                    heroImage: data.hero?.image?.asset?.url,
                     whatsappTitle: data.whatsapp?.title,
                     whatsappText: data.whatsapp?.text,
                     whatsappLink: data.whatsapp?.link,
@@ -33,6 +40,7 @@ const GetInTouch = () => {
 
     const heroTitle = sanityData?.heroTitle || "Get In Touch";
     const heroSubtitle = sanityData?.heroSubtitle || "We are just a click away. Connect with us instantly.";
+    const heroImage = sanityData?.heroImage || "/mediafiles/news and media/IMG_3327.jpg";
 
     const whatsappLink = sanityData?.whatsappLink || "https://wa.me/918072193600";
     const whatsappTitle = sanityData?.whatsappTitle || "WhatsApp";
@@ -45,12 +53,44 @@ const GetInTouch = () => {
     const footerText = sanityData?.footerText || "Prefer a detailed inquiry? Fill out our contact form.";
 
     return (
-        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-white">
+        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-white overflow-hidden relative">
             <SEO title={seoTitle} description={seoDesc} />
-            <PageHeader
-                title={heroTitle}
-                subtitle={heroSubtitle}
-            />
+            
+            {/* Floating Back Button */}
+            <div className="fixed top-24 left-6 md:left-12 z-50">
+                <BackButton />
+            </div>
+
+            {/* Full Size Hero Banner */}
+            <section className="relative h-[85vh] md:h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
+                <div className="absolute inset-0 w-full h-full">
+                    <img
+                        src={heroImage}
+                        alt={heroTitle}
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Soft, premium dark gradient overlay for quote legibility */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20 z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+                </div>
+
+                {/* Hero Content */}
+                <div className="absolute inset-0 z-20 flex items-center">
+                    <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-6xl w-full">
+                        <div className="max-w-3xl text-left">
+                            <span className="px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 inline-block mb-6 backdrop-blur-sm">
+                                Instant Connect
+                            </span>
+                            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight text-white mb-6 leading-[1.1]">
+                                {heroTitle}
+                            </h1>
+                            <p className="text-lg sm:text-xl text-slate-300 font-medium italic mb-8 border-l-4 border-blue-500 pl-4 leading-relaxed max-w-2xl">
+                                "{heroSubtitle}"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <section className="py-24">
                 <div className="container mx-auto px-6 max-w-4xl">

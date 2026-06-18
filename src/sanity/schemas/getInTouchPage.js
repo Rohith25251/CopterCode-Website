@@ -27,7 +27,8 @@ export const getInTouchPage = {
             type: 'object',
             fields: [
                 { name: 'title', type: 'string', title: 'Title', initialValue: 'Get In Touch' },
-                { name: 'subtitle', type: 'string', title: 'Subtitle', initialValue: 'We are just a click away. Connect with us instantly.' }
+                { name: 'subtitle', type: 'string', title: 'Subtitle', initialValue: 'We are just a click away. Connect with us instantly.' },
+                { name: 'image', type: 'image', title: 'Hero Image', options: { hotspot: true } }
             ]
         },
         // --- WHATSAPP ---

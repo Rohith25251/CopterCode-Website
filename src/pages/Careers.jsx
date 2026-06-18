@@ -150,6 +150,13 @@ const INTERN_IMAGES = [
   }
 ];
 
+const getInitials = (name) => {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
 const Careers = () => {
   const [sanityData, setSanityData] = useState(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -593,12 +600,21 @@ const Careers = () => {
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     className="absolute inset-0 w-full h-full"
                   >
-                    {internsPool[currentInternIndex]?.src && (
+                    {internsPool[currentInternIndex]?.src ? (
                       <img 
                         src={internsPool[currentInternIndex].src} 
                         alt={internsPool[currentInternIndex].name}
                         className="w-full h-full object-cover object-center"
                       />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center">
+                        <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-3">
+                          <span className="text-3xl font-display font-black text-white/80">
+                            {getInitials(internsPool[currentInternIndex]?.name)}
+                          </span>
+                        </div>
+                        <span className="text-[9px] font-extrabold text-white/40 tracking-[0.2em] uppercase">CopterCode Intern</span>
+                      </div>
                     )}
                   </motion.div>
                 </AnimatePresence>
@@ -737,7 +753,7 @@ const Careers = () => {
                       trustedLogos.map((url, idx) => (
                         <div
                           key={`sanity-logo-${sectionIdx}-${idx}`}
-                          className="w-32 h-24 sm:w-48 sm:h-32 flex-shrink-0 flex items-center justify-center transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-105"
+                          className="w-32 h-24 sm:w-48 sm:h-32 flex-shrink-0 flex items-center justify-center transition-all duration-300 opacity-100 hover:scale-105"
                         >
                           <OptimizedImage
                             src={url}
@@ -765,7 +781,7 @@ const Careers = () => {
                       ].map((logoName) => (
                         <div
                           key={`logo-${sectionIdx}-${logoName}`}
-                          className="w-32 h-24 sm:w-48 sm:h-32 flex-shrink-0 flex items-center justify-center transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-105"
+                          className="w-32 h-24 sm:w-48 sm:h-32 flex-shrink-0 flex items-center justify-center transition-all duration-300 opacity-100 hover:scale-105"
                         >
                           <img
                             src={`/_optimized/mediafiles/logos/${logoName}`}

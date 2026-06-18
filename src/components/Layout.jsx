@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
     ].includes(location.pathname);
 
     return (
-        <div className="flex flex-col min-h-screen bg-background text-primary overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-background text-primary overflow-x-clip">
             <Navbar />
             <main className="flex-grow pt-16 sm:pt-18 md:pt-20 lg:pt-20 min-h-screen">
                 {children}

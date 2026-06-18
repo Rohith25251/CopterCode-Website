@@ -1,11 +1,11 @@
-import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import InternsCarousel from "../components/InternsCarousel";
 import PartnerLogos from "../components/PartnerLogos";
-import { ArrowRight, Star, Play, CheckCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, Star, Play, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import OptimizedImage from "../components/OptimizedImage";
 import { Link } from "react-router-dom";
+import BackButton from "../components/ui/BackButton";
 
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
@@ -23,18 +23,25 @@ const HEADER_IMAGES = [
 const Internship = () => {
   useScrollToTop(); // Force scroll to top on mount
   const [sanityData, setSanityData] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    const query = `*[_type == "internshipPage"][0]`;
+    const query = `*[_type == "internshipPage"][0] {
+      ...,
+      heroSlides[] {
+        ...,
+        image { asset->{ url } }
+      }
+    }`;
     client.fetch(query).then((data) => {
       if (data) {
         setSanityData({
           seo: data.seo,
-          heroTitle: data.hero?.title,
-          heroSubtitle: data.hero?.subtitle,
-          heroBackgroundImage: data.hero?.backgroundImage,
-          heroBackgroundImages: data.hero?.backgroundImages,
-          heroScrollButtonText: data.hero?.scrollButtonText,
+          heroScrollButtonText: data.heroScrollButtonText,
+          heroSlides: data.heroSlides?.map(slide => ({
+            ...slide,
+            image: slide.image?.asset?.url
+          })),
           introText1: data.introduction?.text1,
           introText2: data.introduction?.text2,
           purposeTitle: data.purpose?.title,
@@ -62,19 +69,48 @@ const Internship = () => {
   const seoTitle = sanityData?.seo?.metaTitle || "Internship Programme | Real-World Tech Experience";
   const seoDesc = sanityData?.seo?.metaDescription || "CopterCode internship program provides real-world exposure to drone technology, AI, cybersecurity, software development, IoT, and renewable energy for college students.";
 
-  const sanityHeroImage = sanityData?.heroBackgroundImage ? urlFor(sanityData.heroBackgroundImage).url() : null;
-  const sanityCarouselImages = sanityData?.heroBackgroundImages?.length > 0
-    ? sanityData.heroBackgroundImages.map(img => urlFor(img).url())
-    : [];
+  const DEFAULT_HERO_SLIDES = [
+    {
+      image: "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
+      category: "Internship Programme",
+      title: "Internship Programme",
+      quote: "Empowering the next generation of innovators with real-world exposure to emerging technologies."
+    },
+    {
+      image: "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
+      category: "Hands-On Experience",
+      title: "Build the Future",
+      quote: "Work closely with experienced mentors on live projects shaping the next horizon of aerospace and AI technology."
+    },
+    {
+      image: "/mediafiles/Home/IMG_1851.jpg",
+      category: "Career Preparation",
+      title: "Industry Readiness",
+      quote: "Bridge the gap between academic theory and actual industry application, preparing you for the global tech workforce."
+    }
+  ];
 
-  const headerImages = sanityCarouselImages.length > 0
-    ? sanityCarouselImages
-    : (sanityHeroImage ? [sanityHeroImage] : HEADER_IMAGES);
+  const heroSlides = (sanityData?.heroSlides && sanityData.heroSlides.length > 0)
+    ? sanityData.heroSlides
+    : DEFAULT_HERO_SLIDES;
 
-  const ctaBgImage = sanityData?.ctaBackgroundImage ? urlFor(sanityData.ctaBackgroundImage).url() : headerImages[0];
+  const ctaBgImage = sanityData?.ctaBackgroundImage ? urlFor(sanityData.ctaBackgroundImage).url() : heroSlides[0]?.image;
 
-  const heroTitle = sanityData?.heroTitle || "Internship Programme";
-  const heroSubtitle = sanityData?.heroSubtitle || "Empowering the next generation of innovators with real-world exposure to emerging technologies.";
+  useEffect(() => {
+    if (heroSlides.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [heroSlides]);
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % heroSlides.length);
+  };
 
   const introText1 = sanityData?.introText1 || "At CopterCode, we believe in empowering the next generation of innovators. Our Internship Programme is designed to provide college students with real-world exposure to emerging technologies across multiple domains, including Drone Technology, Cybersecurity, Software Development, Artificial Intelligence (AI), Internet of Things (IoT), and Renewable Energy Systems.";
 
@@ -146,22 +182,97 @@ const Internship = () => {
         twitterTitle="Intern at CopterCode"
         twitterDescription="Join the CopterCode internship program and gain invaluable industry experience."
       />
-      <PageHeader
-        title={heroTitle}
-        subtitle={heroSubtitle}
-        image={sanityHeroImage}
-        images={headerImages}
-      >
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => document.getElementById('apply-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="hidden md:flex bg-black hover:bg-accent/90 text-white font-bold py-4 px-8 rounded-full shadow-lg items-center gap-3 text-lg transition-all transform hover:shadow-accent/50 hover:shadow-2xl border-2 border-white/20 backdrop-blur-sm group"
-        >
-          <span className="drop-shadow-md">{sanityData?.heroScrollButtonText || "Ready to Launch? Apply Now"}</span>
-          <span className="text-2xl group-hover:rotate-12 transition-transform">🚀</span>
-        </motion.button>
-      </PageHeader>
+      {/* Full Size Sliding Hero Banner */}
+      <section className="relative h-[85vh] md:h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
+        <AnimatePresence>
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 1.0, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <img
+              src={heroSlides[currentImageIndex]?.image}
+              alt={heroSlides[currentImageIndex]?.title}
+              className="w-full h-full object-cover"
+            />
+            {/* Soft, premium dark gradient overlay for quote legibility */}
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Floating Back Button (Top Left) */}
+        <div className="absolute top-24 left-6 md:left-12 z-30">
+          <BackButton />
+        </div>
+
+        {/* Floating Apply Now Button (Top Right) */}
+        <div className="absolute top-24 right-6 md:right-12 z-30">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => document.getElementById('apply-section')?.scrollIntoView({ behavior: 'smooth' })}
+            className="hidden md:flex bg-white hover:bg-slate-100 text-black font-extrabold uppercase tracking-widest text-[10px] md:text-xs py-4 px-8 rounded-full shadow-lg items-center gap-3 transition-all duration-300 transform hover:scale-105 group"
+          >
+            <span>{sanityData?.heroScrollButtonText || "Ready to Launch? Apply Now"}</span>
+            <ArrowRight size={16} className="text-black group-hover:translate-x-1 transition-transform" />
+          </motion.button>
+        </div>
+
+        {/* Carousel Content */}
+        <div className="absolute inset-0 z-20 flex items-center">
+          <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-6xl w-full">
+            <div className="max-w-3xl text-left">
+              <span className="px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 inline-block mb-6 backdrop-blur-sm">
+                {heroSlides[currentImageIndex]?.category}
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight text-white mb-6 leading-[1.1]">
+                {heroSlides[currentImageIndex]?.title}
+              </h1>
+              <p className="text-lg sm:text-xl text-slate-300 font-medium italic mb-2 border-l-4 border-blue-500 pl-4 leading-relaxed max-w-2xl">
+                "{heroSlides[currentImageIndex]?.quote}"
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Slide Indicators */}
+        {heroSlides.length > 1 && (
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+            {heroSlides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentImageIndex(idx)}
+                className={`h-1.5 transition-all duration-500 rounded-full ${currentImageIndex === idx ? "w-8 bg-blue-500" : "w-2 bg-slate-500/50 hover:bg-slate-500"}`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Carousel Arrow Controls */}
+        {heroSlides.length > 1 && (
+          <>
+            <button
+              onClick={handlePrevImage}
+              className="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-950/40 hover:bg-slate-950/70 border border-white/5 text-white flex items-center justify-center backdrop-blur-sm transition-all duration-300 hidden md:flex"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={handleNextImage}
+              className="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-950/40 hover:bg-slate-950/70 border border-white/5 text-white flex items-center justify-center backdrop-blur-sm transition-all duration-300 hidden md:flex"
+              aria-label="Next Slide"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </>
+        )}
+      </section>
 
       {/* Introduction Section */}
       <section className="py-24 relative overflow-hidden">
@@ -196,39 +307,46 @@ const Internship = () => {
             </p>
           </motion.div>
 
-          {/* Purpose Section */}
+          {/* Purpose Section - Dark & Premium Theme */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 50 }}
-            className="bg-surface rounded-2xl p-10 border border-border mb-20 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-500"
+            className="bg-slate-950 rounded-3xl p-10 md:p-12 border border-slate-800 mb-20 relative overflow-hidden shadow-2xl"
           >
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-              className="absolute top-[-50px] right-[-50px] p-10 opacity-5"
+              className="absolute top-[-50px] right-[-50px] p-10 opacity-[0.08]"
             >
-              <Star size={150} className="text-secondary" />
+              <Star size={150} className="text-white" />
             </motion.div>
-            <h2 className="text-3xl font-display font-bold text-primary mb-6">
+
+            <span className="px-3 py-1 bg-blue-500/10 text-blue-400 text-[9px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 inline-block mb-6 backdrop-blur-sm">
+              Core Objective
+            </span>
+
+            <h2 className="text-3xl md:text-5xl font-display font-black text-white mb-6">
               {purposeTitle}
             </h2>
-            <p className="text-secondary mb-6 text-lg">
+            <p className="text-slate-400 mb-8 text-base md:text-lg leading-relaxed max-w-3xl">
               {purposeText}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 relative z-10">
               {purposeList.map((item, i) => (
                 <motion.div
                   key={i}
-                  whileHover={{ x: 5 }}
-                  className="flex items-start space-x-3"
+                  whileHover={{ x: 6 }}
+                  className="border-l-2 border-slate-800 pl-4 py-2 hover:border-blue-500 transition-all duration-300 group flex items-start gap-3.5"
                 >
                   <CheckCircle
-                    className="text-secondary mt-1 flex-shrink-0"
-                    size={20}
+                    className="text-blue-500 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
+                    size={18}
                   />
-                  <span className="text-secondary font-medium">{item}</span>
+                  <span className="text-white font-bold text-sm md:text-base leading-relaxed">
+                    {item}
+                  </span>
                 </motion.div>
               ))}
             </div>
@@ -282,10 +400,10 @@ const Internship = () => {
                   <motion.div
                     key={i}
                     whileHover={{ x: 10, scale: 1.02 }}
-                    className={`bg-surface border-l-4 ${i % 2 === 0 ? 'border-accent' : 'border-secondary'} p-6 rounded-r-lg shadow-sm border border-border hover:shadow-lg transition-all cursor-pointer`}
+                    className={`bg-slate-950 border-l-4 ${i % 2 === 0 ? 'border-blue-500' : 'border-indigo-500'} p-6 rounded-r-lg shadow-sm border border-slate-800 hover:border-slate-700 hover:shadow-lg transition-all cursor-pointer`}
                   >
-                    <h4 className="font-bold text-primary text-lg">{slot.title}</h4>
-                    <p className="text-secondary font-bold">{slot.months}</p>
+                    <h4 className="font-bold text-white text-lg">{slot.title}</h4>
+                    <p className="text-slate-400 font-bold">{slot.months}</p>
                   </motion.div>
                 ))}
               </div>
@@ -318,7 +436,7 @@ const Internship = () => {
               className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
             >
               {/* Connector Line - Positioned to pass through the circles */}
-              <div className="hidden md:block absolute top-[60px] left-[16%] right-[16%] h-[2px] bg-gray-200 z-0"></div>
+              <div className="hidden md:block absolute top-[60px] left-[16%] right-[16%] h-[2px] bg-slate-800 z-0"></div>
 
               {processSteps.map((item, i) => (
                 <motion.div
@@ -332,15 +450,15 @@ const Internship = () => {
                     },
                   }}
                   whileHover={{ y: -10 }}
-                  className="bg-[#F3F7FA] p-10 rounded-2xl border border-transparent hover:border-blue-100 relative z-10 text-center hover:shadow-xl transition-all group"
+                  className="bg-slate-950 p-10 rounded-2xl border border-slate-800 hover:border-blue-500 relative z-10 text-center hover:shadow-2xl hover:shadow-blue-500/5 transition-all group"
                 >
-                  <div className="w-20 h-20 rounded-full bg-white border border-gray-100 flex items-center justify-center text-primary text-2xl font-bold mx-auto mb-8 shadow-sm relative z-10 group-hover:scale-110 transition-transform duration-300 group-hover:border-blue-200">
+                  <div className="w-20 h-20 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-8 shadow-sm relative z-10 group-hover:scale-110 transition-transform duration-300 group-hover:border-blue-500 group-hover:text-blue-400">
                     {item.stepNumber || String(i + 1).padStart(2, '0')}
                   </div>
-                  <h4 className="text-xl font-bold text-primary mb-4">
+                  <h4 className="text-xl font-bold text-white mb-4">
                     {item.title}
                   </h4>
-                  <p className="text-secondary leading-relaxed">{item.description}</p>
+                  <p className="text-slate-400 leading-relaxed">{item.description}</p>
                 </motion.div>
               ))}
             </motion.div>
