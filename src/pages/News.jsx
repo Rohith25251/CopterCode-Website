@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import PageHeader from "../components/PageHeader";
+import BackButton from "../components/ui/BackButton";
 import SEO from "../components/SEO";
 import { Calendar, Clock, User } from "lucide-react";
 import { motion } from "framer-motion";
@@ -408,7 +408,13 @@ const News = () => {
   const [sanityData, setSanityData] = useState(null);
 
   useEffect(() => {
-    const query = `*[_type == "insightsPage"][0]`;
+    const query = `*[_type == "insightsPage"][0] {
+      ...,
+      hero {
+        ...,
+        image { asset->{ url } }
+      }
+    }`;
     client
       .fetch(query)
       .then((data) => {
@@ -419,6 +425,8 @@ const News = () => {
             seo: data.seo,
             heroTitle: data.hero?.title,
             heroSubtitle: data.hero?.subtitle,
+            heroImage: data.hero?.image?.asset?.url,
+            heroTag: data.hero?.tag,
             years: data.years?.map((y) => ({
               year: y.year,
               events: y.events || [],
@@ -436,9 +444,12 @@ const News = () => {
 
   const seoTitle = sanityData?.seo?.metaTitle || "Insights";
   const seoDesc = sanityData?.seo?.metaDescription || "Latest updates and announcements from CopterCode (2022-2025)";
+  const seoKeywords = sanityData?.seo?.keywords || "Drone Tech, Enterprise AI, Industrial Automation, UAV, CopterCode, Software Solutions, Insights, News, Announcements";
 
   const heroTitle = sanityData?.heroTitle || "Insights";
   const heroSubtitle = sanityData?.heroSubtitle || "A chronological journey of our milestones, events, and innovations.";
+  const heroImage = sanityData?.heroImage || "/mediafiles/news and media/IMG_3327.jpg";
+  const heroTag = sanityData?.heroTag || "Latest Updates";
 
   // --- FALLBACK LOGIC ---
   let yearsData = [];
@@ -477,9 +488,44 @@ const News = () => {
   };
 
   return (
-    <div className="bg-background min-h-screen text-primary">
-      <SEO title={seoTitle} description={seoDesc} />
-      <PageHeader title={heroTitle} subtitle={heroSubtitle} />
+    <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-white overflow-hidden relative">
+      <SEO title={seoTitle} description={seoDesc} keywords={seoKeywords} />
+      
+      {/* Floating Back Button */}
+      <div className="fixed top-24 left-6 md:left-12 z-50">
+        <BackButton />
+      </div>
+
+      {/* Full Size Hero Banner */}
+      <section className="relative h-[85vh] md:h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src={heroImage}
+            alt={heroTitle}
+            className="w-full h-full object-cover"
+          />
+          {/* Soft, premium dark gradient overlay for quote legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="absolute inset-0 z-20 flex items-center">
+          <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-6xl w-full">
+            <div className="max-w-3xl text-left">
+              <span className="px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 inline-block mb-6 backdrop-blur-sm">
+                {heroTag}
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight text-white mb-6 leading-[1.1]">
+                {heroTitle}
+              </h1>
+              <p className="text-lg sm:text-xl text-slate-300 font-medium italic mb-8 border-l-4 border-blue-500 pl-4 leading-relaxed max-w-2xl">
+                "{heroSubtitle}"
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="container mx-auto px-6 py-12">
 
@@ -515,31 +561,31 @@ const News = () => {
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
                     key={idx}
-                    className="bg-surface border border-border p-8 rounded-xl hover:border-accent/40 transition-all duration-300 group flex flex-col shadow-lg"
+                    className="bg-slate-950 border border-slate-800 p-8 rounded-2xl hover:border-slate-700 hover:shadow-blue-950/20 hover:shadow-2xl transition-all duration-300 group flex flex-col"
                   >
                     <div className="flex justify-between items-start mb-6">
-                      <span className="px-3 py-1 bg-accent/10 rounded text-xs font-bold uppercase tracking-widest text-accent border border-accent/20">
+                      <span className="px-3 py-1 bg-blue-500/10 rounded text-xs font-bold uppercase tracking-widest text-blue-400 border border-blue-500/20">
                         {news.category}
                       </span>
-                      <span className="text-secondary text-xs font-mono flex items-center">
-                        <Calendar size={12} className="mr-2" /> {formatDate(news.date)}
+                      <span className="text-slate-400 text-xs font-mono flex items-center">
+                        <Calendar size={12} className="mr-2 text-blue-400" /> {formatDate(news.date)}
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-primary mb-4 group-hover:text-primary/80 transition-colors leading-tight">
+                    <h3 className="text-xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors leading-tight">
                       {news.title}
                     </h3>
 
-                    <p className="text-secondary text-sm leading-relaxed mb-6 flex-grow">
+                    <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
                       {news.excerpt}
                     </p>
 
-                    <div className="pt-6 border-t border-border flex items-center justify-between text-xs text-secondary">
+                    <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
                       <div className="flex items-center">
-                        <User size={12} className="mr-2" /> {news.author}
+                        <User size={12} className="mr-2 text-blue-400" /> {news.author}
                       </div>
                       <div className="flex items-center">
-                        <Clock size={12} className="mr-2" /> {news.readTime}
+                        <Clock size={12} className="mr-2 text-blue-400" /> {news.readTime}
                       </div>
                     </div>
                   </motion.div>

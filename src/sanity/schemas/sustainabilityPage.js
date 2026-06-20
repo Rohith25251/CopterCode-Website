@@ -18,8 +18,9 @@ export const sustainabilityPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description' }
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Sustainability & Impact' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'CopterCode Nexus Impact - People, Planet, Prosperity' },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'Drone Tech, Enterprise AI, Industrial Automation, UAV, CopterCode, Software Solutions, Sustainability, ESG, Clean Energy, CSR', description: 'Comma separated list of search keywords' }
             ]
         },
         // --- HERO ---
@@ -29,7 +30,19 @@ export const sustainabilityPage = {
             type: 'object',
             fields: [
                 { name: 'title', type: 'string', title: 'Title', initialValue: 'Sustainability' },
-                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Impacting People, Planet, and Prosperity through innovation.' }
+                { name: 'subtitle', type: 'text', title: 'Subtitle', initialValue: 'Impacting People, Planet, and Prosperity through innovation.' },
+                {
+                    name: 'image',
+                    title: 'Hero Background Image',
+                    type: 'image',
+                    options: { hotspot: true }
+                },
+                {
+                    name: 'tag',
+                    title: 'Hero Tag',
+                    type: 'string',
+                    initialValue: 'Our Responsibility'
+                }
             ]
         },
         // --- INTRO ---
@@ -67,6 +80,16 @@ export const sustainabilityPage = {
                         { name: 'text', type: 'string', title: 'Text' }
                     ]
                 }
+            ],
+            initialValue: [
+                { icon: "users", text: "Empowering people with care, empathy, and inclusiveness" },
+                { icon: "briefcase", text: "Creating employment and enriching human capital" },
+                { icon: "globe", text: "Collaborating globally to bring innovation to India" },
+                { icon: "leaf", text: "Promoting sustainability, clean energy, and digital transformation" },
+                { icon: "zap", text: "Driving education and innovation among youth" },
+                { icon: "shield", text: "Delivering stakeholder-centric growth" },
+                { icon: "code", text: "Building manufacturing and digital assets for India" },
+                { icon: "sun", text: "Innovating in solar, textiles, and food sectors" }
             ]
         },
         // --- CSR INITIATIVES ---

@@ -253,8 +253,12 @@ const BusinessCard = ({ biz, index }) => {
 
 
             {/* Floating Icon Badge */}
-            <div className="absolute top-8 left-8 z-20 w-20 h-20 bg-background/70 backdrop-blur-md rounded-2xl flex items-center justify-center border border-border shadow-lg">
-              <IconComponent size={40} className="text-primary" />
+            <div className={`absolute top-8 left-8 z-20 w-20 h-20 rounded-2xl flex items-center justify-center border shadow-lg backdrop-blur-md transition-all duration-300 ${
+              biz.iconTheme === 'dark'
+                ? "bg-slate-950/80 border-slate-800 text-blue-400 shadow-blue-500/5"
+                : "bg-background/70 border-border text-primary"
+            }`}>
+              <IconComponent size={40} className={biz.iconTheme === 'dark' ? "text-blue-400" : "text-primary"} />
             </div>
           </motion.div>
 
@@ -345,10 +349,13 @@ const Business = () => {
       seo,
       heroTitle,
       heroSubtitle,
+      heroImage { asset->{ url } },
+      heroTag,
       businesses[]{
         _key,
         title,
         iconName,
+        iconTheme,
         description,
         videoType,
         videoUrl,
@@ -398,6 +405,8 @@ const Business = () => {
 
   const heroTitle = sanityData?.heroTitle || "Our Businesses";
   const heroSubtitle = sanityData?.heroSubtitle || "A diversified portfolio driving innovation across immersive technology, sustainable energy, and enterprise solutions.";
+  const heroImage = sanityData?.heroImage?.asset?.url || "/mediafiles/news and media/IMG_3327.jpg";
+  const heroTag = sanityData?.heroTag || "Our Verticals";
 
   // Use Sanity list if populated, else use fallback
   const businesses = sanityData?.businesses?.length > 0
@@ -420,6 +429,7 @@ const Business = () => {
           id: b._key,
           title: b.title,
           iconName: b.iconName,
+          iconTheme: b.iconTheme || 'light',
           desc: b.description,
           services: b.services || [],
           features: b.features || [],
@@ -447,7 +457,7 @@ const Business = () => {
   }, [businesses]);
 
   return (
-    <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-background">
+    <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-background overflow-hidden relative">
       <SEO
         title={seoTitle || "Business | Solutions & Services"}
         description={seoDesc || "Explore CopterCode's business verticals: industrial drones, digital transformation, ERP systems, sustainable energy, and infrastructure security solutions."}
@@ -458,35 +468,42 @@ const Business = () => {
         twitterTitle="CopterCode Business Solutions"
         twitterDescription="Elevate operations with AI and engineering solutions from CopterCode."
       />
-      {/* Parallax Hero Header */}
-      <div className="relative pt-28 pb-12 lg:pt-36 lg:pb-20 overflow-hidden">
-        {/* Back Button */}
-        <div className="fixed top-24 left-6 md:left-12 z-50">
-          <BackButton />
-        </div>
 
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl font-display font-bold mb-6"
-          >
-            {heroTitle}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl text-secondary max-w-2xl mx-auto"
-          >
-            {heroSubtitle}
-          </motion.p>
-        </div>
-
-        {/* Background Pattern */}
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-50" />
+      {/* Floating Back Button */}
+      <div className="fixed top-24 left-6 md:left-12 z-50">
+        <BackButton />
       </div>
+
+      {/* Full Size Hero Banner */}
+      <section className="relative h-[85vh] md:h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src={heroImage}
+            alt={heroTitle}
+            className="w-full h-full object-cover"
+          />
+          {/* Soft, premium dark gradient overlay for quote legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="absolute inset-0 z-20 flex items-center">
+          <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-6xl w-full">
+            <div className="max-w-3xl text-left">
+              <span className="px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 inline-block mb-6 backdrop-blur-sm">
+                {heroTag}
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight text-white mb-6 leading-[1.1]">
+                {heroTitle}
+              </h1>
+              <p className="text-lg sm:text-xl text-slate-300 font-medium italic mb-8 border-l-4 border-blue-500 pl-4 leading-relaxed max-w-2xl">
+                "{heroSubtitle}"
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="relative pb-24">
         {/* Connecting Line */}

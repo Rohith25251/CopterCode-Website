@@ -9,6 +9,180 @@ import { Link } from 'react-router-dom';
 import BackButton from '../components/ui/BackButton';
 
 
+const HackathonCard = ({ hackathon, idx }) => {
+    const [isFlipped, setIsFlipped] = useState(false);
+
+    const handleCardClick = (e) => {
+        // Prevent flipping if clicking a link/button
+        if (e.target.closest('a') || e.target.closest('button')) {
+            return;
+        }
+        setIsFlipped(!isFlipped);
+    };
+
+    return (
+        <motion.div
+            variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 18 } }
+            }}
+            whileHover={{ y: -8 }}
+            onClick={handleCardClick}
+            className="group relative h-[550px] w-full [perspective:1000px] cursor-pointer"
+        >
+            <motion.div
+                className="relative w-full h-full duration-700"
+                style={{ transformStyle: "preserve-3d" }}
+                animate={{ rotateY: isFlipped ? 180 : 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+                {/* Front Face */}
+                <div
+                    className="absolute inset-0 w-full h-full flex flex-col bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl"
+                    style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+                >
+                    {/* Image Section */}
+                    <div className="relative h-48 md:h-52 lg:h-56 w-full overflow-hidden shrink-0">
+                        {hackathon.image && (
+                            hackathon.image.includes('_optimized') ? (
+                                <img
+                                    src={hackathon.image}
+                                    alt={hackathon.title}
+                                    loading="lazy"
+                                    decoding="async"
+                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                />
+                            ) : (
+                                <OptimizedImage
+                                    src={hackathon.image}
+                                    alt={hackathon.title}
+                                    loading="lazy"
+                                    decoding="async"
+                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                    sizes="(min-width:1024px) 33vw, 100vw"
+                                />
+                            )
+                        )}
+                        <span className="absolute top-4 left-4 z-20 px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 backdrop-blur-sm">
+                            {hackathon.category}
+                        </span>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="p-6 sm:p-8 flex flex-col justify-between flex-grow bg-slate-950 text-white">
+                        <div>
+                            <h3 className="text-xl sm:text-2xl font-display font-black text-white mb-2 leading-tight">
+                                {hackathon.title}
+                            </h3>
+                            <div className="flex flex-wrap items-center gap-2 text-sm text-slate-400 font-semibold mb-3 sm:mb-4">
+                                <span>CopterCode</span>
+                                <span className="text-blue-500 font-bold">•</span>
+                                <span>{hackathon.location}</span>
+                                <span className="text-blue-500 font-bold">•</span>
+                                <span>{hackathon.date}</span>
+                            </div>
+                            <p className="text-slate-400 text-sm leading-relaxed mb-4 sm:mb-6 font-medium">
+                                {hackathon.description}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Back Face */}
+                <div
+                    className="absolute inset-0 w-full h-full flex flex-col justify-between p-6 sm:p-8 bg-slate-900 border border-blue-500/30 rounded-3xl overflow-y-auto shadow-2xl scrollbar-none"
+                    style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                >
+                    <div>
+                        {/* Header / Title on back */}
+                        <span className="text-[9px] font-extrabold tracking-[0.2em] text-blue-400 uppercase mb-2 block">
+                            {hackathon.category}
+                        </span>
+                        <h4 className="text-lg font-display font-black text-white mb-6 leading-tight">
+                            {hackathon.title}
+                        </h4>
+
+                        {/* Tags */}
+                        {hackathon.tags && hackathon.tags.length > 0 && (
+                            <div className="mb-6">
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Key Areas</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {hackathon.tags.map((tag, tidx) => (
+                                        <span key={tidx} className="text-[9px] text-slate-300 bg-slate-800/80 border border-slate-700/60 px-2.5 py-1 rounded font-semibold uppercase tracking-wider">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Goals */}
+                        {hackathon.goals && hackathon.goals.length > 0 && (
+                            <div className="mb-6">
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Objectives</p>
+                                <ul className="space-y-1.5 pl-4 list-disc text-xs text-slate-300 leading-relaxed font-semibold">
+                                    {hackathon.goals.map((goal, gidx) => (
+                                        <li key={gidx}>{goal}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Rules */}
+                        {hackathon.rules && hackathon.rules.length > 0 && (
+                            <div className="mb-6">
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Rules</p>
+                                <ul className="space-y-1.5 pl-4 list-disc text-xs text-slate-300 leading-relaxed font-semibold">
+                                    {hackathon.rules.map((rule, ridx) => (
+                                        <li key={ridx}>{rule}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Prize Pool */}
+                        {hackathon.prizePool && (hackathon.prizePool.totalPool || hackathon.prizePool.firstPlace) && (
+                            <div className="mb-6 bg-blue-500/5 border border-blue-500/10 rounded-xl p-4">
+                                <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2.5">Prize Pool</p>
+                                {hackathon.prizePool.totalPool && (
+                                    <p className="text-white font-extrabold text-base">💰 {hackathon.prizePool.totalPool}</p>
+                                )}
+                                {hackathon.prizePool.firstPlace && (
+                                    <p className="text-slate-300 text-xs mt-1.5 font-semibold">🥇 1st: {hackathon.prizePool.firstPlace}</p>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Footer Link */}
+                    <div className="pt-4 border-t border-slate-800 shrink-0">
+                        {hackathon.registerLink && (hackathon.registerLink.startsWith("http://") || hackathon.registerLink.startsWith("https://")) ? (
+                            <a
+                                href={hackathon.registerLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-slate-400 hover:text-white transition-colors flex items-center font-bold text-xs uppercase tracking-widest gap-2 group cursor-pointer w-fit inline-flex"
+                            >
+                                <span>{hackathon.registerButtonLabel || 'REGISTER IN INTEREST'}</span>
+                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+                            </a>
+                        ) : (
+                            <Link
+                                to={hackathon.registerLink || "/contact"}
+                                className="text-slate-400 hover:text-white transition-colors flex items-center font-bold text-xs uppercase tracking-widest gap-2 group cursor-pointer w-fit inline-flex"
+                            >
+                                <span>{hackathon.registerButtonLabel || 'REGISTER IN INTEREST'}</span>
+                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
+
 const Hackathon = () => {
     const [sanityData, setSanityData] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -45,6 +219,7 @@ const Hackathon = () => {
                     
                     setSanityData({
                         seo: data.seo,
+                        moreHackathonsTitle: data.moreHackathonsTitle,
                         heroSlides: data.heroSlides?.map(slide => ({
                             ...slide,
                             image: slide.image?.asset?.url
@@ -74,6 +249,7 @@ const Hackathon = () => {
 
     const seoTitle = sanityData?.seo?.metaTitle || "Hackathons | Innovation Challenges & Competitions";
     const seoDesc = sanityData?.seo?.metaDescription || "Join CopterCode hackathons and innovation challenges. Compete in drone technology, AI/ML, blockchain, and autonomous systems with prize pools and industry mentorship.";
+    const moreHackathonsTitle = sanityData?.moreHackathonsTitle || "More Hackathons";
 
     const DEFAULT_HERO_SLIDES = [
         {
@@ -468,7 +644,7 @@ const Hackathon = () => {
                     {/* Subtle background accent */}
                     <div className="absolute top-20 left-0 w-[600px] h-[600px] bg-slate-900 rounded-full blur-[120px] pointer-events-none opacity-40" />
 
-                    <div className="container mx-auto px-6 relative z-10 space-y-12">
+                    <div className="container mx-auto px-6 relative z-10 max-w-[1280px] space-y-12">
                         {featuredHackathons.map((featuredHackathon, fIdx) => (
                             <motion.div
                                 key={fIdx}
@@ -698,12 +874,12 @@ const Hackathon = () => {
                 {/* Subtle background decor */}
                 <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-surface rounded-full blur-[120px] pointer-events-none opacity-50" />
 
-                <div className="container mx-auto px-6 relative z-10">
+                <div className="container mx-auto px-6 relative z-10 max-w-[1280px]">
                     {regularHackathons.length > 0 && (
                         <>
                             <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                                 <div>
-                                    <h3 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">More Hackathons</h3>
+                                    <h3 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">{moreHackathonsTitle}</h3>
                                     <div className="w-24 h-1 bg-gradient-to-r from-accent to-accent/30 rounded-full"></div>
                                 </div>
                             </div>
@@ -752,190 +928,10 @@ const Hackathon = () => {
                                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                                     >
                                         {filteredHackathons.map((hackathon, idx) => {
-                                             return (
-                                                 <motion.div
-                                                     key={idx}
-                                                     variants={{
-                                                         hidden: { opacity: 0, y: 30 },
-                                                         show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 18 } }
-                                                     }}
-                                                     whileHover={{ y: -8 }}
-                                                     className="group relative h-[520px] w-full [perspective:1000px]"
-                                                 >
-                                                     <motion.div
-                                                         className="relative w-full h-full duration-700"
-                                                         style={{ transformStyle: "preserve-3d" }}
-                                                         whileHover={{ rotateY: 180 }}
-                                                         transition={{ duration: 0.6, ease: "easeInOut" }}
-                                                     >
-                                                         {/* Front Face */}
-                                                         <div
-                                                             className="absolute inset-0 w-full h-full flex flex-col bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl"
-                                                             style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
-                                                         >
-                                                             {/* Image Section */}
-                                                             <div className="relative h-56 w-full overflow-hidden shrink-0">
-                                                                 {hackathon.image && (
-                                                                     hackathon.image.includes('_optimized') ? (
-                                                                         <img
-                                                                             src={hackathon.image}
-                                                                             alt={hackathon.title}
-                                                                             loading="lazy"
-                                                                             decoding="async"
-                                                                             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                                                                         />
-                                                                     ) : (
-                                                                         <OptimizedImage
-                                                                             src={hackathon.image}
-                                                                             alt={hackathon.title}
-                                                                             loading="lazy"
-                                                                             decoding="async"
-                                                                             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                                                                             sizes="(min-width:1024px) 33vw, 100vw"
-                                                                         />
-                                                                     )
-                                                                 )}
-                                                                 <span className="absolute top-4 left-4 z-20 px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 backdrop-blur-sm">
-                                                                     {hackathon.category}
-                                                                 </span>
-                                                             </div>
-
-                                                             {/* Content Section */}
-                                                             <div className="p-8 flex flex-col justify-between flex-grow bg-slate-950 text-white">
-                                                                 <div>
-                                                                     <h3 className="text-xl sm:text-2xl font-display font-black text-white mb-2 leading-tight">
-                                                                         {hackathon.title}
-                                                                     </h3>
-                                                                     <div className="flex flex-wrap items-center gap-2 text-sm text-slate-400 font-semibold mb-4">
-                                                                         <span>CopterCode</span>
-                                                                         <span className="text-blue-500 font-bold">•</span>
-                                                                         <span>{hackathon.location}</span>
-                                                                         <span className="text-blue-500 font-bold">•</span>
-                                                                         <span>{hackathon.date}</span>
-                                                                     </div>
-                                                                     <p className="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
-                                                                         {hackathon.description}
-                                                                     </p>
-                                                                 </div>
-                                                                 
-                                                                 {/* CTA Button */}
-                                                                 <div className="mt-auto pt-6">
-                                                                     {hackathon.registerLink && (hackathon.registerLink.startsWith("http://") || hackathon.registerLink.startsWith("https://")) ? (
-                                                                         <a
-                                                                             href={hackathon.registerLink}
-                                                                             target="_blank"
-                                                                             rel="noopener noreferrer"
-                                                                             className="text-slate-400 hover:text-white transition-colors flex items-center font-bold text-xs uppercase tracking-widest gap-2 group cursor-pointer w-fit inline-flex"
-                                                                         >
-                                                                             <span>REGISTER INTEREST</span>
-                                                                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
-                                                                         </a>
-                                                                     ) : (
-                                                                         <Link
-                                                                             to={hackathon.registerLink || "/contact"}
-                                                                             className="text-slate-400 hover:text-white transition-colors flex items-center font-bold text-xs uppercase tracking-widest gap-2 group cursor-pointer w-fit inline-flex"
-                                                                         >
-                                                                             <span>REGISTER INTEREST</span>
-                                                                             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
-                                                                         </Link>
-                                                                     )}
-                                                                 </div>
-                                                             </div>
-                                                         </div>
-
-                                                         {/* Back Face */}
-                                                         <div
-                                                             className="absolute inset-0 w-full h-full flex flex-col justify-between p-8 bg-slate-900 border border-blue-500/30 rounded-3xl overflow-y-auto shadow-2xl scrollbar-none"
-                                                             style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                                                         >
-                                                             <div>
-                                                                 {/* Header / Title on back */}
-                                                                 <span className="text-[9px] font-extrabold tracking-[0.2em] text-blue-400 uppercase mb-2 block">
-                                                                     {hackathon.category}
-                                                                 </span>
-                                                                 <h4 className="text-lg font-display font-black text-white mb-6 leading-tight">
-                                                                     {hackathon.title}
-                                                                 </h4>
-
-                                                                 {/* Tags */}
-                                                                 {hackathon.tags && hackathon.tags.length > 0 && (
-                                                                     <div className="mb-6">
-                                                                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Key Areas</p>
-                                                                         <div className="flex flex-wrap gap-1.5">
-                                                                             {hackathon.tags.map((tag, tidx) => (
-                                                                                 <span key={tidx} className="text-[9px] text-slate-300 bg-slate-800/80 border border-slate-700/60 px-2.5 py-1 rounded font-semibold uppercase tracking-wider">
-                                                                                     {tag}
-                                                                                 </span>
-                                                                             ))}
-                                                                         </div>
-                                                                     </div>
-                                                                 )}
-
-                                                                 {/* Goals */}
-                                                                 {hackathon.goals && hackathon.goals.length > 0 && (
-                                                                     <div className="mb-6">
-                                                                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Objectives</p>
-                                                                         <ul className="space-y-1.5 pl-4 list-disc text-xs text-slate-300 leading-relaxed font-semibold">
-                                                                             {hackathon.goals.map((goal, gidx) => (
-                                                                                 <li key={gidx}>{goal}</li>
-                                                                             ))}
-                                                                         </ul>
-                                                                     </div>
-                                                                 )}
-
-                                                                 {/* Rules */}
-                                                                 {hackathon.rules && hackathon.rules.length > 0 && (
-                                                                     <div className="mb-6">
-                                                                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Rules</p>
-                                                                         <ul className="space-y-1.5 pl-4 list-disc text-xs text-slate-300 leading-relaxed font-semibold">
-                                                                             {hackathon.rules.map((rule, ridx) => (
-                                                                                 <li key={ridx}>{rule}</li>
-                                                                             ))}
-                                                                         </ul>
-                                                                     </div>
-                                                                 )}
-
-                                                                 {/* Prize Pool */}
-                                                                 {hackathon.prizePool && (hackathon.prizePool.totalPool || hackathon.prizePool.firstPlace) && (
-                                                                     <div className="mb-6 bg-blue-500/5 border border-blue-500/10 rounded-xl p-4">
-                                                                         <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2.5">Prize Pool</p>
-                                                                         {hackathon.prizePool.totalPool && (
-                                                                             <p className="text-white font-extrabold text-base">💰 {hackathon.prizePool.totalPool}</p>
-                                                                         )}
-                                                                         {hackathon.prizePool.firstPlace && (
-                                                                             <p className="text-slate-300 text-xs mt-1.5 font-semibold">🥇 1st: {hackathon.prizePool.firstPlace}</p>
-                                                                         )}
-                                                                     </div>
-                                                                 )}
-                                                             </div>
-
-                                                             {/* Footer Link */}
-                                                             <div className="pt-4 border-t border-slate-800 shrink-0">
-                                                                 {hackathon.registerLink && (hackathon.registerLink.startsWith("http://") || hackathon.registerLink.startsWith("https://")) ? (
-                                                                     <a
-                                                                         href={hackathon.registerLink}
-                                                                         target="_blank"
-                                                                         rel="noopener noreferrer"
-                                                                         className="text-slate-400 hover:text-white transition-colors flex items-center font-bold text-xs uppercase tracking-widest gap-2 group cursor-pointer w-fit inline-flex"
-                                                                     >
-                                                                         <span>REGISTER INTEREST</span>
-                                                                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
-                                                                     </a>
-                                                                 ) : (
-                                                                     <Link
-                                                                         to={hackathon.registerLink || "/contact"}
-                                                                         className="text-slate-400 hover:text-white transition-colors flex items-center font-bold text-xs uppercase tracking-widest gap-2 group cursor-pointer w-fit inline-flex"
-                                                                     >
-                                                                         <span>REGISTER INTEREST</span>
-                                                                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
-                                                                     </Link>
-                                                                 )}
-                                                             </div>
-                                                         </div>
-                                                     </motion.div>
-                                                 </motion.div>
-                                             );
-                                         })}
+                                            return (
+                                                <HackathonCard key={idx} hackathon={hackathon} idx={idx} />
+                                            );
+                                        })}
                                     </motion.div>
                                 );
                             })()}

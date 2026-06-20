@@ -19,7 +19,8 @@ export const technologiesPage = {
             type: 'object',
             fields: [
                 { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Technologies' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'Our tech stack includes React, Node.js, AI, and Cloud.' }
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'Our tech stack includes React, Node.js, AI, and Cloud.' },
+                { name: 'keywords', type: 'string', title: 'Meta Keywords', initialValue: 'coptercode tech stack, frontend technologies, backend framework, drone software stack' }
             ]
         },
         // --- HERO ---

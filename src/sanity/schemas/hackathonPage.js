@@ -21,6 +21,14 @@ export const hackathonPage = {
                 { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'hackathon, innovation challenge, coding competition, drone technology, AI/ML, blockchain, autonomous systems, tech competition' }
             ]
         },
+        // --- More Hackathons Header ---
+        {
+            name: 'moreHackathonsTitle',
+            title: 'More Hackathons Section Title',
+            type: 'string',
+            initialValue: 'More Hackathons',
+            description: 'Header text for the regular/more hackathons section at the bottom'
+        },
         // --- HERO SLIDE CAROUSEL ---
         {
             name: 'heroSlides',
@@ -177,7 +185,8 @@ export const hackathonPage = {
 
                         // --- Stats & Links ---
                         { name: 'participantCount', type: 'number', title: 'Participant Count', description: 'Number of participants (for completed hackathons)' },
-                        { name: 'registerLink', type: 'string', title: 'Register Link', initialValue: '/contact', description: 'URL or internal path for registration (e.g. "/contact" or "https://...")' }
+                        { name: 'registerLink', type: 'string', title: 'Register Link', initialValue: '/contact', description: 'URL or internal path for registration (e.g. "/contact" or "https://...")' },
+                        { name: 'registerButtonLabel', type: 'string', title: 'Register Button Label', initialValue: 'REGISTER IN INTEREST', description: 'Text shown on the registration link/button (e.g. "REGISTER IN INTEREST", "APPLY NOW")' }
                     ]
                 }
             ]

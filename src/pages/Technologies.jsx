@@ -81,7 +81,11 @@ const Technologies = () => {
 
     return (
         <div className="bg-background min-h-screen">
-            <SEO title={seoTitle} description={seoDesc} />
+            <SEO 
+                title={seoTitle} 
+                description={seoDesc} 
+                keywords={sanityData?.seo?.keywords || "coptercode tech stack, frontend technologies, backend framework, drone software stack"} 
+            />
             <PageHeader
                 title={heroTitle}
                 subtitle={heroSubtitle}
@@ -109,38 +113,38 @@ const Technologies = () => {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, margin: "-50px" }}
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                                    className="bg-surface border border-border rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group"
+                                    className="bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-xl hover:shadow-blue-950/20 hover:shadow-2xl transition-all duration-500 group"
                                 >
-                                    <div className="p-8 md:p-12 border-b border-border bg-gradient-to-r from-surface to-background relative overflow-hidden">
-                                        <div className="absolute top-0 right-0 p-12 opacity-5 transform group-hover:scale-110 transition-transform duration-700">
+                                    <div className="p-8 md:p-12 border-b border-slate-800 bg-slate-950 relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 p-12 opacity-5 text-blue-400 transform group-hover:scale-110 transition-transform duration-700">
                                             <IconComponent size={200} />
                                         </div>
 
                                         <div className="relative z-10 flex items-start gap-6">
-                                            <div className="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center shrink-0 shadow-lg group-hover:bg-accent transition-colors duration-300">
+                                            <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800/80 text-blue-400 flex items-center justify-center shrink-0 shadow-inner group-hover:border-blue-500/40 transition-all duration-300">
                                                 <IconComponent size={32} />
                                             </div>
                                             <div>
-                                                <h2 className="text-3xl font-display font-bold text-primary mb-2">
+                                                <h2 className="text-3xl font-display font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                                                     {group.category}
                                                 </h2>
-                                                <p className="text-secondary text-lg max-w-2xl">
+                                                <p className="text-slate-400 text-lg max-w-2xl">
                                                     {group.description || "Advanced solutions for modern challenges."}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="p-8 md:p-12 bg-white/50 backdrop-blur-sm">
+                                    <div className="p-8 md:p-12 bg-slate-950">
                                         <div className="flex flex-wrap gap-4">
                                             {group.items.map((item, i) => (
                                                 <motion.div
                                                     key={i}
                                                     whileHover={{ scale: 1.05, y: -2 }}
                                                     whileTap={{ scale: 0.95 }}
-                                                    className="px-6 py-3 bg-white border border-border rounded-xl font-semibold text-primary shadow-sm hover:shadow-md hover:border-accent hover:text-accent transition-all duration-300 cursor-default flex items-center gap-2"
+                                                    className="px-4 py-2.5 bg-blue-500/5 border border-blue-500/10 hover:bg-blue-500/10 hover:border-blue-500/30 text-blue-400 rounded-xl font-display font-extrabold uppercase tracking-wider text-[10px] shadow-sm hover:shadow-md hover:shadow-blue-500/10 transition-all duration-300 cursor-default flex items-center gap-2"
                                                 >
-                                                    <div className="w-2 h-2 rounded-full bg-accent/50" />
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500/80" />
                                                     {item}
                                                 </motion.div>
                                             ))}

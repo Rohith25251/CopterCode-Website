@@ -44,9 +44,9 @@ const LocationCard = ({ loc, index }) => {
       transition={{ delay: index * 0.2 }}
       className="group relative flex flex-col h-full"
     >
-      <div className="absolute -inset-0.5 bg-gradient-to-br from-white/10 to-white/5 rounded-[2rem] blur-[1px] group-hover:from-accent group-hover:to-accent/20 transition-all duration-500 opacity-50 group-hover:opacity-100" />
+      <div className="absolute -inset-0.5 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-[2rem] blur-[1px] group-hover:from-blue-500/20 group-hover:to-blue-500/5 transition-all duration-500 opacity-50 group-hover:opacity-100" />
 
-      <div className="relative flex flex-col h-full bg-surface border border-border rounded-[1.9rem] overflow-hidden">
+      <div className="relative flex flex-col h-full bg-slate-950 border border-slate-800/80 rounded-[1.9rem] overflow-hidden">
         {/* Visual Header */}
         <div className="relative h-64 overflow-hidden">
           {/* Background Image & Overlays */}
@@ -57,8 +57,8 @@ const LocationCard = ({ loc, index }) => {
               className="w-full h-full object-cover"
               sizes="(min-width:1024px) 50vw, 100vw"
             />
-            <div className="absolute inset-0 bg-primary/30 group-hover:bg-primary/15 transition-colors duration-500" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-70" />
+            <div className="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition-colors duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-80" />
             <div
               className={`absolute inset-0 bg-gradient-to-br ${loc.gradient} opacity-20 mix-blend-overlay transition-opacity duration-500`}
             />
@@ -74,19 +74,16 @@ const LocationCard = ({ loc, index }) => {
             }}
           />
 
-          {/* Floating Icon */}
-
-
           {/* Country Badge */}
           <div className="absolute top-6 left-6">
-            <span className="px-4 py-1.5 rounded-full bg-background/70 backdrop-blur-md border border-border text-xs font-bold uppercase tracking-widest text-primary shadow-lg">
+            <span className="px-4 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-slate-800 text-xs font-bold uppercase tracking-widest text-blue-400 shadow-lg">
               {loc.country}
             </span>
           </div>
 
           {/* Time Badge */}
-          <div className="absolute top-6 right-6 flex items-center gap-2 px-4 py-1.5 rounded-full bg-background/70 backdrop-blur-md border border-border text-xs font-medium text-primary/90 shadow-lg">
-            <Clock size={12} className="text-accent" />
+          <div className="absolute top-6 right-6 flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-slate-800 text-xs font-medium text-blue-400 shadow-lg">
+            <Clock size={12} className="text-blue-400" />
             {time}
           </div>
         </div>
@@ -94,24 +91,24 @@ const LocationCard = ({ loc, index }) => {
         {/* Content */}
         <div className="p-8 md:p-10 flex-grow flex flex-col">
           <div className="mb-6">
-            <h3 className="text-3xl font-display font-bold text-primary mb-2 group-hover:text-accent transition-colors">
+            <h3 className="text-3xl font-display font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
               {loc.title}
             </h3>
-            <div className="h-1 w-12 bg-accent rounded-full mb-4 transform origin-left group-hover:scale-x-150 transition-transform duration-300" />
-            <p className="text-secondary leading-relaxed">{loc.description}</p>
+            <div className="h-1 w-12 bg-blue-500 rounded-full mb-4 transform origin-left group-hover:scale-x-150 transition-transform duration-300" />
+            <p className="text-slate-400 leading-relaxed">{loc.description}</p>
           </div>
 
           <div className="space-y-5 mt-auto">
-            <div className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border hover:bg-surface-highlight transition-colors group/item">
+            <div className="flex items-start gap-4 p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 hover:bg-slate-900/60 hover:border-blue-500/20 transition-colors group/item">
               <MapPin
-                className="text-accent mt-1 group-hover/item:scale-110 transition-transform"
+                className="text-blue-400 mt-1 group-hover/item:scale-110 transition-transform"
                 size={20}
               />
               <div>
-                <span className="text-xs font-bold text-secondary uppercase tracking-widest block mb-1">
+                <span className="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">
                   Address
                 </span>
-                <p className="text-primary/90 text-sm leading-snug">
+                <p className="text-slate-300 text-sm leading-snug">
                   {loc.address}
                 </p>
               </div>
@@ -120,11 +117,11 @@ const LocationCard = ({ loc, index }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <a
                 href={`tel:${loc.phone}`}
-                className="flex items-center gap-3 p-4 rounded-xl bg-background border border-border hover:bg-accent hover:text-primary transition-all group/item"
+                className="flex items-center gap-3 p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 hover:bg-blue-500/10 hover:border-blue-500/30 hover:text-blue-400 text-slate-300 transition-all group/item"
               >
                 <Phone
                   size={18}
-                  className="text-accent group-hover/item:text-primary transition-colors"
+                  className="text-blue-400 group-hover/item:text-blue-300 transition-colors"
                 />
                 <span className="text-sm font-semibold">
                   {loc.phoneDisplay}
@@ -132,11 +129,11 @@ const LocationCard = ({ loc, index }) => {
               </a>
               <a
                 href={`mailto:${loc.email}`}
-                className="flex items-center gap-3 p-4 rounded-xl bg-background border border-border hover:bg-accent hover:text-primary transition-all group/item"
+                className="flex items-center gap-3 p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 hover:bg-blue-500/10 hover:border-blue-500/30 hover:text-blue-400 text-slate-300 transition-all group/item"
               >
                 <Mail
                   size={18}
-                  className="text-accent group-hover/item:text-primary transition-colors"
+                  className="text-blue-400 group-hover/item:text-blue-300 transition-colors"
                 />
                 <span className="text-sm font-semibold truncate">Email Us</span>
               </a>
@@ -146,11 +143,11 @@ const LocationCard = ({ loc, index }) => {
               href={loc.mapsLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center w-full py-4 mt-4 rounded-xl border border-accent/30 text-accent font-bold text-sm uppercase tracking-widest hover:bg-accent hover:text-primary transition-all duration-300 group/btn"
+              className="flex items-center justify-center w-full py-4 mt-4 rounded-xl border border-blue-500/20 bg-blue-500/5 text-blue-400 font-bold text-sm uppercase tracking-widest hover:bg-blue-500/10 hover:border-blue-500/40 hover:text-blue-300 transition-all duration-300 group/btn"
             >
               <Navigation
                 size={16}
-                className="mr-2 group-hover/btn:-translate-y-0.5 transition-transform"
+                className="mr-2 text-blue-400 group-hover/btn:-translate-y-0.5 transition-transform"
               />
               Get Directions
             </a>
@@ -254,6 +251,7 @@ const Locations = () => {
       <SEO
         title={seoTitle}
         description={seoDesc}
+        keywords={sanityData?.seo?.keywords || "operating locations, CopterCode offices, drone company headquarters, global drone tech hubs"}
       />
 
       {/* Background Map Effect */}

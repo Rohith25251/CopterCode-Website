@@ -6,6 +6,7 @@ import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { motion } from "framer-motion";
 import { iconComponentMap } from '../sanity/schemas/icons';
+import BackButton from '../components/ui/BackButton';
 import {
   Rocket,
   TrendingUp,
@@ -29,6 +30,10 @@ const About = () => {
     // Updated query to match new schema structure
     const query = `*[_type == "aboutPage"][0]{
       ...,
+      hero {
+        ...,
+        image { asset->{ url } }
+      },
       journey[]{
         ...,
         "imageUrl": image.asset->url
@@ -56,6 +61,11 @@ const About = () => {
   }, [location.hash]);
 
   const hero = sanityData?.hero;
+  const heroTitle = hero?.title || "About Us";
+  const heroSubtitle = hero?.subtitle || "Revolutionizing industries with drones, technology, and sustainable innovation.";
+  const heroImage = hero?.image?.asset?.url || "/mediafiles/news and media/IMG_3356.jpg";
+  const heroTag = hero?.tag || "Our Story";
+
   const origin = sanityData?.origin;
   const leadership = sanityData?.leadership;
   const seo = sanityData?.seo;
@@ -138,22 +148,48 @@ const About = () => {
   const milestonesData = milestones || FALLBACK_MILESTONES;
 
   return (
-    <div className="bg-[#FAF9F5] min-h-screen text-primary selection:bg-accent selection:text-white">
+    <div className="bg-[#FAF9F5] min-h-screen text-primary selection:bg-accent selection:text-white overflow-hidden relative">
       <SEO
         title={seo?.metaTitle || "About CopterCode | Innovation in Drones, AI & Industrial Automation"}
         description={seo?.metaDescription || "Discover CopterCode's journey from drone technology to enterprise AI, digital transformation, and sustainable solutions. Leading innovators in industrial automation and enterprise software."}
         keywords="CopterCode, drone technology, industrial automation, enterprise AI, digital transformation, sustainable innovation, IoT solutions"
       />
 
-      {/* Header */}
-      <div className="pt-32 pb-12 text-center bg-[#FAF9F5]">
-        <h1 className="text-5xl md:text-7xl font-display font-bold text-primary mb-6 tracking-tight">
-          {hero?.title || "About Us"}
-        </h1>
-        <p className="text-xl md:text-2xl text-secondary max-w-2xl mx-auto font-light leading-relaxed">
-          {hero?.subtitle || "Revolutionizing industries with drones, technology, and sustainable innovation."}
-        </p>
+      {/* Floating Back Button */}
+      <div className="fixed top-24 left-6 md:left-12 z-50">
+        <BackButton />
       </div>
+
+      {/* Full Size Hero Banner */}
+      <section className="relative h-[85vh] md:h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src={heroImage}
+            alt={heroTitle}
+            className="w-full h-full object-cover"
+          />
+          {/* Soft, premium dark gradient overlay for quote legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="absolute inset-0 z-20 flex items-center">
+          <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-6xl w-full">
+            <div className="max-w-3xl text-left">
+              <span className="px-3.5 py-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-500/20 inline-block mb-6 backdrop-blur-sm">
+                {heroTag}
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight text-white mb-6 leading-[1.1]">
+                {heroTitle}
+              </h1>
+              <p className="text-lg sm:text-xl text-slate-300 font-medium italic mb-8 border-l-4 border-blue-500 pl-4 leading-relaxed max-w-2xl">
+                "{heroSubtitle}"
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Origin Section (Premium) */}
       <section className="py-20 bg-white relative overflow-hidden">
@@ -162,7 +198,7 @@ const About = () => {
           <div className="flex flex-col md:flex-row gap-16 items-center">
             <div className="w-full md:w-1/2">
               <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center">
-                <span className="w-8 h-[2px] bg-accent mr-3"></span> Our Origin
+                <span className="w-8 h-[2px] bg-accent mr-3"></span> {origin?.tag || "Our Origin"}
               </span>
               <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6 leading-tight">
                 {origin?.heading || "From Vision to Reality"}
@@ -206,7 +242,7 @@ const About = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
-                    className={`flex flex-col md:flex-row items-center justify-between md:mb-32 relative ${isEven ? "md:flex-row" : "md:flex-row-reverse"
+                    className={`flex flex-col md:flex-row items-center justify-between md:mb-32 relative w-full ${isEven ? "md:flex-row" : "md:flex-row-reverse"
                       }`}
                   >
                     {/* Content */}
@@ -224,16 +260,16 @@ const About = () => {
                     </div>
 
                     {/* Desktop Center Icon */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center justify-center w-20 h-20 bg-white rounded-full border-4 border-[#FAF9F5] shadow-xl z-20">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-accent bg-accent/5">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center w-20 h-20 bg-slate-950 rounded-full border-4 border-[#FAF9F5] shadow-xl z-20">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-blue-400 bg-slate-900 border border-slate-800">
                         <Icon size={24} className="stroke-[2px]" />
                       </div>
                     </div>
 
                     {/* Image */}
                     <div className="w-full md:w-5/12">
-                      <div className="relative group rounded-3xl overflow-hidden shadow-2xl border-[4px] border-white transform transition-transform duration-500 hover:scale-[1.01]">
-                        <div className="aspect-[16/10] bg-gray-200 relative overflow-hidden">
+                      <div className="relative group rounded-3xl overflow-hidden shadow-2xl border-[4px] border-slate-950 transform transition-transform duration-500 hover:scale-[1.01]">
+                        <div className="aspect-[16/10] bg-slate-900 relative overflow-hidden">
                           {item.imageUrl && (
                             <OptimizedImage
                               src={item.imageUrl}
@@ -241,7 +277,7 @@ const About = () => {
                               loading="lazy"
                               decoding="async"
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                              sizes="(min-width:1024px) 40vw, 100vw"
+                              sizes="(max-width:1024px) 40vw, 100vw"
                             />
                           )}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
@@ -267,7 +303,7 @@ const About = () => {
           </div>
 
           <div className="max-w-4xl mx-auto bg-[#EFF6FF] rounded-[2.5rem] p-12 lg:p-16 text-center shadow-sm border border-blue-50">
-            <p className="text-secondary text-lg mb-8">Currently, CopterCode is led by its Chairman & Managing Director:</p>
+            <p className="text-secondary text-lg mb-8">{leadership?.chairmanIntro || "Currently, CopterCode is led by its Chairman & Managing Director:"}</p>
             <h3 className="text-4xl font-bold text-primary mb-2">
               {leadership?.chairmanName || "Mr. Karthikeyan Sundharesan"}
             </h3>
@@ -299,17 +335,17 @@ const About = () => {
       {/* Milestones Grid */}
       <section id="milestones-at-a-glance" className="py-24 bg-[#FAF9F5]">
         <div className="container mx-auto px-6 max-w-6xl">
-          <h2 className="text-3xl font-bold text-primary mb-12 border-l-8 border-accent pl-6">
-            Milestones at a Glance
+          <h2 className="text-3xl font-bold text-primary mb-12 border-l-8 border-blue-500 pl-6">
+            {sanityData?.milestonesHeading || "Milestones at a Glance"}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {milestonesData.map((item, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <span className="text-5xl font-black text-gray-100 mb-4 block">
+              <div key={idx} className="bg-slate-950 p-8 rounded-2xl border border-slate-800 shadow-sm hover:shadow-blue-500/10 hover:border-slate-700 transition-all duration-300 hover:-translate-y-1">
+                <span className="text-5xl font-black text-slate-700 mb-4 block">
                   {item.year.replace(/[^0-9]/g, '').substring(0, 4)}
                 </span>
-                <h4 className="text-primary font-bold text-lg mb-2">{item.title}</h4>
-                <p className="text-sm text-secondary leading-snug">
+                <h4 className="text-white font-bold text-lg mb-2">{item.title}</h4>
+                <p className="text-sm text-slate-400 leading-snug">
                   {item.description}
                 </p>
               </div>

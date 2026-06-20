@@ -205,7 +205,7 @@ const Internship = () => {
         </AnimatePresence>
 
         {/* Floating Back Button (Top Left) */}
-        <div className="absolute top-24 left-6 md:left-12 z-30">
+        <div className="fixed top-24 left-6 md:left-12 z-50">
           <BackButton />
         </div>
 

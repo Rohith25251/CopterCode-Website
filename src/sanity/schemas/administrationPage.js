@@ -35,6 +35,18 @@ export const administrationPage = {
             rows: 2,
             initialValue: 'Guided by vision, integrity, and a commitment to excellence.'
         },
+        {
+            name: 'heroImage',
+            title: 'Hero Background Image',
+            type: 'image',
+            options: { hotspot: true }
+        },
+        {
+            name: 'heroTag',
+            title: 'Hero Tag',
+            type: 'string',
+            initialValue: 'Corporate Governance'
+        },
 
 
 
@@ -55,6 +67,18 @@ export const administrationPage = {
             title: 'Executive Leadership Section Heading',
             type: 'string',
             initialValue: 'Executive Leadership'
+        },
+        {
+            name: 'executiveLeadershipTheme',
+            title: 'Executive Leadership Card Theme',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Light Theme', value: 'light' },
+                    { title: 'Dark Theme', value: 'dark' }
+                ]
+            },
+            initialValue: 'dark'
         },
         {
             name: 'executiveLeadership',
@@ -102,6 +126,18 @@ export const administrationPage = {
             initialValue: 'Board of Directors'
         },
         {
+            name: 'boardTheme',
+            title: 'Board Cards Theme',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Light Theme', value: 'light' },
+                    { title: 'Dark Theme', value: 'dark' }
+                ]
+            },
+            initialValue: 'light'
+        },
+        {
             name: 'boardMembers',
             title: 'Board Members',
             type: 'array',
@@ -133,6 +169,18 @@ export const administrationPage = {
             initialValue: 'Advisory Board'
         },
         {
+            name: 'advisoryTheme',
+            title: 'Advisory Board Cards Theme',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Light Theme', value: 'light' },
+                    { title: 'Dark Theme', value: 'dark' }
+                ]
+            },
+            initialValue: 'dark'
+        },
+        {
             name: 'advisoryBoard',
             title: 'Advisory Board Members',
             type: 'array',
@@ -161,6 +209,18 @@ export const administrationPage = {
             title: 'Management Team Heading',
             type: 'string',
             initialValue: 'Management Team'
+        },
+        {
+            name: 'managementTheme',
+            title: 'Management Team Cards Theme',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Light Theme', value: 'light' },
+                    { title: 'Dark Theme', value: 'dark' }
+                ]
+            },
+            initialValue: 'light'
         },
         {
             name: 'managementTeam',
@@ -215,6 +275,19 @@ export const administrationPage = {
                                 ]
                             },
                             initialValue: 'grid'
+                        },
+                        {
+                            name: 'theme',
+                            type: 'string',
+                            title: 'Card Theme',
+                            description: 'Choose between Light theme and Dark theme for the cards.',
+                            options: {
+                                list: [
+                                    { title: 'Light Theme', value: 'light' },
+                                    { title: 'Dark Theme', value: 'dark' }
+                                ]
+                            },
+                            initialValue: 'light'
                         },
                         {
                             name: 'members',

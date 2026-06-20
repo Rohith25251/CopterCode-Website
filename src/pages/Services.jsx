@@ -1,52 +1,49 @@
 import { useState, useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
-import { Layers, Globe, Cpu, Database, Cloud, Code2, ShieldCheck, Smartphone } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import SEO from '../components/SEO';
 import { client } from '../lib/sanity';
 import { useScrollToTop } from '../hooks/useScrollToTop';
-
-const ICON_MAP = {
-    Globe, Layers, Cpu, Database, Cloud, Code2, ShieldCheck, Smartphone
-};
+import { iconComponentMap } from '../sanity/schemas/icons';
 
 const FALLBACK_SERVICES = [
     {
-        icon: "Globe",
+        icon: "globe",
         title: "Web Development",
         description: "Responsive, accessible, and high-performance websites. We build digital experiences that represent your brand with precision."
     },
     {
-        icon: "Layers",
+        icon: "layers",
         title: "Full Stack Development",
         description: "End-to-end application development using modern stacks (MERN, PERN, Python). We handle everything from the database to the UI."
     },
     {
-        icon: "Cpu",
+        icon: "cpu",
         title: "AI & Automation",
         description: "Leverage the power of Artificial Intelligence to automate workflows, analyze data, and build smart applications."
     },
     {
-        icon: "Code2",
+        icon: "code",
         title: "SaaS Development",
         description: "We help startups and enterprises build scalable Software as a Service products with multi-tenancy and subscription billing."
     },
     {
-        icon: "Database",
+        icon: "database",
         title: "API Development",
         description: "Robust, secure, and documented REST and GraphQL APIs to power your mobile and web applications."
     },
     {
-        icon: "Cloud",
+        icon: "cloud",
         title: "Cloud Solutions",
         description: "Cloud-native architectures on AWS, Azure, or GCP. We ensure your infrastructure is scalable, secure, and cost-effective."
     },
     {
-        icon: "Smartphone",
+        icon: "smartphone",
         title: "Mobile App Development",
         description: "Cross-platform mobile applications using React Native, delivering native performance with a single codebase."
     },
     {
-        icon: "ShieldCheck",
+        icon: "shieldCheck",
         title: "Cybersecurity & DevOps",
         description: "Implementing DevSecOps pipelines and security best practices to protect your intellectual property and user data."
     }
@@ -60,7 +57,8 @@ const Services = () => {
         const query = `*[_type == "servicesPage"][0]{
             seo {
                 metaTitle,
-                metaDescription
+                metaDescription,
+                keywords
             },
             hero {
                 title,
@@ -93,7 +91,11 @@ const Services = () => {
 
     return (
         <div className="bg-background min-h-screen">
-            <SEO title={seoTitle} description={seoDesc} keywords="web development, full-stack development, AI automation, SaaS, cloud solutions, cybersecurity, API development, mobile apps" />
+            <SEO 
+                title={seoTitle} 
+                description={seoDesc} 
+                keywords={sanityData?.seo?.keywords || "web development, full-stack development, AI automation, SaaS, cloud solutions, cybersecurity, API development, mobile apps"} 
+            />
             <PageHeader
                 title={heroTitle}
                 subtitle={heroSubtitle}
@@ -102,14 +104,14 @@ const Services = () => {
             <section className="py-24">
                 <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {servicesList.map((service, index) => {
-                        const IconComponent = ICON_MAP[service.icon] || Globe;
+                        const IconComponent = iconComponentMap[service.icon?.toLowerCase()] || Globe;
                         return (
-                            <div key={index} className="bg-surface p-10 border border-border hover:border-accent/50 transition-all duration-300 group">
-                                <div className="mb-6 text-accent group-hover:scale-110 transition-transform duration-300 origin-left">
-                                    <IconComponent size={40} strokeWidth={1.5} />
+                            <div key={index} className="bg-slate-950 p-10 border border-slate-800 rounded-2xl hover:border-slate-700 hover:shadow-blue-950/20 hover:shadow-2xl transition-all duration-300 group flex flex-col">
+                                <div className="mb-8 w-14 h-14 bg-slate-900 border border-slate-800/80 rounded-xl flex items-center justify-center text-blue-400 group-hover:scale-105 transition-all duration-300 shadow-inner">
+                                    <IconComponent size={28} strokeWidth={1.5} />
                                 </div>
-                                <h3 className="text-2xl font-bold text-primary mb-4">{service.title}</h3>
-                                <p className="text-secondary leading-relaxed">{service.description}</p>
+                                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors leading-tight">{service.title}</h3>
+                                <p className="text-slate-400 leading-relaxed flex-grow">{service.description}</p>
                             </div>
                         );
                     })}

@@ -17,7 +17,8 @@ export const insightsPage = {
             type: 'object',
             fields: [
                 { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Insights' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'Latest updates and announcements from CopterCode' }
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'Latest updates and announcements from CopterCode' },
+                { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'Drone Tech, Enterprise AI, Industrial Automation, UAV, CopterCode, Software Solutions, Insights, News, Announcements', description: 'Comma separated list of search keywords' }
             ]
         },
         // --- HERO ---
@@ -27,7 +28,19 @@ export const insightsPage = {
             type: 'object',
             fields: [
                 { name: 'title', type: 'string', title: 'Title', initialValue: 'Insights' },
-                { name: 'subtitle', type: 'string', title: 'Subtitle', initialValue: 'A chronological journey of our milestones, events, and innovations.' }
+                { name: 'subtitle', type: 'string', title: 'Subtitle', initialValue: 'A chronological journey of our milestones, events, and innovations.' },
+                {
+                    name: 'image',
+                    title: 'Hero Background Image',
+                    type: 'image',
+                    options: { hotspot: true }
+                },
+                {
+                    name: 'tag',
+                    title: 'Hero Tag',
+                    type: 'string',
+                    initialValue: 'Latest Updates'
+                }
             ]
         },
         // --- YEARS ---
@@ -69,6 +82,44 @@ export const insightsPage = {
                             of: [{ type: 'image' }]
                         }
                     ]
+                }
+            ],
+            initialValue: [
+                {
+                    year: '2025',
+                    events: [
+                        {
+                            category: 'Internship',
+                            date: '2025-05-05',
+                            title: 'CopterCode Summer Internship 2025 at IIT Madras Research Park',
+                            excerpt: 'Students from 40+ institutions joined hands-on UAV projects.',
+                            author: 'Internship Division',
+                            readTime: '3 min read'
+                        },
+                        {
+                            category: 'Workshop',
+                            date: '2025-07-12',
+                            title: 'AI in Drones Workshop 2025',
+                            excerpt: 'Machine learning applied to flight path optimization.',
+                            author: 'AI Research Team',
+                            readTime: '3 min read'
+                        }
+                    ],
+                    gallery: []
+                },
+                {
+                    year: '2024',
+                    events: [
+                        {
+                            category: 'Internship',
+                            date: '2024-07-02',
+                            title: 'CopterCode Internship 2024 Welcomes 150 Students Nationwide',
+                            excerpt: 'Advanced training on UAV automation and field operations.',
+                            author: 'HR & Training Division',
+                            readTime: '3 min read'
+                        }
+                    ],
+                    gallery: []
                 }
             ]
         }

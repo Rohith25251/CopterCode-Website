@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PortableText } from "@portabletext/react";
+import BackButton from "../components/ui/BackButton";
 
 const careersPortableTextComponents = {
   marks: {
@@ -423,6 +424,11 @@ const Careers = () => {
         ogTitle="Careers at CopterCode"
         ogDescription="Build the future with CopterCode. Explore exciting job opportunities in drone tech, AI, and enterprise software."
       />
+
+      {/* Floating fixed Back Button */}
+      <div className="fixed top-24 left-6 md:left-12 z-50">
+        <BackButton />
+      </div>
 
       {/* Full Size Sliding Hero Banner */}
       <section className="relative h-[85vh] md:h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">

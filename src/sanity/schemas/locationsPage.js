@@ -17,7 +17,8 @@ export const locationsPage = {
             type: 'object',
             fields: [
                 { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Operating Locations' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: "CopterCode's global footprint and operating locations." }
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: "CopterCode's global footprint and operating locations." },
+                { name: 'keywords', type: 'string', title: 'Meta Keywords', initialValue: 'operating locations, CopterCode offices, drone company headquarters, global drone tech hubs' }
             ]
         },
         // --- HERO ---

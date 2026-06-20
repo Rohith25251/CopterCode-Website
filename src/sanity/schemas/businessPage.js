@@ -36,6 +36,18 @@ export const businessPage = {
             rows: 3,
             initialValue: 'A diversified portfolio driving innovation across immersive technology, sustainable energy, and enterprise solutions.'
         },
+        {
+            name: 'heroImage',
+            title: 'Hero Background Image',
+            type: 'image',
+            options: { hotspot: true }
+        },
+        {
+            name: 'heroTag',
+            title: 'Hero Tag',
+            type: 'string',
+            initialValue: 'Our Verticals'
+        },
         // --- BUSINESS LIST ---
         {
             name: 'businesses',
@@ -58,6 +70,18 @@ export const businessPage = {
                                 }))
                             },
                             initialValue: 'briefcase'
+                        },
+                        {
+                            name: 'iconTheme',
+                            title: 'Floating Icon Badge Theme',
+                            type: 'string',
+                            options: {
+                                list: [
+                                    { title: 'Light Theme', value: 'light' },
+                                    { title: 'Dark Theme', value: 'dark' }
+                                ]
+                            },
+                            initialValue: 'light'
                         },
                         { name: 'description', type: 'text', title: 'Description' },
 

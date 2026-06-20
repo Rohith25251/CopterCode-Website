@@ -356,7 +356,7 @@ const Contact = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="container mx-auto px-6"
+          className="container mx-auto px-6 max-w-[1280px]"
         >
           <div className="mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{introHeading}</h2>
