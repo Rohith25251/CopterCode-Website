@@ -3,10 +3,52 @@ import { useLocation } from "react-router-dom";
 import { client, urlFor } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
-import { Users, User, ArrowRight, Building2, Target, Award, ShieldCheck } from "lucide-react";
+import { Users, User, ArrowRight, Building2, Target, Award, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 import OptimizedImage from "../components/OptimizedImage";
 import BackButton from '../components/ui/BackButton';
+
+// MemberDescription collapsible component for mobile
+const MemberDescription = ({ description, isDark, role }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isLong = description && description.length > 150;
+
+  if (!description) return null;
+
+  let label = "Read More";
+  if (role?.toLowerCase().includes("founder")) {
+    label = "Meet the Founder";
+  } else if (role?.toLowerCase().includes("chairman")) {
+    label = "Meet the Chairman";
+  }
+
+  return (
+    <div className="relative">
+      <p className={`text-base leading-relaxed transition-all duration-300 ${
+        isDark ? 'text-slate-300 font-light' : 'text-secondary'
+      } ${isLong && !isExpanded ? 'line-clamp-3 md:line-clamp-none' : ''}`}>
+        {description}
+      </p>
+      
+      {isLong && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="md:hidden mt-4 text-xs font-extrabold tracking-[0.2em] uppercase text-blue-500 hover:text-blue-400 transition-colors duration-200 flex items-center gap-1.5"
+        >
+          {isExpanded ? (
+            <>
+              Show Less <ChevronUp size={14} />
+            </>
+          ) : (
+            <>
+              {label} <ChevronDown size={14} />
+            </>
+          )}
+        </button>
+      )}
+    </div>
+  );
+};
 
 // Icon Map helper
 
@@ -180,12 +222,12 @@ const Administration = () => {
               <div className={`absolute inset-0 rounded-3xl border-2 transition-all duration-500 pointer-events-none ${isDark ? 'border-blue-500/20 group-hover:border-blue-500/40' : 'border-accent/30 group-hover:border-accent/60'}`} style={{ top: '-8px', left: '-8px', right: '-8px', bottom: '-8px' }}></div>
               
               {/* Main Card - Horizontal Layout */}
-              <div className={`relative rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 flex flex-row backdrop-blur-sm ${isDark ? 'bg-slate-950 hover:shadow-blue-500/10 border border-slate-800' : 'bg-white hover:shadow-primary/20'}`}>
+              <div className={`relative rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 flex flex-col md:flex-row backdrop-blur-sm ${isDark ? 'bg-slate-950 hover:shadow-blue-500/10 border border-slate-800' : 'bg-white hover:shadow-primary/20'}`}>
                 {/* Premium Background Accent */}
                 <div className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 ${isDark ? 'bg-blue-500/5 group-hover:bg-blue-500/10' : 'bg-accent/5 group-hover:bg-accent/10'}`}></div>
 
                 {/* Image Container - Left Side */}
-                <div className={`w-full md:w-1/3 aspect-auto md:aspect-[3/4] relative overflow-hidden flex-shrink-0 bg-gradient-to-br ${isDark ? 'from-blue-500/10 to-transparent' : 'from-accent/10 to-transparent'}`}>
+                <div className={`w-full md:w-1/3 aspect-square md:aspect-[3/4] relative overflow-hidden flex-shrink-0 bg-gradient-to-br ${isDark ? 'from-blue-500/10 to-transparent' : 'from-accent/10 to-transparent'}`}>
                   {member.image ? (
                     <OptimizedImage
                       src={member.image}
@@ -212,7 +254,7 @@ const Administration = () => {
                 </div>
 
                 {/* Details Section - Right Side */}
-                <div className={`flex-1 pt-32 md:pt-40 px-8 md:px-12 pb-8 md:pb-12 border-t md:border-t-0 md:border-l flex flex-col justify-start relative z-20 ${isDark ? 'bg-slate-950 border-slate-800' : 'bg-white border-accent/10'}`}>
+                <div className={`flex-1 pt-8 md:pt-40 px-8 md:px-12 pb-8 md:pb-12 border-t md:border-t-0 md:border-l flex flex-col justify-start relative z-20 ${isDark ? 'bg-slate-950 border-slate-800' : 'bg-white border-accent/10'}`}>
                   {/* Name - Desktop Only */}
                   <h4 className={`hidden md:block text-3xl font-bold mb-4 font-display ${isDark ? 'text-white' : 'text-primary'}`}>{member.name}</h4>
                   
@@ -232,12 +274,14 @@ const Administration = () => {
                   {/* Divider */}
                   <div className={`h-1 w-12 rounded-full mb-6 bg-gradient-to-r ${isDark ? 'from-blue-500 to-blue-500/50' : 'from-accent to-accent/50'}`}></div>
 
-                  {/* Description - Always Visible */}
+                  {/* Description - Collapsible on Mobile */}
                   {member.description && (
                     <div className="flex-1">
-                      <p className={`text-base leading-relaxed ${isDark ? 'text-slate-300 font-light' : 'text-secondary'}`}>
-                        {member.description}
-                      </p>
+                      <MemberDescription 
+                        description={member.description} 
+                        isDark={isDark} 
+                        role={member.role}
+                      />
                     </div>
                   )}
                 </div>
@@ -379,7 +423,7 @@ const Administration = () => {
       </section>
 
       {/* Detailed Leadership (Executive, Board & Others) */}
-      <section id="executive-leadership" className="py-32 bg-[#FAF9F5]">
+      <section id="executive-leadership" className="py-32 bg-[#FAF9F5] scroll-mt-28 md:scroll-mt-32">
         <div className="container mx-auto px-6 max-w-7xl">
 
            {/* Executive Leadership Grid - Royal Design */}

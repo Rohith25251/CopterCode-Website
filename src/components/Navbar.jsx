@@ -115,7 +115,7 @@ const Navbar = () => {
             <OptimizedImage
               src={logoSrc}
               alt={companyTitle}
-              className="h-full w-full object-cover border-none outline-none"
+              className="h-full w-full object-contain border-none outline-none"
               sizes="64px"
             />
           </motion.div>
