@@ -18,6 +18,11 @@ const Navbar = () => {
                 asset->{
                     url
                 }
+            },
+            logoVideo {
+                asset->{
+                    url
+                }
             }
         }`;
 
@@ -26,7 +31,8 @@ const Navbar = () => {
         console.log('✅ Navigation data loaded from Sanity');
         setSanityNavData({
           ...data,
-          logo: data.logo?.asset?.url
+          logo: data.logo?.asset?.url,
+          logoVideo: data.logoVideo?.asset?.url
         });
       } else {
         console.warn('⚠️  No navigation data from Sanity - using defaults');
@@ -112,12 +118,23 @@ const Navbar = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            <OptimizedImage
-              src={logoSrc}
-              alt={companyTitle}
-              className="h-full w-full object-contain border-none outline-none"
-              sizes="64px"
-            />
+            {navData?.logoVideo ? (
+              <video
+                src={navData.logoVideo}
+                className="h-full w-full object-contain border-none outline-none"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <OptimizedImage
+                src={logoSrc}
+                alt={companyTitle}
+                className="h-full w-full object-contain border-none outline-none"
+                sizes="64px"
+              />
+            )}
           </motion.div>
           <span className="text-sm xs:text-base sm:text-xl font-display font-bold tracking-wide text-primary group-hover:text-accent transition-colors block">
             {companyTitle}

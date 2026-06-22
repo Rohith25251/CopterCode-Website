@@ -22,6 +22,15 @@ export const navigation = {
             type: 'image',
             options: { hotspot: true }
         },
+        {
+            name: 'logoVideo',
+            title: 'Logo Video (Optional)',
+            type: 'file',
+            options: {
+                accept: 'video/*'
+            },
+            description: 'Optional video for the logo. If uploaded, this will play in the header instead of the static logo image.'
+        },
         // --- TOP MENU ---
         {
             name: 'topMenuItems',
