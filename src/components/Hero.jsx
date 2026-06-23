@@ -59,7 +59,7 @@ const Hero = ({ data }) => {
   };
 
   return (
-    <section className="relative bg-background text-primary overflow-hidden flex items-start justify-center pt-6 sm:pt-8 lg:pt-12 pb-16 sm:pb-20 md:pb-24 lg:pb-32">
+    <section className="relative bg-background text-primary overflow-hidden flex flex-1 items-center justify-center py-6 sm:py-8 lg:py-12">
       {/* Decorative premium radial gradients */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,_var(--tw-gradient-stops))] from-blue-100/30 via-transparent to-transparent opacity-60 pointer-events-none z-0" />
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-50/20 rounded-full blur-[120px] pointer-events-none z-0" />

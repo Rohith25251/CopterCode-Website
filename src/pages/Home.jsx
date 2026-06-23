@@ -14,6 +14,18 @@ import { client, urlFor } from '../lib/sanity';
 import ScrollingAnnouncementBar from '../components/ScrollingAnnouncementBar';
 import { iconComponentMap } from '../sanity/schemas/icons';
 
+const FOOTPRINT_LOGOS = [
+    "/_optimized/mediafiles/logos/Gemini_Generated_Image_1898qy1898qy1898.webp",
+    "/_optimized/mediafiles/logos/Untitled design.webp",
+    "/_optimized/mediafiles/logos/Untitled design (1).webp",
+    "/_optimized/mediafiles/logos/Untitled design (2).webp",
+    "/_optimized/mediafiles/logos/Untitled design (3).webp",
+    "/_optimized/mediafiles/logos/Untitled design (4).webp",
+    "/_optimized/mediafiles/logos/Untitled design (5).webp",
+    "/_optimized/mediafiles/logos/Untitled design (6).webp",
+    "/_optimized/mediafiles/logos/Untitled design (7).webp",
+];
+
 /* --- PERFORMANCE OPTIMIZATION --- */
 // Hook for aggressive lazy loading with configurable threshold
 const useVideoLazyLoad = (initialDelay = true) => {
@@ -628,7 +640,7 @@ const Home = () => {
 
     const internshipHeading = homeData?.internshipSection?.heading || "Internship Programme";
     const internshipDesc = homeData?.internshipSection?.description || "Empowering the next generation of innovators. Gain hands-on experience in Drone Tech, AI, and IoT with our intensive 3-month training program.";
-    const internshipLink = homeData?.internshipSection?.applyLink || "https://forms.gle/bPkBxkdAHwDDrFJm6";
+    const internshipLink = homeData?.internshipSection?.applyLink || "/internship-registration";
     const internshipMainImage = homeData?.internshipSection?.image ? urlFor(homeData.internshipSection.image).url() : "/mediafiles/news and media/IMG_1851.jpg";
     const FALLBACK_INTERNSHIP_IMAGES = [
         "/mediafiles/Intern/A Devendhiran   -   Shree Sathyam College of Engineering And Technology   -  Fresher  -   Full Stack Developer.jpg",
@@ -742,11 +754,11 @@ const Home = () => {
                 ogImage={homeData?.seo?.metaImage || homeData?.heroSection?.heroImages?.[0] || "/mediafiles/Home/IMG_1851.jpg"}
             />
 
-            {/* Note: Hero will use its internal default if data prop fields are missing */}
-            <Hero data={homeData?.heroSection || null} />
-
-            {/* Scrolling Announcement Bar */}
-            <ScrollingAnnouncementBar data={homeData?.scrollingAnnouncementBar || FALLBACK_SCROLLING_BAR} />
+            {/* Hero & Announcement Bar Viewport wrapper to fit exactly 100vh on load */}
+            <div className="flex flex-col min-h-[calc(100vh-var(--nav-height))] min-h-[calc(100dvh-var(--nav-height))]">
+                <Hero data={homeData?.heroSection || null} />
+                <ScrollingAnnouncementBar data={homeData?.scrollingAnnouncementBar || FALLBACK_SCROLLING_BAR} />
+            </div>
 
             {/* --- WHO WE ARE (Redesigned) --- */}
             <section className="py-24 lg:py-32 bg-surface text-primary relative overflow-hidden">
@@ -975,14 +987,15 @@ const Home = () => {
             </motion.section>
 
             {/* UPCOMING EVENTS SECTION (New) */}
-            <section className="py-24 bg-background border-t border-border relative overflow-hidden">
+            <section className="py-24 bg-background border-t-2 border-b-2 border-blue-500/60 relative overflow-hidden">
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16">
                         <div>
-                            <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                            <span className="inline-flex items-center gap-2 border-2 border-blue-500/60 bg-blue-500/5 rounded-full px-4 py-2 mb-4 w-fit backdrop-blur-sm text-[10px] font-bold tracking-[0.18em] text-blue-700 uppercase">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                                 Connect With Us
                             </span>
-                            <h2 className="text-4xl md:text-5xl font-display font-medium text-primary">
+                            <h2 className="text-4xl md:text-5xl font-display font-bold text-primary">
                                 {upcomingEventsHeading}
                             </h2>
                         </div>
@@ -1000,7 +1013,7 @@ const Home = () => {
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1, duration: 0.6 }}
                                 whileHover={{ y: -10 }}
-                                className="group relative bg-surface rounded-2xl overflow-hidden border border-border hover:border-accent/40 shadow-lg hover:shadow-2xl transition-all duration-300"
+                                className="group relative bg-surface rounded-2xl overflow-hidden border-2 border-blue-500/60 hover:border-blue-500 shadow-lg hover:shadow-2xl transition-all duration-300"
                             >
                                 <div className="h-48 overflow-hidden relative">
                                     <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
@@ -1011,7 +1024,7 @@ const Home = () => {
                                         sizes="(min-width:1024px) 33vw, 100vw"
                                     />
                                     <div className="absolute top-4 left-4 z-20">
-                                        <span className="bg-background/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full border border-border">
+                                        <span className="bg-background/90 backdrop-blur text-blue-700 text-xs font-bold px-3 py-1 rounded-full border-2 border-blue-500/60">
                                             {event.category}
                                         </span>
                                     </div>
@@ -1162,20 +1175,26 @@ const Home = () => {
             </motion.section>
 
             {/* CAREERS SECTION (Enhanced) */}
-            <section className="py-24 bg-surface text-primary relative overflow-hidden">
-                {/* Abstract Background Elements */}
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
-
+            <section className="py-24 bg-[#020617] text-white relative overflow-hidden border-y border-slate-900">
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="text-center max-w-3xl mx-auto mb-16">
-                        <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                        <span className="inline-block px-4 py-2 bg-blue-950/40 text-blue-400 text-xs font-bold tracking-[0.15em] uppercase rounded-lg border border-blue-900/50 mb-6 backdrop-blur-sm">
                             {careerTagline}
                         </span>
-                        <h2 className="text-5xl md:text-6xl font-display font-medium text-primary mb-6">
-                            {careerHeading}
+                        <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 leading-tight">
+                            {(() => {
+                                if (careerHeading.toLowerCase().includes("coptercode")) {
+                                    const parts = careerHeading.split(/(coptercode)/i);
+                                    return parts.map((part, index) =>
+                                        part.toLowerCase() === "coptercode"
+                                            ? <span key={index} className="text-blue-400">{part}</span>
+                                            : part
+                                    );
+                                }
+                                return careerHeading;
+                            })()}
                         </h2>
-                        <p className="text-xl text-secondary leading-relaxed font-light">
+                        <p className="text-lg md:text-xl text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
                             {careerDesc}
                         </p>
                     </div>
@@ -1188,21 +1207,20 @@ const Home = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="group p-8 rounded-3xl border border-border bg-white shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
+                                className="group p-8 rounded-3xl border border-slate-800 bg-[#080f25]/40 shadow-xl hover:shadow-2xl hover:border-blue-500/40 transition-all duration-500 hover:-translate-y-2 backdrop-blur-sm"
                             >
-                                <div className="w-16 h-16 mb-6 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform duration-500">
+                                <div className="w-16 h-16 mb-6 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 transition-all duration-500">
                                     <item.icon size={32} />
                                 </div>
-                                <h3 className="text-2xl font-bold text-primary mb-3">{item.title}</h3>
-                                <p className="text-secondary leading-relaxed">{item.description}</p>
+                                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">{item.title}</h3>
+                                <p className="text-slate-400 leading-relaxed">{item.description}</p>
                             </motion.div>
                         ))}
                     </div>
 
                     <div className="text-center">
                         <Link to="/careers" className="relative inline-flex group">
-                            <div className="absolute transition-all duration-1000 opacity-30 -inset-px bg-gradient-to-r from-accent to-blue-500 rounded-full blur-lg group-hover:opacity-60 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
-                            <span className="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-primary rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 shadow-xl">
+                            <span className="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-[#020617] transition-all duration-200 bg-white hover:bg-slate-100 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white shadow-xl hover:shadow-2xl">
                                 Explore Careers <Briefcase className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
                             </span>
                         </Link>
@@ -1303,14 +1321,14 @@ const Home = () => {
                                 {investorSummary.investors.map((investor, idx) => (
                                     <motion.div
                                         key={idx}
-                                        whileHover={{ y: -5 }}
-                                        className="bg-white p-8 rounded-3xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 transition-all duration-300 text-center flex flex-col items-center h-full"
+                                        whileHover={{ y: -8 }}
+                                        className="bg-[#030712] p-8 rounded-3xl shadow-[0_0_30px_rgba(59,130,246,0.25)] border border-blue-500/30 hover:border-blue-500/60 hover:shadow-[0_0_45px_rgba(59,130,246,0.45)] transition-all duration-500 text-center flex flex-col items-center h-full"
                                     >
-                                        <div className="w-24 h-24 bg-[#1a1a1a] rounded-2xl flex items-center justify-center mb-6 shadow-md overflow-hidden p-4">
+                                        <div className="w-24 h-24 bg-slate-900 border border-slate-800/80 rounded-2xl flex items-center justify-center mb-6 shadow-inner overflow-hidden p-4">
                                             <img src={investor.logo} alt={investor.name} className="w-full h-full object-contain" />
                                         </div>
-                                        <h4 className="text-xl font-bold text-primary mb-4">{investor.name}</h4>
-                                        <p className="text-secondary text-sm leading-relaxed max-w-sm">{investor.description}</p>
+                                        <h4 className="text-xl font-bold text-white mb-4">{investor.name}</h4>
+                                        <p className="text-slate-400 text-sm leading-relaxed max-w-sm">{investor.description}</p>
                                     </motion.div>
                                 ))}
                             </div>
@@ -1565,10 +1583,9 @@ const Home = () => {
 
             {/* HACKATHON SHOWCASE SECTION */}
             {homeData?.hackathonShowcaseSection?.isEnabled !== false && (
-                <section className="py-24 bg-gradient-to-b from-surface to-background border-t border-border relative overflow-hidden">
+                <section className="py-24 bg-[#020617] text-white border-y border-slate-900 relative overflow-hidden">
                     {/* Background decorative elements */}
-                    <div className="absolute top-0 left-0 w-1/2 h-96 bg-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
-                    <div className="absolute bottom-0 right-0 w-1/2 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+                    <div className="absolute top-0 left-0 w-1/2 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
                     <div className="container mx-auto px-6 relative z-10">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -1579,13 +1596,26 @@ const Home = () => {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8 }}
                             >
-                                <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                                <span className="px-3.5 py-1.5 bg-blue-950/40 text-blue-400 text-[10px] font-extrabold tracking-[0.2em] uppercase rounded border border-blue-900/55 inline-block mb-6 backdrop-blur-sm">
                                     {homeData?.hackathonShowcaseSection?.subheading || "Compete & Create"}
                                 </span>
-                                <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6 leading-tight">
-                                    {homeData?.hackathonShowcaseSection?.heading || "Innovation Challenges & Hackathons"}
+                                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 leading-tight">
+                                    {(() => {
+                                        const headingText = homeData?.hackathonShowcaseSection?.heading || "Innovation Challenges & Hackathons";
+                                        if (headingText.includes("CopterCode")) {
+                                            const parts = headingText.split("CopterCode");
+                                            return (
+                                                <>
+                                                    {parts[0]}
+                                                    <span className="text-blue-400">CopterCode</span>
+                                                    {parts[1]}
+                                                </>
+                                            );
+                                        }
+                                        return headingText;
+                                    })()}
                                 </h2>
-                                <p className="text-lg text-secondary leading-relaxed mb-8 border-l-4 border-accent pl-6">
+                                <p className="text-lg text-slate-400 leading-relaxed mb-8 border-l-4 border-blue-500 pl-6">
                                     {homeData?.hackathonShowcaseSection?.description || "Join our hackathons and innovation challenges to showcase your skills, collaborate with industry professionals, and win amazing prizes."}
                                 </p>
 
@@ -1601,14 +1631,14 @@ const Home = () => {
                                                     whileInView={{ opacity: 1, x: 0 }}
                                                     viewport={{ once: true }}
                                                     transition={{ delay: idx * 0.1, duration: 0.6 }}
-                                                    className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors"
+                                                    className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#080f25]/40 transition-colors"
                                                 >
-                                                    <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent flex-shrink-0 mt-1">
+                                                    <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 flex-shrink-0 mt-1">
                                                         <IconComponent size={20} />
                                                     </div>
                                                     <div>
-                                                        <h4 className="font-bold text-primary mb-1">{highlight.title}</h4>
-                                                        <p className="text-sm text-secondary">{highlight.description}</p>
+                                                        <h4 className="font-bold text-white mb-1">{highlight.title}</h4>
+                                                        <p className="text-sm text-slate-400">{highlight.description}</p>
                                                     </div>
                                                 </motion.div>
                                             );
@@ -1619,7 +1649,7 @@ const Home = () => {
                                 {/* CTA Button */}
                                 <Link
                                     to={homeData?.hackathonShowcaseSection?.ctaLink || "/hackathon"}
-                                    className="inline-flex items-center px-8 py-4 bg-accent text-white rounded-full hover:bg-accent-dark transition-all shadow-lg font-bold hover:shadow-xl transform hover:scale-105"
+                                    className="inline-flex items-center px-8 py-4 bg-white text-[#020617] rounded-full hover:bg-slate-100 transition-all shadow-lg font-bold hover:shadow-xl transform hover:scale-105"
                                 >
                                     {homeData?.hackathonShowcaseSection?.ctaText || "Explore Hackathons"}
                                     <ArrowRight className="ml-2" size={20} />
@@ -1634,7 +1664,7 @@ const Home = () => {
                                 transition={{ duration: 0.8 }}
                                 className="relative"
                             >
-                                <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border/30 group h-[400px] md:h-[500px]">
+                                <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/40 group h-[400px] md:h-[500px]">
                                     <AnimatePresence mode="wait">
                                         <motion.div
                                             key={activeHackathonSlide}
@@ -1651,14 +1681,14 @@ const Home = () => {
                                             />
                                         </motion.div>
                                     </AnimatePresence>
-                                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent opacity-100"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-100"></div>
                                     <div className="absolute inset-0 flex flex-col justify-end p-8 text-white">
                                         <h3 className="text-2xl font-bold mb-2">Innovate with Purpose</h3>
                                         <p className="text-white/90 text-sm">Win prizes, build your portfolio, and land your dream role.</p>
                                     </div>
                                 </div>
                                 {/* Decorative accent */}
-                                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-accent/10 rounded-full blur-2xl pointer-events-none"></div>
+                                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
                             </motion.div>
                         </div>
                     </div>
@@ -1807,15 +1837,41 @@ const Home = () => {
             </section>
 
             {/* Global Footprint */}
-            <section className="py-24 bg-surface text-primary text-center border-t border-border">
-                <div className="container mx-auto px-6">
-                    <h2 className="text-4xl font-display font-bold mb-12 text-primary">{"Global Footprint of Our Talent"}</h2>
-                    <div className="max-w-5xl mx-auto border border-border shadow-2xl rounded-3xl overflow-hidden p-6 bg-white">
+            <section className="py-24 bg-[#020617] text-white text-center border-y border-slate-900 relative overflow-hidden">
+                {/* Background decorative elements */}
+                <div className="absolute top-0 left-0 w-1/2 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+                <div className="container mx-auto px-6 relative z-10">
+                    <h2 className="text-4xl font-display font-bold mb-12 text-white">{"Global Footprint of Our Talent"}</h2>
+
+                    {/* Desktop View - Map Image with Blue Glow Shadow and Round Corners */}
+                    <div className="hidden md:block max-w-5xl mx-auto border-0 shadow-[0_0_50px_rgba(59,130,246,0.45)] rounded-[2rem] overflow-hidden p-0 bg-transparent">
                         <OptimizedImage
                             src={globalFootprintSrc}
                             alt={"Global Footprint"}
-                            className="w-full h-auto mix-blend-normal"
+                            className="w-full h-auto mix-blend-normal rounded-[2rem]"
                         />
+                    </div>
+
+                    {/* Mobile View - Infinite Logo Marquee Carousel wrapped in same shadow style */}
+                    <div className="block md:hidden max-w-lg mx-auto border-0 shadow-[0_0_35px_rgba(59,130,246,0.4)] rounded-[2rem] overflow-hidden p-4 bg-[#030712]/50 backdrop-blur-sm">
+                        <div className="relative flex overflow-hidden w-full">
+                            <div className="flex animate-marquee w-max py-4 gap-4">
+                                {[...FOOTPRINT_LOGOS, ...FOOTPRINT_LOGOS, ...FOOTPRINT_LOGOS, ...FOOTPRINT_LOGOS].map((logo, index) => (
+                                    <div key={index} className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 shadow-md border border-slate-100 flex-shrink-0">
+                                        <img
+                                            src={logo}
+                                            alt={`Talent Logo ${index}`}
+                                            loading="lazy"
+                                            className="max-w-full max-h-full object-contain"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Fade masks for edges */}
+                            <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-[#030712]/80 to-transparent z-10 pointer-events-none" />
+                            <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-[#030712]/80 to-transparent z-10 pointer-events-none" />
+                        </div>
                     </div>
                 </div>
             </section>
