@@ -5,254 +5,119 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { PortableText } from "@portabletext/react";
 
-
-
-
-
-const defaultImages = [
-  "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
-  "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
-  "/mediafiles/Home/IMG_1851.jpg",
-  "/mediafiles/Home/IMG_3322.jpg",
-  "/mediafiles/Home/IMG_3854.jpg",
-];
-
 const Hero = ({ data }) => {
-  // Map new schema fields to component variables
-  // Schema: { tagline, title, subtitle, heroImages, primaryCTA, secondaryCTA }
-
-  // Use useMemo to ensure 'images' reference is stable unless data changes
-  const images = useMemo(() => {
-    return data?.heroImages?.length > 0 ? data.heroImages : defaultImages;
-  }, [data?.heroImages]);
-
   const headline = data?.title || "Industrial Automation & Enterprise AI";
   const subheadline = data?.subtitle;
   const label = data?.tagline || "Engineering The Unknown";
 
-  const ctaText = data?.primaryCTA?.text || "View Our Work";
+  const ctaText = data?.primaryCTA?.text || "Get started";
   const ctaLink = data?.primaryCTA?.link || "/projects";
 
   const secondaryCtaText = data?.secondaryCTA?.text || "Start a Project";
   const secondaryCtaLink = data?.secondaryCTA?.link || "/contact";
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Sourced slide images from public/mediafiles/Home directory (ratio 4032 x 2268)
+  const homeImages = useMemo(() => {
+    return [
+      "/mediafiles/Home/IMG_1851.jpg",
+      "/mediafiles/Home/IMG_3322.jpg",
+      "/mediafiles/Home/IMG_3854.jpg",
+      "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
+      "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg"
+    ];
+  }, []);
 
-  // Preload adjacent images
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+
+  // Slideshow transition interval
   useEffect(() => {
-    if (images.length > 1) {
-      const nextIndex = (currentIndex + 1) % images.length;
-      const img = new Image();
-      img.src = images[nextIndex];
-    }
-  }, [currentIndex, images]);
+    const timer = setInterval(() => {
+      setCurrentImgIndex((prev) => (prev + 1) % homeImages.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [homeImages.length]);
 
-  useEffect(() => {
-    if (images.length > 1) {
-      const timer = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % images.length);
-      }, 5000);
-      return () => clearInterval(timer);
+  // Premium, lightweight fade-up variants using easeOutExpo
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
     }
-  }, [images]);
+  };
 
-  // Staggered Text Variants
-  const letterContainer = {
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.2,
-      },
-    },
+        staggerChildren: 0.12,
+        delayChildren: 0.05
+      }
+    }
   };
-
-  const letterChild = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", damping: 12, stiffness: 200 },
-    },
-  };
-
-
 
   return (
-    <section className="relative bg-background text-primary overflow-hidden flex items-center justify-center min-h-[100svh] pt-6 sm:pt-8 md:pt-12 lg:pt-16 pb-8 sm:pb-12 md:pb-20 lg:pb-32 group">
-      {/* Premium Background Layers */}
-      <div className="absolute inset-0 bg-background z-0" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/5 via-transparent to-transparent opacity-30 pointer-events-none z-0" />
-
-      {/* Floating Particles: render only on wide screens and when reduced-motion is not requested */}
-      {typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(min-width:1024px) and (prefers-reduced-motion: no-preference)').matches && [...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute bg-accent/30 rounded-full blur-sm z-0 pointer-events-none"
-          style={{
-            width: Math.random() * 4 + 2 + "px",
-            height: Math.random() * 4 + 2 + "px",
-            left: Math.random() * 100 + "%",
-            top: Math.random() * 100 + "%",
-          }}
-          animate={{
-            y: [0, -100, 0],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: Math.random() * 10 + 10,
-            repeat: Infinity,
-            ease: "linear",
-            delay: Math.random() * 5,
-          }}
-        />
-      ))}
-
-      {/* Ambient Animated Blobs - Intensified */}
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.15, 0.25, 0.15],
-          rotate: [0, 90, 0],
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/20 rounded-full blur-[150px] pointer-events-none z-0 mix-blend-screen"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.1, 0.2, 0.1],
-          x: [0, -50, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 2,
-        }}
-        className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-blue-900/15 rounded-full blur-[150px] pointer-events-none z-0 mix-blend-screen"
-      />
-
-      {/* Left Corner Grey Glows - Enhanced */}
-      <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-white/20 rounded-full blur-[150px] pointer-events-none z-0 mix-blend-screen opacity-60" />
-      <div className="absolute bottom-[-20%] left-[-15%] w-[900px] h-[900px] bg-gray-400/20 rounded-full blur-[180px] pointer-events-none z-0 mix-blend-screen opacity-60" />
+    <section className="relative bg-background text-primary overflow-hidden flex items-start justify-center pt-6 sm:pt-8 lg:pt-12 pb-16 sm:pb-20 md:pb-24 lg:pb-32">
+      {/* Decorative premium radial gradients */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,_var(--tw-gradient-stops))] from-blue-100/30 via-transparent to-transparent opacity-60 pointer-events-none z-0" />
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-50/20 rounded-full blur-[120px] pointer-events-none z-0" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-10 items-center max-w-[90rem] mx-auto">
-          {/* Left Content (Text) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center max-w-[88rem] mx-auto">
+          
+          {/* Left Column: Pill, Title, Subtitle, CTAs (Compact 4-column span for wider image display) */}
           <motion.div
-            className="flex flex-col justify-center relative z-20 lg:col-span-5"
+            className="flex flex-col justify-center lg:col-span-5 relative z-20"
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 1 },
-              visible: {
-                opacity: 1,
-                transition: { staggerChildren: 0.15 },
-              },
-            }}
+            variants={containerVariants}
           >
-            {/* Gold Border Pill Badge - Enhanced */}
+            {/* Outline Pill Badge */}
             <motion.div
-              variants={{
-                hidden: { opacity: 0, scale: 0.8 },
-                visible: { opacity: 1, scale: 1 },
-              }}
-              className="inline-block border border-accent/40 rounded-full px-4 sm:px-5 py-2 mb-6 sm:mb-8 w-fit bg-primary/5 backdrop-blur-sm shadow-[0_0_15px_rgba(160,174,192,0.15)] group-hover:shadow-[0_0_25px_rgba(160,174,192,0.3)] transition-shadow duration-500"
+              id="hero-tagline-badge"
+              variants={fadeInUp}
+              className="inline-flex items-center gap-2.5 border border-blue-500/20 bg-blue-500/5 rounded-full px-4 py-2 mb-6 sm:mb-8 w-fit backdrop-blur-sm shadow-sm select-none"
             >
-              <span className="text-[9px] sm:text-xs font-bold tracking-[0.25em] uppercase text-secondary drop-shadow-sm flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+              <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.18em] text-blue-700 uppercase">
                 {label}
               </span>
             </motion.div>
 
-            {/* Main Headline - Animated Letters */}
-            <h1 className="font-display font-black tracking-tighter text-primary mb-6 sm:mb-8 leading-tight text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl drop-shadow-2xl whitespace-normal">
-              <span className="sr-only">{headline}</span>
-              <span aria-hidden="true" className="block">
-                {(() => {
-                  // Split headline into words for animation
-                  const words = headline.split(" ");
-                  const firstWord = words[0] || "";
-                  const secondWord = words[1] || "";
-                  const restWords = words.slice(2).join(" ");
+            {/* Main Headline */}
+            <h1 className="font-display font-bold tracking-tight text-[#0F172A] mb-5 sm:mb-6 leading-[1.1] text-4xl sm:text-5xl md:text-6xl lg:text-6xl flex flex-col">
+              {(() => {
+                const words = headline.split(" ");
+                const firstPart = words.slice(0, 2).join(" ");
+                const secondPart = words.slice(2).join(" ");
 
-                  return (
-                    <>
-                      <div className="flex flex-wrap gap-x-3 gap-y-0 mb-2">
-                        <motion.div
-                          variants={letterContainer}
-                          className="whitespace-nowrap inline-block"
-                        >
-                          {firstWord.split("").map((char, index) => (
-                            <motion.span
-                              key={`w1-${index}`}
-                              variants={letterChild}
-                              className="inline-block"
-                            >
-                              {char}
-                            </motion.span>
-                          ))}
-                        </motion.div>
-
-                        {secondWord && (
-                          <motion.div
-                            variants={letterContainer}
-                            className="whitespace-nowrap inline-block"
-                          >
-                            {secondWord.split("").map((char, index) => (
-                              <motion.span
-                                key={`w2-${index}`}
-                                variants={letterChild}
-                                className="inline-block"
-                              >
-                                {char}
-                              </motion.span>
-                            ))}
-                          </motion.div>
-                        )}
-                      </div>
-
-                      {restWords && (
-                        <motion.span
-                          initial={{ opacity: 0, x: -50 }}
-                          animate={{
-                            opacity: 1,
-                            x: 0,
-                            backgroundPosition: ["0% center", "300% center"],
-                          }}
-                          className="block text-transparent bg-clip-text pb-2 filter drop-shadow-[0_0_15px_rgba(160,174,192,0.3)]"
-                          style={{
-                            backgroundImage:
-                              "linear-gradient(to right, #2D3748, #4A5568, #718096, #2D3748)",
-                            backgroundSize: "300% auto",
-                          }}
-                          transition={{
-                            opacity: { duration: 1, delay: 0.5 },
-                            x: { duration: 1, delay: 0.5 },
-                            backgroundPosition: {
-                              duration: 4,
-                              repeat: Infinity,
-                              ease: "linear",
-                            },
-                          }}
-                        >
-                          {restWords}
-                        </motion.span>
-                      )}
-                    </>
-                  );
-                })()}
-              </span>
+                return (
+                  <>
+                    <motion.span variants={fadeInUp} className="block">
+                      {firstPart}
+                    </motion.span>
+                    {secondPart && (
+                      <motion.span
+                        variants={fadeInUp}
+                        className="block text-transparent bg-clip-text pb-1"
+                        style={{
+                          backgroundImage: "linear-gradient(to right, #0F172A, #1D4ED8, #3B82F6)",
+                        }}
+                      >
+                        {secondPart}
+                      </motion.span>
+                    )}
+                  </>
+                );
+              })()}
             </h1>
 
+            {/* Description Subheadline */}
             <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              className="text-sm sm:text-base md:text-base lg:text-lg text-secondary/80 mb-8 sm:mb-10 max-w-md leading-relaxed font-light tracking-wide border-l-2 border-accent/20 pl-4 sm:pl-6"
+              variants={fadeInUp}
+              className="text-sm sm:text-base md:text-lg text-secondary/80 mb-8 sm:mb-10 max-w-xl leading-relaxed font-normal tracking-wide"
             >
               {subheadline ? (
                 Array.isArray(subheadline) ? (
@@ -267,7 +132,7 @@ const Hero = ({ data }) => {
                               href={value?.href}
                               target={target}
                               rel={target === '_blank' ? 'noindex nofollow' : undefined}
-                              className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent"
+                              className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/20 hover:decoration-accent"
                             >
                               {children}
                             </a>
@@ -276,7 +141,7 @@ const Hero = ({ data }) => {
                         internalLink: ({ value, children }) => {
                           return <span className="text-primary font-medium">{children}</span>
                         },
-                        strong: ({ children }) => <strong className="font-bold text-primary">{children}</strong>,
+                        strong: ({ children }) => <strong className="font-bold text-[#0F172A]">{children}</strong>,
                         em: ({ children }) => <em className="italic text-accent">{children}</em>
                       }
                     }}
@@ -286,102 +151,87 @@ const Hero = ({ data }) => {
                 )
               ) : (
                 <p>
-                  We don't just build software. We engineer intelligent ecosystems where <Link to="/industrial-drones" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent">Drone Tech</Link> meets <Link to="/business" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent">Enterprise AI</Link>.
-                  Explore our innovations in <a href="/projects" rel="noopener noreferrer" className="text-primary font-medium hover:text-accent transition-colors underline decoration-accent/30 hover:decoration-accent relative inline-block">Industrial Automation</a>.
+                  We don't just build software. We engineer intelligent ecosystems where <Link to="/industrial-drones" className="text-primary font-semibold hover:text-accent transition-colors underline decoration-accent/20 hover:decoration-accent">Drone Tech</Link> meets <Link to="/business" className="text-primary font-semibold hover:text-accent transition-colors underline decoration-accent/20 hover:decoration-accent">Enterprise AI</Link>.
                 </p>
               )}
             </motion.div>
 
+            {/* Action CTA Buttons */}
             <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center w-full sm:w-auto"
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
             >
-              <Link to={ctaLink} className="w-full sm:w-auto">
+              <Link to={ctaLink} id="hero-primary-cta" className="w-full sm:w-auto">
                 <motion.div
                   whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 0 40px rgba(0,0,0,0.1)",
+                    scale: 1.02,
+                    backgroundColor: "#1E293B",
+                    boxShadow: "0 10px 30px -5px rgba(15, 23, 42, 0.25)"
                   }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 sm:px-10 py-3 sm:py-4 bg-primary text-white rounded font-bold text-center text-sm sm:text-base shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 relative overflow-hidden group/btn"
+                  whileTap={{ scale: 0.98 }}
+                  className="px-8 py-3.5 bg-[#0F172A] text-white rounded-full font-semibold text-center text-sm sm:text-base transition-all duration-300 relative overflow-hidden shadow-lg shadow-slate-900/10 select-none cursor-pointer"
                 >
-                  <span className="relative z-10">{ctaText}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-500" />
+                  <span>{ctaText}</span>
                 </motion.div>
               </Link>
 
-              <Link to={secondaryCtaLink} className="w-full sm:w-auto">
+              <Link to={secondaryCtaLink} id="hero-secondary-cta" className="w-full sm:w-auto">
                 <motion.div
                   whileHover={{
-                    scale: 1.05,
-                    borderColor: "rgba(160,174,192,0.8)",
-                    backgroundColor: "rgba(160,174,192,0.1)",
+                    scale: 1.02,
+                    borderColor: "#0F172A",
+                    backgroundColor: "rgba(15, 23, 42, 0.03)"
                   }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 sm:px-10 py-3 sm:py-4 text-primary font-medium flex items-center justify-center space-x-2 border border-accent/40 rounded bg-transparent text-sm sm:text-base group shadow-[0_0_15px_rgba(160,174,192,0.05)] transition-all duration-300"
+                  whileTap={{ scale: 0.98 }}
+                  className="px-8 py-3.5 text-[#0F172A] font-semibold flex items-center justify-center space-x-2 border border-[#0F172A]/20 hover:border-[#0F172A] rounded-full bg-transparent text-sm sm:text-base transition-all duration-300 select-none cursor-pointer group"
                 >
                   <span>{secondaryCtaText}</span>
                   <ArrowRight
-                    size={18}
-                    className="text-accent group-hover:translate-x-1 transition-transform"
+                    size={16}
+                    className="text-[#0F172A]/70 group-hover:translate-x-1 group-hover:text-[#0F172A] transition-all"
                   />
                 </motion.div>
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Slideshow with Grid Background */}
-          <motion.div
-            className="flex lg:col-span-7 relative mt-10 md:mt-12 lg:mt-0 items-center justify-center z-10 group w-full"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-          >
-            {/* Image Container - Auto-sized to image */}
-            <div className="relative grid grid-cols-1 grid-rows-1 place-items-center w-full max-w-5xl">
+          {/* Right Column: Single Enlarged Image Slideshow Frame (Ratio 4032 x 2268, Centered Vertically, Made Still Larger) */}
+          <div className="lg:col-span-7 relative w-full aspect-[4032/2268] max-w-[880px] mx-auto select-none mt-4 lg:mt-0 flex items-center justify-center">
+            {/* Soft premium blue-indigo glow behind the slideshow card */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 to-indigo-500/5 rounded-[2.5rem] blur-2xl pointer-events-none z-0" />
+            
+            {/* CARD: Premium Image Slideshow Frame */}
+            <motion.div
+              id="hero-image-slideshow"
+              whileHover={{ 
+                y: -12, 
+                scale: 1.02,
+                boxShadow: "0 40px 80px -15px rgba(15, 23, 42, 0.3)"
+              }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+              className="w-full h-full rounded-[2.2rem] shadow-2xl overflow-hidden relative bg-slate-100 z-10"
+            >
+              {/* Slideshow images */}
               <AnimatePresence>
-                <motion.div
-                  key={currentIndex}
+                <motion.img
+                  key={currentImgIndex}
+                  src={homeImages[currentImgIndex]}
+                  alt="CopterCode Feature Showcase"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{
-                    duration: 0.7,
-                    ease: "easeInOut"
-                  }}
-                  className="col-start-1 row-start-1 relative w-full"
-                  style={{ willChange: 'opacity' }}
-                >
-                  <OptimizedImage
-                    src={images[currentIndex]}
-                    alt="CopterCode Feature"
-                    loading={currentIndex === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    className="w-full h-auto drop-shadow-2xl rounded-2xl origin-center transition-transform duration-700"
-                    sizes="(min-width:1024px) 60vw, 100vw"
-                  />
-                </motion.div>
+                  transition={{ duration: 1.5, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               </AnimatePresence>
+              {/* Subtle top/bottom vignette overlay for premium frame appeal */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10 z-10 pointer-events-none" />
+            </motion.div>
 
-              {/* Image Indicator Dots */}
-              <div className="absolute -bottom-8 sm:-bottom-10 md:-bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-2">
-                {images.map((_, idx) => (
-                  <motion.div
-                    key={idx}
-                    className="h-1.5 rounded-full bg-accent/50 cursor-pointer hover:bg-accent/80 transition-all"
-                    animate={{
-                      width: idx === currentIndex ? 24 : 8,
-                      backgroundColor: idx === currentIndex ? 'rgba(160,174,192,0.9)' : 'rgba(160,174,192,0.4)',
-                    }}
-                    transition={{ duration: 0.3 }}
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
+          </div>
+          
         </div>
       </div>
     </section>

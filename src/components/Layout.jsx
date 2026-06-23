@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
     return (
         <div className="flex flex-col min-h-screen bg-background text-primary overflow-x-clip">
             <Navbar />
-            <main className="flex-grow pt-16 sm:pt-18 md:pt-20 lg:pt-20 min-h-screen">
+            <main className="flex-grow pt-[72px] lg:pt-[80px] min-h-screen">
                 {children}
             </main>
             {!hideFooter && <Footer />}
