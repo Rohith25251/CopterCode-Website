@@ -34,6 +34,9 @@ import {
 const HEADER_IMAGES = [
   "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
   "/mediafiles/Home/B6181B19-4FA3-4BDE-866B-F02911B76EAC.jpg",
+  "/mediafiles/Home/IMG_1851.jpg",
+  "/mediafiles/Home/IMG_3322.jpg",
+  "/mediafiles/Home/IMG_3854.jpg"
 ];
 
 const BRANCH_OPTIONS = [
@@ -122,7 +125,7 @@ const InternshipRegistration = () => {
     email: "",
     collegeName: "",
     elective: "Full Stack Developer & Software Developer With AI ML Intern - Venue : IIT Madras Rp",
-    batch: "Batch No . 3 { JUNE } 2026",
+    batch: "June - July",
     branch: "",
     customBranch: "",
     year: "",
@@ -306,16 +309,16 @@ const InternshipRegistration = () => {
   const formEndpoint = sanityData?.formEndpoint || "https://submitbox.app/api/f/ce6d8a87-b339-4e8b-82c8-1816d60fe69c";
 
   const nameLabel = sanityData?.formFields?.nameLabel || "Student Name (Full Name)";
-  const namePlaceholder = sanityData?.formFields?.namePlaceholder || "e.g. Rohith Kumar";
+  const namePlaceholder = sanityData?.formFields?.namePlaceholder || "Rohith Kumar";
 
   const whatsappLabel = sanityData?.formFields?.whatsappLabel || "WhatsApp Contact";
-  const whatsappPlaceholder = sanityData?.formFields?.whatsappPlaceholder || "e.g. +91 8072193600";
+  const whatsappPlaceholder = sanityData?.formFields?.whatsappPlaceholder || "+91 8072193600";
 
   const emailLabel = sanityData?.formFields?.emailLabel || "Email Address";
-  const emailPlaceholder = sanityData?.formFields?.emailPlaceholder || "e.g. student@college.edu";
+  const emailPlaceholder = sanityData?.formFields?.emailPlaceholder || "student@college.edu";
 
   const collegeLabel = sanityData?.formFields?.collegeLabel || "College Name";
-  const collegePlaceholder = sanityData?.formFields?.collegePlaceholder || "e.g. IIT Madras";
+  const collegePlaceholder = sanityData?.formFields?.collegePlaceholder || "IIT Madras";
 
   const dobLabel = sanityData?.formFields?.dobLabel || "Date of Birth";
 
@@ -341,8 +344,9 @@ const InternshipRegistration = () => {
   const batchesLabel = sanityData?.formBatches?.label || "Select Preferred Batch";
   const batchesNote = sanityData?.formBatches?.note || "Note: After The Semester Examination Batch Will Start";
   const batchesOptions = (sanityData?.formBatches?.options?.length > 0) ? sanityData.formBatches.options : [
-    { value: "Batch No . 3 { JUNE } 2026", label: "Batch No. 3 (JUNE 2026)" },
-    { value: "Batch No . 4 { JULY } 2026", label: "Batch No. 4 (JULY 2026)" }
+    { value: "November - December", label: "November - December" },
+    { value: "January - February", label: "January - February" },
+    { value: "June - July", label: "June - July" }
   ];
 
   const branchLabel = sanityData?.formDropdowns?.branchLabel || "Branch / Department";
@@ -542,11 +546,12 @@ const InternshipRegistration = () => {
       <PageHeader
         title={heroTitle}
         subtitle={heroSubtitle}
-        image="/_optimized/mediafiles/preloader_bg.webp"
-        images={["/_optimized/mediafiles/preloader_bg.webp"]}
-        justifyClass="justify-start md:gap-x-32 lg:gap-x-44"
+        image={headerImages[0]}
+        images={headerImages}
         showBackButton={false}
         ptClass="pt-32 md:pt-36"
+        centerContent={true}
+        overlayOpacityClass="bg-surface/40"
       >
         {preloaderData && (
           <div className="flex flex-col items-center justify-center text-center p-6 md:p-8 min-w-[240px] md:min-w-[280px] bg-slate-950/[0.02] hover:bg-slate-950/[0.04] transition-all duration-300 backdrop-blur-md rounded-3xl border border-slate-950/5 shadow-sm hover:shadow-md select-none">
@@ -789,7 +794,7 @@ const InternshipRegistration = () => {
                           email: "",
                           collegeName: "",
                           elective: "Full Stack Developer & Software Developer With AI ML Intern - Venue : IIT Madras Rp",
-                          batch: "Batch No . 3 { JUNE } 2026",
+                          batch: "June - July",
                           branch: "",
                           customBranch: "",
                           year: "3rd Year",
@@ -1019,34 +1024,69 @@ const InternshipRegistration = () => {
 
                       {/* Branch & Year Selection */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="group/field relative space-y-2.5">
-                          <label htmlFor="branch" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
-                            {branchLabel} <span className="text-red-500 ml-0.5">*</span>
-                          </label>
-                          <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                              <Building size={18} />
-                            </div>
-                            <select
-                              id="branch"
-                              name="branch"
-                              required
-                              disabled={isSubmitting}
-                              className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-10 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold appearance-none cursor-pointer"
-                              value={formData.branch}
-                              onChange={handleChange}
-                            >
-                              <option value="">{branchPlaceholder}</option>
-                              {branchOptions.map((branch) => (
-                                <option key={branch} value={branch}>
-                                  {branch}
-                                </option>
-                              ))}
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                              <ChevronDown size={18} />
+                        <div className="space-y-4">
+                          <div className="group/field relative space-y-2.5">
+                            <label htmlFor="branch" className="block text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-300 group-focus-within/field:text-primary">
+                              {branchLabel} <span className="text-red-500 ml-0.5">*</span>
+                            </label>
+                            <div className="relative">
+                              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                                <Building size={18} />
+                              </div>
+                              <select
+                                id="branch"
+                                name="branch"
+                                required
+                                disabled={isSubmitting}
+                                className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-10 py-4 text-primary outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold appearance-none cursor-pointer"
+                                value={formData.branch}
+                                onChange={handleChange}
+                              >
+                                <option value="">{branchPlaceholder}</option>
+                                {branchOptions.map((branch) => (
+                                  <option key={branch} value={branch}>
+                                    {branch}
+                                  </option>
+                                ))}
+                              </select>
+                              <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                                <ChevronDown size={18} />
+                              </div>
                             </div>
                           </div>
+
+                          {/* Dynamic Custom Branch input */}
+                          <AnimatePresence>
+                            {formData.branch === "Other" && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                                animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                                exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="group/field relative space-y-2.5 pt-2 overflow-hidden"
+                              >
+                                <label htmlFor="customBranch" className="block text-xs font-bold uppercase tracking-widest text-slate-500">
+                                  Specify Other Branch / Department <span className="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <div className="relative">
+                                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
+                                    <Building size={18} />
+                                  </div>
+                                  <input
+                                    type="text"
+                                    id="customBranch"
+                                    name="customBranch"
+                                    required
+                                    disabled={isSubmitting}
+                                    placeholder="Enter your department name"
+                                    className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
+                                    value={formData.customBranch}
+                                    onChange={handleChange}
+                                  />
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </div>
 
                         <div className="group/field relative space-y-2.5">
@@ -1079,39 +1119,6 @@ const InternshipRegistration = () => {
                           </div>
                         </div>
                       </div>
-
-                      {/* Dynamic Custom Branch input */}
-                      <AnimatePresence>
-                        {formData.branch === "Other" && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                            animate={{ opacity: 1, height: "auto", marginTop: 8 }}
-                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                            className="group/field relative space-y-2.5 pt-2 overflow-hidden"
-                          >
-                            <label htmlFor="customBranch" className="block text-xs font-bold uppercase tracking-widest text-slate-500">
-                              Specify Other Branch / Department <span className="text-red-500 ml-0.5">*</span>
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-primary transition-colors duration-300">
-                                <Building size={18} />
-                              </div>
-                              <input
-                                type="text"
-                                id="customBranch"
-                                name="customBranch"
-                                required
-                                disabled={isSubmitting}
-                                placeholder="Enter your department name"
-                                className="w-full bg-white/40 focus:bg-white border border-white/20 focus:border-primary pl-12 pr-4 py-4 text-primary placeholder:text-slate-400/70 outline-none transition-all duration-300 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 text-sm font-semibold"
-                                value={formData.customBranch}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
 
                       {/* Date of Birth */}
                       <div className="group/field relative space-y-2.5">

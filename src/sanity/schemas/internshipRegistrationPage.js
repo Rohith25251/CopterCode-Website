@@ -231,8 +231,9 @@ export const internshipRegistrationPage = {
                                 }
                             ],
                             initialValue: [
-                                { value: 'Batch No . 3 { JUNE } 2026', label: 'Batch No. 3 (JUNE 2026)' },
-                                { value: 'Batch No . 4 { JULY } 2026', label: 'Batch No. 4 (JULY 2026)' }
+                                { value: 'November - December', label: 'November - December' },
+                                { value: 'January - February', label: 'January - February' },
+                                { value: 'June - July', label: 'June - July' }
                             ]
                         }
                     ]
