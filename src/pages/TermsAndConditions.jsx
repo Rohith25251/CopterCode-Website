@@ -52,12 +52,12 @@ const TermsAndConditions = () => {
                 sections={sections}
             >
                 {/* Introduction */}
-                <section id="introduction" className="scroll-mt-24">
-                    <div className="mb-12">
+                <section id="introduction" className="mb-12 scroll-mt-24">
+                    <div>
                         <p className="text-gray-700 text-lg leading-relaxed mb-6">
                             {sanityData?.introduction?.content || "These Terms & Conditions govern your use of CopterCode's website, services, products, and internship programs. By accessing or using our services, you agree to be bound by these terms. If you do not agree, please do not use our services."}
                         </p>
-                        <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg">
+                        <div className="bg-blue-50 border-l-4 border-blue-600 p-4 sm:p-6 rounded-r-lg">
                             <p className="text-gray-800 font-semibold text-sm">
                                 <span className="text-blue-600 font-bold">Note:</span> CopterCode reserves the right to update these terms at any time. Continued use constitutes acceptance of changes.
                             </p>
@@ -66,7 +66,7 @@ const TermsAndConditions = () => {
                 </section>
 
                 {/* Services Provided */}
-                <section id="services" className="scroll-mt-24">
+                <section id="services" className="mb-12 scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Services Provided</h2>
                     <p className="text-gray-700 mb-8 leading-relaxed">
                         {sanityData?.services?.description || "CopterCode offers a comprehensive range of technology and educational services designed to drive innovation and professional development."}
@@ -80,8 +80,8 @@ const TermsAndConditions = () => {
                             'Cloud Architecture & Consulting',
                             'Student Internship Programs'
                         ]).map((service, idx) => (
-                            <div key={idx} className="flex items-center p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 flex-shrink-0" />
+                            <div key={idx} className="flex items-start p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+                                <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 flex-shrink-0 mt-2" />
                                 <p className="text-gray-800 font-medium">{service}</p>
                             </div>
                         ))}
@@ -89,7 +89,7 @@ const TermsAndConditions = () => {
                 </section>
 
                 {/* User Responsibilities */}
-                <section id="user-responsibilities" className="scroll-mt-24">
+                <section id="user-responsibilities" className="mb-12 scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">User Responsibilities</h2>
                     <div className="space-y-4">
                         {(sanityData?.responsibilities?.points || [
@@ -108,9 +108,9 @@ const TermsAndConditions = () => {
                 </section>
 
                 {/* Intellectual Property */}
-                <section id="intellectual-property" className="scroll-mt-24">
+                <section id="intellectual-property" className="mb-12 scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Intellectual Property Rights</h2>
-                    <div className="bg-white border border-gray-200 p-8 rounded-lg">
+                    <div className="bg-white border border-gray-200 p-4 sm:p-8 rounded-lg">
                         <p className="text-gray-700 mb-6 leading-relaxed">
                             {sanityData?.ip?.content || "All content, materials, designs, logos, graphics, videos, software, and documentation available on this website and through our services are the exclusive property of CopterCode Industries Limited or our licensors."}
                         </p>
@@ -123,10 +123,10 @@ const TermsAndConditions = () => {
                 </section>
 
                 {/* Internship Policy */}
-                <section id="internship-policy" className="scroll-mt-24">
+                <section id="internship-policy" className="mb-12 scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Internship & Training Policy</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-white border border-gray-200 p-6 rounded-lg">
+                        <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg">
                             <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
                                 <CheckSquare className="w-5 h-5 text-blue-600 mr-2" />
                                 Certification Requirements
@@ -135,7 +135,7 @@ const TermsAndConditions = () => {
                                 {sanityData?.internship?.certification || "Certificates are issued only upon successful completion of all modules and project requirements. Attendance and mandatory project submissions are required."}
                             </p>
                         </div>
-                        <div className="bg-white border border-gray-200 p-6 rounded-lg">
+                        <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg">
                             <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
                                 <AlertCircle className="w-5 h-5 text-blue-600 mr-2" />
                                 Seat Availability
@@ -153,26 +153,26 @@ const TermsAndConditions = () => {
                 </section>
 
                 {/* Payment & Refunds */}
-                <section id="payment-refunds" className="scroll-mt-24">
+                <section id="payment-refunds" className="mb-12 scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment & Refunds</h2>
                     <div className="space-y-6">
-                        <div className="bg-white border border-gray-200 p-6 rounded-lg">
+                        <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg">
                             <h3 className="text-lg font-bold text-gray-900 mb-4">Payment Terms</h3>
                             <p className="text-gray-700 mb-4 leading-relaxed">
                                 {sanityData?.payment?.terms || "All payments are processed through secure, authorized payment gateways including Razorpay and Paytm. By providing payment information, you authorize CopterCode to process charges."}
                             </p>
                             <ul className="space-y-2 text-sm text-gray-700">
-                                <li className="flex items-center">
-                                    <span className="inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2" />
-                                    Payments are securely encrypted and PCI-DSS compliant.
+                                <li className="flex items-start">
+                                    <span className="inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2 mt-2 flex-shrink-0" />
+                                    <span>Payments are securely encrypted and PCI-DSS compliant.</span>
                                 </li>
-                                <li className="flex items-center">
-                                    <span className="inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2" />
-                                    Invoice receipts are generated and emailed upon successful payment.
+                                <li className="flex items-start">
+                                    <span className="inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2 mt-2 flex-shrink-0" />
+                                    <span>Invoice receipts are generated and emailed upon successful payment.</span>
                                 </li>
                             </ul>
                         </div>
-                        <div className="bg-white border border-gray-200 p-6 rounded-lg">
+                        <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg">
                             <h3 className="text-lg font-bold text-gray-900 mb-4">Refund Policy</h3>
                             <ul className="space-y-3 text-gray-700 text-sm">
                                 {(sanityData?.payment?.refundPolicy || [
@@ -192,15 +192,15 @@ const TermsAndConditions = () => {
                 </section>
 
                 {/* Liability & Disclaimer */}
-                <section id="liability" className="scroll-mt-24">
+                <section id="liability" className="mb-12 scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Liability & Disclaimer</h2>
-                    <div className="bg-red-50 border-l-4 border-red-600 p-6 rounded-r-lg mb-6">
+                    <div className="bg-red-50 border-l-4 border-red-600 p-4 sm:p-6 rounded-r-lg mb-6">
                         <h3 className="text-lg font-bold text-gray-900 mb-3">Limitation of Liability</h3>
                         <p className="text-gray-800 text-sm leading-relaxed">
                             {sanityData?.liability?.limitation || "CopterCode is not liable for any indirect, incidental, consequential, or punitive damages arising from service interruptions, data loss, system failures, or third-party links. Our total liability is limited to the amount paid by you."}
                         </p>
                     </div>
-                    <div className="bg-white border border-gray-200 p-6 rounded-lg">
+                    <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg">
                         <h3 className="text-lg font-bold text-gray-900 mb-3">Disclaimer of Warranties</h3>
                         <p className="text-gray-700 text-sm leading-relaxed">
                             {sanityData?.liability?.disclaimer || "Services are provided 'as-is' without warranties of any kind. We do not guarantee uninterrupted or error-free service. You assume all risks associated with using our services."}
@@ -209,9 +209,9 @@ const TermsAndConditions = () => {
                 </section>
 
                 {/* Governing Law */}
-                <section id="governing-law" className="scroll-mt-24">
+                <section id="governing-law" className="mb-12 scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Governing Law & Jurisdiction</h2>
-                    <div className="bg-white border border-gray-200 p-6 rounded-lg space-y-4">
+                    <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg space-y-4">
                         <div>
                             <h3 className="text-gray-900 font-bold mb-2">Applicable Law</h3>
                             <p className="text-gray-700 text-sm">
@@ -236,7 +236,7 @@ const TermsAndConditions = () => {
                 <section id="contact" className="scroll-mt-24">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-white border border-gray-200 p-6 rounded-lg">
+                        <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg">
                             <h3 className="text-gray-900 font-bold mb-4">CopterCode</h3>
                             <div className="space-y-3 text-sm text-gray-700">
                                 <p>
@@ -245,7 +245,7 @@ const TermsAndConditions = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="bg-white border border-gray-200 p-6 rounded-lg space-y-4">
+                        <div className="bg-white border border-gray-200 p-4 sm:p-6 rounded-lg space-y-4">
                             <a href={`mailto:${sanityData?.contact?.email || "hr@coptercode.co.in"}`} className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
                                 <Mail className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
                                 <div>
@@ -257,12 +257,12 @@ const TermsAndConditions = () => {
                                 <Phone className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
                                 <div>
                                     <p className="text-xs text-gray-600">Phone</p>
-                                    <p className="text-sm font-semibold text-gray-900">{sanityData?.contact?.phone || "+91 80721 93600"}</p>
+                                    <p className="text-sm font-semibold text-gray-900">{sanityData?.contact?.phone || "+91 8072 193 600"}</p>
                                 </div>
                             </a>
                         </div>
                     </div>
-                    <div className="mt-8 bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg">
+                    <div className="mt-8 bg-blue-50 border-l-4 border-blue-600 p-4 sm:p-6 rounded-r-lg">
                         <p className="text-gray-800 text-sm">
                             <span className="font-bold">For Inquiries:</span> If you have questions about these Terms & Conditions, please contact our legal team. We aim to respond within 5 business days.
                         </p>

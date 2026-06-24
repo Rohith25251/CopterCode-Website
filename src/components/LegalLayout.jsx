@@ -70,7 +70,7 @@ const LegalLayout = ({
             <p className="text-lg text-gray-600 leading-relaxed mb-8">
               {pageDescription}
             </p>
-            <div className="flex flex-col sm:flex-row sm:gap-8 text-sm text-gray-500">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 text-sm text-gray-500">
               <div>
                 <p className="font-semibold text-gray-900 mb-1">Effective Date</p>
                 <p>{effectiveDate}</p>
@@ -105,10 +105,9 @@ const LegalLayout = ({
 
             {/* Navigation Menu */}
             <nav
-              className={`lg:block bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm ${
+              className={`lg:block bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm lg:sticky lg:top-[100px] ${
                 isSidebarOpen ? 'block' : 'hidden'
               }`}
-              style={{ position: 'sticky', top: '100px' }}
             >
               <div className="p-6 space-y-1 max-h-[calc(100vh-150px)] overflow-y-auto">
                 <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest py-2">
@@ -146,7 +145,7 @@ const LegalLayout = ({
 
           {/* Content Area */}
           <main className="lg:col-span-3">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 sm:p-10">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-10">
               {children}
             </div>
           </main>

@@ -60,14 +60,14 @@ const PrivacyPolicy = () => {
       >
         {/* Introduction */}
         <section id="introduction" className="mb-12 scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Shield className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <Shield className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             Introduction
           </h2>
           <p className="text-gray-600 leading-relaxed mb-4">
             {sanityData?.introduction?.description || 'CopterCode ("we," "us," "our," or "Company") respects your privacy and is committed to protecting it through our compliance with this policy. This Privacy Policy explains our online information practices and the choices you can make about how your information is used.'}
           </p>
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg my-6">
+          <div className="bg-blue-50 border-l-4 border-blue-600 p-4 sm:p-6 rounded-r-lg my-6">
             <p className="text-sm text-blue-900">
               <strong>Important:</strong> This policy applies to information we collect on our website, mobile applications, and other digital services. Please read this policy carefully to understand our practices.
             </p>
@@ -76,8 +76,8 @@ const PrivacyPolicy = () => {
 
         {/* Information We Collect */}
         <section id="information-we-collect" className="mb-12 scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Database className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <Database className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             Information We Collect
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
@@ -103,7 +103,7 @@ const PrivacyPolicy = () => {
                 items: ['IP address', 'Browser type', 'Device information', 'Usage patterns']
               }
             ]).map((card, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <div key={idx} className="bg-gray-50 rounded-lg p-4 sm:p-6 border border-gray-200">
                 <h3 className="font-semibold text-gray-900 mb-3">{card.title}</h3>
                 <ul className="space-y-2">
                   {(card.items || card.content?.split(',') || []).map((item, i) => (
@@ -120,8 +120,8 @@ const PrivacyPolicy = () => {
 
         {/* How We Use Your Data */}
         <section id="how-we-use" className="mb-12 scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Eye className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <Eye className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             How We Use Your Data
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
@@ -148,8 +148,8 @@ const PrivacyPolicy = () => {
 
         {/* Data Sharing & Disclosure */}
         <section id="data-sharing" className="mb-12 scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Server className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <Server className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             Data Sharing & Disclosure
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
@@ -178,7 +178,7 @@ const PrivacyPolicy = () => {
             ))}
           </div>
 
-          <div className="bg-gray-100 rounded-lg p-6 my-6">
+          <div className="bg-gray-100 rounded-lg p-4 sm:p-6 my-6">
             <p className="text-sm text-gray-700">
               <strong>Third-Party Services:</strong> We partner with {sanityData?.dataSharing?.partnerNote || 'Google Analytics, Stripe, and other trusted providers'} to deliver our services. Each partner operates under their own privacy policy.
             </p>
@@ -187,8 +187,8 @@ const PrivacyPolicy = () => {
 
         {/* Data Security */}
         <section id="data-security" className="mb-12 scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Lock className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <Lock className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             Data Security
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
@@ -209,7 +209,7 @@ const PrivacyPolicy = () => {
             ))}
           </div>
 
-          <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded-r-lg">
+          <div className="bg-yellow-50 border-l-4 border-yellow-600 p-4 sm:p-6 rounded-r-lg">
             <p className="text-sm text-yellow-900">
               <strong>Note:</strong> No method of transmission over the internet is 100% secure. While we strive to protect your information, we cannot guarantee absolute security.
             </p>
@@ -218,15 +218,15 @@ const PrivacyPolicy = () => {
 
         {/* Cookies & Tracking */}
         <section id="cookies" className="mb-12 scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Cookie className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <Cookie className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             Cookies & Tracking
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
             {sanityData?.cookies?.description || 'We use cookies and similar tracking technologies to enhance your experience on our Services. Cookies are small files stored on your device.'}
           </p>
 
-          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 mb-6">
+          <div className="bg-gray-50 rounded-lg p-4 sm:p-6 border border-gray-200 mb-6">
             <h3 className="font-semibold text-gray-900 mb-4">Types of Cookies We Use:</h3>
             <ul className="space-y-3">
               <li className="text-sm text-gray-600">
@@ -248,8 +248,8 @@ const PrivacyPolicy = () => {
 
         {/* Your Rights */}
         <section id="your-rights" className="mb-12 scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <UserCheck className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <UserCheck className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             Your Rights
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
@@ -278,15 +278,15 @@ const PrivacyPolicy = () => {
 
         {/* Contact Information */}
         <section id="contact" className="scroll-mt-32">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Mail className="mr-3 text-blue-600" size={28} />
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 flex items-start gap-3">
+            <Mail className="text-blue-600 flex-shrink-0 mt-1" size={28} />
             Contact Information
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
             {sanityData?.contact?.description || 'If you have questions about this Privacy Policy or our privacy practices, please contact us:'}
           </p>
 
-          <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
+          <div className="bg-gray-50 rounded-lg p-4 sm:p-8 border border-gray-200">
             <div className="space-y-6">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Company</h3>
@@ -322,7 +322,7 @@ const PrivacyPolicy = () => {
             </div>
           </div>
 
-          <div className="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="mt-8 p-4 sm:p-6 bg-blue-50 rounded-lg border border-blue-200">
             <p className="text-sm text-blue-900">
               <strong>Response Time:</strong> We aim to respond to all privacy-related inquiries within 30 days.
             </p>
