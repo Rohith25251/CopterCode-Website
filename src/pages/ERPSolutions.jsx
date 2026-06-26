@@ -11,6 +11,19 @@ import LazyVideo from "../components/LazyVideo";
 import { ASSETS } from "../constants/assets";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
+const formatTitle = (title) => {
+    if (typeof title !== "string") return title || "";
+    const words = title.split(" ");
+    if (words.length <= 1) return title;
+    // We highlight the last word (or two if needed, e.g. "Software Solutions" -> "Solutions" in blue)
+    const lastWord = words.pop();
+    return (
+        <>
+            {words.join(" ")} <span className="text-blue-400">{lastWord}</span>
+        </>
+    );
+};
+
 const ERPSolutions = () => {
     useScrollToTop(); // Force scroll to top on mount
 
@@ -129,7 +142,7 @@ const ERPSolutions = () => {
     const seoDesc = data.seo?.metaDescription || "Cloud-based ERP systems and learning management platforms. Modular architecture, real-time analytics, multi-currency support, and compliance-ready enterprise software.";
 
     return (
-        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary pt-20">
+        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary">
             <SEO title={seoTitle} description={seoDesc} keywords="ERP software, enterprise resource planning, LMS, learning management system, cloud ERP, business automation, inventory management" />
 
             {/* Hero Section */}
@@ -156,12 +169,12 @@ const ERPSolutions = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="mx-auto max-w-3xl bg-background/80 backdrop-blur-sm border border-border rounded-3xl px-8 py-10 shadow-xl"
+                        className="mx-auto max-w-3xl bg-[#030712]/95 backdrop-blur-sm border border-slate-800/80 rounded-3xl px-8 py-10 shadow-2xl"
                     >
-                        <h1 className="text-5xl md:text-7xl font-display font-medium mb-6 text-primary">
-                            {data.heroTitle}
+                        <h1 className="text-5xl md:text-7xl font-display font-medium mb-6 text-white">
+                            {formatTitle(data.heroTitle)}
                         </h1>
-                        <p className="text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
                             {data.heroSubtitle}
                         </p>
                     </motion.div>
@@ -192,9 +205,9 @@ const ERPSolutions = () => {
                     <div className="relative rounded-3xl overflow-hidden border border-border shadow-2xl min-h-[400px] bg-surface flex items-center justify-center">
                         {data.introMedia ? (
                             data.introMediaIsImage ? (
-                                <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" />
+                                <OptimizedImage src={data.introMedia} alt="Intro" className="absolute inset-0 w-full h-full object-cover opacity-90" />
                             ) : (
-                                <LazyVideo eager={true} src={data.introMedia} className="w-full h-full object-cover opacity-80" />
+                                <LazyVideo eager={true} src={data.introMedia} className="absolute inset-0 w-full h-full object-cover opacity-80" />
                             )
                         ) : (
                             <div className="text-center p-8">
@@ -224,14 +237,15 @@ const ERPSolutions = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="bg-background border border-border p-8 rounded-2xl shadow-sm hover:shadow-lg hover:border-accent/40 transition-all duration-300 flex flex-col"
+                                className="bg-[#030712] border border-slate-800/80 p-8 rounded-2xl shadow-sm hover:shadow-lg hover:border-blue-500/40 transition-all duration-300 flex flex-col"
                             >
-                                <h3 className="text-xl font-bold mb-4">{item.title}</h3>
-                                {item.desc && <p className="text-sm text-secondary mb-6">{item.desc}</p>}
+                                <h3 className="text-xl font-bold mb-4 text-white hover:text-blue-400 transition-colors">{item.title}</h3>
+                                {item.desc && <p className="text-sm text-slate-400 mb-6">{item.desc}</p>}
+                                <div className="border-t border-slate-800/80 my-4" />
                                 <ul className="space-y-3 mt-auto">
                                     {item.features?.map((feature, fIdx) => (
-                                        <li key={fIdx} className="text-sm text-secondary flex items-start">
-                                            <span className="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 mr-2 flex-shrink-0" />
+                                        <li key={fIdx} className="text-sm text-slate-300 flex items-start">
+                                            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-1.5 mr-2 flex-shrink-0" />
                                             {feature}
                                         </li>
                                     ))}
@@ -280,9 +294,9 @@ const ERPSolutions = () => {
                     {data.impactItems && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                             {data.impactItems.map((impact, i) => (
-                                <div key={i} className="bg-background p-6 rounded-xl border border-border">
-                                    <h4 className="text-accent font-bold mb-2">{impact.area}</h4>
-                                    <p className="text-secondary text-sm">{impact.desc}</p>
+                                <div key={i} className="bg-[#030712] border border-slate-800/80 hover:border-blue-500/40 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                    <h4 className="text-white font-bold mb-2 hover:text-blue-400 transition-colors">{impact.area}</h4>
+                                    <p className="text-slate-400 text-sm">{impact.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -336,14 +350,17 @@ const ERPSolutions = () => {
                                 {data.complianceTitle && <h3 className="text-2xl font-bold mb-6 text-primary">{data.complianceTitle}</h3>}
                                 {data.complianceText && <p className="text-secondary mb-6">{data.complianceText}</p>}
                                 {data.complianceList && (
-                                    <ul className="space-y-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                                         {data.complianceList.map((item, i) => (
-                                            <li key={i} className="flex items-center text-secondary">
-                                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3" />
-                                                {item}
-                                            </li>
+                                            <div
+                                                key={i}
+                                                className="bg-[#030712] border border-slate-800/80 p-5 rounded-xl shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all duration-300 flex items-center space-x-3"
+                                            >
+                                                <span className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm font-medium">{item}</span>
+                                            </div>
                                         ))}
-                                    </ul>
+                                    </div>
                                 )}
                                 {data.complianceFooter && (
                                     <p className="mt-6 text-secondary italic">

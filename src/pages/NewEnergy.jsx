@@ -10,6 +10,18 @@ import BackButton from "../components/ui/BackButton";
 import { ASSETS } from "../constants/assets";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
+const formatTitle = (title) => {
+    if (typeof title !== "string") return title || "";
+    const words = title.split(" ");
+    if (words.length <= 1) return title;
+    const lastWord = words.pop();
+    return (
+        <>
+            {words.join(" ")} <span className="text-blue-400">{lastWord}</span>
+        </>
+    );
+};
+
 const NewEnergy = () => {
     useScrollToTop(); // Force scroll to top on mount
 
@@ -19,69 +31,63 @@ const NewEnergy = () => {
         heroSubtitle: "Powering a Sustainable Tomorrow. We help organizations transition to clean energy and adopt eco-friendly materials.",
         heroVideo: ASSETS.VIDEOS.ENERGY,
 
-        introTitle: "Why Sustainability Matters",
-        introText: "In an era of climate change, industries need to rethink how they operate. CopterCode empowers you with practical, effective, and innovative solutions.",
+        introTitle: "Why New Energy Matters",
+        introText: "The future is green. Sustainable energy and advanced materials are key to combating climate change and building a resilient economy. At CopterCode, we develop and deploy solutions that make the green transition practical and profitable.",
         introPoints: [
-            "Rising energy costs demand alternatives",
-            "Customers expect green practices",
-            "Renewable energy ensures resilience",
-            "Sustainable materials reduce waste"
+            "Reduces carbon emissions & environmental impact",
+            "Lowers long-term operational and energy costs",
+            "Improves energy independence and reliability",
+            "Future-proofs business against resource scarcity",
         ],
         introMedia: ASSETS.VIDEOS.ENERGY,
         introMediaIsImage: false,
 
-        portfolioTitle: "Our Offerings",
+        portfolioTitle: "Our Solutions",
         portfolioItems: [
             {
-                title: "Solar Energy Solutions",
-                desc: "Harness the power of the sun with our cutting-edge solar technology.",
-                features: ["Solar Panel Installation (Roof, Ground, Hybrid)", "Design & Engineering", "Maintenance & Monitoring", "Energy Storage (Battery Backup)"]
+                title: "Solar & Renewables",
+                desc: "Harnessing the power of the sun and other renewable sources.",
+                features: ["Solar PV installations & consulting", "Energy storage & battery systems", "Grid integration & smart meters", "Maintenance & monitoring services"]
             },
             {
-                title: "Sustainable Textiles",
-                desc: "We produce and export sustainable materials for the textile and fashion industry.",
-                features: ["Organic cotton & natural fibers", "Recycled fabrics & low-impact dyes", "Biodegradable packaging", "Water-efficient processes"]
+                title: "Eco-Friendly Materials",
+                desc: "Developing and sourcing sustainable materials for manufacturing.",
+                features: ["Biodegradable plastics & packaging", "Recycled & upcycled composites", "Low-impact coatings & adhesives", "Sustainable supply chain sourcing"]
             },
             {
-                title: "Energy Audits",
-                desc: "We help you understand where and how you can save energy.",
-                features: ["Comprehensive energy audits", "Identifying inefficiencies", "Recommendations for renewables", "Tracking sustainability metrics"]
+                title: "Energy Auditing",
+                desc: "Identifying inefficiencies and optimization opportunities.",
+                features: ["Building energy performance analysis", "Industrial process optimization", "Waste heat recovery solutions", "ROI calculations for upgrades"]
             },
         ],
 
-        featuresTitle: "Key Features",
+        featuresTitle: "Key Advantages",
         featuresList: [
-            { title: "High-efficiency solar modules", desc: "Maximize energy capture" },
-            { title: "Smart monitoring tools", desc: "Track consumption in real-time" },
-            { title: "Certified installers", desc: "Partnerships with expert teams" },
-            { title: "ROI-driven planning", desc: "See your savings grow" },
-            { title: "International compliance", desc: "Meets global regulations" }
+            { title: "Custom Engineering", desc: "Tailored to your specific site and needs" },
+            { title: "Turnkey Projects", desc: "From design and sourcing to installation" },
+            { title: "High Efficiency", desc: "Maximizing energy yield and savings" },
+            { title: "Regulatory Compliance", desc: "Meeting local and national green standards" },
+            { title: "Ongoing Support", desc: "Comprehensive monitoring and service contracts" },
+            { title: "Financing Options", desc: "Flexible structures to ease capital costs" }
         ],
 
-        impactTitle: "Our Impact",
-        impactItems: [
-            { area: "Cost Savings", desc: "Up to 60% reduction in electricity bills." },
-            { area: "Carbon Footprint", desc: "Significant reduction in CO2 emissions." },
-            { area: "Sustainability", desc: "Helping you achieve corporate green goals." }
-        ],
-        testimonialQuote: "\"CopterCode helped us cut energy bills by 60% while achieving LEED certification.\"",
-        testimonialAuthor: "Facility Manager, Corporate Office",
+        impactTitle: null,
+        impactItems: null,
 
         rdTitle: null,
         rdText: null,
-        rdList: null,
 
-        complianceTitle: "Certifications",
+        complianceTitle: "Certifications & Compliance",
         complianceList: [
-            "IEC, UL & BIS certified equipment",
-            "ISO 14001 Environmental Management",
-            "LEED & GRIHA compliance",
-            "Fairtrade & GOTS certified textiles"
+            "MNRE standards for solar components",
+            "ISO 14001 environmental management",
+            "Local building & electrical codes met",
+            "Sustainability reporting compliance"
         ],
 
-        ctaTitle: "Make your business greener and more profitable.",
-        ctaText: "Contact us today to discuss your solar and sustainable material needs.",
-        ctaButtonText: "Go Green Today"
+        ctaTitle: "Join the green revolution.",
+        ctaText: "Let us help you design and implement your transition to sustainable energy and materials. Contact us today.",
+        ctaButtonText: "Contact Us Today"
     };
 
     const [sanityData, setSanityData] = useState(null);
@@ -134,7 +140,7 @@ const NewEnergy = () => {
     const seoDesc = data.seo?.metaDescription || "Powering a Sustainable Tomorrow with CopterCode.";
 
     return (
-        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary pt-20">
+        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary">
             <SEO title={seoTitle} description={seoDesc} />
 
             {/* Hero Section */}
@@ -159,12 +165,12 @@ const NewEnergy = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="mx-auto max-w-3xl bg-background/80 backdrop-blur-sm border border-border rounded-3xl px-8 py-10 shadow-xl"
+                        className="mx-auto max-w-3xl bg-[#030712]/95 backdrop-blur-sm border border-slate-800/80 rounded-3xl px-8 py-10 shadow-2xl"
                     >
-                        <h1 className="text-5xl md:text-7xl font-display font-medium mb-6 text-primary">
-                            {data.heroTitle}
+                        <h1 className="text-5xl md:text-7xl font-display font-medium mb-6 text-white">
+                            {formatTitle(data.heroTitle)}
                         </h1>
-                        <p className="text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
                             {data.heroSubtitle}
                         </p>
                     </motion.div>
@@ -195,9 +201,9 @@ const NewEnergy = () => {
                     <div className="relative rounded-3xl overflow-hidden border border-border shadow-2xl min-h-[400px] bg-surface flex items-center justify-center">
                         {data.introMedia ? (
                             data.introMediaIsImage ? (
-                                        <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" sizes="(min-width:1024px) 50vw, 100vw" />
+                                        <OptimizedImage src={data.introMedia} alt="Intro" className="absolute inset-0 w-full h-full object-cover opacity-90" sizes="(min-width:1024px) 50vw, 100vw" />
                                     ) : (
-                                        <video src={data.introMedia} autoPlay loop muted playsInline crossOrigin="anonymous" className="w-full h-full object-cover opacity-80" preload="auto" />
+                                        <video src={data.introMedia} autoPlay loop muted playsInline crossOrigin="anonymous" className="absolute inset-0 w-full h-full object-cover opacity-80" preload="auto" />
                                     )
                         ) : (
                             <div className="text-center p-8">
@@ -227,14 +233,15 @@ const NewEnergy = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="bg-background border border-border p-8 rounded-2xl shadow-sm hover:shadow-lg hover:border-accent/40 transition-all duration-300 flex flex-col"
+                                className="bg-[#030712] border border-slate-800/80 p-8 rounded-2xl shadow-sm hover:shadow-lg hover:border-blue-500/40 transition-all duration-300 flex flex-col"
                             >
-                                <h3 className="text-xl font-bold mb-4">{item.title}</h3>
-                                {item.desc && <p className="text-sm text-secondary mb-6">{item.desc}</p>}
+                                <h3 className="text-xl font-bold mb-4 text-white hover:text-blue-400 transition-colors">{item.title}</h3>
+                                {item.desc && <p className="text-sm text-slate-400 mb-6">{item.desc}</p>}
+                                <div className="border-t border-slate-800/80 my-4" />
                                 <ul className="space-y-3 mt-auto">
                                     {item.features?.map((feature, fIdx) => (
-                                        <li key={fIdx} className="text-sm text-secondary flex items-start">
-                                            <span className="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 mr-2 flex-shrink-0" />
+                                        <li key={fIdx} className="text-sm text-slate-300 flex items-start">
+                                            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-1.5 mr-2 flex-shrink-0" />
                                             {feature}
                                         </li>
                                     ))}
@@ -283,9 +290,9 @@ const NewEnergy = () => {
                     {data.impactItems && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                             {data.impactItems.map((impact, i) => (
-                                <div key={i} className="bg-background p-6 rounded-xl border border-border">
-                                    <h4 className="text-accent font-bold mb-2">{impact.area}</h4>
-                                    <p className="text-secondary text-sm">{impact.desc}</p>
+                                <div key={i} className="bg-[#030712] border border-slate-800/80 hover:border-blue-500/40 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                    <h4 className="text-white font-bold mb-2 hover:text-blue-400 transition-colors">{impact.area}</h4>
+                                    <p className="text-slate-400 text-sm">{impact.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -339,14 +346,17 @@ const NewEnergy = () => {
                                 {data.complianceTitle && <h3 className="text-2xl font-bold mb-6 text-primary">{data.complianceTitle}</h3>}
                                 {data.complianceText && <p className="text-secondary mb-6">{data.complianceText}</p>}
                                 {data.complianceList && (
-                                    <ul className="space-y-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                                         {data.complianceList.map((item, i) => (
-                                            <li key={i} className="flex items-center text-secondary">
-                                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3" />
-                                                {item}
-                                            </li>
+                                            <div
+                                                key={i}
+                                                className="bg-[#030712] border border-slate-800/80 p-5 rounded-xl shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all duration-300 flex items-center space-x-3"
+                                            >
+                                                <span className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm font-medium">{item}</span>
+                                            </div>
                                         ))}
-                                    </ul>
+                                    </div>
                                 )}
                                 {data.complianceFooter && (
                                     <p className="mt-6 text-secondary italic">

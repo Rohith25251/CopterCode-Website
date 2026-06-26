@@ -94,7 +94,7 @@ const BusinessTemplate = () => {
     const seoDesc = data.seo?.metaDescription || data.heroSubtitle;
 
     return (
-        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary pt-20">
+        <div className="bg-background min-h-screen text-primary selection:bg-accent selection:text-primary">
             <SEO title={seoTitle} description={seoDesc} />
 
             {/* Hero Section */}
@@ -160,9 +160,9 @@ const BusinessTemplate = () => {
                         <div className="relative rounded-3xl overflow-hidden border border-border shadow-2xl min-h-[400px] bg-surface flex items-center justify-center">
                             {data.introMedia ? (
                                 data.introMediaIsImage ? (
-                                    <OptimizedImage src={data.introMedia} alt="Intro" className="w-full h-full object-cover opacity-90" />
+                                    <OptimizedImage src={data.introMedia} alt="Intro" className="absolute inset-0 w-full h-full object-cover opacity-90" />
                                 ) : (
-                                    <LazyVideo eager={true} src={data.introMedia} className="w-full h-full object-cover opacity-80" />
+                                    <LazyVideo eager={true} src={data.introMedia} className="absolute inset-0 w-full h-full object-cover opacity-80" />
                                 )
                             ) : (
                                 <div className="text-center p-8">
@@ -254,9 +254,9 @@ const BusinessTemplate = () => {
                         {data.impactItems && (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                                 {data.impactItems.map((impact, i) => (
-                                    <div key={i} className="bg-background p-6 rounded-xl border border-border">
-                                        <h4 className="text-accent font-bold mb-2">{impact.area}</h4>
-                                        <p className="text-secondary text-sm">{impact.desc}</p>
+                                    <div key={i} className="bg-[#030712] border border-slate-800/80 hover:border-blue-500/40 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                        <h4 className="text-white font-bold mb-2 hover:text-blue-400 transition-colors">{impact.area}</h4>
+                                        <p className="text-slate-400 text-sm">{impact.desc}</p>
                                     </div>
                                 ))}
                             </div>
