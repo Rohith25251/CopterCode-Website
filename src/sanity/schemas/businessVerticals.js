@@ -43,6 +43,13 @@ export const businessVerticalsPage = {
 
                         // --- HERO SECTION ---
                         {
+                            name: 'heroTheme',
+                            title: 'Hero Theme',
+                            type: 'string',
+                            options: { list: [{ title: 'Light Theme', value: 'light' }, { title: 'Dark Theme', value: 'dark' }] },
+                            initialValue: 'dark'
+                        },
+                        {
                             name: 'heroTitle',
                             title: 'Hero Title',
                             type: 'string'
@@ -71,6 +78,13 @@ export const businessVerticalsPage = {
                         },
 
                         // --- INTRO SECTION ---
+                        {
+                            name: 'introTheme',
+                            title: 'Intro Theme',
+                            type: 'string',
+                            options: { list: [{ title: 'Light Theme', value: 'light' }, { title: 'Dark Theme', value: 'dark' }] },
+                            initialValue: 'light'
+                        },
                         {
                             name: 'introTitle',
                             title: 'Intro Title',
@@ -115,6 +129,13 @@ export const businessVerticalsPage = {
 
                         // --- PORTFOLIO SECTION ---
                         {
+                            name: 'portfolioTheme',
+                            title: 'Portfolio Theme',
+                            type: 'string',
+                            options: { list: [{ title: 'Light Theme', value: 'light' }, { title: 'Dark Theme', value: 'dark' }] },
+                            initialValue: 'dark'
+                        },
+                        {
                             name: 'portfolioTitle',
                             title: 'Portfolio Title',
                             type: 'string'
@@ -137,6 +158,13 @@ export const businessVerticalsPage = {
 
                         // --- FEATURES SECTION ---
                         {
+                            name: 'featuresTheme',
+                            title: 'Features Theme',
+                            type: 'string',
+                            options: { list: [{ title: 'Light Theme', value: 'light' }, { title: 'Dark Theme', value: 'dark' }] },
+                            initialValue: 'light'
+                        },
+                        {
                             name: 'featuresTitle',
                             title: 'Features Title',
                             type: 'string'
@@ -157,6 +185,13 @@ export const businessVerticalsPage = {
                         },
 
                         // --- IMPACT SECTION ---
+                        {
+                            name: 'impactTheme',
+                            title: 'Impact & Testimonials Theme',
+                            type: 'string',
+                            options: { list: [{ title: 'Light Theme', value: 'light' }, { title: 'Dark Theme', value: 'dark' }] },
+                            initialValue: 'light'
+                        },
                         {
                             name: 'impactTitle',
                             title: 'Impact Title',
@@ -190,6 +225,13 @@ export const businessVerticalsPage = {
                         },
 
                         // --- R&D SECTION ---
+                        {
+                            name: 'rdComplianceTheme',
+                            title: 'R&D & Compliance Theme',
+                            type: 'string',
+                            options: { list: [{ title: 'Light Theme', value: 'light' }, { title: 'Dark Theme', value: 'dark' }] },
+                            initialValue: 'light'
+                        },
                         {
                             name: 'rdTitle',
                             title: 'R&D Title',
@@ -232,6 +274,13 @@ export const businessVerticalsPage = {
                         },
 
                         // --- CTA SECTION ---
+                        {
+                            name: 'ctaTheme',
+                            title: 'CTA Theme',
+                            type: 'string',
+                            options: { list: [{ title: 'Light Theme', value: 'light' }, { title: 'Dark Theme', value: 'dark' }] },
+                            initialValue: 'light'
+                        },
                         {
                             name: 'ctaTitle',
                             title: 'CTA Title',

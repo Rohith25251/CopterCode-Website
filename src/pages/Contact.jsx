@@ -82,6 +82,7 @@ const Contact = () => {
           weekendLabel: data.hours?.weekendLabel,
           weekendStatus: data.hours?.weekendStatus,
           formTitle: data.form?.title,
+          formEndpoint: data.form?.submitboxEndpoint,
         });
       } else {
         console.warn('⚠️ No contact page data from Sanity - using defaults');
@@ -155,6 +156,7 @@ const Contact = () => {
 
   // Form
   const formTitle = sanityData?.formTitle || "Send us a Message";
+  const formEndpoint = sanityData?.formEndpoint || "https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,7 +173,7 @@ const Contact = () => {
 
     try {
       const response = await fetch(
-        "https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0",
+        formEndpoint,
         {
           method: "POST",
           headers: {

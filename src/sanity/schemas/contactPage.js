@@ -108,7 +108,14 @@ export const contactPage = {
             title: 'Contact Form',
             type: 'object',
             fields: [
-                { name: 'title', type: 'string', title: 'Form Title', initialValue: 'Send us a Message' }
+                { name: 'title', type: 'string', title: 'Form Title', initialValue: 'Send us a Message' },
+                {
+                    name: 'submitboxEndpoint',
+                    type: 'string',
+                    title: 'Submitbox App POST Endpoint',
+                    initialValue: 'https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0',
+                    description: 'API endpoint where contact form submissions are routed'
+                }
             ]
         }
     ]

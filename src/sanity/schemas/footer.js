@@ -17,6 +17,13 @@ export const footer = {
             type: 'string',
             initialValue: 'Stay Updated with CopterCode'
         },
+        {
+            name: 'newsletterEndpoint',
+            title: 'Newsletter Submitbox Endpoint',
+            type: 'string',
+            initialValue: 'https://submitbox.app/api/f/9931d030-8a89-4432-b863-5b5998bddbb6',
+            description: 'API endpoint for newsletter subscription form submissions'
+        },
         // --- SOCIAL LINKS ---
         {
             name: 'socialLinks',

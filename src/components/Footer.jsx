@@ -61,7 +61,7 @@ const Footer = () => {
 
     try {
       const response = await fetch(
-        "https://submitbox.app/api/f/9931d030-8a89-4432-b863-5b5998bddbb6",
+        newsletterEndpoint,
         {
           method: "POST",
           headers: {
@@ -106,6 +106,7 @@ const Footer = () => {
         // Map Sanity data to expected structure
         setFooterData({
           subscriptionTitle: data.subscriptionTitle,
+          newsletterEndpoint: data.newsletterEndpoint,
           col1Title: data.column1?.title,
           col1Links: data.column1?.links,
           col2Title: data.column2?.title,
@@ -126,6 +127,7 @@ const Footer = () => {
   }, []);
 
   const settings = footerData ? { socialLinks: footerData.socialLinks, companyName: "CopterCode" } : null;
+  const newsletterEndpoint = footerData?.newsletterEndpoint || "https://submitbox.app/api/f/9931d030-8a89-4432-b863-5b5998bddbb6";
   // const footerData is now state
 
   const socialLinks = settings?.socialLinks || {};
