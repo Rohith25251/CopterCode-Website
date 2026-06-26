@@ -272,10 +272,10 @@ const DigitalServices = () => {
       </section>
 
       {/* Portfolio Grid */}
-      <section className={`py-24 relative ${isPortfolioDark ? "bg-[#080c15] text-white border-y border-slate-800/50" : "bg-surface text-primary border-y border-border"}`}>
+      <section className="py-24 relative bg-surface text-primary border-y border-border">
         <div className="container mx-auto px-6">
           {data.portfolioTitle && (
-            <h2 className={`text-4xl font-display font-medium mb-16 text-center ${isPortfolioDark ? "text-white" : "text-primary"}`}>
+            <h2 className="text-4xl font-display font-medium mb-16 text-center text-primary">
               {data.portfolioTitle}
             </h2>
           )}
