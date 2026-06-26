@@ -580,13 +580,13 @@ const InternshipRegistration = () => {
       {/* 1:2 Ratio Split Hero Section */}
       <section className="w-full flex flex-col h-auto md:h-[95vh] md:min-h-[900px] relative z-20">
         {/* Upper Section (Ratio 1) */}
-        <div 
+        <div
           className="pt-24 pb-12 md:pt-28 md:pb-8 md:h-[35%] md:min-h-[350px] lg:min-h-[380px] w-full relative flex items-center bg-cover bg-center overflow-hidden border-b border-slate-800"
           style={{ backgroundImage: `url('/mediafiles/Intern bg.png')` }}
         >
           {/* Dark overlay to soften background and ensure contrast */}
           <div className="absolute inset-0 bg-slate-950/45 z-0" />
-          
+
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 w-full py-4">
             {/* Title & Subtitle left-aligned */}
             <motion.div
@@ -862,7 +862,7 @@ const InternshipRegistration = () => {
                     </div>
 
                     <p className="text-xs text-slate-500 font-semibold">
-                      Our HR coordination desk will contact you shortly on your WhatsApp number or email with setup instructions.
+                      Our HR team will reach out to you shortly through WhatsApp or email with further instructions regarding the onboarding process.
                     </p>
 
                     <motion.button
