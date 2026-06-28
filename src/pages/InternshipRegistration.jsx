@@ -88,7 +88,7 @@ const IMAGES_RIGHT = [
 const ScrollFadeCard = ({ item }) => {
   return (
     <div
-      className="w-64 h-80 rounded-2xl overflow-hidden border border-white/60 shadow-lg bg-white/10 transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/20 relative shrink-0 group"
+      className="w-48 h-60 sm:w-64 sm:h-80 rounded-2xl overflow-hidden border border-white/60 shadow-lg bg-white/10 transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/20 relative shrink-0 group"
     >
       <OptimizedImage
         src={item.src}
@@ -175,6 +175,7 @@ const InternshipRegistration = () => {
 
   const leftMarqueeItems = getMarqueeItems(leftPool);
   const rightMarqueeItems = getMarqueeItems(rightPool);
+  const horizontalMarqueeItems = getMarqueeItems(internsPool);
 
 
   useEffect(() => {
@@ -244,6 +245,7 @@ const InternshipRegistration = () => {
           formTerms: reg.registrationForm?.termsSection,
           formSubmitText: reg.registrationForm?.submitActionText,
           formSubmittingText: reg.registrationForm?.submittingText,
+          formSuccess: reg.registrationForm?.successSection,
           registeredInterns: reg.registeredInterns
         });
       }
@@ -321,7 +323,7 @@ const InternshipRegistration = () => {
   const namePlaceholder = sanityData?.formFields?.namePlaceholder || "Rohith Kumar";
 
   const whatsappLabel = sanityData?.formFields?.whatsappLabel || "WhatsApp Contact";
-  const whatsappPlaceholder = sanityData?.formFields?.whatsappPlaceholder || "+91 8072193600";
+  const whatsappPlaceholder = sanityData?.formFields?.whatsappPlaceholder || "8072193600";
 
   const emailLabel = sanityData?.formFields?.emailLabel || "Email Address";
   const emailPlaceholder = sanityData?.formFields?.emailPlaceholder || "student@college.edu";
@@ -360,6 +362,8 @@ const InternshipRegistration = () => {
 
   const branchLabel = sanityData?.formDropdowns?.branchLabel || "Branch / Department";
   const branchPlaceholder = sanityData?.formDropdowns?.branchPlaceholder || "-- Choose Branch --";
+  const customBranchLabel = sanityData?.formDropdowns?.customBranchLabel || "Specify Other Branch / Department";
+  const customBranchPlaceholder = sanityData?.formDropdowns?.customBranchPlaceholder || "Enter your department name";
   const yearLabel = sanityData?.formDropdowns?.yearLabel || "Year of Study";
   const yearPlaceholder = sanityData?.formDropdowns?.yearPlaceholder || "-- Choose Study --";
 
@@ -392,6 +396,16 @@ const InternshipRegistration = () => {
 
   const submitText = sanityData?.formSubmitText || "Submit Registration";
   const submittingText = sanityData?.formSubmittingText || "Validating & Registering...";
+  const successTitle = sanityData?.formSuccess?.title || "Registration Completed!";
+  const successMessage = sanityData?.formSuccess?.message || "Thank you for submitting your internship application, {name}. Your registration has been successfully logged inside the CopterCode verification desk.";
+  const successSummaryTitle = sanityData?.formSuccess?.summaryTitle || "Application Summary:";
+  const successWhatsappLabel = sanityData?.formSuccess?.whatsappLabel || "WhatsApp Number";
+  const successEmailLabel = sanityData?.formSuccess?.emailLabel || "Email Address";
+  const successBranchLabel = sanityData?.formSuccess?.branchLabel || "Department/Branch";
+  const successElectiveLabel = sanityData?.formSuccess?.electiveLabel || "Selected Elective";
+  const successBatchLabel = sanityData?.formSuccess?.batchLabel || "Preferred Batch";
+  const successNote = sanityData?.formSuccess?.note || "Our HR team will reach out to you shortly through WhatsApp or email with further instructions regarding the onboarding process.";
+  const successResetText = sanityData?.formSuccess?.resetButtonText || "Submit Another Registration";
 
   // Calculate proper limits for DOB (min: 45 years ago, max: 18 years ago relative to today)
   const maxDob = (() => {
@@ -564,9 +578,22 @@ const InternshipRegistration = () => {
           transform: translate3d(0, 0, 0);
           backface-visibility: hidden;
         }
-        .marquee-container:hover .marquee-up,
-        .marquee-container:hover .marquee-down {
-          animation-play-state: paused;
+        @keyframes marqueeLeft {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
+        .marquee-left {
+          display: flex;
+          gap: 1.5rem;
+          width: max-content;
+          animation: marqueeLeft 30s linear infinite;
+          will-change: transform;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
         }
       `}} />
 
@@ -831,6 +858,21 @@ const InternshipRegistration = () => {
               </div>
             </motion.div>
 
+            {/* Horizontal Carousel (visible below xl, when vertical carousels disappear) */}
+            {!isXl && (
+              <div className="xl:hidden w-full overflow-hidden select-none py-4 relative marquee-container mb-12">
+                {/* Premium fading gradient overlays on the sides */}
+                <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none" />
+                
+                <div className="flex marquee-left">
+                  {horizontalMarqueeItems.map((item, idx) => (
+                    <ScrollFadeCard key={idx} item={item} />
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Registration Form container */}
             <div className="max-w-4xl mx-auto relative" id="form-section">
               <AnimatePresence mode="wait">
@@ -847,22 +889,25 @@ const InternshipRegistration = () => {
                       <FileCheck size={40} className="animate-bounce" />
                     </div>
 
-                    <h3 className="text-3xl font-display font-extrabold text-slate-900">Registration Completed!</h3>
+                    <h3 className="text-3xl font-display font-extrabold text-slate-900">{successTitle}</h3>
                     <p className="text-slate-600 leading-relaxed font-semibold">
-                      Thank you for submitting your internship application, <strong>{formData.studentName}</strong>. Your registration has been successfully logged inside the CopterCode verification desk.
+                      {successMessage.split("{name}").reduce((acc, part, idx, arr) => {
+                        if (idx === arr.length - 1) return [...acc, part];
+                        return [...acc, part, <strong key={idx}>{formData.studentName}</strong>];
+                      }, [])}
                     </p>
 
                     <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-left space-y-4 text-sm font-semibold text-slate-700">
-                      <p className="font-extrabold text-slate-900 border-b border-slate-200 pb-2.5">Application Summary:</p>
-                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">WhatsApp Number</span> {formData.contactNumber}</p>
-                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Email Address</span> {formData.email}</p>
-                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Department/Branch</span> {formData.branch === "Other" ? formData.customBranch : formData.branch}</p>
-                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Selected Elective</span> {formData.elective.split(" - Venue")[0]}</p>
-                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">Preferred Batch</span> {formData.batch}</p>
+                      <p className="font-extrabold text-slate-900 border-b border-slate-200 pb-2.5">{successSummaryTitle}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successWhatsappLabel}</span> {formData.contactNumber}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successEmailLabel}</span> {formData.email}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successBranchLabel}</span> {formData.branch === "Other" ? formData.customBranch : formData.branch}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successElectiveLabel}</span> {formData.elective.split(" - Venue")[0]}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successBatchLabel}</span> {formData.batch}</p>
                     </div>
 
                     <p className="text-xs text-slate-500 font-semibold">
-                      Our HR team will reach out to you shortly through WhatsApp or email with further instructions regarding the onboarding process.
+                      {successNote}
                     </p>
 
                     <motion.button
@@ -894,7 +939,7 @@ const InternshipRegistration = () => {
                       }}
                       className="w-full py-4 bg-blue-600 text-white font-extrabold rounded-2xl uppercase tracking-widest text-xs hover:bg-blue-500 transition-all shadow-md"
                     >
-                      Submit Another Registration
+                      {successResetText}
                     </motion.button>
                   </motion.div>
                 ) : (
@@ -1148,7 +1193,7 @@ const InternshipRegistration = () => {
                                 className="group/field relative space-y-2.5 pt-2 overflow-hidden"
                               >
                                 <label htmlFor="customBranch" className="block text-xs font-bold uppercase tracking-widest text-slate-700">
-                                  Specify Other Branch / Department <span className="text-red-500 ml-0.5">*</span>
+                                  {customBranchLabel} <span className="text-red-500 ml-0.5">*</span>
                                 </label>
                                 <div className="relative">
                                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within/field:text-blue-600 transition-colors duration-300">
@@ -1160,7 +1205,7 @@ const InternshipRegistration = () => {
                                     name="customBranch"
                                     required
                                     disabled={isSubmitting}
-                                    placeholder="Enter your department name"
+                                    placeholder={customBranchPlaceholder}
                                     className="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-blue-500 pl-12 pr-4 py-4 text-slate-900 placeholder:text-slate-400 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-300 rounded-2xl shadow-sm text-sm font-semibold"
                                     value={formData.customBranch}
                                     onChange={handleChange}

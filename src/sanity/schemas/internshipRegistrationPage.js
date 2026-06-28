@@ -246,6 +246,8 @@ export const internshipRegistrationPage = {
                     fields: [
                         { name: 'branchLabel', type: 'string', title: 'Branch Label', initialValue: 'Branch / Department' },
                         { name: 'branchPlaceholder', type: 'string', title: 'Branch Placeholder option', initialValue: '-- Choose Branch --' },
+                        { name: 'customBranchLabel', type: 'string', title: 'Custom Branch Input Label', initialValue: 'Specify Other Branch / Department' },
+                        { name: 'customBranchPlaceholder', type: 'string', title: 'Custom Branch Input Placeholder', initialValue: 'Enter your department name' },
                         {
                             name: 'branchOptions',
                             title: 'Branch Options List',
@@ -361,6 +363,24 @@ export const internshipRegistrationPage = {
                     title: 'Validating & Registering Label',
                     type: 'string',
                     initialValue: 'Validating & Registering...'
+                },
+                // Success Screen Configuration
+                {
+                    name: 'successSection',
+                    title: 'Success Screen Config',
+                    type: 'object',
+                    fields: [
+                        { name: 'title', type: 'string', title: 'Success Title', initialValue: 'Registration Completed!' },
+                        { name: 'message', type: 'text', title: 'Success Message Template', initialValue: 'Thank you for submitting your internship application, {name}. Your registration has been successfully logged inside the CopterCode verification desk.' },
+                        { name: 'summaryTitle', type: 'string', title: 'Summary Title', initialValue: 'Application Summary:' },
+                        { name: 'whatsappLabel', type: 'string', title: 'WhatsApp Summary Label', initialValue: 'WhatsApp Number' },
+                        { name: 'emailLabel', type: 'string', title: 'Email Summary Label', initialValue: 'Email Address' },
+                        { name: 'branchLabel', type: 'string', title: 'Department/Branch Summary Label', initialValue: 'Department/Branch' },
+                        { name: 'electiveLabel', type: 'string', title: 'Selected Elective Summary Label', initialValue: 'Selected Elective' },
+                        { name: 'batchLabel', type: 'string', title: 'Preferred Batch Summary Label', initialValue: 'Preferred Batch' },
+                        { name: 'note', type: 'text', title: 'Onboarding Instructions Note', initialValue: 'Our HR team will reach out to you shortly through WhatsApp or email with further instructions regarding the onboarding process.' },
+                        { name: 'resetButtonText', type: 'string', title: 'Reset Button Text', initialValue: 'Submit Another Registration' }
+                    ]
                 }
             ]
         },
