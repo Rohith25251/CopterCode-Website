@@ -1,12 +1,12 @@
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 
-const projectId = (import.meta.env.VITE_SANITY_PROJECT_ID || 'wsuk3wqx').trim();
+const projectId = (import.meta.env.VITE_SANITY_PROJECT_ID || '').trim();
 const dataset = (import.meta.env.VITE_SANITY_DATASET || 'production').trim();
 
 // Validate environment variables
-if (!projectId || projectId === 'wsuk3wqx') {
-    console.warn('⚠️  VITE_SANITY_PROJECT_ID not properly configured. Using fallback value.');
+if (!projectId) {
+    throw new Error('VITE_SANITY_PROJECT_ID is required. Add it to your .env/.env.production file.');
 }
 
 if (!dataset || dataset === 'production') {
@@ -46,7 +46,9 @@ export function urlFor(source) {
  * Log Sanity client initialization status
  */
 if (typeof window !== 'undefined') {
-    const masked_id = projectId.substring(0, 5) + '...' + projectId.substring(projectId.length - 3);
+    const masked_id = projectId.length > 8
+        ? projectId.substring(0, 5) + '...' + projectId.substring(projectId.length - 3)
+        : projectId;
     console.log('✅ Sanity Client Initialized:', {
         projectId: masked_id,
         dataset,
