@@ -158,7 +158,7 @@ const Footer = () => {
       { label: "Retail & Food Collaborations", url: "/Retail & Food Collaborations" },
       { label: "Infra Security", url: "/Infra Security" },
     ]
-  };
+  };   
 
   const defaultCol3 = {
     title: "Company",

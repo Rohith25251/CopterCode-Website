@@ -78,8 +78,10 @@ export const homePage = {
                     name: 'heroImages',
                     title: 'Hero Images',
                     type: 'array',
+                    description: 'Upload 1-8 landscape images for the homepage hero slideshow. Recommended ratio: 16:9.',
                     options: { layout: 'grid' },
-                    of: [{ type: 'image', options: { hotspot: true } }]
+                    of: [{ type: 'image', options: { hotspot: true } }],
+                    validation: Rule => Rule.required().min(1).max(8)
                 },
                 {
                     name: 'primaryCTA',

@@ -16,8 +16,8 @@ const Hero = ({ data }) => {
   const secondaryCtaText = data?.secondaryCTA?.text || "Start a Project";
   const secondaryCtaLink = data?.secondaryCTA?.link || "/contact";
 
-  // Sourced slide images from public/mediafiles/Home directory (ratio 4032 x 2268)
-  const homeImages = useMemo(() => {
+  // Local fallback images used only when Sanity images are not available.
+  const fallbackHomeImages = useMemo(() => {
     return [
       "/mediafiles/Home/IMG_1851.jpg",
       "/mediafiles/Home/IMG_3322.jpg",
@@ -27,13 +27,31 @@ const Hero = ({ data }) => {
     ];
   }, []);
 
+  const sanityHeroImages = useMemo(() => {
+    if (!Array.isArray(data?.heroImages)) return [];
+
+    return data.heroImages
+      .map((img) => {
+        if (typeof img === "string") return img;
+        if (img?.asset?.url) return img.asset.url;
+        if (img?.url) return img.url;
+        return null;
+      })
+      .filter(Boolean);
+  }, [data?.heroImages]);
+
+  const homeImages = sanityHeroImages.length > 0 ? sanityHeroImages : fallbackHomeImages;
+
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   // Slideshow transition interval
   useEffect(() => {
+    if (homeImages.length <= 1) return;
+
     const timer = setInterval(() => {
       setCurrentImgIndex((prev) => (prev + 1) % homeImages.length);
     }, 4500);
+
     return () => clearInterval(timer);
   }, [homeImages.length]);
 
@@ -215,16 +233,21 @@ const Hero = ({ data }) => {
             >
               {/* Slideshow images */}
               <AnimatePresence>
-                <motion.img
+                <motion.div
                   key={currentImgIndex}
-                  src={homeImages[currentImgIndex]}
-                  alt="CopterCode Feature Showcase"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 1.5, ease: "easeInOut" }}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+                  className="absolute inset-0"
+                >
+                  <OptimizedImage
+                    src={homeImages[currentImgIndex]}
+                    alt={`CopterCode Feature Showcase ${currentImgIndex + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                </motion.div>
               </AnimatePresence>
               {/* Subtle top/bottom vignette overlay for premium frame appeal */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10 z-10 pointer-events-none" />

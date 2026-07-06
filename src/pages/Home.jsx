@@ -273,7 +273,7 @@ const Home = () => {
             },
             heroSection {
                 ...,
-                "heroImages": heroImages[].asset->url
+                "heroImages": coalesce(heroImages[].asset->url, images[].asset->url, [])
             },
             aboutSummarySection {
                 ...,
