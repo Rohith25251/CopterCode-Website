@@ -1,7 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-const Preloader = lazy(() => import('./components/Preloader'));
+import Preloader from './components/Preloader';
 import PageTransitionLoader from './components/PageTransitionLoader';
 import Layout from './components/Layout';
 const Home = lazy(() => import('./pages/Home'));
