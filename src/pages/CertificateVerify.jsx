@@ -177,7 +177,7 @@ const CertificateVerify = () => {
                             <div><span className="text-secondary">Name</span><p className="font-semibold">{certificate.name}</p></div>
                             <div><span className="text-secondary">College</span><p className="font-semibold flex items-center gap-2"><Building size={14} /> {certificate.college}</p></div>
                             {certificate.batch && <div><span className="text-secondary">Year of Study</span><p className="font-semibold">{certificate.batch}</p></div>}
-                            {certificate.internship_period && <div><span className="text-secondary">Batch</span><p className="font-semibold">{certificate.internship_period}</p></div>}
+                            {certificate.month && <div><span className="text-secondary">Batch</span><p className="font-semibold">{certificate.month}</p></div>}
                             {certificate.department && <div><span className="text-secondary">Department</span><p className="font-semibold">{certificate.department}</p></div>}
                             {certificate.role && <div><span className="text-secondary">Role</span><p className="font-semibold">{certificate.role}</p></div>}
                             <div><span className="text-secondary">Issue Date</span><p className="font-semibold flex items-center gap-2"><Calendar size={14} /> {formatDate(certificate.issue_date || certificate.created_at)}</p></div>
