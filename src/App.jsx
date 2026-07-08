@@ -28,6 +28,7 @@ const ERPSolutions = lazy(() => import('./pages/ERPSolutions'));
 const RetailFood = lazy(() => import('./pages/RetailFood'));
 const InfraSecurity = lazy(() => import('./pages/InfraSecurity'));
 const CertificateVerify = lazy(() => import('./pages/CertificateVerify'));
+const InternPortal = lazy(() => import('./pages/InternPortal'));
 
 const Locations = lazy(() => import('./pages/Locations'));
 
@@ -97,6 +98,7 @@ function AppContent() {
                             <Route path="/infra-security" element={<Suspense fallback={<PagePlaceholder />}><InfraSecurity /></Suspense>} />
                             <Route path="/verify" element={<Suspense fallback={<PagePlaceholder />}><CertificateVerify /></Suspense>} />
                             <Route path="/verify/:certCode" element={<Suspense fallback={<PagePlaceholder />}><CertificateVerify /></Suspense>} />
+                            <Route path="/intern-portal" element={<Suspense fallback={<PagePlaceholder />}><InternPortal /></Suspense>} />
                             <Route path="/privacy" element={<Suspense fallback={<PagePlaceholder />}><PrivacyPolicy /></Suspense>} />
                             <Route path="/terms" element={<Suspense fallback={<PagePlaceholder />}><TermsAndConditions /></Suspense>} />
 
