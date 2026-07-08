@@ -137,7 +137,6 @@ const CertificateVerify = () => {
             <div className="container mx-auto px-6 max-w-3xl">
                 <div className="mb-8">
                     <h1 className="text-3xl md:text-4xl font-display font-bold">Certificate Verification</h1>
-                    <p className="text-secondary mt-2">Certificate ID: <span className="font-semibold text-primary">{certCode || 'MISSING'}</span></p>
                 </div>
 
                 {loading && (
@@ -187,14 +186,15 @@ const CertificateVerify = () => {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div><span className="text-secondary">Name</span><p className="font-semibold">{displayCert.name}</p></div>
-                                <div><span className="text-secondary">College</span><p className="font-semibold flex items-center gap-2"><Building size={14} /> {displayCert.college}</p></div>
-                                {displayCert.batch && <div><span className="text-secondary">Year of Study</span><p className="font-semibold">{displayCert.batch}</p></div>}
-                                {displayCert.month && <div><span className="text-secondary">Batch</span><p className="font-semibold">{displayCert.month}</p></div>}
+                                <div><span className="text-secondary">Certificate ID</span><p className="font-semibold">{displayCert.cert_code}</p></div>
+                                <div><span className="text-secondary">Candidate Name</span><p className="font-semibold">{displayCert.name}</p></div>
+                                <div><span className="text-secondary">Institution</span><p className="font-semibold flex items-center gap-2"><Building size={14} /> {displayCert.college}</p></div>
+                                {displayCert.batch && <div><span className="text-secondary">Year</span><p className="font-semibold">{displayCert.batch}</p></div>}
                                 {displayCert.department && <div><span className="text-secondary">Department</span><p className="font-semibold">{displayCert.department}</p></div>}
-                                {displayCert.role && <div><span className="text-secondary">Role</span><p className="font-semibold">{displayCert.role}</p></div>}
-                                {displayCert.project && <div><span className="text-secondary">Project</span><p className="font-semibold">{displayCert.project}</p></div>}
-                                <div><span className="text-secondary">Issue Date</span><p className="font-semibold flex items-center gap-2"><Calendar size={14} /> {formatDate(displayCert.issue_date)}</p></div>
+                                {displayCert.role && <div><span className="text-secondary">Domain</span><p className="font-semibold">{displayCert.role}</p></div>}
+                                {displayCert.project && <div><span className="text-secondary">Internship & Live Project Area</span><p className="font-semibold">{displayCert.project}</p></div>}
+                                {displayCert.month && <div><span className="text-secondary">Batch</span><p className="font-semibold">{displayCert.month}</p></div>}
+                                <div><span className="text-secondary">Date of Issue</span><p className="font-semibold flex items-center gap-2"><Calendar size={14} /> {formatDate(displayCert.issue_date)}</p></div>
                                 {displayCert.expiry_date && <div><span className="text-secondary">Expiry Date</span><p className="font-semibold">{formatDate(displayCert.expiry_date)}</p></div>}
                             </div>
 
