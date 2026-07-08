@@ -165,16 +165,17 @@ const CertificateVerify = () => {
                 )}
 
                 {!loading && certificate && (() => {
+                    const internObj = Array.isArray(certificate.interns) ? certificate.interns[0] : certificate.interns;
                     const displayCert = {
                         cert_code: certificate.cert_code,
-                        name: certificate.interns?.name || certificate.name,
-                        college: certificate.interns?.college || certificate.college,
-                        batch: certificate.interns?.year || certificate.batch,
-                        month: certificate.interns?.month || certificate.month,
-                        department: certificate.interns?.department || certificate.department,
-                        role: certificate.interns?.role || certificate.role,
-                        project: certificate.interns?.project || certificate.project,
-                        issue_date: certificate.issue_date || certificate.interns?.date || certificate.created_at,
+                        name: internObj?.name || certificate.name,
+                        college: internObj?.college || certificate.college,
+                        batch: internObj?.year || certificate.batch,
+                        month: internObj?.month || certificate.month,
+                        department: internObj?.department || certificate.department,
+                        role: internObj?.role || certificate.role,
+                        project: internObj?.project || certificate.project,
+                        issue_date: certificate.issue_date || internObj?.date || certificate.created_at,
                         expiry_date: certificate.expiry_date,
                         pdf_url: certificate.pdf_url
                     };
