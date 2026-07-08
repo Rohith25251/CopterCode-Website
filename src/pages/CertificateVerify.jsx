@@ -47,7 +47,7 @@ const CertificateVerify = () => {
 
             const { data, error: dbError } = await supabase
                 .from('certificates')
-                .select('*')
+                .select('*, interns(*)')
                 .or(`cert_code.eq.${code},cert_code.eq.${code.toUpperCase()},cert_code.eq.${code.toLowerCase()}`)
                 .limit(1)
                 .maybeSingle();
@@ -165,39 +165,53 @@ const CertificateVerify = () => {
                     </div>
                 )}
 
-                {!loading && certificate && (
-                    <div className="bg-white border border-border rounded-2xl p-8 space-y-6">
-                        <div className="flex items-center gap-3 font-semibold text-lg">
-                            {error === 'revoked' || error === 'expired' ? <ShieldAlert className="text-amber-600" /> : <ShieldCheck className="text-green-600" />}
-                            {error === 'revoked' ? 'Certificate Revoked' : error === 'expired' ? 'Certificate Expired' : 'Certificate Verified'}
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                            <div><span className="text-secondary">Code</span><p className="font-semibold">{certificate.cert_code}</p></div>
-                            <div><span className="text-secondary">Name</span><p className="font-semibold">{certificate.name}</p></div>
-                            <div><span className="text-secondary">College</span><p className="font-semibold flex items-center gap-2"><Building size={14} /> {certificate.college}</p></div>
-                            {certificate.batch && <div><span className="text-secondary">Year of Study</span><p className="font-semibold">{certificate.batch}</p></div>}
-                            {certificate.month && <div><span className="text-secondary">Batch</span><p className="font-semibold">{certificate.month}</p></div>}
-                            {certificate.department && <div><span className="text-secondary">Department</span><p className="font-semibold">{certificate.department}</p></div>}
-                            {certificate.role && <div><span className="text-secondary">Role</span><p className="font-semibold">{certificate.role}</p></div>}
-                            <div><span className="text-secondary">Issue Date</span><p className="font-semibold flex items-center gap-2"><Calendar size={14} /> {formatDate(certificate.issue_date || certificate.created_at)}</p></div>
-                            {certificate.expiry_date && <div><span className="text-secondary">Expiry Date</span><p className="font-semibold">{formatDate(certificate.expiry_date)}</p></div>}
-                        </div>
-
-                        {certificate.pdf_url && (
-                            <div className="pt-2">
-                                <a
-                                    href={certificate.pdf_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-full"
-                                >
-                                    <FileDown size={16} /> View Certificate PDF
-                                </a>
+                {!loading && certificate && (() => {
+                    const displayCert = {
+                        cert_code: certificate.cert_code,
+                        name: certificate.interns?.name || certificate.name,
+                        college: certificate.interns?.college || certificate.college,
+                        batch: certificate.interns?.year || certificate.batch,
+                        month: certificate.interns?.month || certificate.month,
+                        department: certificate.interns?.department || certificate.department,
+                        role: certificate.interns?.role || certificate.role,
+                        issue_date: certificate.issue_date || certificate.interns?.date || certificate.created_at,
+                        expiry_date: certificate.expiry_date,
+                        pdf_url: certificate.pdf_url
+                    };
+                    return (
+                        <div className="bg-white border border-border rounded-2xl p-8 space-y-6">
+                            <div className="flex items-center gap-3 font-semibold text-lg">
+                                {error === 'revoked' || error === 'expired' ? <ShieldAlert className="text-amber-600" /> : <ShieldCheck className="text-green-600" />}
+                                {error === 'revoked' ? 'Certificate Revoked' : error === 'expired' ? 'Certificate Expired' : 'Certificate Verified'}
                             </div>
-                        )}
-                    </div>
-                )}
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div><span className="text-secondary">Code</span><p className="font-semibold">{displayCert.cert_code}</p></div>
+                                <div><span className="text-secondary">Name</span><p className="font-semibold">{displayCert.name}</p></div>
+                                <div><span className="text-secondary">College</span><p className="font-semibold flex items-center gap-2"><Building size={14} /> {displayCert.college}</p></div>
+                                {displayCert.batch && <div><span className="text-secondary">Year of Study</span><p className="font-semibold">{displayCert.batch}</p></div>}
+                                {displayCert.month && <div><span className="text-secondary">Batch</span><p className="font-semibold">{displayCert.month}</p></div>}
+                                {displayCert.department && <div><span className="text-secondary">Department</span><p className="font-semibold">{displayCert.department}</p></div>}
+                                {displayCert.role && <div><span className="text-secondary">Role</span><p className="font-semibold">{displayCert.role}</p></div>}
+                                <div><span className="text-secondary">Issue Date</span><p className="font-semibold flex items-center gap-2"><Calendar size={14} /> {formatDate(displayCert.issue_date)}</p></div>
+                                {displayCert.expiry_date && <div><span className="text-secondary">Expiry Date</span><p className="font-semibold">{formatDate(displayCert.expiry_date)}</p></div>}
+                            </div>
+
+                            {displayCert.pdf_url && (
+                                <div className="pt-2">
+                                    <a
+                                        href={displayCert.pdf_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-full"
+                                    >
+                                        <FileDown size={16} /> View Certificate PDF
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })()}
 
                 <div className="mt-8">
                     <Link to="/" className="text-accent font-semibold">Back to Homepage</Link>
