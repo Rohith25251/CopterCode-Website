@@ -174,6 +174,7 @@ const CertificateVerify = () => {
                         month: certificate.interns?.month || certificate.month,
                         department: certificate.interns?.department || certificate.department,
                         role: certificate.interns?.role || certificate.role,
+                        project: certificate.interns?.project || certificate.project,
                         issue_date: certificate.issue_date || certificate.interns?.date || certificate.created_at,
                         expiry_date: certificate.expiry_date,
                         pdf_url: certificate.pdf_url
@@ -186,13 +187,13 @@ const CertificateVerify = () => {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div><span className="text-secondary">Code</span><p className="font-semibold">{displayCert.cert_code}</p></div>
                                 <div><span className="text-secondary">Name</span><p className="font-semibold">{displayCert.name}</p></div>
                                 <div><span className="text-secondary">College</span><p className="font-semibold flex items-center gap-2"><Building size={14} /> {displayCert.college}</p></div>
                                 {displayCert.batch && <div><span className="text-secondary">Year of Study</span><p className="font-semibold">{displayCert.batch}</p></div>}
                                 {displayCert.month && <div><span className="text-secondary">Batch</span><p className="font-semibold">{displayCert.month}</p></div>}
                                 {displayCert.department && <div><span className="text-secondary">Department</span><p className="font-semibold">{displayCert.department}</p></div>}
                                 {displayCert.role && <div><span className="text-secondary">Role</span><p className="font-semibold">{displayCert.role}</p></div>}
+                                {displayCert.project && <div><span className="text-secondary">Project</span><p className="font-semibold">{displayCert.project}</p></div>}
                                 <div><span className="text-secondary">Issue Date</span><p className="font-semibold flex items-center gap-2"><Calendar size={14} /> {formatDate(displayCert.issue_date)}</p></div>
                                 {displayCert.expiry_date && <div><span className="text-secondary">Expiry Date</span><p className="font-semibold">{formatDate(displayCert.expiry_date)}</p></div>}
                             </div>
