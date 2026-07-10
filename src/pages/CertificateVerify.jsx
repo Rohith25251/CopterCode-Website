@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { Building, Calendar, FileDown, ShieldAlert, ShieldCheck, ShieldX } from 'lucide-react';
+import { 
+    Building, 
+    Calendar, 
+    FileDown, 
+    ShieldAlert, 
+    ShieldCheck, 
+    ShieldX, 
+    GraduationCap, 
+    ExternalLink, 
+    Sparkles, 
+    Briefcase 
+} from 'lucide-react';
 import SEO from '../components/SEO';
 import { hasSupabaseConfig, supabase } from '../lib/supabaseClient';
 
@@ -127,97 +138,325 @@ const CertificateVerify = () => {
         return d.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 
+    const displayCert = useMemo(() => {
+        if (!certificate) return null;
+        const internObj = Array.isArray(certificate.interns) ? certificate.interns[0] : certificate.interns;
+        return {
+            cert_code: certificate.cert_code,
+            name: internObj?.name || certificate.name,
+            college: internObj?.college || certificate.college,
+            year: internObj?.year || certificate.batch || certificate.year,
+            department: internObj?.department || certificate.department,
+            role: internObj?.role || certificate.role,
+            project: internObj?.project || certificate.project,
+            month: internObj?.month || certificate.month,
+            issue_date: formatDate(certificate.issue_date || internObj?.date || certificate.created_at),
+            expiry_date: certificate.expiry_date ? formatDate(certificate.expiry_date) : null
+        };
+    }, [certificate]);
+
+    const resolvedPdfUrl = useMemo(() => {
+        if (!certificate?.pdf_url) return '';
+        const marker = '/api/certificates/';
+        const index = certificate.pdf_url.indexOf(marker);
+        if (index !== -1) {
+            const path = certificate.pdf_url.substring(index);
+            if (verifyApiBaseUrl) {
+                return `${verifyApiBaseUrl}${path}`;
+            }
+        }
+        return certificate.pdf_url;
+    }, [certificate]);
+
     return (
-        <div className="min-h-screen bg-background text-primary py-12">
+        <div className="relative min-h-screen bg-[#faf9f6] text-zinc-800 font-sans pt-12 pb-20 px-6">
             <SEO
                 title={certificate ? `Certificate ${certificate.cert_code} Verification` : 'Certificate Verification'}
                 description="Validate CopterCode issued certificates using the QR code and certificate ID."
             />
 
-            <div className="container mx-auto px-6 max-w-3xl">
-                <div className="mb-8">
-                    <h1 className="text-3xl md:text-4xl font-display font-bold">Certificate Verification</h1>
+            {/* Background pattern */}
+            <div className="absolute inset-0 bg-[#faf9f6] pointer-events-none -z-10" />
+
+            <div className="max-w-3xl mx-auto mb-10 text-center">
+                <div className="inline-flex gap-2 items-center bg-white border border-zinc-200 px-4 py-1.5 rounded-2xl mb-4 shadow-sm">
+                    <Sparkles className="w-4 h-4 text-violet-600" />
+                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">CopterCode Certificate Registry</span>
                 </div>
+                <h1 className="text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-zinc-800 via-indigo-950 to-zinc-700">
+                    Credential Verification
+                </h1>
+                <p className="text-xs text-zinc-500 mt-2">
+                    Verify academic, project, and internship certificate codes securely.
+                </p>
+            </div>
 
-                {loading && (
-                    <div className="bg-white border border-border rounded-2xl p-8">Verifying certificate...</div>
-                )}
-
-                {!loading && error === 'config' && (
-                    <div className="bg-white border border-amber-200 rounded-2xl p-8">
-                        <div className="flex items-center gap-3 text-amber-700 font-semibold"><ShieldAlert size={20} /> Verification service is not configured</div>
-                        <p className="text-secondary mt-3">Set VITE_CERT_VERIFY_API_BASE_URL (recommended) or configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.</p>
+            {loading && (
+                <div className="flex flex-col items-center justify-center py-20 text-center bg-white border border-zinc-200 rounded-[32px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.03)] max-w-3xl mx-auto">
+                    <div className="relative w-12 h-12 mb-4">
+                        <div className="absolute inset-0 rounded-full border-4 border-violet-100" />
+                        <div className="absolute inset-0 rounded-full border-4 border-t-violet-500 animate-spin" />
                     </div>
-                )}
+                    <p className="text-xs font-semibold text-zinc-500">Verifying credential integrity...</p>
+                </div>
+            )}
 
-                {!loading && (error === 'missing' || error === 'not_found') && (
-                    <div className="bg-white border border-red-200 rounded-2xl p-8">
-                        <div className="flex items-center gap-3 text-red-700 font-semibold"><ShieldX size={20} /> Certificate not found</div>
-                        <p className="text-secondary mt-3">The QR code URL is invalid or the certificate code does not exist.</p>
+            {!loading && error === 'config' && (
+                <div className="max-w-md mx-auto bg-white border border-amber-200 rounded-[32px] p-8 text-center shadow-lg">
+                    <div className="inline-flex p-4 rounded-full bg-amber-50 border border-amber-200 text-amber-700 mb-6">
+                        <ShieldAlert className="w-12 h-12" />
                     </div>
-                )}
+                    <h2 className="text-xl font-black text-zinc-900">Verification service is not configured</h2>
+                    <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
+                        Set VITE_CERT_VERIFY_API_BASE_URL (recommended) or configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.
+                    </p>
+                </div>
+            )}
 
-                {!loading && error === 'unknown' && (
-                    <div className="bg-white border border-red-200 rounded-2xl p-8">
-                        <div className="flex items-center gap-3 text-red-700 font-semibold"><ShieldAlert size={20} /> Verification failed</div>
-                        <p className="text-secondary mt-3">Could not fetch certificate data. Try again after a few moments.</p>
+            {!loading && (error === 'missing' || error === 'not_found') && (
+                <div className="max-w-md mx-auto bg-white border border-zinc-200 rounded-[32px] p-8 text-center shadow-lg">
+                    <div className="inline-flex p-4 rounded-full bg-red-50 border border-red-150 text-red-600 mb-6">
+                        <ShieldX className="w-12 h-12" />
                     </div>
-                )}
+                    <h2 className="text-xl font-black text-zinc-900">Certificate Not Found</h2>
+                    <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
+                        The credential code specified does not match any certificate in our records. Please verify the URL or barcode scanner query.
+                    </p>
+                    <div className="mt-6 pt-6 border-t border-zinc-150">
+                        <span className="text-[10px] font-mono font-bold bg-zinc-50 text-zinc-600 px-3 py-1.5 rounded border border-zinc-200">
+                            QUERY ID: {certCode || "MISSING"}
+                        </span>
+                    </div>
+                </div>
+            )}
 
-                {!loading && certificate && (() => {
-                    const internObj = Array.isArray(certificate.interns) ? certificate.interns[0] : certificate.interns;
-                    const displayCert = {
-                        cert_code: certificate.cert_code,
-                        name: internObj?.name || certificate.name,
-                        college: internObj?.college || certificate.college,
-                        batch: internObj?.year || certificate.batch,
-                        month: internObj?.month || certificate.month,
-                        department: internObj?.department || certificate.department,
-                        role: internObj?.role || certificate.role,
-                        project: internObj?.project || certificate.project,
-                        issue_date: certificate.issue_date || internObj?.date || certificate.created_at,
-                        expiry_date: certificate.expiry_date,
-                        pdf_url: certificate.pdf_url
-                    };
-                    return (
-                        <div className="bg-white border border-border rounded-2xl p-8 space-y-6">
-                            <div className="flex items-center gap-3 font-semibold text-lg">
-                                {error === 'revoked' || error === 'expired' ? <ShieldAlert className="text-amber-600" /> : <ShieldCheck className="text-green-600" />}
-                                {error === 'revoked' ? 'Certificate Revoked' : error === 'expired' ? 'Certificate Expired' : 'Certificate Verified'}
+            {!loading && error === 'unknown' && (
+                <div className="max-w-md mx-auto bg-white border border-zinc-200 rounded-[32px] p-8 text-center shadow-lg">
+                    <div className="inline-flex p-4 rounded-full bg-red-50 border border-red-150 text-red-650 mb-6">
+                        <ShieldX className="w-12 h-12" />
+                    </div>
+                    <h2 className="text-xl font-black text-zinc-900">Verification failed</h2>
+                    <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
+                        Could not fetch certificate data. Try again after a few moments.
+                    </p>
+                </div>
+            )}
+
+            {!loading && error === 'revoked' && certificate && displayCert && (
+                <div className="max-w-lg mx-auto bg-white border border-red-200 rounded-[32px] p-8 text-center shadow-lg">
+                    <div className="inline-flex p-4 rounded-full bg-red-50 border border-red-200 text-red-600 mb-6">
+                        <ShieldAlert className="w-12 h-12" />
+                    </div>
+                    <h2 className="text-xl font-black text-red-600">Credential Revoked</h2>
+                    <p className="text-xs text-zinc-600 mt-2 leading-relaxed">
+                        This certificate (code: <span className="font-mono text-zinc-800 font-bold">{certificate.cert_code}</span>) has been explicitly revoked by the issuer and is no longer valid.
+                    </p>
+                    {certificate.revoke_reason && (
+                        <p className="text-xs text-red-500 italic mt-2 bg-red-50 border border-red-100 py-2.5 px-4 rounded-xl inline-block">
+                            Reason: {certificate.revoke_reason}
+                        </p>
+                    )}
+                </div>
+            )}
+
+            {!loading && error === 'expired' && certificate && displayCert && (
+                <div className="max-w-lg mx-auto bg-white border border-amber-200 rounded-[32px] p-8 text-center shadow-lg">
+                    <div className="inline-flex p-4 rounded-full bg-amber-50 border border-amber-200 text-amber-600 mb-6">
+                        <ShieldAlert className="w-12 h-12" />
+                    </div>
+                    <h2 className="text-xl font-black text-amber-700">Credential Expired</h2>
+                    <p className="text-xs text-zinc-555 mt-2 leading-relaxed">
+                        This certificate (code: <span className="font-mono text-zinc-800 font-bold">{certificate.cert_code}</span>) has passed its valid lifetime duration of <span className="font-bold text-amber-700">{formatDate(certificate.expiry_date)}</span>.
+                    </p>
+                </div>
+            )}
+
+            {!loading && !error && certificate && displayCert && (
+                <div className="max-w-3xl mx-auto space-y-6">
+                    {/* Verification Success Badge */}
+                    <div className="bg-white border border-emerald-500/30 rounded-[32px] p-6 md:p-8 shadow-lg relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+                        
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div className="flex items-center gap-4">
+                                <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-emerald-650 shrink-0">
+                                    <ShieldCheck className="w-10 h-10" />
+                                </div>
+                                <div>
+                                    <span className="text-[10px] font-extrabold tracking-wider bg-emerald-50 border border-emerald-150 text-emerald-700 px-2.5 py-0.5 rounded-full uppercase">
+                                        Verified Credential
+                                    </span>
+                                    <h2 className="text-xl md:text-2xl font-black text-zinc-900 mt-1.5">
+                                        Valid Certificate
+                                    </h2>
+                                    <p className="text-xs text-zinc-550 mt-0.5 font-mono">
+                                        Certificate Code: <span className="text-zinc-850 font-bold">{certificate.cert_code}</span>
+                                    </p>
+                                </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div><span className="text-secondary">Certificate ID</span><p className="font-semibold">{displayCert.cert_code}</p></div>
-                                <div><span className="text-secondary">Candidate Name</span><p className="font-semibold">{displayCert.name}</p></div>
-                                <div><span className="text-secondary">Institution</span><p className="font-semibold flex items-center gap-2"><Building size={14} /> {displayCert.college}</p></div>
-                                {displayCert.batch && <div><span className="text-secondary">Year</span><p className="font-semibold">{displayCert.batch}</p></div>}
-                                {displayCert.department && <div><span className="text-secondary">Department</span><p className="font-semibold">{displayCert.department}</p></div>}
-                                {displayCert.role && <div><span className="text-secondary">Domain</span><p className="font-semibold">{displayCert.role}</p></div>}
-                                {displayCert.project && <div><span className="text-secondary">Internship & Live Project Area</span><p className="font-semibold">{displayCert.project}</p></div>}
-                                {displayCert.month && <div><span className="text-secondary">Batch</span><p className="font-semibold">{displayCert.month}</p></div>}
-                                <div><span className="text-secondary">Date of Issue</span><p className="font-semibold flex items-center gap-2"><Calendar size={14} /> {formatDate(displayCert.issue_date)}</p></div>
-                                {displayCert.expiry_date && <div><span className="text-secondary">Expiry Date</span><p className="font-semibold">{formatDate(displayCert.expiry_date)}</p></div>}
+                            <div className="flex items-center gap-2 shrink-0">
+                                <a 
+                                    href={resolvedPdfUrl}
+                                    download
+                                    className="flex items-center gap-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold text-xs px-4 py-2.5 rounded-xl border border-zinc-200 shadow-sm transition-colors cursor-pointer"
+                                >
+                                    <FileDown className="w-4 h-4" /> Download PDF
+                                </a>
+                                <a 
+                                    href={resolvedPdfUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-505 hover:to-indigo-505 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all duration-300 cursor-pointer"
+                                >
+                                    <ExternalLink className="w-4 h-4" /> Open In Tab
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Detailed Metadata Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        {/* Certificate fields details */}
+                        <div className="md:col-span-5 bg-white border border-zinc-200 rounded-[32px] p-6 shadow-lg space-y-5">
+                            <h3 className="text-sm font-black text-zinc-500 border-b border-zinc-150 pb-3 uppercase tracking-wider">
+                                Credential Attributes
+                            </h3>
+
+                            {/* Candidate Name */}
+                            <div className="flex gap-3">
+                                <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                    <GraduationCap className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Candidate Name</span>
+                                    <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.name}</span>
+                                </div>
                             </div>
 
-                            {displayCert.pdf_url && (
-                                <div className="pt-2">
-                                    <a
-                                        href={displayCert.pdf_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-full"
-                                    >
-                                        <FileDown size={16} /> View Certificate PDF
-                                    </a>
+                            {/* Institution */}
+                            <div className="flex gap-3">
+                                <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                    <Building className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Institution</span>
+                                    <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.college}</span>
+                                </div>
+                            </div>
+
+                            {/* Year */}
+                            {displayCert.year && (
+                                <div className="flex gap-3">
+                                    <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                        <GraduationCap className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Year</span>
+                                        <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.year}</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Department */}
+                            {displayCert.department && (
+                                <div className="flex gap-3">
+                                    <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                        <GraduationCap className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Department</span>
+                                        <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.department}</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Domain */}
+                            {displayCert.role && (
+                                <div className="flex gap-3">
+                                    <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                        <Briefcase className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Domain</span>
+                                        <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.role}</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Internship & Live Project Area */}
+                            {displayCert.project && (
+                                <div className="flex gap-3">
+                                    <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                        <Briefcase className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Internship & Live Project Area</span>
+                                        <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.project}</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Batch */}
+                            {displayCert.month && (
+                                <div className="flex gap-3">
+                                    <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                        <Calendar className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Batch</span>
+                                        <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.month}</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Date of Issue */}
+                            <div className="flex gap-3">
+                                <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                    <Calendar className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Date of Issue</span>
+                                    <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.issue_date}</span>
+                                </div>
+                            </div>
+
+                            {/* Expiry Date */}
+                            {displayCert.expiry_date && (
+                                <div className="flex gap-3">
+                                    <div className="bg-zinc-100 p-2 rounded-xl text-zinc-650 shrink-0 h-10 w-10 flex items-center justify-center">
+                                        <Calendar className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Expiry Date</span>
+                                        <span className="text-sm font-bold text-zinc-800 leading-tight block">{displayCert.expiry_date}</span>
+                                    </div>
                                 </div>
                             )}
                         </div>
-                    );
-                })()}
 
-                <div className="mt-8">
-                    <Link to="/" className="text-accent font-semibold">Back to Homepage</Link>
+                        {/* PDF Live Embed */}
+                        <div className="md:col-span-7 bg-white border border-zinc-200 rounded-[32px] p-6 shadow-lg flex flex-col min-h-[400px]">
+                            <h3 className="text-sm font-black text-zinc-500 border-b border-zinc-150 pb-3 mb-4 uppercase tracking-wider">
+                                Document Preview
+                            </h3>
+                            
+                            <div className="flex-1 w-full bg-zinc-50 rounded-2xl overflow-hidden border border-zinc-200 relative group min-h-[350px]">
+                                <iframe 
+                                    src={`${resolvedPdfUrl}#toolbar=0`} 
+                                    className="w-full h-full border-0 absolute inset-0"
+                                    title="Certificate PDF Viewer"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            )}
+
+            <div className="max-w-3xl mx-auto mt-12 text-center">
+                <Link to="/" className="text-zinc-500 hover:text-zinc-800 font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer">
+                    Back to Homepage
+                </Link>
             </div>
         </div>
     );
