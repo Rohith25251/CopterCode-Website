@@ -180,10 +180,10 @@ const CertificateVerify = () => {
 
             <div className="max-w-3xl mx-auto mb-10 text-center">
                 <div className="inline-flex gap-2 items-center bg-white border border-zinc-200 px-4 py-1.5 rounded-2xl mb-4 shadow-sm">
-                    <Sparkles className="w-4 h-4 text-violet-600" />
+                    <Sparkles className="w-4 h-4 text-primary" />
                     <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">CopterCode Certificate Registry</span>
                 </div>
-                <h1 className="text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-zinc-800 via-indigo-950 to-zinc-700">
+                <h1 className="text-3xl font-black tracking-tight text-primary">
                     Credential Verification
                 </h1>
                 <p className="text-xs text-zinc-500 mt-2">
@@ -194,8 +194,8 @@ const CertificateVerify = () => {
             {loading && (
                 <div className="flex flex-col items-center justify-center py-20 text-center bg-white border border-zinc-200 rounded-[32px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.03)] max-w-3xl mx-auto">
                     <div className="relative w-12 h-12 mb-4">
-                        <div className="absolute inset-0 rounded-full border-4 border-violet-100" />
-                        <div className="absolute inset-0 rounded-full border-4 border-t-violet-500 animate-spin" />
+                        <div className="absolute inset-0 rounded-full border-4 border-slate-100" />
+                        <div className="absolute inset-0 rounded-full border-4 border-t-primary animate-spin" />
                     </div>
                     <p className="text-xs font-semibold text-zinc-500">Verifying credential integrity...</p>
                 </div>
@@ -307,7 +307,7 @@ const CertificateVerify = () => {
                                     href={resolvedPdfUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-505 hover:to-indigo-505 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all duration-300 cursor-pointer"
+                                    className="flex items-center gap-1.5 bg-primary hover:bg-accent-dark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all duration-300 cursor-pointer"
                                 >
                                     <ExternalLink className="w-4 h-4" /> Open In Tab
                                 </a>

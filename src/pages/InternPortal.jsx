@@ -96,7 +96,7 @@ const InternPortal = () => {
                 
                 {/* Branding Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-display font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600">
+                    <h1 className="text-4xl font-display font-extrabold tracking-tight text-primary">
                         Intern Certificate Portal
                     </h1>
                     <p className="text-secondary mt-2">
@@ -106,7 +106,7 @@ const InternPortal = () => {
 
                 {loading && (
                     <div className="bg-white border border-border rounded-3xl p-12 text-center shadow-lg">
-                        <div className="w-10 h-10 border-2 border-violet-200 border-t-violet-600 rounded-full animate-spin mx-auto mb-4" />
+                        <div className="w-10 h-10 border-2 border-slate-200 border-t-primary rounded-full animate-spin mx-auto mb-4" />
                         <p className="text-secondary font-medium">Retrieving credential records...</p>
                     </div>
                 )}
@@ -140,10 +140,10 @@ const InternPortal = () => {
                         
                         {/* Profile Details Card */}
                         <div className="bg-white border border-border rounded-3xl p-8 shadow-lg relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-48 h-48 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
+                            <div className="absolute top-0 right-0 w-48 h-48 bg-slate-500/5 rounded-full blur-3xl pointer-events-none" />
                             
                             <h2 className="text-lg font-bold text-zinc-800 border-b border-zinc-100 pb-4 mb-6 flex items-center gap-2.5">
-                                <User className="w-5 h-5 text-violet-500" /> Intern Profile
+                                <User className="w-5 h-5 text-primary" /> Intern Profile
                             </h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 text-sm">
@@ -218,7 +218,7 @@ const InternPortal = () => {
                         {/* Certificates Release Section */}
                         <div className="space-y-4">
                             <h2 className="text-lg font-bold text-zinc-800 flex items-center gap-2">
-                                <Award className="w-5 h-5 text-indigo-500" /> Issued Credentials
+                                <Award className="w-5 h-5 text-primary" /> Issued Credentials
                             </h2>
 
                             {certificates.length === 0 ? (
@@ -248,7 +248,7 @@ const InternPortal = () => {
                                                         href={downloadUrl}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex-1 text-center bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                                                        className="flex-1 text-center bg-primary hover:bg-accent-dark text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                                                     >
                                                         <FileDown className="w-4 h-4" /> Download PDF
                                                     </a>
