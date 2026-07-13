@@ -17,6 +17,36 @@ import { hasSupabaseConfig, supabase } from '../lib/supabaseClient';
 
 const verifyApiBaseUrl = (import.meta.env.VITE_CERT_VERIFY_API_BASE_URL || '').trim().replace(/\/$/, '');
 
+const parseCustomDate = (dateStr) => {
+    if (!dateStr) return null;
+    
+    // Check for DD.MM.YYYY format (e.g. 11.07.2026)
+    const dotMatch = dateStr.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (dotMatch) {
+        const day = parseInt(dotMatch[1], 10);
+        const month = parseInt(dotMatch[2], 10);
+        const year = parseInt(dotMatch[3], 10);
+        const d = new Date(year, month - 1, day);
+        if (!Number.isNaN(d.getTime())) return d;
+    }
+
+    // Check for DD/MM/YYYY format
+    const slashMatch = dateStr.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (slashMatch) {
+        const day = parseInt(slashMatch[1], 10);
+        const month = parseInt(slashMatch[2], 10);
+        const year = parseInt(slashMatch[3], 10);
+        const d = new Date(year, month - 1, day);
+        if (!Number.isNaN(d.getTime())) return d;
+    }
+
+    // Fallback to standard parsing
+    const d = new Date(dateStr);
+    if (!Number.isNaN(d.getTime())) return d;
+
+    return null;
+};
+
 const CertificateVerify = () => {
     const [searchParams] = useSearchParams();
     const { certCode: certCodeFromPath } = useParams();
@@ -117,9 +147,12 @@ const CertificateVerify = () => {
                     return;
                 }
 
-                if (cert.expiry_date && new Date(cert.expiry_date) < new Date()) {
-                    setError('expired');
-                    return;
+                if (cert.expiry_date) {
+                    const expiry = parseCustomDate(cert.expiry_date);
+                    if (expiry && expiry < new Date()) {
+                        setError('expired');
+                        return;
+                    }
                 }
             } catch {
                 setError('unknown');
@@ -133,8 +166,8 @@ const CertificateVerify = () => {
 
     const formatDate = (value) => {
         if (!value) return 'N/A';
-        const d = new Date(value);
-        if (Number.isNaN(d.getTime())) return value;
+        const d = parseCustomDate(value);
+        if (!d) return value;
         return d.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 

@@ -6,6 +6,36 @@ import { hasSupabaseConfig, supabase } from '../lib/supabaseClient';
 
 const verifyApiBaseUrl = (import.meta.env.VITE_CERT_VERIFY_API_BASE_URL || '').trim().replace(/\/$/, '');
 
+const parseCustomDate = (dateStr) => {
+    if (!dateStr) return null;
+    
+    // Check for DD.MM.YYYY format (e.g. 11.07.2026)
+    const dotMatch = dateStr.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (dotMatch) {
+        const day = parseInt(dotMatch[1], 10);
+        const month = parseInt(dotMatch[2], 10);
+        const year = parseInt(dotMatch[3], 10);
+        const d = new Date(year, month - 1, day);
+        if (!Number.isNaN(d.getTime())) return d;
+    }
+
+    // Check for DD/MM/YYYY format
+    const slashMatch = dateStr.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (slashMatch) {
+        const day = parseInt(slashMatch[1], 10);
+        const month = parseInt(slashMatch[2], 10);
+        const year = parseInt(slashMatch[3], 10);
+        const d = new Date(year, month - 1, day);
+        if (!Number.isNaN(d.getTime())) return d;
+    }
+
+    // Fallback to standard parsing
+    const d = new Date(dateStr);
+    if (!Number.isNaN(d.getTime())) return d;
+
+    return null;
+};
+
 const InternPortal = () => {
     const [searchParams] = useSearchParams();
     const internId = searchParams.get('id')?.trim();
@@ -260,15 +290,24 @@ const InternPortal = () => {
                                                             Verify Details
                                                         </a>
                                                     </div>
-                                                    <a
-                                                        href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(getCertLabel(cert.cert_type))}&organizationName=CopterCode&certUrl=${encodeURIComponent(`${window.location.origin}/verify?id=${cert.cert_code}`)}&certId=${encodeURIComponent(cert.cert_code)}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="w-full text-center bg-[#0077B5] hover:bg-[#006097] text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
-                                                    >
-                                                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                                                        Add Certification to LinkedIn
-                                                    </a>
+                                                    {(() => {
+                                                        const issueRaw = cert.issue_date || cert.date || cert.created_at || '';
+                                                        const issueDate = parseCustomDate(issueRaw);
+                                                        const issueYear = issueDate ? issueDate.getFullYear() : '';
+                                                        const issueMonth = issueDate ? issueDate.getMonth() + 1 : '';
+                                                        const linkedInUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(getCertLabel(cert.cert_type))}&organizationName=CopterCode&issueYear=${issueYear}&issueMonth=${issueMonth}&certUrl=${encodeURIComponent(`${window.location.origin}/verify?id=${cert.cert_code}`)}&certId=${encodeURIComponent(cert.cert_code)}`;
+                                                        return (
+                                                            <a
+                                                                href={linkedInUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="w-full text-center bg-[#0077B5] hover:bg-[#006097] text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                                                            >
+                                                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                                                Add Certification to LinkedIn
+                                                            </a>
+                                                        );
+                                                    })()}
                                                 </div>
                                             </div>
                                         );
