@@ -28,6 +28,7 @@ import { preloaderPage } from './schemas/preloaderPage'
 import { servicesPage } from './schemas/servicesPage'
 import { faviconPage } from './schemas/faviconPage'
 import { jobOpenRole } from './schemas/jobOpenRole'
+import { popupPage } from './schemas/popupPage'
 
 export default defineConfig({
     name: 'default',
@@ -41,6 +42,6 @@ export default defineConfig({
     plugins: [structureTool(), visionTool()],
 
     schema: {
-        types: [homePage, businessPage, businessVerticalsPage, projectsPage, navigation, footer, aboutPage, administrationPage, careersPage, contactPage, sustainabilityPage, investorsPage, eventsPage, hackathonPage, getInTouchPage, insightsPage, internshipPage, internshipRegistrationPage, technologiesPage, locationsPage, privacyPolicyPage, termsAndConditionsPage, scrollingAnnouncementBar, preloaderPage, servicesPage, faviconPage, jobOpenRole],
+        types: [homePage, businessPage, businessVerticalsPage, projectsPage, navigation, footer, aboutPage, administrationPage, careersPage, contactPage, sustainabilityPage, investorsPage, eventsPage, hackathonPage, getInTouchPage, insightsPage, internshipPage, internshipRegistrationPage, technologiesPage, locationsPage, privacyPolicyPage, termsAndConditionsPage, scrollingAnnouncementBar, preloaderPage, servicesPage, faviconPage, jobOpenRole, popupPage],
     },
 })

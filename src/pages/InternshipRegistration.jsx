@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useAnimationFrame } from "framer-motion";
 import OptimizedImage from "../components/OptimizedImage";
 import * as Lucide from "lucide-react";
 import { client, urlFor } from "../lib/sanity";
@@ -176,6 +176,77 @@ const InternshipRegistration = () => {
   const leftMarqueeItems = getMarqueeItems(leftPool);
   const rightMarqueeItems = getMarqueeItems(rightPool);
   const horizontalMarqueeItems = getMarqueeItems(internsPool);
+
+  const leftPoolHeight = leftPool.length * 352;
+  const rightPoolHeight = rightPool.length * 352;
+
+  const getSeamlessItems = (pool, minHeight = 4000) => {
+    if (!pool || pool.length === 0) return [];
+    let items = [...pool];
+    const itemHeight = 352;
+    const poolHeight = pool.length * itemHeight;
+    while (items.length * itemHeight < poolHeight + minHeight) {
+      items = [...items, ...pool];
+    }
+    return items;
+  };
+
+  const leftSeamless = getSeamlessItems(leftPool);
+  const rightSeamless = getSeamlessItems(rightPool);
+
+  const yLeft = useMotionValue(0);
+  const yRight = useMotionValue(-rightPoolHeight);
+
+  // Keep a mutable ref to hold up-to-date data for the useAnimationFrame loops (avoid stale closures)
+  const animStateRef = useRef({
+    leftPoolHeight,
+    rightPoolHeight,
+    isXl,
+    leftPoolLength: leftPool.length,
+    rightPoolLength: rightPool.length
+  });
+
+  useEffect(() => {
+    animStateRef.current = {
+      leftPoolHeight,
+      rightPoolHeight,
+      isXl,
+      leftPoolLength: leftPool.length,
+      rightPoolLength: rightPool.length
+    };
+    // Sync initial offset if pool heights update from Sanity fetch
+    yRight.set(-rightPoolHeight);
+  }, [leftPoolHeight, rightPoolHeight, isXl, leftPool.length, rightPool.length]);
+
+  useAnimationFrame((time, delta) => {
+    const state = animStateRef.current;
+    if (state.leftPoolLength > 0 && state.isXl) {
+      const safeDelta = Math.min(delta, 100);
+      const speed = 40; // Pixels per second
+      const moveBy = (speed * safeDelta) / 1000;
+      let newY = yLeft.get() - moveBy;
+
+      if (newY <= -state.leftPoolHeight) {
+        newY = 0;
+      }
+      yLeft.set(newY);
+    }
+  });
+
+  useAnimationFrame((time, delta) => {
+    const state = animStateRef.current;
+    if (state.rightPoolLength > 0 && state.isXl) {
+      const safeDelta = Math.min(delta, 100);
+      const speed = 40; // Pixels per second
+      const moveBy = (speed * safeDelta) / 1000;
+      let newY = yRight.get() + moveBy;
+
+      if (newY >= 0) {
+        newY = -state.rightPoolHeight;
+      }
+      yRight.set(newY);
+    }
+  });
 
 
   useEffect(() => {
@@ -567,12 +638,14 @@ const InternshipRegistration = () => {
           }
         }
         .marquee-up {
+          height: max-content;
           animation: marqueeUp 50s linear infinite;
           will-change: transform;
           transform: translate3d(0, 0, 0);
           backface-visibility: hidden;
         }
         .marquee-down {
+          height: max-content;
           animation: marqueeDown 50s linear infinite;
           will-change: transform;
           transform: translate3d(0, 0, 0);
@@ -702,22 +775,28 @@ const InternshipRegistration = () => {
           {/* Left Side Column */}
           {isXl && (
             <div className="hidden xl:flex absolute left-[-190px] top-0 bottom-0 w-72 overflow-hidden select-none pointer-events-none marquee-container justify-center">
-              <div className="flex flex-col gap-y-8 marquee-up pointer-events-auto py-4">
-                {leftMarqueeItems.map((item, idx) => (
+              <motion.div 
+                className="flex flex-col gap-y-8 pointer-events-auto py-4"
+                style={{ y: yLeft }}
+              >
+                {leftSeamless.map((item, idx) => (
                   <ScrollFadeCard key={idx} item={item} />
                 ))}
-              </div>
+              </motion.div>
             </div>
           )}
 
           {/* Right Side Column */}
           {isXl && (
             <div className="hidden xl:flex absolute right-[-190px] top-0 bottom-0 w-72 overflow-hidden select-none pointer-events-none marquee-container justify-center">
-              <div className="flex flex-col gap-y-8 marquee-down pointer-events-auto py-4">
-                {rightMarqueeItems.map((item, idx) => (
+              <motion.div 
+                className="flex flex-col gap-y-8 pointer-events-auto py-4"
+                style={{ y: yRight }}
+              >
+                {rightSeamless.map((item, idx) => (
                   <ScrollFadeCard key={idx} item={item} />
                 ))}
-              </div>
+              </motion.div>
             </div>
           )}
 

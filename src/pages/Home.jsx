@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import YouTube from 'react-youtube';
 import Hero from '../components/Hero';
 import ImpactTabs from '../components/ImpactTabs';
-import { ArrowRight, ChevronLeft, ChevronRight, Calendar, MapPin, Clock, Users, Zap, Globe, Heart, GraduationCap, Briefcase, Leaf, Shield, Code, Sun, Star, BarChart, FileText, PieChart, CheckCircle, Cpu, Server, Activity } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Calendar, MapPin, Clock, Users, Zap, Globe, Heart, GraduationCap, Briefcase, Leaf, Shield, Code, Sun, Star, BarChart, FileText, PieChart, CheckCircle, Cpu, Server, Activity, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import SEO from '../components/SEO';
@@ -222,10 +222,53 @@ const FALLBACK_SCROLLING_BAR = {
     textColor: '#ffffff'
 };
 
+let hasSeenDisclaimerGlobal = false;
+
 const Home = () => {
     useScrollToTop(); // Force scroll to top on mount
 
     const [currentTestimonial, setCurrentTestimonial] = useState(0);
+    const [showAnnouncement, setShowAnnouncement] = useState(false);
+    const [popupConfig, setPopupConfig] = useState({ isEnabled: true, delay: 2.5, imageUrl: null });
+
+    // Fetch Sanity Popup Config
+    useEffect(() => {
+        const fetchPopupConfig = async () => {
+            try {
+                const query = `*[_type == "popupPage"][0]{
+                    isEnabled,
+                    delay,
+                    "imageUrl": image.asset->url
+                }`;
+                const data = await client.fetch(query);
+                if (data) {
+                    setPopupConfig({
+                        isEnabled: data.isEnabled !== false,
+                        delay: typeof data.delay === 'number' ? data.delay : 2.5,
+                        imageUrl: data.imageUrl || null
+                    });
+                }
+            } catch (err) {
+                console.error("Failed to fetch Sanity popup configuration:", err);
+            }
+        };
+        fetchPopupConfig();
+    }, []);
+
+    // Popup Announcement logic: show only on load/reload, do not show on internal route changes
+    useEffect(() => {
+        if (!hasSeenDisclaimerGlobal && popupConfig.isEnabled) {
+            const timer = setTimeout(() => {
+                setShowAnnouncement(true);
+            }, popupConfig.delay * 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [popupConfig]);
+
+    const closeAnnouncement = () => {
+        setShowAnnouncement(false);
+        hasSeenDisclaimerGlobal = true;
+    };
     const HACKATHON_CAROUSEL_IMAGES = [
         "/_optimized/mediafiles/hackathons/hackathon_drones.webp",
         "/_optimized/mediafiles/hackathons/hackathon_ai.webp",
@@ -747,6 +790,42 @@ const Home = () => {
 
     return (
         <div className="bg-background text-primary selection:bg-accent selection:text-white">
+            <AnimatePresence>
+                {showAnnouncement && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={closeAnnouncement}
+                        className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 cursor-pointer"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="relative w-full max-w-[90vw] sm:max-w-[480px] md:max-w-[550px] aspect-square rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border border-white/10"
+                            style={{ willChange: "transform, opacity" }}
+                        >
+                            <button
+                                onClick={closeAnnouncement}
+                                className="absolute top-4 right-4 bg-black/60 hover:bg-black/95 text-white rounded-full p-2.5 backdrop-blur-md transition-all duration-300 z-50 hover:scale-110 shadow-lg border border-white/10 cursor-pointer"
+                                aria-label="Close Announcement"
+                            >
+                                <X size={18} strokeWidth={2.5} />
+                            </button>
+                            <img
+                                src={popupConfig.imageUrl || "/_optimized/mediafiles/announcement.svg"}
+                                alt="Announcement"
+                                className="w-full h-full object-cover select-none pointer-events-none"
+                                loading="eager"
+                                decoding="async"
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <SEO
                 title={homeData?.seo?.metaTitle || "CopterCode | Drone Tech, AI & Digital Solutions"}
                 description={homeData?.seo?.metaDescription || "CopterCode delivers cutting-edge drone technology, AI automation, ERP systems, digital services, cybersecurity, sustainable energy, and innovative tech solutions."}
