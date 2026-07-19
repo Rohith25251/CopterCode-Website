@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useMotionValue, useAnimationFrame } from "fram
 import OptimizedImage from "../components/OptimizedImage";
 import * as Lucide from "lucide-react";
 import { client, urlFor } from "../lib/sanity";
+import { supabase, hasSupabaseConfig } from "../lib/supabaseClient";
 import {
   User,
   Phone,
@@ -306,7 +307,6 @@ const InternshipRegistration = () => {
           supportTitle: reg.support?.title,
           supportChannels: reg.support?.channels,
           formHeading: reg.registrationForm?.heading,
-          formEndpoint: reg.registrationForm?.endpoint,
           formFields: reg.registrationForm?.fieldsConfig,
           formElectives: reg.registrationForm?.electivesSection,
           formBatches: reg.registrationForm?.batchesSection,
@@ -388,7 +388,6 @@ const InternshipRegistration = () => {
   ];
 
   const formHeading = sanityData?.formHeading || "Internship Registration Form";
-  const formEndpoint = sanityData?.formEndpoint || "https://submitbox.app/api/f/ce6d8a87-b339-4e8b-82c8-1816d60fe69c";
 
   const nameLabel = sanityData?.formFields?.nameLabel || "Student Name (Full Name)";
   const namePlaceholder = sanityData?.formFields?.namePlaceholder || "Rohith Kumar";
@@ -426,6 +425,7 @@ const InternshipRegistration = () => {
   const batchesLabel = sanityData?.formBatches?.label || "Select Preferred Batch";
   const batchesNote = sanityData?.formBatches?.note || "Note: After The Semester Examination Batch Will Start";
   const batchesOptions = (sanityData?.formBatches?.options?.length > 0) ? sanityData.formBatches.options : [
+    { value: "April - May", label: "April - May" },
     { value: "November - December", label: "November - December" },
     { value: "January - February", label: "January - February" },
     { value: "June - July", label: "June - July" }
@@ -557,51 +557,42 @@ const InternshipRegistration = () => {
     setIsSubmitting(true);
 
     try {
-      // Assemble structured data payload
-      const payload = {
-        name: formData.studentName.trim(),
-        email: formData.email.trim(),
-        "Form Type": "Internship Registration",
-        "Student Name": formData.studentName.trim(),
-        "WhatsApp Contact": formData.contactNumber.trim(),
-        "Email Address": formData.email.trim(),
-        "College Name": formData.collegeName.trim(),
-        "Preferable Elective": formData.elective,
-        "Preferred Batch": formData.batch,
-        "Department/Branch": formData.branch === "Other" ? `Other: ${formData.customBranch.trim()}` : formData.branch,
-        "Year of Study": formData.year,
-        "Date of Birth": formData.dob,
-        "Residential Address": formData.address.trim(),
-        "Internship Period": [
-          formData.period1Month ? "1 Month - Offline & Hybrid" : "",
-          formData.period3Month ? "3 Month - Offline & Hybrid" : ""
-        ].filter(Boolean).join(", "),
-        "Placement Support Interest": formData.placementInterest === "yes" ? "Yes" : "No",
-        "Outcomes Acknowledged": "Live Project, Internship Certificate, Experience Letter, LOR",
-        "Registration Date": new Date().toLocaleString()
-      };
+      if (!hasSupabaseConfig || !supabase) {
+        throw new Error("Registration service is temporarily unavailable. Please try again later.");
+      }
 
-      const response = await fetch(
-        formEndpoint,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      // Insert into Supabase table
+      const { error: sbError } = await supabase
+        .from("internship_registration")
+        .insert({
+          student_name: formData.studentName.trim(),
+          whatsapp_contact: formData.contactNumber.trim(),
+          email_address: formData.email.trim(),
+          college_name: formData.collegeName.trim(),
+          preferable_elective: formData.elective,
+          preferred_batch: formData.batch,
+          department_branch: formData.branch === "Other" ? `Other: ${formData.customBranch.trim()}` : formData.branch,
+          year_of_study: formData.year,
+          date_of_birth: formData.dob,
+          residential_address: formData.address.trim(),
+          internship_period: [
+            formData.period1Month ? "1 Month" : "",
+            formData.period3Month ? "3 Month" : ""
+          ].filter(Boolean).join(", "),
+          placement_support_interest: formData.placementInterest === "yes" ? "Yes" : "No",
+          registration_date: new Date().toISOString()
+        });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to submit registration. Please try again.");
+      if (sbError) {
+        console.error("Supabase registration insert error:", sbError);
+        throw new Error(sbError.message || "Failed to save registration details.");
       }
 
       setSubmitStatus("success");
       window.scrollTo({ top: document.getElementById("registration-container").offsetTop - 80, behavior: "smooth" });
     } catch (err) {
       console.error("Registration submission error:", err);
+      setValidationError(err.message || "An unexpected error occurred. Please try again.");
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);

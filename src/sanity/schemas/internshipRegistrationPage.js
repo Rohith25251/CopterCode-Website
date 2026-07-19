@@ -150,7 +150,6 @@ export const internshipRegistrationPage = {
             type: 'object',
             fields: [
                 { name: 'heading', type: 'string', title: 'Form Heading', initialValue: 'Internship Registration Form' },
-                { name: 'endpoint', type: 'string', title: 'Submitbox App POST Endpoint', initialValue: 'https://submitbox.app/api/f/f2babe72-c161-4d4d-9e81-b2b70953c0c0', description: 'API endpoint where form submissions are routed' },
                 // Labels & Placeholders
                 {
                     name: 'fieldsConfig',
@@ -158,13 +157,13 @@ export const internshipRegistrationPage = {
                     type: 'object',
                     fields: [
                         { name: 'nameLabel', type: 'string', title: 'Name Input Label', initialValue: 'Student Name (Full Name)' },
-                        { name: 'namePlaceholder', type: 'string', title: 'Name Placeholder', initialValue: 'e.g. Rohith Kumar' },
+                        { name: 'namePlaceholder', type: 'string', title: 'Name Placeholder', initialValue: 'Rohith Kumar' },
                         { name: 'whatsappLabel', type: 'string', title: 'WhatsApp Input Label', initialValue: 'WhatsApp Contact' },
-                        { name: 'whatsappPlaceholder', type: 'string', title: 'WhatsApp Placeholder', initialValue: 'e.g. +91 8072193600' },
+                        { name: 'whatsappPlaceholder', type: 'string', title: 'WhatsApp Placeholder', initialValue: '8072193600' },
                         { name: 'emailLabel', type: 'string', title: 'Email Input Label', initialValue: 'Email Address' },
-                        { name: 'emailPlaceholder', type: 'string', title: 'Email Placeholder', initialValue: 'e.g. student@college.edu' },
+                        { name: 'emailPlaceholder', type: 'string', title: 'Email Placeholder', initialValue: 'student@college.edu' },
                         { name: 'collegeLabel', type: 'string', title: 'College Input Label', initialValue: 'College Name' },
-                        { name: 'collegePlaceholder', type: 'string', title: 'College Placeholder', initialValue: 'e.g. IIT Madras' },
+                        { name: 'collegePlaceholder', type: 'string', title: 'College Placeholder', initialValue: 'IIT Madras' },
                         { name: 'dobLabel', type: 'string', title: 'DOB Input Label', initialValue: 'Date of Birth' },
                         { name: 'addressLabel', type: 'string', title: 'Address Input Label', initialValue: 'Address' },
                         { name: 'addressPlaceholder', type: 'string', title: 'Address Placeholder', initialValue: 'Please enter your full communication address' }
@@ -231,6 +230,7 @@ export const internshipRegistrationPage = {
                                 }
                             ],
                             initialValue: [
+                                { value: 'April - May', label: 'April - May' },
                                 { value: 'November - December', label: 'November - December' },
                                 { value: 'January - February', label: 'January - February' },
                                 { value: 'June - July', label: 'June - July' }

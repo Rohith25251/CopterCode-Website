@@ -63,7 +63,9 @@ const Internship = () => {
           partnersSection: data.partnersSection,
         });
       }
-    }).catch(console.error);
+    }).catch((err) => {
+      console.error("❌ Error fetching internship page data from Sanity:", err.message || err);
+    });
   }, []);
 
   const seoTitle = sanityData?.seo?.metaTitle || "Internship Programme | Real-World Tech Experience";

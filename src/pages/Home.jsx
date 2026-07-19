@@ -816,7 +816,7 @@ const Home = () => {
                                 <X size={18} strokeWidth={2.5} />
                             </button>
                             <img
-                                src={popupConfig.imageUrl || "/_optimized/mediafiles/announcement.svg"}
+                                src={popupConfig.imageUrl || "/_optimized/announcement.webp"}
                                 alt="Announcement"
                                 className="w-full h-full object-cover select-none pointer-events-none"
                                 loading="eager"

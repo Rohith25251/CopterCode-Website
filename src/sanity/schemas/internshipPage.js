@@ -16,8 +16,8 @@ export const internshipPage = {
             title: 'SEO Settings',
             type: 'object',
             fields: [
-                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Internship | Real-World Tech Experience' },
-                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'CopterCode internship program offers real-world experience in drone technology, AI, cybersecurity, software development, and renewable energy for students.' },
+                { name: 'metaTitle', type: 'string', title: 'Meta Title', initialValue: 'Internship Programme | Real-World Tech Experience' },
+                { name: 'metaDescription', type: 'text', title: 'Meta Description', initialValue: 'CopterCode internship program provides real-world exposure to drone technology, AI, cybersecurity, software development, IoT, and renewable energy for college students.' },
                 { name: 'keywords', type: 'string', title: 'Keywords', initialValue: 'internship program, drone technology, AI internship, cybersecurity training, software development, student internship, tech training' }
             ]
         },
@@ -152,9 +152,9 @@ export const internshipPage = {
                         }
                     ],
                     initialValue: [
-                        { stepNumber: '01', title: 'Drop the Mic (and Resume)', description: 'Fill out the form in minutes. It’s the easiest thing you’ll do all day.' },
-                        { stepNumber: '02', title: 'Vibe Check', description: 'We’ll reach out for a casual chat. Let’s see how our goals align!' },
-                        { stepNumber: '03', title: 'Secure the Bag', description: 'Offer letter incoming! It’s time to make it official and start something great.' }
+                        { stepNumber: '01', title: 'Show Us Your Spark!', description: 'Fill out the quick form, and let your brilliance shine. No stress, just the basics!' },
+                        { stepNumber: '02', title: 'Let’s Connect & Chat!', description: 'Think of this as a relaxed coffee chat. We can\'t wait to hear your story and learn about your unique talents.' },
+                        { stepNumber: '03', title: 'Welcome to the Team!', description: 'Hooray! Grab your offer letter and get ready to kickstart an amazing internship journey with us.' }
                     ]
                 }
             ]
