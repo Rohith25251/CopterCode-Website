@@ -969,6 +969,8 @@ const InternshipRegistration = () => {
 
                     <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-left space-y-4 text-sm font-semibold text-slate-700">
                       <p className="font-extrabold text-slate-900 border-b border-slate-200 pb-2.5">{successSummaryTitle}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">STUDENT NAME</span> {formData.studentName}</p>
+                      <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">COLLEGE NAME</span> {formData.collegeName}</p>
                       <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successWhatsappLabel}</span> {formData.contactNumber}</p>
                       <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successEmailLabel}</span> {formData.email}</p>
                       <p><span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-0.5">{successBranchLabel}</span> {formData.branch === "Other" ? formData.customBranch : formData.branch}</p>
