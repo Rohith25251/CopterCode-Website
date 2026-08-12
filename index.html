@@ -15,35 +15,74 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://coptercode.com/" />
+  <meta property="og:url" content="https://coptercode.co.in/" />
   <meta property="og:title" content="CopterCode | Industrial Automation, Drones & Enterprise AI" />
   <meta property="og:description"
     content="Unlock the power of Drone Tech & AI with CopterCode. We bridge Industrial Automation and Enterprise Software Intelligence to future-proof your business." />
-  <meta property="og:image" content="https://coptercode.com/mediafiles/Home/IMG_1851.jpg" />
+  <meta property="og:image" content="https://coptercode.co.in/mediafiles/Home/IMG_1851.jpg" />
   <meta property="og:site_name" content="CopterCode" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://coptercode.com/" />
+  <meta property="twitter:url" content="https://coptercode.co.in/" />
   <meta property="twitter:title" content="CopterCode | Industrial Automation, Drones & Enterprise AI" />
   <meta property="twitter:description"
     content="Leading Industrial Automation & Enterprise AI solutions. Expert in Drone Tech, custom software, and digital transformation." />
-  <meta property="twitter:image" content="https://coptercode.com/mediafiles/Home/IMG_1851.jpg" />
+  <meta property="twitter:image" content="https://coptercode.co.in/mediafiles/Home/IMG_1851.jpg" />
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "CopterCode",
-      "url": "https://coptercode.com",
-      "logo": "https://coptercode.com/mediafiles/Coptercode Logo.png",
-      "sameAs": [
-        "https://www.linkedin.com/company/coptercode",
-        "https://twitter.com/coptercode"
-      ],
-      "description": "Leading Industrial Automation & Enterprise AI solutions."
-    }
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.coptercode.co.in/#organization",
+        "name": "CopterCode",
+        "alternateName": "CopterCode",
+        "url": "https://www.coptercode.co.in",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.coptercode.co.in/mediafiles/Coptercode_Logo.svg"
+        },
+        "description": "CopterCode is a Chennai-based technology company specializing in software development, drone technology, cybersecurity, cloud computing, AI solutions, ERP systems, and industry-focused internship programs.",
+        "foundingDate": "2019",
+        "founder": {
+          "@id": "https://www.coptercode.co.in/founder#person"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chennai",
+          "addressRegion": "Tamil Nadu",
+          "addressCountry": "India"
+        },
+        "sameAs": [
+          "https://in.linkedin.com/company/coptercode",
+          "https://www.instagram.com/coptercode/",
+          "https://www.facebook.com/p/Copter-Code-61575029495479/"
+        ]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.coptercode.co.in/founder#person",
+        "name": "Karthikeyan Sundaresan",
+        "jobTitle": "Founder & CEO",
+        "worksFor": {
+          "@id": "https://www.coptercode.co.in/#organization"
+        },
+        "url": "https://www.coptercode.co.in/founder"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.coptercode.co.in/#website",
+        "url": "https://www.coptercode.co.in",
+        "name": "CopterCode",
+        "publisher": {
+          "@id": "https://www.coptercode.co.in/#organization"
+        }
+      }
+    ]
+  }
   </script>
 </head>
 

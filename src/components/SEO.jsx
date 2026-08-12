@@ -26,7 +26,7 @@ const SEO = ({
         const defaultDescription = "Unlock the power of Drone Tech & AI with CopterCode. We bridge Industrial Automation and Enterprise Software Intelligence to future-proof your business.";
 
         const currentUrl = window.location.href;
-        const defaultImage = "https://coptercode.com/mediafiles/Coptercode Logo.png"; // Fallback image
+        const defaultImage = "https://www.coptercode.co.in/mediafiles/Coptercode_Logo.svg"; // Fallback image
 
         // --- TITLES & DESCRIPTIONS ---
         const finalTitle = title ? `${title} | ${siteTitle}` : defaultTitle;
@@ -55,7 +55,7 @@ const SEO = ({
         } else {
             // Auto-generate: Remove trailing slash if present (except for root) to avoid duplicates like /about/ vs /about
             const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/$/, "");
-            canonicalHref = `https://coptercode.com${pathname}`;
+            canonicalHref = `https://www.coptercode.co.in${pathname}`;
         }
 
         linkCanonical.setAttribute('href', canonicalHref);
@@ -74,21 +74,20 @@ const SEO = ({
         setMetaTag('name', 'twitter:description', twitterDescription || finalDescription);
         setMetaTag('name', 'twitter:image', twitterImage || finalImage);
 
-        // 6. Structured Data (JSON-LD) - Organization + Breadcrumbs
+        // 6. Structured Data (JSON-LD) - Organization + Founder + Website + Breadcrumbs
         
         // Breadcrumb Schema for Sitelinks
         const pathSegments = location.pathname.split('/').filter(Boolean);
         const breadcrumbItems = [
-          { position: 1, name: 'Home', url: 'https://coptercode.com' },
+          { position: 1, name: 'Home', url: 'https://www.coptercode.co.in' },
           ...pathSegments.map((segment, idx) => ({
             position: idx + 2,
             name: segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' '),
-            url: `https://coptercode.com/${pathSegments.slice(0, idx + 1).join('/')}`
+            url: `https://www.coptercode.co.in/${pathSegments.slice(0, idx + 1).join('/')}`
           }))
         ];
 
         const breadcrumbSchema = {
-            "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": breadcrumbItems.map(item => ({
                 "@type": "ListItem",
@@ -99,19 +98,51 @@ const SEO = ({
         };
 
         const organizationSchema = {
-            "@context": "https://schema.org",
             "@type": "Organization",
+            "@id": "https://www.coptercode.co.in/#organization",
             "name": "CopterCode",
-            "url": "https://coptercode.com",
-            "logo": "https://coptercode.com/mediafiles/Coptercode Logo.png",
+            "alternateName": "CopterCode",
+            "url": "https://www.coptercode.co.in",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.coptercode.co.in/mediafiles/Coptercode_Logo.svg"
+            },
+            "description": "CopterCode is a Chennai-based technology company specializing in software development, drone technology, cybersecurity, cloud computing, AI solutions, ERP systems, and industry-focused internship programs.",
+            "foundingDate": "2019",
+            "founder": {
+                "@id": "https://www.coptercode.co.in/founder#person"
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Chennai",
+                "addressRegion": "Tamil Nadu",
+                "addressCountry": "India"
+            },
             "sameAs": [
-                "https://www.linkedin.com/company/coptercode",
-                "https://twitter.com/coptercode"
-            ],
-            "description": defaultDescription,
-            "potentialAction": {
-                "@type": "ViewAction",
-                "url": location.pathname
+                "https://in.linkedin.com/company/coptercode",
+                "https://www.instagram.com/coptercode/",
+                "https://www.facebook.com/p/Copter-Code-61575029495479/"
+            ]
+        };
+
+        const personSchema = {
+            "@type": "Person",
+            "@id": "https://www.coptercode.co.in/founder#person",
+            "name": "Karthikeyan Sundaresan",
+            "jobTitle": "Founder & CEO",
+            "worksFor": {
+                "@id": "https://www.coptercode.co.in/#organization"
+            },
+            "url": "https://www.coptercode.co.in/founder"
+        };
+
+        const websiteSchema = {
+            "@type": "WebSite",
+            "@id": "https://www.coptercode.co.in/#website",
+            "url": "https://www.coptercode.co.in",
+            "name": "CopterCode",
+            "publisher": {
+                "@id": "https://www.coptercode.co.in/#organization"
             }
         };
 
@@ -122,10 +153,10 @@ const SEO = ({
             scriptSchema.type = 'application/ld+json';
             document.head.appendChild(scriptSchema);
         }
-        // Include both Organization and Breadcrumb schemas
+        // Include Organization, Founder, Website and Breadcrumb schemas in Graph
         scriptSchema.text = JSON.stringify({
             "@context": "https://schema.org",
-            "@graph": [organizationSchema, breadcrumbSchema]
+            "@graph": [organizationSchema, personSchema, websiteSchema, breadcrumbSchema]
         });
 
     }, [title, description, ogTitle, ogDescription, ogUrl, ogImage, twitterTitle, twitterDescription, twitterImage, keywords, canonicalUrl, location]);
