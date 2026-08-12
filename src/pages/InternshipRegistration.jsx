@@ -515,28 +515,39 @@ const InternshipRegistration = () => {
     setValidationError("");
     setSubmitStatus(null);
 
+    const scrollToFormSection = () => {
+      const el = document.getElementById("form-section");
+      if (el) {
+        const absoluteTop = el.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: absoluteTop - 80, behavior: "smooth" });
+      }
+    };
+
     // Validate Checkbox Group (At least one duration selected)
     if (!formData.period1Month && !formData.period3Month) {
       setValidationError("Please select at least one Internship & Project Period option.");
-      window.scrollTo({ top: document.getElementById("form-section").offsetTop - 100, behavior: "smooth" });
+      scrollToFormSection();
       return;
     }
 
     // Validate Branch
     if (!formData.branch) {
       setValidationError("Please select your Branch / Department.");
+      scrollToFormSection();
       return;
     }
 
     // Validate Custom Branch if "Other" is selected
     if (formData.branch === "Other" && !formData.customBranch.trim()) {
       setValidationError("Please specify your Branch / Department in the custom field.");
+      scrollToFormSection();
       return;
     }
 
     // Validate Year of Study
     if (!formData.year) {
       setValidationError("Please select your Year of Study.");
+      scrollToFormSection();
       return;
     }
 
@@ -544,6 +555,7 @@ const InternshipRegistration = () => {
     if (formData.dob) {
       if (formData.dob > maxDob || formData.dob < minDob) {
         setValidationError(`Date of Birth must be between ${minDob} and ${maxDob}.`);
+        scrollToFormSection();
         return;
       }
     }
@@ -551,6 +563,7 @@ const InternshipRegistration = () => {
     // Validate Terms & Conditions confirmation
     if (!formData.confirmTerms) {
       setValidationError("You must confirm that you agree to all terms and conditions to proceed.");
+      scrollToFormSection();
       return;
     }
 
@@ -589,11 +602,16 @@ const InternshipRegistration = () => {
       }
 
       setSubmitStatus("success");
-      window.scrollTo({ top: document.getElementById("registration-container").offsetTop - 80, behavior: "smooth" });
+      scrollToFormSection();
     } catch (err) {
       console.error("Registration submission error:", err);
-      setValidationError(err.message || "An unexpected error occurred. Please try again.");
+      const isNetworkError = err.message?.toLowerCase().includes("fetch") || 
+                             err.message?.toLowerCase().includes("network") || 
+                             err.message?.toLowerCase().includes("failed to fetch") ||
+                             err.message?.toLowerCase().includes("dns");
+      setValidationError(isNetworkError ? "Failed to submit. Please check your network connection and try again." : (err.message || "An unexpected error occurred. Please try again."));
       setSubmitStatus("error");
+      scrollToFormSection();
     } finally {
       setIsSubmitting(false);
     }
@@ -1540,7 +1558,7 @@ const InternshipRegistration = () => {
 
                       {/* Display submit error status */}
                       <AnimatePresence>
-                        {submitStatus === "error" && (
+                        {submitStatus === "error" && !validationError && (
                           <motion.div
                             initial={{ opacity: 0, height: 0, marginTop: 0 }}
                             animate={{ opacity: 1, height: "auto", marginTop: 16 }}

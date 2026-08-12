@@ -62,28 +62,109 @@ const Projects = () => {
     heroSubtitle: "A showcase of our technical prowess and the results we deliver for our clients.",
     projects: [
       {
-        title: "Autonomous Drone Surveillance",
-        category: "AI & Embedded Systems",
-        description: "A real-time monitoring system for agricultural drones using computer vision to detect crop health issues.",
-        iconName: "Cpu",
+        title: "Murgdur",
+        category: "Luxury E-Commerce",
+        description: "A premium bespoke e-commerce platform offering luxury royal fashion, heritage clothing, and custom accessories for modern royalty.",
+        iconName: "globe",
+        link: "https://murgdur.com",
       },
       {
-        title: "FinTech Trading Platform",
-        category: "Web & Cloud",
-        description: "High-frequency trading dashboard with real-time data visualization and sub-millisecond latency execution.",
-        iconName: "Cloud",
+        title: "Conexio",
+        category: "Enterprise Communication",
+        description: "A real-time unified communication and collaborative chat application designed for teams and client interactions.",
+        iconName: "messageSquare",
+        link: "https://chat.coptercode.co.in",
       },
       {
-        title: "Smart City Traffic Management",
-        category: "IoT & Big Data",
-        description: "Centralized control system for traffic lights optimized by AI algorithms reducing congestion by 30%.",
-        iconName: "Database",
+        title: "Pupil Space",
+        category: "EdTech & LMS",
+        description: "An advanced learning management system for course creation, student enrollment, tracking, and interactive learning.",
+        iconName: "graduationCap",
+        link: "https://lms.coptercode.co.in",
       },
       {
-        title: "Telehealth Portal",
-        category: "SaaS",
-        description: "HIPAA-compliant telemedicine platform connecting patients with specialists via secure video calls.",
-        iconName: "Layout",
+        title: "Campus ERP",
+        category: "Enterprise Resource Planning",
+        description: "A comprehensive university administration platform managing admissions, fees, scheduling, grading, and resources.",
+        iconName: "building",
+        link: "https://erp.coptercode.co.in",
+      },
+      {
+        title: "NoteAI",
+        category: "Artificial Intelligence",
+        description: "An intelligent note-taking application powered by generative AI to summarize, organize, and query notes.",
+        iconName: "lightbulb",
+        link: "https://notes.coptercode.co.in",
+      },
+      {
+        title: "Vistream",
+        category: "Media & Streaming",
+        description: "A high-performance live video streaming and content delivery platform with low latency and real-time interactive widgets.",
+        iconName: "radio",
+        link: "https://vistream.coptercode.co.in",
+      },
+      {
+        title: "MeetMind AI",
+        category: "Artificial Intelligence",
+        description: "An automated meeting assistant that records, transcribes, and extracts key action items using AI.",
+        iconName: "users",
+        link: "https://meet.coptercode.co.in",
+      },
+      {
+        title: "Internship Management",
+        category: "Human Resources",
+        description: "A centralized portal for student onboarding, daily progress tracking, task assignment, and completion certification.",
+        iconName: "shieldCheck",
+        link: "https://intern.coptercode.co.in",
+      },
+      {
+        title: "Accordify",
+        category: "Legal & Fintech",
+        description: "A smart digital agreement platform allowing electronic signatures, automated contract verification, and secure storage.",
+        iconName: "handshake",
+        link: "https://accordify.coptercode.co.in",
+      },
+      {
+        title: "THE BILL BOOK",
+        category: "Fintech & Invoicing",
+        description: "An intuitive invoicing software for micro, small, and medium businesses to manage invoices, payments, and expenses.",
+        iconName: "chart",
+        link: "https://invoice.coptercode.co.in",
+      },
+      {
+        title: "PhotoToolkit",
+        category: "Utility Tools",
+        description: "A comprehensive web-based image manipulation toolkit for bulk resizing, cropping, compression, and file-format conversion.",
+        iconName: "layout",
+        link: "https://photo-toolkit.coptercode.co.in",
+      },
+      {
+        title: "ResumeCraft",
+        category: "Career Tools",
+        description: "An interactive, ATS-optimized resume builder that helps candidates craft professional resumes using guided templates.",
+        iconName: "fileText",
+        link: "https://resumecraft.coptercode.co.in",
+      },
+      {
+        title: "DeckFlow",
+        category: "SaaS & Productivity",
+        description: "A collaborative presentation deck builder designed for rapid creation of pitch decks and technical slides.",
+        iconName: "layers",
+        link: "https://deckflow.coptercode.co.in",
+      },
+      {
+        title: "FileToolKit",
+        category: "Utility Tools",
+        description: "An all-in-one file utility tool for combining PDFs, extracting archives, compressing documents, and secure sharing.",
+        iconName: "download",
+        link: "https://filetoolkit.coptercode.co.in",
+      },
+      {
+        title: "Scripta",
+        category: "Social Media Automation",
+        description: "A social media scheduling and analytical dashboard that simplifies multi-channel publishing and campaign monitoring.",
+        iconName: "zap",
+        link: "https://sm.coptercode.co.in",
       },
     ],
     clientsTitle: "Trusted by Industry Leaders",
@@ -128,13 +209,17 @@ const Projects = () => {
 
       {/* Ambient Background Glows */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
+        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[100px]" />
       </div>
 
       <PageHeader
         title={heroTitle}
         subtitle={heroSubtitle}
+        bgClass="bg-background"
+        titleColorClass="text-primary"
+        subtitleColorClass="text-secondary"
+        overlayOpacityClass="bg-background/80"
       />
 
       <section className="pt-10 pb-24 relative z-10">
@@ -145,55 +230,58 @@ const Projects = () => {
               const gradient = gradients[index % gradients.length];
 
               return (
-                <motion.div
+                <motion.a
                   key={index}
+                  href={project.link || "#"}
+                  target={project.link ? "_blank" : undefined}
+                  rel={project.link ? "noopener noreferrer" : undefined}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group relative rounded-3xl"
+                  className={`group relative rounded-3xl block ${project.link ? "cursor-pointer" : "cursor-default"}`}
                 >
                   {/* Gradient Border & Glow Container */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-br from-white/20 to-white/5 rounded-3xl group-hover:from-accent group-hover:to-accent/40 transition-all duration-500 blur-[1px] group-hover:blur-[2px] opacity-70 group-hover:opacity-100" />
+                  <div className="absolute -inset-0.5 bg-gradient-to-br from-blue-500/10 to-cyan-400/10 rounded-3xl group-hover:from-blue-500 group-hover:to-cyan-400 transition-all duration-500 blur-[1px] group-hover:blur-[2px] opacity-70 group-hover:opacity-100" />
 
                   {/* Card Content */}
-                  <div className="relative h-full bg-surface rounded-[23px] p-8 lg:p-10 flex flex-col items-start overflow-hidden border border-border group-hover:border-transparent transition-colors">
+                  <div className="relative h-full bg-[#0b1329] rounded-[23px] p-8 lg:p-10 flex flex-col items-start overflow-hidden border border-slate-900/50 group-hover:border-transparent transition-colors shadow-lg hover:shadow-xl">
                     {/* Abstract Background Gradient */}
                     <div
-                      className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${gradient} blur-[80px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
+                      className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${gradient} blur-[80px] rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-700`}
                     />
 
                     {/* Large Icon Background */}
                     <IconComponent
                       strokeWidth={1}
-                      className="absolute -bottom-8 -right-8 w-48 h-48 text-primary/5 group-hover:text-primary/10 transition-colors duration-500 transform group-hover:scale-110 group-hover:rotate-12"
+                      className="absolute -bottom-8 -right-8 w-48 h-48 text-white/5 group-hover:text-blue-500/10 transition-colors duration-500 transform group-hover:scale-110 group-hover:rotate-12"
                     />
 
                     {/* External Link Icon */}
-                    <div className="absolute top-8 right-8 w-10 h-10 rounded-full bg-background flex items-center justify-center border border-border group-hover:bg-accent group-hover:text-primary transition-all duration-300 transform group-hover:-translate-y-1 group-hover:translate-x-1 cursor-pointer">
+                    <div className="absolute top-8 right-8 w-10 h-10 rounded-full bg-[#070b19] flex items-center justify-center border border-slate-800 text-slate-300 group-hover:bg-blue-600 group-hover:text-white group-hover:border-transparent transition-all duration-300 transform group-hover:-translate-y-1 group-hover:translate-x-1 cursor-pointer">
                       <ArrowUpRight size={20} />
                     </div>
 
                     {/* Category Pill */}
-                    <div className="mb-6 px-4 py-1.5 rounded-full border border-accent/20 bg-accent/5 text-xs font-bold tracking-widest text-accent uppercase backdrop-blur-sm">
+                    <div className="mb-6 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-xs font-bold tracking-widest text-blue-400 uppercase backdrop-blur-sm">
                       {project.category}
                     </div>
 
                     {/* Title & Description */}
-                    <h3 className="text-3xl font-bold text-primary mb-4 group-hover:text-accent transition-colors">
+                    <h3 className="text-3xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-secondary leading-relaxed mb-8 text-lg relative z-10 transition-colors">
+                    <p className="text-slate-400 leading-relaxed mb-8 text-lg relative z-10 transition-colors">
                       {project.description}
                     </p>
 
                     {/* Action Link (Implicit) */}
-                    <div className="mt-auto flex items-center space-x-2 text-sm font-semibold text-accent opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <span>{project.link ? "View Details" : "View Case Study"}</span>
+                    <div className="mt-auto flex items-center space-x-2 text-sm font-semibold text-blue-400 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      <span>{project.link ? "View Project" : "View Case Study"}</span>
                       <ArrowUpRight size={16} />
                     </div>
                   </div>
-                </motion.div>
+                </motion.a>
               )
             })}
           </div>
@@ -201,16 +289,16 @@ const Projects = () => {
       </section>
 
       {/* Trusted by Industry Leaders */}
-      <section className="py-32 relative border-t border-border bg-surface backdrop-blur-sm">
+      <section className="py-32 relative border-t border-slate-900 bg-[#050814] backdrop-blur-sm">
         <div className="container mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-2xl font-display font-medium text-primary mb-16 inline-flex flex-col items-center">
+            <h2 className="text-2xl font-display font-medium text-white mb-16 inline-flex flex-col items-center">
               <span className="mb-4">{clientsTitle}</span>
-              <span className="w-12 h-1 bg-accent rounded-full" />
+              <span className="w-12 h-1 bg-blue-500 rounded-full" />
             </h2>
 
             <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-12">
@@ -223,11 +311,11 @@ const Projects = () => {
                   transition={{ delay: index * 0.05 }}
                   className="w-32 h-16 relative group"
                 >
-                  <div className="absolute inset-0 bg-accent/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-blue-500/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <img
                     src={logo}
                     alt={`Client ${index + 1}`}
-                    className="relative w-full h-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110"
+                    className="relative w-full h-full object-contain transition-all duration-500 transform group-hover:scale-110"
                     loading="lazy"
                   />
                 </motion.div>

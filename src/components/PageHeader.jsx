@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import BackButton from './ui/BackButton';
 import OptimizedImage from './OptimizedImage';
 
-const PageHeader = ({ title, subtitle, image, images, justifyClass = "justify-between", showBackButton = true, ptClass = "pt-48", centerContent = false, overlayOpacityClass = "bg-surface/75", children }) => {
+const PageHeader = ({ title, subtitle, image, images, justifyClass = "justify-between", showBackButton = true, ptClass = "pt-48", bgClass = "bg-surface", titleColorClass = "text-primary", subtitleColorClass = "text-secondary", centerContent = false, overlayOpacityClass = "bg-surface/75", children }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const backgroundImages = images && images.length > 0 ? images : (image ? [image] : []);
 
@@ -18,7 +18,7 @@ const PageHeader = ({ title, subtitle, image, images, justifyClass = "justify-be
     }, [backgroundImages.length]);
 
     return (
-        <section className={`relative ${ptClass} pb-24 bg-surface overflow-hidden`}>
+        <section className={`relative ${ptClass} pb-24 ${bgClass} overflow-hidden`}>
             <div className="absolute inset-0 z-0">
                 <AnimatePresence>
                     {backgroundImages.length > 0 && (
@@ -55,8 +55,8 @@ const PageHeader = ({ title, subtitle, image, images, justifyClass = "justify-be
                     transition={{ duration: 0.6 }}
                     className={`max-w-3xl ${centerContent ? 'mx-auto' : ''}`}
                 >
-                    <h1 className="text-5xl md:text-6xl font-display font-bold text-primary mb-6">{title}</h1>
-                    <p className={`text-xl text-secondary max-w-2xl ${centerContent ? 'mx-auto' : ''}`}>{subtitle}</p>
+                    <h1 className={`text-5xl md:text-6xl font-display font-bold ${titleColorClass} mb-6`}>{title}</h1>
+                    <p className={`text-xl ${subtitleColorClass} max-w-2xl ${centerContent ? 'mx-auto' : ''}`}>{subtitle}</p>
                 </motion.div>
 
                 {children && (
