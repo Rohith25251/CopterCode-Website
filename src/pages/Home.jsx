@@ -399,6 +399,13 @@ const Home = () => {
                 ...,
                 "bannerImage": bannerImage.asset->url
             },
+            articlesSection {
+                ...,
+                papers[]{
+                    ...,
+                    "image": image.asset->url
+                }
+            },
             ourPhilosophySection {
                 ...,
                 tabs[]{
@@ -721,6 +728,48 @@ const Home = () => {
     const sustainabilityHeading = homeData?.sustainabilitySection?.heading || "Sustainability & CSR";
     const sustainabilityDesc = homeData?.sustainabilitySection?.description || "We are committed to building societal and business value together. Driving sustainable growth across all operations while empowering communities through innovation and care.";
     const sustainabilityBanner = homeData?.sustainabilitySection?.bannerImage ? urlFor(homeData.sustainabilitySection.bannerImage).url() : "/mediafiles/news and media/IMG_3979.jpg";
+
+    const FALLBACK_ARTICLES = [
+        {
+            category: "Swarm Intelligence",
+            title: "Decentralized Swarm Collision Avoidance Algorithms for Multi-UAV Systems",
+            authors: "Karthikeyan Sundharesan, R. Srinivasan",
+            description: "A decentralized navigation framework utilizing optical flow and UWB distance telemetry for high-accuracy obstacle avoidance inside warehouses and GPS-denied environments.",
+            image: "/mediafiles/news and media/IMG_1699.jpg",
+            link: "/articles"
+        },
+        {
+            category: "AI & Vision",
+            title: "Real-Time Embedded Computer Vision for Crop Health Analysis",
+            authors: "Karthikeyan Sundharesan, M. Lakshmi",
+            description: "A model-compression workflow deploying lightweight MobileNet backbones on embedded flight-controllers for dynamic crop classification and yield analysis.",
+            image: "/mediafiles/news and media/IMG_3330.jpg",
+            link: "/articles"
+        },
+        {
+            category: "Cybersecurity",
+            title: "A Blockchain-Secure Telemetry Log and Control Protocol for Commercial UAV Fleets",
+            authors: "Karthikeyan Sundharesan, A. K. Verma",
+            description: "Securing control-link signals and flight logger boxes against replay and spoofing attacks through smart contracts and cryptographic ledgers.",
+            image: "/mediafiles/news and media/IMG_3322.jpg",
+            link: "/articles"
+        }
+    ];
+
+    const articlesSection = homeData?.articlesSection;
+    const articlesHeading = articlesSection?.heading || "Essence of Research";
+    const articlesSubheading = articlesSection?.subheading || "Scientific Publications & Innovations";
+    const articlesDescription = articlesSection?.description || "Delve into our peer-reviewed papers, engineering frameworks, and technical breakthroughs driving the future of autonomous systems and edge AI.";
+    const articlesPapers = articlesSection?.papers?.length > 0
+        ? articlesSection.papers.map(p => ({
+            category: p.category || "Research",
+            title: p.title || "Research Paper",
+            authors: p.authors || "Karthikeyan Sundharesan",
+            description: p.description || "",
+            image: p.image || "/mediafiles/news and media/IMG_1699.jpg",
+            link: p.link || "/articles"
+        }))
+        : FALLBACK_ARTICLES;
 
     // --- NEW SECTIONS DATA (Manual / Static Fallback) ---
     const WHY_CHOOSE_DATA = homeData?.whyChooseSection || {
@@ -1836,86 +1885,55 @@ const Home = () => {
                 <div className="container mx-auto px-6 max-w-6xl relative z-10">
                     <div className="text-center mb-16">
                         <span className="text-blue-400 font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
-                            Scientific Publications & Innovations
+                            {articlesSubheading}
                         </span>
                         <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-                            Essence of Research
+                            {articlesHeading}
                         </h2>
                         <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full" />
                         <p className="text-slate-400 max-w-2xl mx-auto mt-6 text-base leading-relaxed">
-                            Delve into our peer-reviewed papers, engineering frameworks, and technical breakthroughs driving the future of autonomous systems and edge AI.
+                            {articlesDescription}
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                        {/* Paper 1 */}
-                        <div className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl p-8 hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
-                            <div>
-                                <div className="flex items-center gap-2 mb-4">
-                                    <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
-                                        Swarm Intelligence
-                                    </span>
+                        {articlesPapers.map((paper, idx) => (
+                            <div key={idx} className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl overflow-hidden hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
+                                {/* Paper Image */}
+                                {paper.image && (
+                                    <div className="w-full aspect-[16/10] overflow-hidden bg-slate-950 relative">
+                                        <img
+                                            src={paper.image}
+                                            alt={paper.title}
+                                            loading="lazy"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[#0b1329] to-transparent opacity-80 pointer-events-none" />
+                                    </div>
+                                )}
+                                <div className="p-8 flex flex-col justify-between flex-grow">
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                                                {paper.category}
+                                            </span>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
+                                            {paper.title}
+                                        </h3>
+                                        <p className="text-slate-400 text-xs italic mb-4">
+                                            {paper.authors}
+                                        </p>
+                                        <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
+                                            {paper.description}
+                                        </p>
+                                    </div>
+                                    <Link to={paper.link} className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
+                                        Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                                    </Link>
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
-                                    Decentralized Swarm Collision Avoidance Algorithms for Multi-UAV Systems
-                                </h3>
-                                <p className="text-slate-400 text-xs italic mb-4">
-                                    Karthikeyan Sundharesan, R. Srinivasan
-                                </p>
-                                <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
-                                    A decentralized navigation framework utilizing optical flow and UWB distance telemetry for high-accuracy obstacle avoidance inside warehouses and GPS-denied environments.
-                                </p>
                             </div>
-                            <Link to="/articles" className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
-                                Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </div>
-
-                        {/* Paper 2 */}
-                        <div className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl p-8 hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
-                            <div>
-                                <div className="flex items-center gap-2 mb-4">
-                                    <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
-                                        AI & Vision
-                                    </span>
-                                </div>
-                                <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
-                                    Real-Time Embedded Computer Vision for Crop Health Analysis
-                                </h3>
-                                <p className="text-slate-400 text-xs italic mb-4">
-                                    Karthikeyan Sundharesan, M. Lakshmi
-                                </p>
-                                <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
-                                    A model-compression workflow deploying lightweight MobileNet backbones on embedded flight-controllers for dynamic crop classification and yield analysis.
-                                </p>
-                            </div>
-                            <Link to="/articles" className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
-                                Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </div>
-
-                        {/* Paper 3 */}
-                        <div className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl p-8 hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
-                            <div>
-                                <div className="flex items-center gap-2 mb-4">
-                                    <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
-                                        Cybersecurity
-                                    </span>
-                                </div>
-                                <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
-                                    A Blockchain-Secure Telemetry Log and Control Protocol for Commercial UAV Fleets
-                                </h3>
-                                <p className="text-slate-400 text-xs italic mb-4">
-                                    Karthikeyan Sundharesan, A. K. Verma
-                                </p>
-                                <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
-                                    Securing control-link signals and flight logger boxes against replay and spoofing attacks through smart contracts and cryptographic ledgers.
-                                </p>
-                            </div>
-                            <Link to="/articles" className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
-                                Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </div>
+                        ))}
                     </div>
 
                     <div className="text-center">

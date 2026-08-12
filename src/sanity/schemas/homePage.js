@@ -601,6 +601,35 @@ export const homePage = {
                 { name: 'bannerImage', type: 'image', title: 'Banner Image', options: { hotspot: true } }
             ]
         },
+        // --- ESSENCE OF RESEARCH SECTION ---
+        {
+            name: 'articlesSection',
+            title: 'Essence of Research Section',
+            type: 'object',
+            fields: [
+                { name: 'heading', type: 'string', title: 'Heading', initialValue: 'Essence of Research' },
+                { name: 'subheading', type: 'string', title: 'Subheading', initialValue: 'Scientific Publications & Innovations' },
+                { name: 'description', type: 'text', title: 'Description', initialValue: 'Delve into our peer-reviewed papers, engineering frameworks, and technical breakthroughs driving the future of autonomous systems and edge AI.' },
+                {
+                    name: 'papers',
+                    title: 'Featured Papers',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'category', type: 'string', title: 'Category/Tag' },
+                                { name: 'title', type: 'string', title: 'Paper Title' },
+                                { name: 'authors', type: 'string', title: 'Authors' },
+                                { name: 'description', type: 'text', title: 'Short Abstract' },
+                                { name: 'image', type: 'image', title: 'Paper Graphic/Image', options: { hotspot: true } },
+                                { name: 'link', type: 'string', title: 'Link', initialValue: '#' }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         // --- ENGINEERING COMMAND CENTER SECTION ---
         {
             name: 'engineeringCommandCenterSection',
