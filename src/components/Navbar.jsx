@@ -86,7 +86,7 @@ const Navbar = () => {
     { name: "Administration", path: "/administration" },
     { name: "Careers", path: "/careers" },
     { name: "Events", path: "/events" },
-    { name: "Insights", path: "/news" },
+    { name: "Articles", path: "/articles" },
     { name: "Investors", path: "/investors" },
     { name: "Contact", path: "/contact" },
   ];

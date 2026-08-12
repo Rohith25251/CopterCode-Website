@@ -163,7 +163,7 @@ const Footer = () => {
   const defaultCol3 = {
     title: "Company",
     links: [
-      { label: "News & Updates", url: "/news" },
+      { label: "Research Articles", url: "/articles" },
       { label: "Events", url: "/events" },
       { label: "Hackathon", url: "/hackathon" },
       { label: "Services", url: "/services" },

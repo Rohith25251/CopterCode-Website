@@ -16,7 +16,7 @@ import { investorsPage } from './schemas/investorsPage'
 import { eventsPage } from './schemas/eventsPage'
 import { hackathonPage } from './schemas/hackathonPage'
 import { getInTouchPage } from './schemas/getInTouchPage'
-import { insightsPage } from './schemas/insightsPage'
+import { articlesPage } from './schemas/articlesPage'
 import { internshipPage } from './schemas/internshipPage'
 import { internshipRegistrationPage } from './schemas/internshipRegistrationPage'
 import { technologiesPage } from './schemas/technologiesPage'
@@ -42,6 +42,6 @@ export default defineConfig({
     plugins: [structureTool(), visionTool()],
 
     schema: {
-        types: [homePage, businessPage, businessVerticalsPage, projectsPage, navigation, footer, aboutPage, administrationPage, careersPage, contactPage, sustainabilityPage, investorsPage, eventsPage, hackathonPage, getInTouchPage, insightsPage, internshipPage, internshipRegistrationPage, technologiesPage, locationsPage, privacyPolicyPage, termsAndConditionsPage, scrollingAnnouncementBar, preloaderPage, servicesPage, faviconPage, jobOpenRole, popupPage],
+        types: [homePage, businessPage, businessVerticalsPage, projectsPage, navigation, footer, aboutPage, administrationPage, careersPage, contactPage, sustainabilityPage, investorsPage, eventsPage, hackathonPage, getInTouchPage, articlesPage, internshipPage, internshipRegistrationPage, technologiesPage, locationsPage, privacyPolicyPage, termsAndConditionsPage, scrollingAnnouncementBar, preloaderPage, servicesPage, faviconPage, jobOpenRole, popupPage],
     },
 })

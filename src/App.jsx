@@ -9,7 +9,7 @@ const About = lazy(() => import('./pages/About'));
 const Business = lazy(() => import('./pages/Business'));
 const Administration = lazy(() => import('./pages/Administration'));
 const Sustainability = lazy(() => import('./pages/Sustainability'));
-const News = lazy(() => import('./pages/News'));
+const Articles = lazy(() => import('./pages/Articles'));
 const Services = lazy(() => import('./pages/Services'));
 const Technologies = lazy(() => import('./pages/Technologies'));
 const Projects = lazy(() => import('./pages/Projects'));
@@ -75,7 +75,7 @@ function AppContent() {
                             <Route path="/business" element={<Suspense fallback={<PagePlaceholder />}><Business /></Suspense>} />
                             <Route path="/administration" element={<Suspense fallback={<PagePlaceholder />}><Administration /></Suspense>} />
                             <Route path="/sustainability" element={<Suspense fallback={<PagePlaceholder />}><Sustainability /></Suspense>} />
-                            <Route path="/news" element={<Suspense fallback={<PagePlaceholder />}><News /></Suspense>} />
+                            <Route path="/articles" element={<Suspense fallback={<PagePlaceholder />}><Articles /></Suspense>} />
                             <Route path="/events" element={<Suspense fallback={<PagePlaceholder />}><Events /></Suspense>} />
                             <Route path="/hackathon" element={<Suspense fallback={<PagePlaceholder />}><Hackathon /></Suspense>} />
                             <Route path="/services" element={<Suspense fallback={<PagePlaceholder />}><Services /></Suspense>} />
