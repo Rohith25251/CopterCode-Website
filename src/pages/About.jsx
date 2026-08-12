@@ -38,6 +38,17 @@ const About = () => {
         ...,
         "imageUrl": image.asset->url
       },
+      foundersSection {
+        ...,
+        founder {
+          ...,
+          "imageUrl": image.asset->url
+        },
+        cofounder {
+          ...,
+          "imageUrl": image.asset->url
+        }
+      },
       milestones[]
     }`;
     client.fetch(query).then((data) => {
@@ -67,9 +78,23 @@ const About = () => {
   const heroTag = hero?.tag || "Our Story";
 
   const origin = sanityData?.origin;
-  const leadership = sanityData?.leadership;
   const seo = sanityData?.seo;
   const milestones = sanityData?.milestones;
+
+  const foundersSection = sanityData?.foundersSection;
+  const founder = {
+    name: foundersSection?.founder?.name || "Karthikeyan Sundharesan",
+    role: foundersSection?.founder?.role || "FOUNDER / CEO",
+    imageUrl: foundersSection?.founder?.imageUrl || "",
+    description: foundersSection?.founder?.description || "Karthikeyan Sundharesan is the Founder and CEO of CopterCode. Under his forward-thinking leadership, CopterCode has grown into a leading technology-driven conglomerate, innovating across autonomous UAV systems, enterprise AI, cybersecurity, and green energy solutions. He is dedicated to architecting scalable systems and sustainable technologies that drive global enterprise value."
+  };
+
+  const cofounder = {
+    name: foundersSection?.cofounder?.name || "Sundharesan Duraiswamy",
+    role: foundersSection?.cofounder?.role || "CO-FOUNDER",
+    imageUrl: foundersSection?.cofounder?.imageUrl || "",
+    description: foundersSection?.cofounder?.description || "Sundharesan Duraiswamy Co-Founder | Multi-Sector Enterprise Strategist Sundharesan Duraiswamy is a self-made global enterprise leader recognized for architecting diversified, technology-driven business ecosystems across industrial, digital, and infrastructure domains. Rising from extreme financial adversity, he transformed early hardship into disciplined strategic execution, building and scaling multi-sector ventures through calculated governance and long-term capital vision. As Global Chairman and Co-Founder of CopterCode, Karvensen, Veldursen, Murgdur, and Archana Group, he provides strategic oversight across Industrial Drones & UAV Systems, Infrastructure Security, ERP & Digital Transformation, New Energy & Advanced Materials, and diversified enterprise holdings. His leadership is defined by cross-sector diversification, institutional governance frameworks, scalable technology architecture, and sustainable value creation. Duraiswamy's philosophy is rooted in structural resilience, ethical enterprise leadership, and precision-driven execution — proving that enduring global institutions are engineered, not inherited.."
+  };
 
   // Fallback Journey Data (Expanded Year-by-Year)
   const FALLBACK_JOURNEY = [
@@ -291,48 +316,82 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      {/* Leadership Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-6 max-w-6xl">
+      {/* Founders Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-4">
-              {leadership?.heading || "Administration & Vision"}
+              {foundersSection?.heading || "Founder"}
             </h2>
-            <div className="w-20 h-1.5 bg-accent mx-auto rounded-full" />
+            <div className="w-20 h-1.5 bg-blue-500 mx-auto rounded-full" />
           </div>
 
-          <div className="max-w-4xl mx-auto bg-[#EFF6FF] rounded-[2.5rem] p-12 lg:p-16 text-center shadow-sm border border-blue-50">
-            <p className="text-secondary text-lg mb-8">{leadership?.chairmanIntro || "Currently, CopterCode is led by its Chairman & Managing Director:"}</p>
-            <h3 className="text-4xl font-bold text-primary mb-2">
-              {leadership?.chairmanName || "Mr. Karthikeyan Sundharesan"}
-            </h3>
-            <p className="text-accent font-bold tracking-widest uppercase text-sm mb-12">
-              {leadership?.chairmanRole || "Chairman & Managing Director"}
-            </p>
+          <div className="flex flex-col gap-16 max-w-5xl mx-auto">
+            {/* Founder Card */}
+            {founder && (
+              <div className="flex flex-col md:flex-row overflow-hidden bg-[#050814] border border-slate-900 rounded-3xl shadow-xl transition-all duration-300 hover:border-slate-800">
+                <div className="w-full md:w-[35%] aspect-[4/5] md:aspect-auto relative overflow-hidden bg-slate-900">
+                  {founder.imageUrl ? (
+                    <img
+                      src={founder.imageUrl}
+                      alt={founder.name}
+                      className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-slate-950 text-slate-800 border-r border-slate-900">
+                      <Users size={64} className="stroke-[1px]" />
+                    </div>
+                  )}
+                </div>
+                <div className="w-full md:w-[65%] p-8 md:p-12 lg:p-16 flex flex-col justify-center text-left">
+                  <h3 className="text-3xl font-display font-bold text-white mb-3">
+                    {founder.name}
+                  </h3>
+                  <div className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-extrabold uppercase rounded tracking-widest mb-6 w-fit">
+                    {founder.role}
+                  </div>
+                  <div className="w-12 h-0.5 bg-blue-500 mb-6" />
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                    {founder.description}
+                  </p>
+                </div>
+              </div>
+            )}
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 border-t border-blue-100">
-              {leadership?.boardMembers?.length > 0 ? (
-                leadership.boardMembers.map((member, idx) => (
-                  <div key={idx}>
-                    <h4 className="text-primary font-bold text-lg">{member.name}</h4>
-                    <p className="text-xs text-secondary uppercase tracking-widest mt-1">{member.role}</p>
+            {/* Co-Founder Card */}
+            {cofounder && (
+              <div className="flex flex-col md:flex-row overflow-hidden bg-[#050814] border border-slate-900 rounded-3xl shadow-xl transition-all duration-300 hover:border-slate-800">
+                <div className="w-full md:w-[35%] aspect-[4/5] md:aspect-auto relative overflow-hidden bg-slate-900">
+                  {cofounder.imageUrl ? (
+                    <img
+                      src={cofounder.imageUrl}
+                      alt={cofounder.name}
+                      className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-slate-950 text-slate-800 border-r border-slate-900">
+                      <Users size={64} className="stroke-[1px]" />
+                    </div>
+                  )}
+                </div>
+                <div className="w-full md:w-[65%] p-8 md:p-12 lg:p-16 flex flex-col justify-center text-left">
+                  <h3 className="text-3xl font-display font-bold text-white mb-3">
+                    {cofounder.name}
+                  </h3>
+                  <div className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-extrabold uppercase rounded tracking-widest mb-6 w-fit">
+                    {cofounder.role}
                   </div>
-                ))
-              ) : (
-                ['Mrs. Shanthi Sundharesan', 'Ms. Karthika Sundharesan', 'Mr. Venkatesh Janakiraman'].map((name, idx) => (
-                  <div key={idx}>
-                    <h4 className="text-primary font-bold text-lg">{name}</h4>
-                    <p className="text-xs text-secondary uppercase tracking-widest mt-1">Board Member</p>
-                  </div>
-                ))
-              )}
-            </div>
+                  <div className="w-12 h-0.5 bg-blue-500 mb-6" />
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                    {cofounder.description}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </section>
-
-      {/* Milestones Grid */}
+      </section>      {/* Milestones Grid */}
       <section id="milestones-at-a-glance" className="py-24 bg-[#FAF9F5]">
         <div className="container mx-auto px-6 max-w-6xl">
           <h2 className="text-3xl font-bold text-primary mb-12 border-l-8 border-blue-500 pl-6">

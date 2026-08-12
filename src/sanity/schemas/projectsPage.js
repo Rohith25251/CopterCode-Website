@@ -61,7 +61,13 @@ export const projectsPage = {
                             },
                             initialValue: 'cpu'
                         },
-                        { name: 'link', type: 'url', title: 'Project Link (Optional)' }
+                        { name: 'link', type: 'url', title: 'Project Link (Optional)' },
+                        {
+                            name: 'companyLogo',
+                            title: 'Company Logo',
+                            type: 'image',
+                            options: { hotspot: true }
+                        }
                     ]
                 }
             ]

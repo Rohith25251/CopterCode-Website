@@ -75,7 +75,7 @@ export const navigation = {
         },
         {
             name: 'tertiaryButton',
-            title: 'Tertiary Button (e.g. Hackathon)',
+            title: 'Tertiary Button (e.g. Articles)',
             type: 'object',
             fields: [
                 { name: 'label', type: 'string', title: 'Label' },

@@ -102,34 +102,37 @@ export const aboutPage = {
             ]
         },
 
-        // --- LEADERSHIP SECTION ---
+
         {
-            name: 'leadership',
-            title: 'Leadership & Vision',
+            name: 'foundersSection',
+            title: 'Founders Section',
             type: 'object',
             fields: [
-                { name: 'heading', type: 'string', title: 'Section Heading', initialValue: 'Administration & Vision' },
-                { name: 'chairmanIntro', type: 'string', title: 'Chairman Introduction Text', initialValue: 'Currently, CopterCode is led by its Chairman & Managing Director:' },
-                { name: 'chairmanName', type: 'string', title: 'Chairman Name', initialValue: 'Mr. Karthikeyan Sundharesan' },
-                { name: 'chairmanRole', type: 'string', title: 'Chairman Role', initialValue: 'Chairman & Managing Director' },
+                { name: 'heading', type: 'string', title: 'Section Heading', initialValue: 'Founder' },
                 {
-                    name: 'boardMembers',
-                    title: 'Board Members',
-                    type: 'array',
-                    of: [
-                        {
-                            type: 'object',
-                            title: 'Board Member',
-                            fields: [
-                                { name: 'name', type: 'string', title: 'Name' },
-                                { name: 'role', type: 'string', title: 'Role' }
-                            ]
-                        }
+                    name: 'founder',
+                    title: 'Founder',
+                    type: 'object',
+                    fields: [
+                        { name: 'name', type: 'string', title: 'Name', initialValue: 'Karthikeyan Sundharesan' },
+                        { name: 'role', type: 'string', title: 'Role', initialValue: 'FOUNDER / CEO' },
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+                        { name: 'description', type: 'text', title: 'Description', rows: 6 }
+                    ]
+                },
+                {
+                    name: 'cofounder',
+                    title: 'Co-Founder',
+                    type: 'object',
+                    fields: [
+                        { name: 'name', type: 'string', title: 'Name', initialValue: 'Sundharesan Duraiswamy' },
+                        { name: 'role', type: 'string', title: 'Role', initialValue: 'CO-FOUNDER' },
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+                        { name: 'description', type: 'text', title: 'Description', rows: 6 }
                     ]
                 }
             ]
         },
-
         {
             name: 'milestonesHeading',
             title: 'Milestones Section Heading',

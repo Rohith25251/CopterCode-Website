@@ -74,7 +74,7 @@ const Navbar = () => {
     { name: "About", path: "/about" },
     { name: "Business", path: "/business" },
     { name: "Administration", path: "/administration" },
-    { name: "Careers", path: "/careers" },
+    { name: "Products", path: "/projects" },
     { name: "Events", path: "/events" },
     { name: "Contact", path: "/contact" },
   ];
@@ -86,21 +86,41 @@ const Navbar = () => {
     { name: "Administration", path: "/administration" },
     { name: "Careers", path: "/careers" },
     { name: "Events", path: "/events" },
-    { name: "Articles", path: "/articles" },
+    { name: "Hackathon", path: "/hackathon" },
     { name: "Investors", path: "/investors" },
     { name: "Contact", path: "/contact" },
   ];
 
   // Specific Lists from Sanity
-  const topNavLinks = navData?.topMenuItems || defaultTopNav;
-  const navLinks = navData?.sideMenuItems || defaultSideNav;
+  const rawTopNavLinks = navData?.topMenuItems || defaultTopNav;
+  const rawNavLinks = navData?.sideMenuItems || defaultSideNav;
+
+  // Apply Careers -> Products replacement in top nav
+  const topNavLinks = rawTopNavLinks.map(link => {
+    if (link.name === "Careers" || link.path === "/careers") {
+      return { name: "Products", path: "/projects" };
+    }
+    return link;
+  });
+
+  // Apply Articles -> Hackathon swap in side nav
+  const navLinks = rawNavLinks.map(link => {
+    if (link.name === "Articles" || link.path === "/articles") {
+      return { name: "Hackathon", path: "/hackathon" };
+    }
+    return link;
+  });
 
   const logoSrc = navData?.logo || ASSETS.LOGO;
   const companyTitle = navData?.companyName || "CopterCode";
 
   const primaryCTA = navData?.ctaButton || { label: "Get in Touch", link: "/get-in-touch" };
   const secondaryCTA = navData?.secondaryButton || { label: "Internship", link: "/internship" };
-  const tertiaryCTA = navData?.tertiaryButton || { label: "Hackathon", link: "/hackathon" };
+  
+  // Swap tertiary CTA from Hackathon to Articles
+  const tertiaryCTA = (navData?.tertiaryButton && navData.tertiaryButton.label !== "Hackathon")
+    ? navData.tertiaryButton
+    : { label: "Articles", link: "/articles" };
 
 
   const handleSamePageClick = (path) => {
