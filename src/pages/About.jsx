@@ -368,10 +368,10 @@ const About = () => {
                           e.preventDefault();
                         }
                       }}
-                      className="inline-flex items-center gap-2 mt-6 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider w-fit group"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-all duration-300 mt-6"
+                      title="LinkedIn Profile"
                     >
-                      <Linkedin size={14} className="transition-transform group-hover:scale-110" />
-                      Connect on LinkedIn
+                      <Linkedin size={18} />
                     </a>
                   )}
                 </div>
@@ -415,10 +415,10 @@ const About = () => {
                           e.preventDefault();
                         }
                       }}
-                      className="inline-flex items-center gap-2 mt-6 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider w-fit group"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-all duration-300 mt-6"
+                      title="LinkedIn Profile"
                     >
-                      <Linkedin size={14} className="transition-transform group-hover:scale-110" />
-                      Connect on LinkedIn
+                      <Linkedin size={18} />
                     </a>
                   )}
                 </div>
