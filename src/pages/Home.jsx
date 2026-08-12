@@ -1828,6 +1828,103 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+            {/* ESSENCE OF ARTICLES SECTION */}
+            <section className="py-24 bg-[#050814] text-white border-t border-b border-slate-900 relative overflow-hidden">
+                {/* Background Glow */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+
+                <div className="container mx-auto px-6 max-w-6xl relative z-10">
+                    <div className="text-center mb-16">
+                        <span className="text-blue-400 font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                            Scientific Publications & Innovations
+                        </span>
+                        <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+                            Essence of Research
+                        </h2>
+                        <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full" />
+                        <p className="text-slate-400 max-w-2xl mx-auto mt-6 text-base leading-relaxed">
+                            Delve into our peer-reviewed papers, engineering frameworks, and technical breakthroughs driving the future of autonomous systems and edge AI.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                        {/* Paper 1 */}
+                        <div className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl p-8 hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                                        Swarm Intelligence
+                                    </span>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
+                                    Decentralized Swarm Collision Avoidance Algorithms for Multi-UAV Systems
+                                </h3>
+                                <p className="text-slate-400 text-xs italic mb-4">
+                                    Karthikeyan Sundharesan, R. Srinivasan
+                                </p>
+                                <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
+                                    A decentralized navigation framework utilizing optical flow and UWB distance telemetry for high-accuracy obstacle avoidance inside warehouses and GPS-denied environments.
+                                </p>
+                            </div>
+                            <Link to="/articles" className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
+                                Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </div>
+
+                        {/* Paper 2 */}
+                        <div className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl p-8 hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                                        AI & Vision
+                                    </span>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
+                                    Real-Time Embedded Computer Vision for Crop Health Analysis
+                                </h3>
+                                <p className="text-slate-400 text-xs italic mb-4">
+                                    Karthikeyan Sundharesan, M. Lakshmi
+                                </p>
+                                <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
+                                    A model-compression workflow deploying lightweight MobileNet backbones on embedded flight-controllers for dynamic crop classification and yield analysis.
+                                </p>
+                            </div>
+                            <Link to="/articles" className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
+                                Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </div>
+
+                        {/* Paper 3 */}
+                        <div className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl p-8 hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                                        Cybersecurity
+                                    </span>
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
+                                    A Blockchain-Secure Telemetry Log and Control Protocol for Commercial UAV Fleets
+                                </h3>
+                                <p className="text-slate-400 text-xs italic mb-4">
+                                    Karthikeyan Sundharesan, A. K. Verma
+                                </p>
+                                <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
+                                    Securing control-link signals and flight logger boxes against replay and spoofing attacks through smart contracts and cryptographic ledgers.
+                                </p>
+                            </div>
+                            <Link to="/articles" className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
+                                Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="text-center">
+                        <Link to="/articles" className="inline-flex items-center px-8 py-4 bg-white text-[#020617] rounded-full hover:bg-slate-100 transition-all shadow-lg font-bold hover:shadow-xl transform hover:scale-105">
+                            Explore All Publications <ArrowRight className="ml-2" size={20} />
+                        </Link>
+                    </div>
+                </div>
+            </section>
 
             {/* Testimonials Video Section */}
             <section ref={voiceOfSuccessRef} data-testimonials-section className="py-24 bg-background border-t border-border">
