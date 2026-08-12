@@ -1898,7 +1898,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                         {articlesPapers.map((paper, idx) => (
-                            <div key={idx} className="bg-[#0b1329]/60 backdrop-blur-sm border border-slate-900 rounded-3xl overflow-hidden hover:border-slate-800 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col justify-between group">
+                            <div key={idx} className="bg-white border border-slate-200 rounded-3xl overflow-hidden hover:border-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col justify-between group">
                                 {/* Paper Image */}
                                 {paper.image && (
                                     <div className="w-full aspect-[16/10] overflow-hidden bg-slate-950 relative">
@@ -1908,27 +1908,27 @@ const Home = () => {
                                             loading="lazy"
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-[#0b1329] to-transparent opacity-80 pointer-events-none" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent opacity-90 pointer-events-none" />
                                     </div>
                                 )}
                                 <div className="p-8 flex flex-col justify-between flex-grow">
                                     <div>
                                         <div className="flex items-center gap-2 mb-4">
-                                            <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                                            <span className="px-2.5 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-md text-[10px] font-bold uppercase tracking-wider">
                                                 {paper.category}
                                             </span>
                                         </div>
-                                        <h3 className="text-xl font-bold text-white mb-4 line-clamp-3 group-hover:text-blue-400 transition-colors">
+                                        <h3 className="text-xl font-bold text-slate-900 mb-4 line-clamp-3 group-hover:text-blue-600 transition-colors">
                                             {paper.title}
                                         </h3>
-                                        <p className="text-slate-400 text-xs italic mb-4">
+                                        <p className="text-slate-500 text-xs italic mb-4">
                                             {paper.authors}
                                         </p>
-                                        <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-4">
+                                        <p className="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-4">
                                             {paper.description}
                                         </p>
                                     </div>
-                                    <Link to={paper.link} className="inline-flex items-center text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-widest mt-auto">
+                                    <Link to={paper.link} className="inline-flex items-center text-xs font-bold text-blue-600 group-hover:text-blue-500 uppercase tracking-widest mt-auto">
                                         Read Paper <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
                                     </Link>
                                 </div>
