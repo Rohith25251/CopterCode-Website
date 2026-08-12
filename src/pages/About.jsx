@@ -18,6 +18,7 @@ import {
   Lightbulb,
   Shield,
   Zap,
+  Linkedin,
 } from "lucide-react";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
@@ -86,6 +87,7 @@ const About = () => {
     name: foundersSection?.founder?.name || "Karthikeyan Sundharesan",
     role: foundersSection?.founder?.role || "FOUNDER / CEO",
     imageUrl: foundersSection?.founder?.imageUrl || "",
+    linkedin: foundersSection?.founder?.linkedin || "#",
     description: foundersSection?.founder?.description || "Karthikeyan Sundharesan is the Founder and CEO of CopterCode. Under his forward-thinking leadership, CopterCode has grown into a leading technology-driven conglomerate, innovating across autonomous UAV systems, enterprise AI, cybersecurity, and green energy solutions. He is dedicated to architecting scalable systems and sustainable technologies that drive global enterprise value."
   };
 
@@ -93,6 +95,7 @@ const About = () => {
     name: foundersSection?.cofounder?.name || "Sundharesan Duraiswamy",
     role: foundersSection?.cofounder?.role || "CO-FOUNDER",
     imageUrl: foundersSection?.cofounder?.imageUrl || "",
+    linkedin: foundersSection?.cofounder?.linkedin || "#",
     description: foundersSection?.cofounder?.description || "Sundharesan Duraiswamy Co-Founder | Multi-Sector Enterprise Strategist Sundharesan Duraiswamy is a self-made global enterprise leader recognized for architecting diversified, technology-driven business ecosystems across industrial, digital, and infrastructure domains. Rising from extreme financial adversity, he transformed early hardship into disciplined strategic execution, building and scaling multi-sector ventures through calculated governance and long-term capital vision. As Global Chairman and Co-Founder of CopterCode, Karvensen, Veldursen, Murgdur, and Archana Group, he provides strategic oversight across Industrial Drones & UAV Systems, Infrastructure Security, ERP & Digital Transformation, New Energy & Advanced Materials, and diversified enterprise holdings. His leadership is defined by cross-sector diversification, institutional governance frameworks, scalable technology architecture, and sustainable value creation. Duraiswamy's philosophy is rooted in structural resilience, ethical enterprise leadership, and precision-driven execution — proving that enduring global institutions are engineered, not inherited.."
   };
 
@@ -355,6 +358,22 @@ const About = () => {
                   <p className="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
                     {founder.description}
                   </p>
+                  {founder.linkedin && (
+                    <a
+                      href={founder.linkedin}
+                      target={founder.linkedin === "#" ? undefined : "_blank"}
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        if (founder.linkedin === "#") {
+                          e.preventDefault();
+                        }
+                      }}
+                      className="inline-flex items-center gap-2 mt-6 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider w-fit group"
+                    >
+                      <Linkedin size={14} className="transition-transform group-hover:scale-110" />
+                      Connect on LinkedIn
+                    </a>
+                  )}
                 </div>
               </div>
             )}
@@ -386,6 +405,22 @@ const About = () => {
                   <p className="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
                     {cofounder.description}
                   </p>
+                  {cofounder.linkedin && (
+                    <a
+                      href={cofounder.linkedin}
+                      target={cofounder.linkedin === "#" ? undefined : "_blank"}
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        if (cofounder.linkedin === "#") {
+                          e.preventDefault();
+                        }
+                      }}
+                      className="inline-flex items-center gap-2 mt-6 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider w-fit group"
+                    >
+                      <Linkedin size={14} className="transition-transform group-hover:scale-110" />
+                      Connect on LinkedIn
+                    </a>
+                  )}
                 </div>
               </div>
             )}

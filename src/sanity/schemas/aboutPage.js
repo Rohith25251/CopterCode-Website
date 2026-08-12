@@ -117,7 +117,8 @@ export const aboutPage = {
                         { name: 'name', type: 'string', title: 'Name', initialValue: 'Karthikeyan Sundharesan' },
                         { name: 'role', type: 'string', title: 'Role', initialValue: 'FOUNDER / CEO' },
                         { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
-                        { name: 'description', type: 'text', title: 'Description', rows: 6 }
+                        { name: 'description', type: 'text', title: 'Description', rows: 6 },
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: '#' }
                     ]
                 },
                 {
@@ -128,7 +129,8 @@ export const aboutPage = {
                         { name: 'name', type: 'string', title: 'Name', initialValue: 'Sundharesan Duraiswamy' },
                         { name: 'role', type: 'string', title: 'Role', initialValue: 'CO-FOUNDER' },
                         { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
-                        { name: 'description', type: 'text', title: 'Description', rows: 6 }
+                        { name: 'description', type: 'text', title: 'Description', rows: 6 },
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: '#' }
                     ]
                 }
             ]
