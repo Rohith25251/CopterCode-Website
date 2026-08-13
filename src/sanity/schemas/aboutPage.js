@@ -54,7 +54,21 @@ export const aboutPage = {
             fields: [
                 { name: 'tag', type: 'string', title: 'Tag Badge Text', initialValue: 'Our Origin' },
                 { name: 'heading', type: 'string', title: 'Heading', initialValue: 'From Vision to Reality' },
-                { name: 'description', type: 'text', title: 'Description', rows: 4, initialValue: 'A journey of relentless innovation, guided by a legacy of excellence and a commitment to transforming the future.' },
+                {
+                    name: 'descriptionBody',
+                    type: 'text',
+                    title: 'Full Description Body',
+                    rows: 10,
+                    description: 'The full company story shown below the heading. Each paragraph separated by a blank line. Defaults to the "From Vision to Reality" content if left empty.',
+                    initialValue: `CopterCode was founded on a simple belief: technology should serve people, planet, and prosperity in equal measure. What began as a focused effort in drone innovation has grown into a multidisciplinary company bridging industrial automation, enterprise AI, and custom software engineering.
+
+We work at the intersection of hardware and intelligence — designing UAV systems, building AI-driven solutions, and delivering digital transformation for businesses that refuse to stand still. Every product we build is guided by the same principle: innovation should be practical, scalable, and built to last.
+
+Our journey has been shaped by curiosity, discipline, and a relentless pursuit of better ways to solve real-world problems. From early prototypes to enterprise-grade deployments, we've stayed committed to engineering excellence and to a future where automation and sustainability move forward together.
+
+Today, CopterCode partners with businesses and institutions across industries — helping them modernize operations, unlock new efficiencies, and future-proof their growth through drone technology, AI, and intelligent software systems.`
+                },
+                { name: 'description', type: 'text', title: 'Short Description (Legacy)', rows: 4, description: 'Legacy short description — superseded by Full Description Body above.', initialValue: 'A journey of relentless innovation, guided by a legacy of excellence and a commitment to transforming the future.' },
                 { name: 'quote', type: 'text', title: 'Quote (Mission)', rows: 2, initialValue: 'Driven by sustainability, impacting People, Planet, and Prosperity.' }
             ]
         },

@@ -35,6 +35,13 @@ const About = () => {
         ...,
         image { asset->{ url } }
       },
+      origin {
+        tag,
+        heading,
+        description,
+        descriptionBody,
+        quote
+      },
       journey[]{
         ...,
         "imageUrl": image.asset->url
@@ -219,106 +226,65 @@ const About = () => {
         </div>
       </section>
 
-      {/* Origin Section (Premium) */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-        <div className="container mx-auto px-6 max-w-6xl relative z-10">
-          <div className="flex flex-col md:flex-row gap-16 items-center">
-            <div className="w-full md:w-1/2">
-              <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block flex items-center">
-                <span className="w-8 h-[2px] bg-accent mr-3"></span> {origin?.tag || "Our Origin"}
-              </span>
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6 leading-tight">
-                {origin?.heading || "From Vision to Reality"}
-              </h2>
-              <div className="prose prose-lg text-secondary">
-                <p className="leading-relaxed">
-                  {origin?.description || "A journey of relentless innovation, guided by a legacy of excellence and a commitment to transforming the future."}
-                </p>
-              </div>
+      {/* Description Section (Full Body) */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/4 rounded-full blur-[100px] pointer-events-none" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-5 flex items-center gap-3">
+              <span className="w-8 h-[2px] bg-accent inline-block"></span>
+              {origin?.tag || "Our Origin"}
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-primary mb-10 leading-[1.1] tracking-tight">
+              {origin?.heading || "From Vision to Reality"}
+            </h2>
+            <div className="space-y-6 text-lg text-secondary leading-relaxed max-w-4xl">
+              {origin?.descriptionBody
+                ? origin.descriptionBody.split('\n').filter(p => p.trim()).map((para, i) => (
+                    <p key={i} className="leading-relaxed">{para}</p>
+                  ))
+                : (
+                  <>
+                    <p>CopterCode was founded on a simple belief: technology should serve people, planet, and prosperity in equal measure. What began as a focused effort in drone innovation has grown into a multidisciplinary company bridging industrial automation, enterprise AI, and custom software engineering.</p>
+                    <p>We work at the intersection of hardware and intelligence — designing UAV systems, building AI-driven solutions, and delivering digital transformation for businesses that refuse to stand still. Every product we build is guided by the same principle: innovation should be practical, scalable, and built to last.</p>
+                    <p>Our journey has been shaped by curiosity, discipline, and a relentless pursuit of better ways to solve real-world problems. From early prototypes to enterprise-grade deployments, we've stayed committed to engineering excellence and to a future where automation and sustainability move forward together.</p>
+                    <p>Today, CopterCode partners with businesses and institutions across industries — helping them modernize operations, unlock new efficiencies, and future-proof their growth through drone technology, AI, and intelligent software systems.</p>
+                  </>
+                )
+              }
             </div>
-            <div className="w-full md:w-1/2">
-              <div className="bg-[#FAF9F5] p-10 rounded-3xl border border-gray-100 relative">
-                <div className="absolute -top-4 -left-4 text-accent text-6xl opacity-20 font-serif">"</div>
-                <p className="italic text-xl text-primary font-medium relative z-10">
-                  {origin?.quote || "Driven by sustainability, impacting People, Planet, and Prosperity."}
-                </p>
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Journey Timeline */}
-      <section className="py-24 relative overflow-hidden bg-[#FAF9F5]">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] opacity-30 pointer-events-none" />
-
-        <div className="container mx-auto px-6 max-w-6xl relative z-10">
-          <div className="relative">
-            {/* Vertical Line */}
-            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent/30 to-transparent border-l border-dashed border-accent/30" />
-
-            <div className="space-y-24 md:space-y-0">
-              {journeyData.map((item, index) => {
-                const isEven = index % 2 === 0;
-                const Icon = iconComponentMap[item.icon?.toLowerCase()] || iconComponentMap.lightbulb;
-
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.7, ease: "easeOut" }}
-                    className={`flex flex-col md:flex-row items-center justify-between md:mb-32 relative w-full ${isEven ? "md:flex-row" : "md:flex-row-reverse"
-                      }`}
-                  >
-                    {/* Content */}
-                    <div className={`w-full md:w-5/12 ${isEven ? "md:text-left md:pr-16" : "md:text-left md:pl-16"} mb-12 md:mb-0`}>
-                      <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold text-white mb-6 uppercase tracking-wider ${['bg-accent', 'bg-blue-600', 'bg-emerald-600'][index % 3]
-                        }`}>
-                        {item.year}
-                      </span>
-                      <h3 className="text-3xl font-display font-bold text-primary mb-4">
-                        {item.title}
-                      </h3>
-                      <p className="text-lg text-secondary leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    {/* Desktop Center Icon */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center w-20 h-20 bg-slate-950 rounded-full border-4 border-[#FAF9F5] shadow-xl z-20">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-blue-400 bg-slate-900 border border-slate-800">
-                        <Icon size={24} className="stroke-[2px]" />
-                      </div>
-                    </div>
-
-                    {/* Image */}
-                    <div className="w-full md:w-5/12">
-                      <div className="relative group rounded-3xl overflow-hidden shadow-2xl border-[4px] border-slate-950 transform transition-transform duration-500 hover:scale-[1.01]">
-                        <div className="aspect-[16/10] bg-slate-900 relative overflow-hidden">
-                          {item.imageUrl && (
-                            <OptimizedImage
-                              src={item.imageUrl}
-                              alt={item.title}
-                              loading="lazy"
-                              decoding="async"
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                              sizes="(max-width:1024px) 40vw, 100vw"
-                            />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
+      {/* Quote Section (Standalone) */}
+      <section className="py-20 bg-[#050814] border-y border-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:28px_28px] opacity-40 pointer-events-none" />
+        <div className="container mx-auto px-6 max-w-4xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative bg-white rounded-3xl border border-slate-800/20 shadow-2xl px-12 py-16 md:px-20 md:py-20 text-center"
+          >
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-lg shadow-accent/20">
+              <span className="text-white text-2xl font-serif leading-none mt-[-4px]">&ldquo;</span>
             </div>
-          </div>
+            <blockquote className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-primary italic leading-snug">
+              {origin?.quote || "Driven by sustainability, impacting People, Planet, and Prosperity."}
+            </blockquote>
+            <div className="mt-8 w-16 h-1 bg-accent mx-auto rounded-full" />
+          </motion.div>
         </div>
       </section>
+
       {/* Founders Section */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
@@ -426,7 +392,95 @@ const About = () => {
             )}
           </div>
         </div>
-      </section>      {/* Milestones Grid */}
+      </section>
+
+      {/* Journey Timeline */}
+      <section className="py-24 relative overflow-hidden bg-[#FAF9F5]">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] opacity-30 pointer-events-none" />
+
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-20"
+          >
+            <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 flex items-center justify-center gap-3">
+              <span className="w-8 h-[2px] bg-accent inline-block"></span> Our Journey <span className="w-8 h-[2px] bg-accent inline-block"></span>
+            </span>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mt-2">
+              Year by Year
+            </h2>
+          </motion.div>
+
+          <div className="relative">
+            {/* Vertical Line */}
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent/30 to-transparent border-l border-dashed border-accent/30" />
+
+            <div className="space-y-24 md:space-y-0">
+              {journeyData.map((item, index) => {
+                const isEven = index % 2 === 0;
+                const Icon = iconComponentMap[item.icon?.toLowerCase()] || iconComponentMap.lightbulb;
+
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    className={`flex flex-col md:flex-row items-center justify-between md:mb-32 relative w-full ${isEven ? "md:flex-row" : "md:flex-row-reverse"
+                      }`}
+                  >
+                    {/* Content */}
+                    <div className={`w-full md:w-5/12 ${isEven ? "md:text-left md:pr-16" : "md:text-left md:pl-16"} mb-12 md:mb-0`}>
+                      <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold text-white mb-6 uppercase tracking-wider ${['bg-accent', 'bg-blue-600', 'bg-emerald-600'][index % 3]
+                        }`}>
+                        {item.year}
+                      </span>
+                      <h3 className="text-3xl font-display font-bold text-primary mb-4">
+                        {item.title}
+                      </h3>
+                      <p className="text-lg text-secondary leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    {/* Desktop Center Icon */}
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center w-20 h-20 bg-slate-950 rounded-full border-4 border-[#FAF9F5] shadow-xl z-20">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-blue-400 bg-slate-900 border border-slate-800">
+                        <Icon size={24} className="stroke-[2px]" />
+                      </div>
+                    </div>
+
+                    {/* Image */}
+                    <div className="w-full md:w-5/12">
+                      <div className="relative group rounded-3xl overflow-hidden shadow-2xl border-[4px] border-slate-950 transform transition-transform duration-500 hover:scale-[1.01]">
+                        <div className="aspect-[16/10] bg-slate-900 relative overflow-hidden">
+                          {item.imageUrl && (
+                            <OptimizedImage
+                              src={item.imageUrl}
+                              alt={item.title}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              sizes="(max-width:1024px) 40vw, 100vw"
+                            />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Milestones Grid */}
       <section id="milestones-at-a-glance" className="py-24 bg-[#FAF9F5]">
         <div className="container mx-auto px-6 max-w-6xl">
           <h2 className="text-3xl font-bold text-primary mb-12 border-l-8 border-blue-500 pl-6">
