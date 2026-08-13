@@ -706,11 +706,11 @@ export const homePage = {
                     ]
                 },
                 {
-                    name: 'quoteImage',
-                    title: 'Quote Card Image (Optional)',
-                    description: 'Upload an image to replace the default text-based "Zero Latency" quote card.',
-                    type: 'image',
-                    options: { hotspot: true }
+                    name: 'quoteImages',
+                    title: 'Photo Slideshow (Optional)',
+                    description: 'Upload one or more photos. Multiple photos will auto-slide as a carousel. Replaces the default "Zero Latency" quote card.',
+                    type: 'array',
+                    of: [{ type: 'image', options: { hotspot: true } }]
                 },
                 {
                     name: 'caseStudies',

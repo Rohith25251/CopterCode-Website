@@ -3,7 +3,7 @@
  * Centralized helper functions for consistent Sanity data fetching, error handling, and logging
  */
 
-import { client, urlFor } from './sanity';
+import { client, urlFor, urlForOptimized } from './sanity';
 
 /**
  * Fetch data from Sanity with consistent error handling and logging
@@ -36,14 +36,16 @@ export const fetchSanityData = async (query, params = {}, pageName = 'Unknown') 
 };
 
 /**
- * Convert Sanity image object to URL
+ * Convert Sanity image object to an optimized, Retina-ready URL.
  * @param {object} imageObject - Sanity image object
- * @returns {string|null} - Image URL or null
+ * @param {number} [width=800] - Logical CSS width of the container (px)
+ * @param {number} [height]    - Logical CSS height (optional)
+ * @returns {string|null}      - Optimized image URL or null
  */
-export const getImageUrl = (imageObject) => {
+export const getImageUrl = (imageObject, width = 800, height = undefined) => {
   if (!imageObject) return null;
   try {
-    return urlFor(imageObject).url();
+    return urlForOptimized(imageObject, width, height);
   } catch (error) {
     console.warn('⚠️  Failed to generate image URL:', error.message);
     return null;

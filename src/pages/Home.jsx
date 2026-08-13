@@ -10,7 +10,7 @@ import OptimizedImage from '../components/OptimizedImage';
 import LazyVideo from '../components/LazyVideo';
 import { ASSETS } from '../constants/assets';
 import { useScrollToTop } from '../hooks/useScrollToTop';
-import { client, urlFor } from '../lib/sanity';
+import { client, urlFor, urlForOptimized, srcsetFor } from '../lib/sanity';
 import ScrollingAnnouncementBar from '../components/ScrollingAnnouncementBar';
 import { iconComponentMap } from '../sanity/schemas/icons';
 
@@ -281,6 +281,7 @@ const Home = () => {
     const [activeHackathonSlide, setActiveHackathonSlide] = useState(0);
     const [activeBusiness, setActiveBusiness] = useState(0);
     const [currentInternshipSlide, setCurrentInternshipSlide] = useState(0);
+    const [currentWhyChooseSlide, setCurrentWhyChooseSlide] = useState(0);
     const [homeData, setHomeData] = useState(null);
     const [voiceOfSuccessVisible, setVoiceOfSuccessVisible] = useState(false);
     const actionScrollRef = useRef(null);
@@ -429,7 +430,7 @@ const Home = () => {
             },
             whyChooseSection {
                 ...,
-                "quoteImage": quoteImage.asset->url,
+                "quoteImages": quoteImages[].asset->url,
                 features[]{
                     ...
                 },
@@ -712,6 +713,7 @@ const Home = () => {
         return () => clearInterval(interval);
     }, [internshipImages]);
 
+
     // Hackathon carousel images (with fallback to default carousel)
     const hackathonCarouselImages = (homeData?.hackathonShowcaseSection?.carouselImages && homeData.hackathonShowcaseSection.carouselImages.length > 0)
         ? homeData.hackathonShowcaseSection.carouselImages
@@ -767,7 +769,13 @@ const Home = () => {
             title: p.title || "Research Paper",
             authors: p.authors || "Karthikeyan Sundharesan",
             description: p.description || "",
-            image: p.image || "/mediafiles/news and media/IMG_1699.jpg",
+            // Optimized Sanity URL: 430px logical width (1/3 of max-w-6xl)
+            // at 2× DPR → 860px physical → crisp on Retina, WebP where supported
+            image: p.image?._type === 'image'
+                ? urlForOptimized(p.image, 430, 270)
+                : (p.image || "/mediafiles/news and media/IMG_1699.jpg"),
+            // srcset reference kept for the render layer below
+            _rawImage: p.image?._type === 'image' ? p.image : null,
             link: p.link || "/articles"
         }))
         : FALLBACK_ARTICLES;
@@ -827,6 +835,15 @@ const Home = () => {
         }
     };
 
+    // Auto-slide Why Choose images (placed here, after WHY_CHOOSE_DATA is defined)
+    useEffect(() => {
+        const imgs = WHY_CHOOSE_DATA?.quoteImages;
+        if (!Array.isArray(imgs) || imgs.length <= 1) return;
+        const interval = setInterval(() => {
+            setCurrentWhyChooseSlide(prev => (prev + 1) % imgs.length);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, [WHY_CHOOSE_DATA?.quoteImages]);
 
     const nextTestimonial = () => {
         setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -1141,34 +1158,41 @@ const Home = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1, duration: 0.6 }}
-                                whileHover={{ y: -10 }}
-                                className="group relative bg-surface rounded-2xl overflow-hidden border-2 border-blue-500/60 hover:border-blue-500 shadow-lg hover:shadow-2xl transition-all duration-300"
+                                whileHover={{ y: -8, scale: 1.01 }}
+                                className="group relative bg-surface rounded-2xl overflow-hidden border-2 border-blue-500/60 hover:border-blue-500 shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 cursor-pointer"
                             >
-                                <div className="h-48 overflow-hidden relative">
-                                    <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
+                                {/* Full-height image fills the card */}
+                                <div className="relative aspect-[16/9] overflow-hidden">
                                     <OptimizedImage
                                         src={event.image}
                                         alt={event.title}
-                                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                        className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                                         sizes="(min-width:1024px) 33vw, 100vw"
                                     />
+
+                                    {/* Gradient overlay — subtle at top, strong at bottom */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+
+                                    {/* Category badge — top left */}
                                     <div className="absolute top-4 left-4 z-20">
-                                        <span className="bg-background/90 backdrop-blur text-blue-700 text-xs font-bold px-3 py-1 rounded-full border-2 border-blue-500/60">
+                                        <span className="bg-white/95 backdrop-blur-sm text-blue-700 text-[10px] font-extrabold px-3 py-1.5 rounded-full border border-blue-500/40 tracking-widest uppercase shadow-sm">
                                             {event.category}
                                         </span>
                                     </div>
-                                </div>
-                                <div className="p-6">
-                                    <div className="flex items-center text-accent text-xs font-bold uppercase tracking-widest mb-3">
-                                        <Calendar size={14} className="mr-2" />
-                                        {event.date}
-                                    </div>
-                                    <h3 className="text-xl font-bold text-primary mb-3 leading-snug group-hover:text-accent transition-colors">
-                                        {event.title}
-                                    </h3>
-                                    <div className="flex items-center text-secondary text-sm">
-                                        <MapPin size={14} className="mr-2" />
-                                        {event.location}
+
+                                    {/* Content anchored to bottom of image */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                                        <div className="flex items-center text-white/80 text-xs font-bold uppercase tracking-widest mb-2">
+                                            <Calendar size={13} className="mr-2 flex-shrink-0" />
+                                            {event.date}
+                                        </div>
+                                        <h3 className="text-lg font-bold text-white leading-snug mb-2 group-hover:text-blue-300 transition-colors">
+                                            {event.title}
+                                        </h3>
+                                        <div className="flex items-center text-white/70 text-sm">
+                                            <MapPin size={13} className="mr-1.5 flex-shrink-0" />
+                                            <span className="truncate">{event.location}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -1684,7 +1708,7 @@ const Home = () => {
                         </div>
 
                         <div className="relative flex items-center justify-center">
-                            <div className="w-full max-w-sm aspect-[4/5] rounded-2xl overflow-hidden border border-border relative bg-surface shadow-xl hover:shadow-2xl transition-shadow duration-500">
+                            <div className="w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden border border-border relative bg-surface shadow-xl hover:shadow-2xl transition-shadow duration-500">
                                 <AnimatePresence mode="wait">
                                     <motion.img
                                         key={currentInternshipSlide}
@@ -1883,7 +1907,7 @@ const Home = () => {
                 {/* Background Glow */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-                <div className="container mx-auto px-6 max-w-6xl relative z-10">
+                <div className="container mx-auto px-6 relative z-10">
                     <div className="text-center mb-16">
                         <span className="text-blue-400 font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                             {articlesSubheading}
@@ -1900,13 +1924,21 @@ const Home = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                         {articlesPapers.map((paper, idx) => (
                             <div key={idx} className="bg-white border border-slate-200 rounded-3xl overflow-hidden hover:border-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col justify-between group">
-                                {/* Paper Image */}
+                                {/* Paper Image — Retina-optimized via Sanity Image CDN */}
                                 {paper.image && (
                                     <div className="w-full aspect-[16/10] overflow-hidden bg-slate-950 relative">
                                         <img
                                             src={paper.image}
+                                            srcSet={paper._rawImage
+                                                ? srcsetFor(paper._rawImage, [320, 430, 640, 860])
+                                                : undefined
+                                            }
+                                            sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) calc(50vw - 48px), calc(min(1152px, 100vw) / 3 - 32px)"
                                             alt={paper.title}
                                             loading="lazy"
+                                            decoding="async"
+                                            width={860}
+                                            height={540}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                         />
                                     </div>
@@ -2130,24 +2162,52 @@ const Home = () => {
                                 ))}
                             </div>
 
-                            {/* Decorative Quote-like Box / Image Block */}
-                            {WHY_CHOOSE_DATA.quoteImage ? (
-                                <div className="mt-8 rounded-3xl overflow-hidden shadow-2xl relative w-full h-[200px] border border-border bg-primary/10">
-                                    <img
-                                        src={WHY_CHOOSE_DATA.quoteImage}
-                                        alt="Zero Latency Quote"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            ) : (
-                                <div className="mt-8 bg-primary rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
-                                    <div className="relative z-10">
-                                        <h4 className="text-2xl font-black text-white italic mb-2">"Zero Latency."</h4>
-                                        <p className="text-gray-400 text-sm font-medium">Our commitment to real-time performance in both drone telemetry and digital infrastructure.</p>
+                            {/* Photo Slideshow / Quote Card */}
+                            {(() => {
+                                const imgs = WHY_CHOOSE_DATA.quoteImages;
+                                const hasImages = Array.isArray(imgs) && imgs.length > 0;
+                                return hasImages ? (
+                                    <div className="mt-8 rounded-3xl overflow-hidden shadow-2xl relative w-full h-[240px] border border-border bg-primary/10">
+                                        <AnimatePresence mode="wait">
+                                            <motion.img
+                                                key={currentWhyChooseSlide}
+                                                src={imgs[currentWhyChooseSlide]}
+                                                alt={`Why Choose CopterCode photo ${currentWhyChooseSlide + 1}`}
+                                                initial={{ opacity: 0, scale: 1.04 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.8 }}
+                                                className="w-full h-full object-cover absolute inset-0"
+                                            />
+                                        </AnimatePresence>
+                                        {/* Slide indicator dots */}
+                                        {imgs.length > 1 && (
+                                            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                                                {imgs.map((_, i) => (
+                                                    <button
+                                                        key={i}
+                                                        onClick={() => setCurrentWhyChooseSlide(i)}
+                                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                                            i === currentWhyChooseSlide
+                                                                ? 'bg-white scale-125'
+                                                                : 'bg-white/50 hover:bg-white/80'
+                                                        }`}
+                                                        aria-label={`Go to slide ${i + 1}`}
+                                                    />
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="mt-8 bg-primary rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
+                                        <div className="relative z-10">
+                                            <h4 className="text-2xl font-black text-white italic mb-2">"Zero Latency."</h4>
+                                            <p className="text-gray-400 text-sm font-medium">Our commitment to real-time performance in both drone telemetry and digital infrastructure.</p>
+                                        </div>
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+                                    </div>
+                                );
+                            })()}
                         </div>
                     </div>
                 </div>
