@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Preloader from './components/Preloader';
 import PageTransitionLoader from './components/PageTransitionLoader';
@@ -42,6 +42,33 @@ const StudioPage = lazy(() => import('./pages/StudioPage'));
 
 // Placeholder component to prevent layout shift while loading
 const PagePlaceholder = () => <div className="min-h-screen" />;
+
+/**
+ * InsightsRedirect — handles the old /insights URL that was removed.
+ * 1. Injects <meta name="robots" content="noindex"> so Google stops indexing it.
+ * 2. Redirects users immediately to /articles (the replacement page).
+ * Google will drop /insights from its index on the next crawl.
+ */
+const InsightsRedirect = () => {
+    useEffect(() => {
+        // Inject noindex tag so Google de-indexes this URL
+        let noindexTag = document.querySelector("meta[name='robots'][data-insights]");
+        if (!noindexTag) {
+            noindexTag = document.createElement('meta');
+            noindexTag.setAttribute('name', 'robots');
+            noindexTag.setAttribute('content', 'noindex, nofollow');
+            noindexTag.setAttribute('data-insights', 'true');
+            document.head.appendChild(noindexTag);
+        }
+        return () => {
+            // Clean up when navigating away so it doesn't affect other pages
+            if (noindexTag && noindexTag.parentNode) {
+                noindexTag.parentNode.removeChild(noindexTag);
+            }
+        };
+    }, []);
+    return <Navigate to="/articles" replace />;
+};
 
 function AppContent() {
     const location = useLocation();
@@ -101,6 +128,9 @@ function AppContent() {
                             <Route path="/intern-portal" element={<Suspense fallback={<PagePlaceholder />}><InternPortal /></Suspense>} />
                             <Route path="/privacy" element={<Suspense fallback={<PagePlaceholder />}><PrivacyPolicy /></Suspense>} />
                             <Route path="/terms" element={<Suspense fallback={<PagePlaceholder />}><TermsAndConditions /></Suspense>} />
+
+                            {/* /insights — removed page: noindex + redirect to /articles */}
+                            <Route path="/insights" element={<InsightsRedirect />} />
 
                             {/* Dynamic Route for New Businesses */}
                             <Route path="/:slug" element={<Suspense fallback={<PagePlaceholder />}><BusinessTemplate /></Suspense>} />

@@ -143,7 +143,32 @@ const SEO = ({
             "name": "CopterCode",
             "publisher": {
                 "@id": "https://www.coptercode.co.in/#organization"
+            },
+            // SiteLinksSearchBox — enables the search box in Google results
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "https://www.coptercode.co.in/search?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
             }
+        };
+
+        // SiteNavigationElement — signals preferred sitelinks to Google
+        // Order matters: put the most important pages first
+        const siteNavSchema = {
+            "@type": "ItemList",
+            "name": "CopterCode Site Navigation",
+            "itemListElement": [
+                { "@type": "SiteLinksSearchBox", "url": "https://www.coptercode.co.in" },
+                { "@type": "ListItem", "position": 1, "name": "Industrial Drones & UAV",   "url": "https://www.coptercode.co.in/industrial-drones" },
+                { "@type": "ListItem", "position": 2, "name": "About CopterCode",           "url": "https://www.coptercode.co.in/about" },
+                { "@type": "ListItem", "position": 3, "name": "Internship Programme",       "url": "https://www.coptercode.co.in/internship" },
+                { "@type": "ListItem", "position": 4, "name": "Events & Hackathons",         "url": "https://www.coptercode.co.in/events" },
+                { "@type": "ListItem", "position": 5, "name": "Articles & Research",         "url": "https://www.coptercode.co.in/articles" },
+                { "@type": "ListItem", "position": 6, "name": "Careers",                    "url": "https://www.coptercode.co.in/careers" }
+            ]
         };
 
         let scriptSchema = document.querySelector("script[id='schema-org']");
@@ -153,10 +178,10 @@ const SEO = ({
             scriptSchema.type = 'application/ld+json';
             document.head.appendChild(scriptSchema);
         }
-        // Include Organization, Founder, Website and Breadcrumb schemas in Graph
+        // Include Organization, Founder, Website, SiteNav and Breadcrumb schemas in Graph
         scriptSchema.text = JSON.stringify({
             "@context": "https://schema.org",
-            "@graph": [organizationSchema, personSchema, websiteSchema, breadcrumbSchema]
+            "@graph": [organizationSchema, personSchema, websiteSchema, siteNavSchema, breadcrumbSchema]
         });
 
     }, [title, description, ogTitle, ogDescription, ogUrl, ogImage, twitterTitle, twitterDescription, twitterImage, keywords, canonicalUrl, location]);
