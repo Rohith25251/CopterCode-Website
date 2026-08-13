@@ -290,6 +290,12 @@ export const homePage = {
         },
         // --- ANNOUNCEMENTS SECTION ---
         {
+            name: 'announcementsHeading',
+            title: 'Insights Section Heading',
+            type: 'string',
+            initialValue: 'Automation & Bio-Medical Insights'
+        },
+        {
             name: 'announcementsSection',
             title: 'Latest Insights',
             type: 'array',

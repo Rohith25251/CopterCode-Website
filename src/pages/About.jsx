@@ -331,53 +331,6 @@ const About = () => {
           </div>
 
           <div className="flex flex-col gap-16 max-w-5xl mx-auto">
-            {/* Founder Card */}
-            {founder && (
-              <div className="flex flex-col md:flex-row overflow-hidden bg-[#050814] border border-slate-900 rounded-3xl shadow-xl transition-all duration-300 hover:border-slate-800">
-                <div className="w-full md:w-[35%] aspect-[4/5] md:aspect-auto relative overflow-hidden bg-slate-900">
-                  {founder.imageUrl ? (
-                    <img
-                      src={founder.imageUrl}
-                      alt={founder.name}
-                      className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-slate-950 text-slate-800 border-r border-slate-900">
-                      <Users size={64} className="stroke-[1px]" />
-                    </div>
-                  )}
-                </div>
-                <div className="w-full md:w-[65%] p-8 md:p-12 lg:p-16 flex flex-col justify-center text-left">
-                  <h3 className="text-3xl font-display font-bold text-white mb-3">
-                    {founder.name}
-                  </h3>
-                  <div className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-extrabold uppercase rounded tracking-widest mb-6 w-fit">
-                    {founder.role}
-                  </div>
-                  <div className="w-12 h-0.5 bg-blue-500 mb-6" />
-                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
-                    {founder.description}
-                  </p>
-                  {founder.linkedin && (
-                    <a
-                      href={founder.linkedin}
-                      target={founder.linkedin === "#" ? undefined : "_blank"}
-                      rel="noopener noreferrer"
-                      onClick={(e) => {
-                        if (founder.linkedin === "#") {
-                          e.preventDefault();
-                        }
-                      }}
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-all duration-300 mt-6"
-                      title="LinkedIn Profile"
-                    >
-                      <Linkedin size={18} />
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
-
             {/* Co-Founder Card */}
             {cofounder && (
               <div className="flex flex-col md:flex-row overflow-hidden bg-[#050814] border border-slate-900 rounded-3xl shadow-xl transition-all duration-300 hover:border-slate-800">
@@ -412,6 +365,53 @@ const About = () => {
                       rel="noopener noreferrer"
                       onClick={(e) => {
                         if (cofounder.linkedin === "#") {
+                          e.preventDefault();
+                        }
+                      }}
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-all duration-300 mt-6"
+                      title="LinkedIn Profile"
+                    >
+                      <Linkedin size={18} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Founder Card */}
+            {founder && (
+              <div className="flex flex-col md:flex-row overflow-hidden bg-[#050814] border border-slate-900 rounded-3xl shadow-xl transition-all duration-300 hover:border-slate-800">
+                <div className="w-full md:w-[35%] aspect-[4/5] md:aspect-auto relative overflow-hidden bg-slate-900">
+                  {founder.imageUrl ? (
+                    <img
+                      src={founder.imageUrl}
+                      alt={founder.name}
+                      className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-slate-950 text-slate-800 border-r border-slate-900">
+                      <Users size={64} className="stroke-[1px]" />
+                    </div>
+                  )}
+                </div>
+                <div className="w-full md:w-[65%] p-8 md:p-12 lg:p-16 flex flex-col justify-center text-left">
+                  <h3 className="text-3xl font-display font-bold text-white mb-3">
+                    {founder.name}
+                  </h3>
+                  <div className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-extrabold uppercase rounded tracking-widest mb-6 w-fit">
+                    {founder.role}
+                  </div>
+                  <div className="w-12 h-0.5 bg-blue-500 mb-6" />
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                    {founder.description}
+                  </p>
+                  {founder.linkedin && (
+                    <a
+                      href={founder.linkedin}
+                      target={founder.linkedin === "#" ? undefined : "_blank"}
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        if (founder.linkedin === "#") {
                           e.preventDefault();
                         }
                       }}

@@ -553,6 +553,7 @@ const Home = () => {
     const businessHeading = "Our Businesses";
 
     // ANNOUNCEMENTS
+    const announcementsHeading = homeData?.announcementsHeading || "Automation & Bio-Medical Insights";
     const announcements = homeData?.announcementsSection?.length > 0
         ? homeData.announcementsSection.map(item => ({
             title: item.title,
@@ -1369,9 +1370,9 @@ const Home = () => {
                             <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                                 Stay Updated
                             </span>
-                            <h2 className="text-4xl md:text-5xl font-display font-medium text-primary">Automation & Bio-Medical Insights</h2>
+                            <h2 className="text-4xl md:text-5xl font-display font-medium text-primary">{announcementsHeading}</h2>
                         </div>
-                        <Link to="/news" className="hidden md:flex items-center text-primary font-bold hover:text-accent transition-colors mt-6 md:mt-0">
+                        <Link to="/articles" className="hidden md:flex items-center text-primary font-bold hover:text-accent transition-colors mt-6 md:mt-0">
                             Read More News <ArrowRight className="ml-2" size={20} />
                         </Link>
                     </div>

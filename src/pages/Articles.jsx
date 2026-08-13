@@ -77,7 +77,7 @@ const DEFAULT_TOPICS = [
                 date: "June 2024",
                 category: "Drone Hardware",
                 description: "Stress testing customized weave structures and analyzing tensile performance to reduce structural weight while maintaining peak stress boundaries.",
-                image: "/mediafiles/news and media/IMG_3356.jpg",
+                image: "/mediafiles/Home/3442832E-21FB-4BF3-8CF2-7A91FBCA0302.jpg",
                 citationLink: "#all-articles"
             }
         ]
