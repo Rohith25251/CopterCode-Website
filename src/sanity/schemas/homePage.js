@@ -171,7 +171,8 @@ export const homePage = {
                             fields: [
                                 { name: 'name', type: 'string', title: 'Investor Name' },
                                 { name: 'description', type: 'text', title: 'Description' },
-                                { name: 'logo', type: 'image', title: 'Logo', options: { hotspot: true } }
+                                { name: 'logo', type: 'image', title: 'Logo', options: { hotspot: true } },
+                                { name: 'url', type: 'url', title: 'Website URL', description: "The investor's website or company URL" }
                             ]
                         }
                     ]

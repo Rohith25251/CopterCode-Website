@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { client, urlFor } from "../lib/sanity";
 import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
-import { Users, User, ArrowRight, Building2, Target, Award, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
+import { Users, User, ArrowRight, Building2, Target, Award, ShieldCheck, ChevronDown, ChevronUp, Linkedin } from "lucide-react";
 import { motion } from "framer-motion";
 import OptimizedImage from "../components/OptimizedImage";
 import BackButton from '../components/ui/BackButton';
@@ -159,7 +159,9 @@ const Administration = () => {
     {
       name: "Mr. Karthikeyan Sundharesan",
       role: "Chairman & Managing Director",
-      description: "Leading CopterCode with a focus on sustainable growth and diversified innovation. Mr. Karthikeyan continues the legacy of our founder by steering the organization towards new heights in technology, manufacturing, and services."
+      description: "Leading CopterCode with a focus on sustainable growth and diversified innovation. Mr. Karthikeyan continues the legacy of our founder by steering the organization towards new heights in technology, manufacturing, and services.",
+      linkedin: "https://linkedin.com/",
+      portfolio: "https://coptercode.co.in/"
     }
   ];
 
@@ -168,26 +170,26 @@ const Administration = () => {
 
   const boardHeading = sanityData?.boardHeading || "Board of Directors";
   const boardMembers = sanityData?.boardMembers || [
-    { name: "Mrs. Shanthi Sundharesan", role: "Board Member" },
-    { name: "Ms. Karthika Sundharesan", role: "Board Member" },
-    { name: "Mr. Venkatesh Janakiraman", role: "Board Member" },
+    { name: "Mrs. Shanthi Sundharesan", role: "Board Member", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Ms. Karthika Sundharesan", role: "Board Member", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Mr. Venkatesh Janakiraman", role: "Board Member", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
   ];
 
 
   // Fallback Advisory Board
   const FALLBACK_ADVISORY_BOARD = [
-    { name: "Dr. Robert Chen", role: "Technology Strategy Advisor" },
-    { name: "Ms. Sarah Williams", role: "Global Markets Consultant" },
-    { name: "Mr. David Thorne", role: "Financial Operations Advisor" },
-    { name: "Prof. Emily Zhao", role: "Sustainability Expert" },
+    { name: "Dr. Robert Chen", role: "Technology Strategy Advisor", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Ms. Sarah Williams", role: "Global Markets Consultant", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Mr. David Thorne", role: "Financial Operations Advisor", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Prof. Emily Zhao", role: "Sustainability Expert", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
   ];
 
   // Fallback Management Team
   const FALLBACK_MANAGEMENT_TEAM = [
-    { name: "Mr. James Anderson", role: "Chief Operating Officer" },
-    { name: "Ms. Priya Patel", role: "Head of Innovation" },
-    { name: "Mr. Michael Ross", role: "Director of Manufacturing" },
-    { name: "Ms. Linda Garan", role: "Chief Financial Officer" },
+    { name: "Mr. James Anderson", role: "Chief Operating Officer", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Ms. Priya Patel", role: "Head of Innovation", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Mr. Michael Ross", role: "Director of Manufacturing", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
+    { name: "Ms. Linda Garan", role: "Chief Financial Officer", linkedin: "https://linkedin.com/", portfolio: "https://coptercode.co.in/" },
   ];
 
   const advisoryHeading = sanityData?.advisoryHeading || "Advisory Board";
@@ -284,6 +286,42 @@ const Administration = () => {
                       />
                     </div>
                   )}
+
+                  {/* LinkedIn & Portfolio CTAs */}
+                  {(() => {
+                    const linkedinUrl = member.linkedin || "https://linkedin.com";
+                    const portfolioUrl = member.portfolio || "https://coptercode.co.in";
+                    return (
+                      <div className="flex items-center gap-4 mt-6">
+                        <a
+                          href={linkedinUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                            isDark 
+                              ? 'border-blue-500/30 text-blue-400 hover:bg-blue-500/10 hover:border-blue-500' 
+                              : 'border-accent/30 text-accent hover:bg-accent/10 hover:border-accent'
+                          }`}
+                          title="LinkedIn Profile"
+                        >
+                          <Linkedin size={18} />
+                        </a>
+                        <a
+                          href={portfolioUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                            isDark 
+                              ? 'border-blue-500/30 text-blue-400 hover:bg-blue-500/10 hover:border-blue-500' 
+                              : 'border-accent/30 text-accent hover:bg-accent/10 hover:border-accent'
+                          }`}
+                          title="Contact Details"
+                        >
+                          <User size={18} />
+                        </a>
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* Bottom Accent */}
@@ -343,7 +381,7 @@ const Administration = () => {
             </div>
 
             {/* Role Below Image */}
-            <div className={`p-6 border-t flex-1 flex flex-col justify-center relative z-20 ${
+            <div className={`p-6 border-t flex-1 flex flex-col justify-between relative z-20 ${
               isDark ? 'bg-slate-950 border-slate-800' : 'bg-white border-gray-100'
             }`}>
               <p className={`text-sm font-bold tracking-wide uppercase border-l-4 pl-3 ${
@@ -351,6 +389,41 @@ const Administration = () => {
               }`}>
                 {member.role}
               </p>
+
+              {(() => {
+                const linkedinUrl = member.linkedin || "https://linkedin.com";
+                const portfolioUrl = member.portfolio || "https://coptercode.co.in";
+                return (
+                  <div className="flex items-center gap-3 mt-4 justify-start">
+                    <a
+                      href={linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                        isDark 
+                          ? 'border-blue-500/30 text-blue-400 hover:bg-blue-500/10 hover:border-blue-500' 
+                          : 'border-accent/30 text-accent hover:bg-accent/10 hover:border-accent'
+                      }`}
+                      title="LinkedIn Profile"
+                    >
+                      <Linkedin size={14} />
+                    </a>
+                    <a
+                      href={portfolioUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                        isDark 
+                          ? 'border-blue-500/30 text-blue-400 hover:bg-blue-500/10 hover:border-blue-500' 
+                          : 'border-accent/30 text-accent hover:bg-accent/10 hover:border-accent'
+                      }`}
+                      title="Contact Details"
+                    >
+                      <User size={14} />
+                    </a>
+                  </div>
+                );
+              })()}
             </div>
           </motion.div>
         ))}

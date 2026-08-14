@@ -132,7 +132,8 @@ Today, CopterCode partners with businesses and institutions across industries â€
                         { name: 'role', type: 'string', title: 'Role', initialValue: 'CO-FOUNDER' },
                         { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
                         { name: 'description', type: 'text', title: 'Description', rows: 6 },
-                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: '#' }
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: '#' },
+                        { name: 'portfolio', type: 'url', title: 'Contact / Portfolio URL', initialValue: 'https://coptercode.co.in' }
                     ]
                 },
                 {
@@ -144,7 +145,8 @@ Today, CopterCode partners with businesses and institutions across industries â€
                         { name: 'role', type: 'string', title: 'Role', initialValue: 'FOUNDER / CEO' },
                         { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
                         { name: 'description', type: 'text', title: 'Description', rows: 6 },
-                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: '#' }
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: '#' },
+                        { name: 'portfolio', type: 'url', title: 'Contact / Portfolio URL', initialValue: 'https://coptercode.co.in' }
                     ]
                 }
             ]

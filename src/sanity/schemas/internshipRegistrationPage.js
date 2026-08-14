@@ -384,10 +384,10 @@ export const internshipRegistrationPage = {
                 }
             ]
         },
-        // --- REGISTERED INTERNS (SIDE COLUMNS) ---
+        // --- REGISTERED INTERNS (LEFT COLUMN) ---
         {
-            name: 'registeredInterns',
-            title: 'Registered Interns (Side Columns)',
+            name: 'leftInterns',
+            title: 'Left Column Interns (Photos)',
             type: 'array',
             of: [
                 {
@@ -398,7 +398,23 @@ export const internshipRegistrationPage = {
                     ]
                 }
             ],
-            description: 'List of registered interns to be displayed in the side columns. If there are more than 9, they will dynamically rotate/swap.'
+            description: 'List of registered interns to be displayed in the left side column.'
+        },
+        // --- REGISTERED INTERNS (RIGHT COLUMN) ---
+        {
+            name: 'rightInterns',
+            title: 'Right Column Interns (Photos)',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        { name: 'name', type: 'string', title: 'Intern Name' },
+                        { name: 'image', type: 'image', title: 'Intern Photo', options: { hotspot: true } }
+                    ]
+                }
+            ],
+            description: 'List of registered interns to be displayed in the right side column.'
         }
     ]
 };

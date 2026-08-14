@@ -184,21 +184,21 @@ const Projects = () => {
     ],
     clientsTitle: "Trusted by Industry Leaders",
     clientLogos: [
-      "/mediafiles/project_logos/Murgdur.png",
-      "/mediafiles/project_logos/Conexio.png",
-      "/mediafiles/project_logos/Pupil_Space.png",
-      "/mediafiles/project_logos/erp.png",
-      "/mediafiles/project_logos/notes.png",
-      "/mediafiles/project_logos/Vistream_local.png",
-      "/mediafiles/project_logos/ai-meeting.png",
-      "/mediafiles/project_logos/Internship_Management.png",
-      "/mediafiles/project_logos/accordify.png",
-      "/mediafiles/project_logos/THE_BILL_BOOK.png",
-      "/mediafiles/project_logos/PhotoToolkit.jpg",
-      "/mediafiles/project_logos/resume craft.png",
-      "/mediafiles/project_logos/deckflow.png",
-      "/mediafiles/project_logos/file toolkit.png",
-      "/mediafiles/project_logos/Scripta.png"
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_1898qy1898qy1898.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_clfbv4clfbv4clfb.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_l2e7mvl2e7mvl2e7.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_l4utmml4utmml4ut.webp",
+      "/_optimized/mediafiles/logos/Gemini_Generated_Image_z3rzx8z3rzx8z3rz.webp",
+      "/_optimized/mediafiles/logos/KarVenSen-logo-9ePXpcco (1).webp",
+      "/_optimized/mediafiles/logos/MurgDur-logo-CNKz8pTh.webp",
+      "/_optimized/mediafiles/logos/Untitled design.webp",
+      "/_optimized/mediafiles/logos/Untitled design (1).webp",
+      "/_optimized/mediafiles/logos/Untitled design (2).webp",
+      "/_optimized/mediafiles/logos/Untitled design (3).webp",
+      "/_optimized/mediafiles/logos/Untitled design (4).webp",
+      "/_optimized/mediafiles/logos/Untitled design (5).webp",
+      "/_optimized/mediafiles/logos/Untitled design (6).webp",
+      "/_optimized/mediafiles/logos/Untitled design (7).webp"
     ]
   };
 

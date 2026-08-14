@@ -113,7 +113,9 @@ export const administrationPage = {
                             type: 'image', 
                             title: 'Image',
                             options: { hotspot: true }
-                        }
+                        },
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: 'https://linkedin.com' },
+                        { name: 'portfolio', type: 'url', title: 'Contact / Portfolio URL', initialValue: 'https://coptercode.co.in' }
                     ]
                 }
             ]
@@ -155,7 +157,9 @@ export const administrationPage = {
                             rows: 3,
                             description: 'Optional: Brief bio or description of the board member'
                         },
-                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: 'https://linkedin.com' },
+                        { name: 'portfolio', type: 'url', title: 'Contact / Portfolio URL', initialValue: 'https://coptercode.co.in' }
                     ]
                 }
             ]
@@ -198,7 +202,9 @@ export const administrationPage = {
                             rows: 3,
                             description: 'Optional: Brief bio or description of the advisor'
                         },
-                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: 'https://linkedin.com' },
+                        { name: 'portfolio', type: 'url', title: 'Contact / Portfolio URL', initialValue: 'https://coptercode.co.in' }
                     ]
                 }
             ]
@@ -240,7 +246,9 @@ export const administrationPage = {
                             rows: 3,
                             description: 'Optional: Brief bio or description of the team member'
                         },
-                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: 'https://linkedin.com' },
+                        { name: 'portfolio', type: 'url', title: 'Contact / Portfolio URL', initialValue: 'https://coptercode.co.in' }
                     ]
                 }
             ]
@@ -307,7 +315,9 @@ export const administrationPage = {
                                             rows: 3,
                                             description: 'Optional: Brief bio or description'
                                         },
-                                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } }
+                                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+                                        { name: 'linkedin', type: 'url', title: 'LinkedIn Profile URL', initialValue: 'https://linkedin.com' },
+                                        { name: 'portfolio', type: 'url', title: 'Contact / Portfolio URL', initialValue: 'https://coptercode.co.in' }
                                     ]
                                 }
                             ]

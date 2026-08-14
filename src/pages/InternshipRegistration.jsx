@@ -144,25 +144,34 @@ const InternshipRegistration = () => {
   });
 
   // Derived data references
-  const sanityInterns = sanityData?.registeredInterns?.length > 0
-    ? sanityData.registeredInterns.map(intern => ({
+  const sanityLeftInterns = sanityData?.leftInterns?.length > 0
+    ? sanityData.leftInterns.map(intern => ({
       src: intern.image ? urlFor(intern.image).width(256).height(320).quality(85).format('webp').url() : "",
       name: intern.name
     })).filter(item => item.src)
     : [];
 
-  const internsPool = sanityInterns.length > 0 ? sanityInterns : REGISTERED_INTERNS;
+  const sanityRightInterns = sanityData?.rightInterns?.length > 0
+    ? sanityData.rightInterns.map(intern => ({
+      src: intern.image ? urlFor(intern.image).width(256).height(320).quality(85).format('webp').url() : "",
+      name: intern.name
+    })).filter(item => item.src)
+    : [];
 
-  // Split internsPool into left and right columns
-  const leftPool = [];
-  const rightPool = [];
-  internsPool.forEach((item, idx) => {
+  // Default fallback splits
+  const defaultLeft = [];
+  const defaultRight = [];
+  REGISTERED_INTERNS.forEach((item, idx) => {
     if (idx % 2 === 0) {
-      leftPool.push(item);
+      defaultLeft.push(item);
     } else {
-      rightPool.push(item);
+      defaultRight.push(item);
     }
   });
+
+  const leftPool = sanityLeftInterns.length > 0 ? sanityLeftInterns : defaultLeft;
+  const rightPool = sanityRightInterns.length > 0 ? sanityRightInterns : defaultRight;
+  const internsPool = [...leftPool, ...rightPool];
 
   // Helper to repeat items to ensure seamless infinite vertical scrolling
   const getMarqueeItems = (pool) => {
@@ -317,7 +326,8 @@ const InternshipRegistration = () => {
           formSubmitText: reg.registrationForm?.submitActionText,
           formSubmittingText: reg.registrationForm?.submittingText,
           formSuccess: reg.registrationForm?.successSection,
-          registeredInterns: reg.registeredInterns
+          leftInterns: reg.leftInterns,
+          rightInterns: reg.rightInterns
         });
       }
     }).catch((err) => {

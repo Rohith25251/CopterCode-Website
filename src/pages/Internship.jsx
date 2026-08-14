@@ -213,15 +213,16 @@ const Internship = () => {
 
         {/* Floating Apply Now Button (Top Right) */}
         <div className="absolute top-24 right-6 md:right-12 z-30">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => document.getElementById('apply-section')?.scrollIntoView({ behavior: 'smooth' })}
-            className="hidden md:flex bg-white hover:bg-slate-100 text-black font-extrabold uppercase tracking-widest text-[10px] md:text-xs py-4 px-8 rounded-full shadow-lg items-center gap-3 transition-all duration-300 transform hover:scale-105 group"
-          >
-            <span>{sanityData?.heroScrollButtonText || "Ready to Launch? Apply Now"}</span>
-            <ArrowRight size={16} className="text-black group-hover:translate-x-1 transition-transform" />
-          </motion.button>
+          <Link to="/internship-registration">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="hidden md:flex bg-white hover:bg-slate-100 text-black font-extrabold uppercase tracking-widest text-[10px] md:text-xs py-4 px-8 rounded-full shadow-lg items-center gap-3 transition-all duration-300 transform hover:scale-105 group"
+            >
+              <span>{sanityData?.heroScrollButtonText || "Ready to Launch? Apply Now"}</span>
+              <ArrowRight size={16} className="text-black group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+          </Link>
         </div>
 
         {/* Carousel Content */}
@@ -505,7 +506,7 @@ const Internship = () => {
           </p>
 
           {ctaLink.startsWith("/") ? (
-            <Link to={ctaLink} target="_blank" rel="noopener noreferrer">
+            <Link to={ctaLink}>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

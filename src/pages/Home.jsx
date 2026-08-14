@@ -659,11 +659,13 @@ const Home = () => {
             {
                 name: "MurgDur",
                 logo: "/_optimized/mediafiles/logos/MurgDur-logo-CNKz8pTh.webp",
+                url: "https://murgdur.com/",
                 description: "A leading venture capital firm focused on early-stage technology startups with high growth potential, supporting our vision since inception."
             },
             {
                 name: "Karvensen",
                 logo: "/_optimized/mediafiles/logos/KarVenSen-logo-9ePXpcco (1).webp",
+                url: "https://karvensen.com/",
                 description: "A global investment group specializing in sustainable infrastructure and innovative industrial solutions, partnering for long-term strategic growth."
             }
         ]
@@ -1471,19 +1473,29 @@ const Home = () => {
                                 </h3>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                                {investorSummary.investors.map((investor, idx) => (
-                                    <motion.div
-                                        key={idx}
-                                        whileHover={{ y: -8 }}
-                                        className="bg-[#030712] p-8 rounded-3xl shadow-[0_0_30px_rgba(59,130,246,0.25)] border border-blue-500/30 hover:border-blue-500/60 hover:shadow-[0_0_45px_rgba(59,130,246,0.45)] transition-all duration-500 text-center flex flex-col items-center h-full"
-                                    >
-                                        <div className="w-24 h-24 bg-slate-900 border border-slate-800/80 rounded-2xl flex items-center justify-center mb-6 shadow-inner overflow-hidden p-4">
-                                            <img src={investor.logo} alt={investor.name} className="w-full h-full object-contain" />
-                                        </div>
-                                        <h4 className="text-xl font-bold text-white mb-4">{investor.name}</h4>
-                                        <p className="text-slate-400 text-sm leading-relaxed max-w-sm">{investor.description}</p>
-                                    </motion.div>
-                                ))}
+                                {investorSummary.investors.map((investor, idx) => {
+                                    const investorUrl = investor.url || (
+                                        investor.name?.toLowerCase().includes("veldursen") ? "https://veldursen.com/" :
+                                        investor.name?.toLowerCase().includes("karvensen") ? "https://karvensen.com/" :
+                                        investor.name?.toLowerCase().includes("murgdur") ? "https://murgdur.com/" : "#"
+                                    );
+                                    return (
+                                        <motion.a
+                                            key={idx}
+                                            href={investorUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            whileHover={{ y: -8 }}
+                                            className="bg-[#030712] p-8 rounded-3xl shadow-[0_0_30px_rgba(59,130,246,0.25)] border border-blue-500/30 hover:border-blue-500/60 hover:shadow-[0_0_45px_rgba(59,130,246,0.45)] transition-all duration-500 text-center flex flex-col items-center h-full cursor-pointer block"
+                                        >
+                                            <div className="w-24 h-24 bg-slate-900 border border-slate-800/80 rounded-2xl flex items-center justify-center mb-6 shadow-inner overflow-hidden p-4">
+                                                <img src={investor.logo} alt={investor.name} className="w-full h-full object-contain" />
+                                            </div>
+                                            <h4 className="text-xl font-bold text-white mb-4">{investor.name}</h4>
+                                            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">{investor.description}</p>
+                                        </motion.a>
+                                    );
+                                })}
                             </div>
                         </div>
                     )}
